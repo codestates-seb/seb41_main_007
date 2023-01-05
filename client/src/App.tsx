@@ -2,9 +2,10 @@ import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
 import Header from './Components/Header/index';
-import Main from './Pages/Main';
-import Loding from './Components/Loding';
-import login from './Pages/Login';
+import Main from 'Pages/Main';
+import Loding from 'Components/Loding';
+import Login from 'Pages/Login';
+import SingUp from 'Pages/Signup';
 
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
@@ -22,8 +23,12 @@ const router = createBrowserRouter([
     errorElement: <Loding />,
   },
   {
-    path: '/:questionId',
-    element: withLayout(login),
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/singup',
+    element: <SingUp />,
   },
 ]);
 
