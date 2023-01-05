@@ -1,12 +1,15 @@
-import { ChangeEvent, useCallback, useState, EventHandler } from 'react';
+import React, { useCallback, useState } from 'react';
 
-type UserInputProps = [string, (e: ChangeEvent) => void];
+type OutputProps = [
+  string | number,
+  (e: React.ChangeEvent<HTMLInputElement>) => void,
+];
 
-const useInput = (initialValue: string): UserInputProps => {
-  const [userFormInput, setUserFormInput] = useState(initialValue);
-
-  const onChangeForm = useCallback((e: any) => {
-    //이 부분 e가 (e) 이렇게 변경됨
+const useInput = (initialValue: string | number): OutputProps => {
+  const [userFormInput, setUserFormInput] = useState<string | number>(
+    initialValue,
+  );
+  const onChangeForm = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setUserFormInput(e.target.value);
   }, []);
 
