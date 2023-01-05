@@ -6,3 +6,7 @@ body {
     'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
