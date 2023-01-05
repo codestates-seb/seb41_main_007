@@ -2,7 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '2.7.7'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-    id 'org.asciidoctor.convert' version '1.5.8'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'com.bzzzzz'
@@ -13,6 +13,7 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+    asciidoctorExtensions
 }
 
 repositories {
@@ -21,10 +22,6 @@ repositories {
 
 ext {
     set('snippetsDir', file("build/generated-snippets"))
-}
-
-configurations {
-    asciidoctorExtensions
 }
 
 dependencies {
@@ -42,6 +39,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
     testImplementation 'org.springframework.security:spring-security-test'
 
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
