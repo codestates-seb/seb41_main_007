@@ -5,7 +5,7 @@ import Header from 'Components/Header';
 import Main from 'Pages/Main';
 import Loding from 'Components/Loding';
 import Login from 'Pages/Login';
-import SingUp from 'Pages/Signup';
+import Signup from 'Pages/Signup';
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
     <>
@@ -26,8 +26,8 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: '/singup',
-    element: <SingUp />,
+    path: '/signup',
+    element: <Signup />,
   },
 ]);
 
