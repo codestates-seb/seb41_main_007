@@ -1,3 +1,4 @@
+import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
 import Header from 'Components/Header';
@@ -5,8 +6,7 @@ import Main from 'Pages/Main';
 import Loding from 'Components/Loding';
 import login from 'Pages/Login';
 
-const withLayout = (Component: any) => {
-  console.log(Component);
+const withLayout = (Component: React.FC): JSX.Element => {
   return (
     <>
       <Header />
@@ -22,17 +22,17 @@ const router = createBrowserRouter([
     errorElement: <Loding />,
   },
   {
-    path: '/:questionId', //useParams()를 쓸때 ":"이용
+    path: '/:questionId',
     element: withLayout(login),
   },
 ]);
 
-function App() {
+const App: React.FC = () => {
   return (
     <>
       <RouterProvider router={router} />
     </>
   );
-}
+};
 
 export default App;
