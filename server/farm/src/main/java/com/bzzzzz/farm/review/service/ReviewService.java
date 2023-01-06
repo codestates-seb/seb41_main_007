@@ -18,11 +18,7 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
     }
 
-    public Review insertReview(Review review,Long memberId, String name) {
-        log.info("insertReview :"+name);
-        Member member = new Member(memberId,"test",name,1,"test@gmail.com",false,"male","01011111111");
-        //Member가 없어서 임시로 넣음
-        //review.setMember(member);
+    public Review insertReview(Review review) {
         Review saveReview = reviewRepository.save(review);
         return saveReview;
     }

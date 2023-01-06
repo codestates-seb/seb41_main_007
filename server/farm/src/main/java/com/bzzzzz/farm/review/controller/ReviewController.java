@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.review.controller;
 
 import com.bzzzzz.farm.member.entity.Member;
+import com.bzzzzz.farm.member.service.MemberService;
 import com.bzzzzz.farm.review.dto.ReviewPostDto;
 import com.bzzzzz.farm.review.dto.ReviewResponseDto;
 import com.bzzzzz.farm.review.entity.Review;
@@ -10,8 +11,6 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,20 +28,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReviewController {
 
     private final ReviewService reviewService;
+    private final MemberService memberService;
     private final ReviewMapper reviewMapper;
 
-    public ReviewController(ReviewService reviewService, ReviewMapper reviewMapper) {
+    public ReviewController(ReviewService reviewService, MemberService memberService, ReviewMapper reviewMapper) {
         this.reviewService = reviewService;
+        this.memberService = memberService;
         this.reviewMapper = reviewMapper;
     }
 
-    //
+    //로그인한 유저 불러오는 방법 getLoginUser()로 불러오기
     @PostMapping({""})
     public ResponseEntity insertReview(@RequestBody @Valid ReviewPostDto reviewPostDto) {
         Review review = reviewMapper.reviewPostDtoToReview(reviewPostDto);
-
-        //review,member.getMemberId(),member.getName()
-        Review insertReview = reviewService.insertReview(review,1L,"test");
+        Member member = memberService.getLoginMember();
+        review.setMember(member);
+        Review insertReview = reviewService.insertReview(review);
 
         log.info("log : " + reviewPostDto.getContent());
         ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(insertReview);

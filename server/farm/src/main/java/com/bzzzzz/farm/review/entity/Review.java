@@ -24,12 +24,11 @@ public class Review extends Auditable {
     @Column(nullable = false)
     private float score;
 
-    /*
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
 
-     */
     public Review(String content){
         this.content = content;
     }
