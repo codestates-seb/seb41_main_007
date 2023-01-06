@@ -11,3 +11,10 @@
     height: 60px;
   }
 }
+
+@media (max-width: 450px) {
+  .menu {
+    width: 45px;
+    height: 45px;
+  }
+}

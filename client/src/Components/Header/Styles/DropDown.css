@@ -37,3 +37,9 @@
   background-color: #767f42;
   box-shadow: 0 4px 6px 0 rgb(185, 187, 157);
 }
+
+@media (max-width: 500px) {
+  .Drop_Down_Button_Container {
+    width: 140px;
+  }
+}

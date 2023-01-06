@@ -153,3 +153,25 @@
     height: 100px;
   }
 }
+
+@media (max-width: 500px) {
+  .Header_Input_Container {
+    width: 174px;
+    padding-left: 2px;
+  }
+  .Logo {
+    margin-left: 4px;
+    width: 120px;
+    height: 120px;
+  }
+  .Header_SignUp_Button {
+    display: none;
+  }
+  .Header_Search_Input {
+    width: 130px;
+    height: 35px;
+  }
+  .Header_Contents_Container {
+    height: 100px;
+  }
+}
