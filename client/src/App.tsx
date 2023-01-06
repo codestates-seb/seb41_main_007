@@ -5,12 +5,13 @@ import Header from 'Components/Header';
 import Main from 'Pages/Main';
 import Loding from 'Components/Loding';
 import Login from 'Pages/Login';
-import Signup from 'Pages/Signup';
+import { Carousell } from 'Components/Carousel';
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
     <>
       <Header />
       <Component />
+      <Carousell />
     </>
   );
 };
@@ -24,10 +25,6 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <Login />,
-  },
-  {
-    path: '/signup',
-    element: <Signup />,
   },
 ]);
 
