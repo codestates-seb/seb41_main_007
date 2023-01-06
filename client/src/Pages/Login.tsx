@@ -3,30 +3,48 @@ import styled from 'styled-components';
 
 const Login: React.FC = () => {
   const BigContainer = styled.div`
-  display flex;`;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+    height: 100vh;
+    background-image: url('/image/LoginImage.jpg');
+    background-position: 80% 50%;
+    background-size: 2500px;
+    background-repeat: no-repeat;
+    opacity: 0.9;
+  `;
 
   const Loginform = styled.form`
     opacity: 0.8;
     z-index: 5500px;
+
     // position: absolute;
-    // margin-left: 1200px;
+    margin-right: 150px;
     // margin-top: 200px;
-    width: 400px;
+    width: 500px;
     height: 500px;
     background-color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: 2px solid white;
+
     border-radius: 10px;
   `;
+  const LoginP = styled.div<{ fontsize: string }>`
+    padding: 50px 0 20px 0;
+    text-align: center;
+    fontsize: 30px;
+    font-size: ${(props) => props.fontsize};
+  `;
+
   const GoogleBtn = styled.button`
     opacity: 1;
     width: 300px;
-    padding: 10px;
-    margin: 4px 0px;
+    height: 50px;
+    padding-top: 10px;
+    margin: 10px 0px;
     background-color: white;
     display: flex;
-    align-items: center;
+    margin: 50px auto;
     justify-content: center;
     border-radius: 5px;
     border: 1px solid hsl(210, 8%, 85%);
@@ -39,6 +57,11 @@ const Login: React.FC = () => {
   return (
     <BigContainer>
       <Loginform>
+        <LoginP fontsize="30px">로그인</LoginP>
+        <LoginP fontsize="17px">
+          로그인 하시면 FARMPI의 모든 서비스를 이용 하실 수 있습니다. <br></br>
+          아직 회원이 아니시면 회원가입을 해주세요.
+        </LoginP>
         <GoogleBtn>
           <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18">
             <path
