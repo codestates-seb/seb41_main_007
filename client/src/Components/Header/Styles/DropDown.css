@@ -1,9 +1,7 @@
 .Header_DropDown_Container {
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  min-width: 140px;
-  margin-right: 10px;
+  justify-content: center;
+  margin-right: 20px;
 }
 
 .Header_DropDownList_Container {
@@ -14,15 +12,11 @@
   display: flex;
   flex-direction: column;
   margin-top: 10px;
-  margin-left: 10px;
+  margin-left: -70px;
   border: 1px solid rgb(197, 197, 197);
   background: #fff;
   border-radius: 0.5rem;
   min-width: 140px;
-}
-.Header_Auth_Text {
-  font-size: 18px;
-  opacity: 0.8;
 }
 
 .Drop_Down_Text {
@@ -33,6 +27,7 @@
 .Drop_Down_Button_Container {
   display: flex;
   justify-content: center;
+  width: 159px;
   padding: 10px;
   border: 1px solid #767f42;
 }

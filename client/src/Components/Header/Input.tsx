@@ -14,7 +14,7 @@ const Input: FC = () => {
       >
         <input
           className="Header_Search_Input"
-          placeholder="검색"
+          placeholder="상품검색"
           value={userFormInput}
           onChange={onChangeForm}
         />

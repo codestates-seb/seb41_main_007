@@ -6,13 +6,13 @@ import Input from './Input';
 import './Styles/index.css';
 
 const Header: FC = () => {
-  let isUser = true;
+  let isUser = false;
   return (
     <header>
       <div className="Header_Container">
         <div className="Header_Contents_Container">
           <div className="Header_Logo_Container">
-            <Logo width={200} height={200} />
+            <Logo width={290} height={290} />
           </div>
           <Input />
           {isUser ? <LoggedInButton /> : <LoginRequiredButton />}
