@@ -6,7 +6,7 @@ import Input from './Input';
 import './Styles/index.css';
 
 const Header: FC = () => {
-  let isUser = false;
+  let isUser = true;
   return (
     <header>
       <div className="Header_Container">
@@ -15,7 +15,7 @@ const Header: FC = () => {
             <Logo width={200} height={200} />
           </div>
           <Input />
-          {isUser ? <LoginRequiredButton /> : <LoggedInButton />}
+          {isUser ? <LoggedInButton /> : <LoginRequiredButton />}
         </div>
       </div>
     </header>
