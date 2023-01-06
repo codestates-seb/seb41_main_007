@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './Styles/DropDown.css';
-import PersonIcon from './PersonIcon';
+import PersonIcon from './Icon/PersonIcon';
 import { Link } from 'react-router-dom';
-import SubmitIcon from './SubmitIcon';
-import ContactIcon from './ContactIcon';
+import SubmitIcon from './Icon/SubmitIcon';
+import ContactIcon from './Icon/ContactIcon';
 
 type DropDownProps = {
   showDropDown: boolean;
@@ -27,7 +27,7 @@ const DropDown: React.FC<DropDownProps> = ({
 
   return (
     <>
-      <nav className={showDropDown ? 'dropdown' : 'dropdown active'}>
+      <nav className={'dropdown'}>
         <Link
           to="/mypage/edit"
           className="Drop_Down_Button_Container"
@@ -37,7 +37,6 @@ const DropDown: React.FC<DropDownProps> = ({
           <PersonIcon />
           <p className="Drop_Down_Text">회원정보</p>
         </Link>
-
         <Link
           to="/mypage"
           className="Drop_Down_Button_Container"

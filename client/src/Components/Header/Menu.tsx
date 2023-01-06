@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import DropDown from './DropDown';
 import './Styles/DropDown.css';
+import HambergerIcon from './Icon/HambergerIcon';
 
 const Menu: React.FC = (): JSX.Element => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
-  //css끝나고 바꾸기
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown);
   };
@@ -19,24 +19,12 @@ const Menu: React.FC = (): JSX.Element => {
     <div>
       <div className="Header_DropDown_Container">
         <button
-          className="Header_Auth_Text"
           onClick={(): void => toggleDropDown()}
           onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
             dismissHandler(e)
           }
         >
-          마이페이지
-        </button>
-        <button onClick={(): void => toggleDropDown()}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="24px"
-            viewBox="0 0 24 24"
-            width="24px"
-            fill="#b6b6b6"
-          >
-            <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z" />
-          </svg>
+          <HambergerIcon />
         </button>
       </div>
       <div className="Header_DropDownList_Container">
