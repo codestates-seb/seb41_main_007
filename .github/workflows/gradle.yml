@@ -33,7 +33,9 @@ jobs:
       run: chmod +x /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/gradlew
 
     - name: Build with Gradle
-      run: . /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/gradlew build
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+        arguments: build
 
     - name: Execute Jar File
       run: sudo kill -9 `sudo lsof -t -i:8080` & sudo java -jar /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/build/libs/farm-0.0.1-SNAPSHOT.jar &
