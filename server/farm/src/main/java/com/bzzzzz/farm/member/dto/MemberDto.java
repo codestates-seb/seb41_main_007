@@ -20,6 +20,9 @@ public class MemberDto {
 
         private int age;
 
+        @Email
+        private String email;
+
         private boolean certification;
 
         private String gender;

@@ -45,11 +45,6 @@ public class MemberDetailsService implements UserDetailsService {
         }
 
         @Override
-        public String getPassword() {
-            return getPassword();
-        }
-
-        @Override
         public String getUsername() {
             return getEmail();
         }
