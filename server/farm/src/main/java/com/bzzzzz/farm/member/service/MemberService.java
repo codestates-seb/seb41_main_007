@@ -43,14 +43,18 @@ public class MemberService {
     public Member updateMember(Member member){
         String encryptedPassword = passwordEncoder.encode(member.getPassword());
         Member findMember = findVerifiedMember(member.getMemberId());
+        Optional.ofNullable(member.getPassword())
+                .ifPresent(pw -> findMember.setPassword(encryptedPassword));
         Optional.ofNullable(member.getName())
                 .ifPresent(name -> findMember.setName(name));
         Optional.ofNullable(member.getAge())
                 .ifPresent(age -> findMember.setAge(age));
-        Optional.ofNullable(member.getPassword())
-                .ifPresent(pw -> findMember.setPassword(encryptedPassword));
+        Optional.ofNullable(member.isCertification())
+                .ifPresent(certification -> findMember.setCertification(certification));
         Optional.ofNullable(member.getGender())
                 .ifPresent(gender -> findMember.setGender(gender));
+        Optional.ofNullable(member.getPhone())
+                .ifPresent(phone -> findMember.setPhone(phone));
 
 
         return memberRepository.save(findMember);

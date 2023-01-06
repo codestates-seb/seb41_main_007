@@ -30,25 +30,31 @@ public class MemberController {
 
     //회원 정보 수정
     @PatchMapping("/{member-id}")
-    public ResponseEntity patchMember(@PathVariable("member-id") @Positive long memberId){
-        return ResponseEntity.ok(null);
+    public ResponseEntity patchMember(@PathVariable("member-id") @Positive long memberId,
+                                      @Valid @RequestBody MemberDto.Patch requestBody){
+        requestBody.setMemberId(memberId);
+        Member member = memberService.updateMember(mapper.memberPatchToMember(requestBody));
+
+        return ResponseEntity.ok(mapper.memberToMemberResponse(member));
     }
 
     //본인 프로필 보기
     @GetMapping("/{member-id}")
     public ResponseEntity getMember(@PathVariable("member-id") @Positive long memberId){
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(mapper.memberToMemberResponse(memberService.findMember(memberId)));
     }
 
     //전체 회원 조회(관리자 전용)
     @GetMapping
     public ResponseEntity getMembers(){
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(mapper.membersToMemberResponses(memberService.findMembers()));
     }
 
     //회원 탈퇴
     @DeleteMapping("/{member-id}")
     public ResponseEntity deleteMember(@PathVariable("member-id") @Positive long memberId){
+        memberService.deleteMember(memberId);
+
         return ResponseEntity.ok().build();
     }
 
