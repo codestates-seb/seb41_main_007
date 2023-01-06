@@ -1,44 +1,32 @@
 package com.bzzzzz.farm.review.dto;
 
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.LocalDateTime;
+
 @Validated
+@Getter
+@Setter
+@NoArgsConstructor
 public class ReviewResponseDto {
     private Long reviewId;
     private Long memberId;
-    private String content;
+    private String reviewTitle;
+    private String reviewContent;
+    private LocalDateTime createdAt;
+    private LocalDateTime lastModifiedAt;
 
-    public ReviewResponseDto(Long reviewId, Long memberId, String content) {
+    public ReviewResponseDto(Long reviewId, Long memberId, String reviewTitle,String reviewContent, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
         this.reviewId = reviewId;
         this.memberId = memberId;
-        this.content = content;
+        this.reviewTitle = reviewTitle;
+        this.reviewContent = reviewContent;
+        this.createdAt = createdAt;
+        this.lastModifiedAt = lastModifiedAt;
     }
 
-    public Long getReviewId() {
-        return this.reviewId;
-    }
-
-    public Long getMemberId() {
-        return this.memberId;
-    }
-
-    public String getContent() {
-        return this.content;
-    }
-
-    public void setReviewId(final Long reviewId) {
-        this.reviewId = reviewId;
-    }
-
-    public void setMemberId(final Long memberId) {
-        this.memberId = memberId;
-    }
-
-    public void setContent(final String content) {
-        this.content = content;
-    }
-
-    public ReviewResponseDto() {
-    }
 }

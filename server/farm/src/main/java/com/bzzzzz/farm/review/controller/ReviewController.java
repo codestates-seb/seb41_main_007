@@ -45,8 +45,11 @@ public class ReviewController {
         review.setMember(member);
         Review insertReview = reviewService.insertReview(review);
 
-        log.info("log : " + reviewPostDto.getContent());
+        log.info("log : " + reviewPostDto.getReviewTitle());
         ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(insertReview);
         return new ResponseEntity(reviewResponseDto, HttpStatus.CREATED);
     }
+
+
+
 }

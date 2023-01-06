@@ -14,13 +14,19 @@ public interface ReviewMapper {
         if (reviewPostDto == null) {
             return null;
         } else {
-            Review review = new Review(reviewPostDto.getContent());
+            Review review = new Review(reviewPostDto.getReviewTitle(),
+                                        reviewPostDto.getReviewContent(),
+                                        reviewPostDto.getScore());
             return review;
         }
     }
 
     default ReviewResponseDto reviewToReviewResponseDto(Review review) {
-        //memberID 예시 반환하는걸로 고쳐야 동작함
-        return review == null ? null : new ReviewResponseDto(review.getReviewId(), review.getMember().getMemberId(), review.getContent());
+        return review == null ? null : new ReviewResponseDto(review.getReviewId(),
+                                                            review.getMember().getMemberId(),
+                                                            review.getReviewTitle(),
+                                                            review.getReviewContent(),
+                                                            review.getCreatedAt(),
+                                                            review.getModifiedAt());
     }
 }

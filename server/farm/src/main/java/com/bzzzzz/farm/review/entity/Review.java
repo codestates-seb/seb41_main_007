@@ -17,9 +17,13 @@ public class Review extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long reviewId;
+
+    @Column(nullable = false)
+    private String reviewTitle;
+
     @Lob
     @Column(nullable = false)
-    private String content;
+    private String reviewContent;
 
     @Column(nullable = false)
     private float score;
@@ -29,7 +33,15 @@ public class Review extends Auditable {
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
 
-    public Review(String content){
-        this.content = content;
+    //product 추가로 매핑해야함
+
+    //사진 추가로 매핑해야함
+
+    //답변 매핑해야함
+
+    public Review(String reviewTitle, String reviewContent, float score) {
+        this.reviewTitle = reviewTitle;
+        this.reviewContent = reviewContent;
+        this.score = score;
     }
 }
