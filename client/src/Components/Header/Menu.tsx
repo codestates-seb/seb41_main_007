@@ -4,7 +4,7 @@ import './Styles/DropDown.css';
 
 const Menu: React.FC = (): JSX.Element => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
-
+  //css끝나고 바꾸기
   const toggleDropDown = () => {
     setShowDropDown(!showDropDown);
   };
@@ -16,16 +16,16 @@ const Menu: React.FC = (): JSX.Element => {
   };
 
   return (
-    <>
+    <div>
       <div className="Header_DropDown_Container">
         <button
-          className={showDropDown ? 'active' : 'nonactive'}
+          className="Header_Auth_Text"
           onClick={(): void => toggleDropDown()}
           onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
             dismissHandler(e)
           }
         >
-          test 님
+          마이페이지
         </button>
         <button onClick={(): void => toggleDropDown()}>
           <svg
@@ -47,7 +47,7 @@ const Menu: React.FC = (): JSX.Element => {
           />
         )}
       </div>
-    </>
+    </div>
   );
 };
 

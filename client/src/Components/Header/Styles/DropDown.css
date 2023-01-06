@@ -1,14 +1,9 @@
-.Header_AuthDropDown_Container {
-  background-color: blue;
-}
-
 .Header_DropDown_Container {
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  height: 30px;
-  min-width: 100px;
-  background-color: red;
+  min-width: 140px;
+  margin-right: 10px;
 }
 
 .Header_DropDownList_Container {
@@ -18,23 +13,32 @@
 .dropdown {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  margin-top: 10px;
+  margin-left: 10px;
   border: 1px solid rgb(197, 197, 197);
   background: #fff;
-  color: #0062cc;
-  border-radius: 0.25rem;
-  padding: 0.375rem 0.88rem;
+  border-radius: 0.5rem;
   min-width: 140px;
 }
+.Header_Auth_Text {
+  font-size: 18px;
+  opacity: 0.8;
+}
 
-/* .dropdown > p {
-    border-bottom: 1px solid rgb(235, 235, 235);
-  margin: 0;
+.Drop_Down_Text {
+  font-size: 16px;
+  opacity: 0.7;
 }
-.dropdown > p:hover {
+
+.Drop_Down_Button_Container {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  border: 1px solid #767f42;
+}
+
+.Drop_Down_Button_Container:hover {
   color: #fff;
-  background-color: #0062cc;
+  background-color: #767f42;
+  box-shadow: 0 4px 6px 0 rgb(185, 187, 157);
 }
-.dropdown > p:last-child {
-  border-bottom: 0 none;
-} */

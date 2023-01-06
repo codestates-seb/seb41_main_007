@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import './Styles/DropDown.css';
+import PersonIcon from './PersonIcon';
+import { Link } from 'react-router-dom';
+import SubmitIcon from './SubmitIcon';
+import ContactIcon from './ContactIcon';
 
 type DropDownProps = {
   showDropDown: boolean;
@@ -24,33 +28,35 @@ const DropDown: React.FC<DropDownProps> = ({
   return (
     <>
       <nav className={showDropDown ? 'dropdown' : 'dropdown active'}>
-        <button
+        <Link
+          to="/mypage/edit"
+          className="Drop_Down_Button_Container"
           onMouseDown={handleMouseDown}
-          onClick={(): void => {
-            console.log('Hi');
-            TogglecloseHandler();
-          }}
+          onClick={(): void => TogglecloseHandler()}
         >
-          회원정보수정
-        </button>
-        <button
+          <PersonIcon />
+          <p className="Drop_Down_Text">회원정보</p>
+        </Link>
+
+        <Link
+          to="/mypage"
+          className="Drop_Down_Button_Container"
           onMouseDown={handleMouseDown}
-          onClick={(): void => {
-            console.log('Hi2');
-            TogglecloseHandler();
-          }}
+          onClick={(): void => TogglecloseHandler()}
         >
-          주문조회
-        </button>
-        <button
+          <SubmitIcon />
+          <p className="Drop_Down_Text">주문조회</p>
+        </Link>
+
+        <Link
+          to="/questions"
+          className="Drop_Down_Button_Container"
           onMouseDown={handleMouseDown}
-          onClick={(): void => {
-            console.log('Hi2');
-            TogglecloseHandler();
-          }}
+          onClick={(): void => TogglecloseHandler()}
         >
-          문의하기
-        </button>
+          <ContactIcon />
+          <p className="Drop_Down_Text">문의하기</p>
+        </Link>
       </nav>
     </>
   );
