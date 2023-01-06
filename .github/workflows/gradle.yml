@@ -37,8 +37,8 @@ jobs:
 #      with:
 #        path: /root/actions-runner/_work/seb41_main_007/seb41_main_007/server
 #        arguments: build
-    - name:
-        run: /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/gradlew build
+    - name: build
+      run: /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/gradlew build
 
     - name: Execute Jar File
       run: sudo kill -9 `sudo lsof -t -i:8080` & sudo java -jar /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/build/libs/farm-0.0.1-SNAPSHOT.jar &
