@@ -1,10 +1,12 @@
 import { FC } from 'react';
 import Logo from './Logo';
-import Button from './Button';
+import LoginRequiredButton from './LoginRequiredButton';
+import LoggedInButton from './LoggedInButton';
 import Input from './Input';
 import './Styles/index.css';
 
 const Header: FC = () => {
+  let isUser = false;
   return (
     <header>
       <div className="Header_Container">
@@ -12,12 +14,8 @@ const Header: FC = () => {
           <div className="Header_Logo_Container">
             <Logo width={200} height={200} />
           </div>
-          <div className="Header_Input_Container">
-            <Input />
-          </div>
-          <div className="Header_Button_Container">
-            <Button />
-          </div>
+          <Input />
+          {isUser ? <LoginRequiredButton /> : <LoggedInButton />}
         </div>
       </div>
     </header>
