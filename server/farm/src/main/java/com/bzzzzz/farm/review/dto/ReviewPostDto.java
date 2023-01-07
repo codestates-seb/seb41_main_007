@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 public class ReviewPostDto {
     @Positive
     private Long memberId;
+    private Long productId;
     private String reviewTitle;
     private String reviewContent;
     private float score;

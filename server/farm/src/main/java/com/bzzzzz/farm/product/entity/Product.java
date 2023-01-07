@@ -2,6 +2,7 @@ package com.bzzzzz.farm.product.entity;
 
 import com.bzzzzz.farm.audit.Auditable;
 import com.bzzzzz.farm.member.entity.Member;
+import com.bzzzzz.farm.review.entity.Review;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -55,6 +56,9 @@ public class Product extends Auditable {
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<ProductOption> productOptions = new ArrayList<>();
+
+    @OneToMany(mappedBy="product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Review> reviews = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
