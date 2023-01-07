@@ -35,7 +35,7 @@ public class Product extends Auditable {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ShippingCountry shippingCountry;//TODO 이넘으로 만들어서 포스트 매퍼에 추가
+    private ShippingCountry shippingCountry;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
