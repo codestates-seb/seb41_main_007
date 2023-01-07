@@ -1,13 +1,16 @@
 package com.bzzzzz.farm.product.mapper;
 
-import com.bzzzzz.farm.product.dto.ProductDto;
+import com.bzzzzz.farm.product.dto.ProductPostDto;
+import com.bzzzzz.farm.product.dto.ProductResponseDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.entity.ProductOption;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface ProductMapper {
-    default Product productPostDtoToProduct(ProductDto.Post productPostDto) {
+    default Product productPostDtoToProduct(ProductPostDto productPostDto) {
         if (productPostDto == null) {
             return null;
         }
@@ -34,5 +37,7 @@ public interface ProductMapper {
 
         return product;
     }
+
+    List<ProductResponseDto> productsToProductResponseDtos(List<Product> products);
 
 }
