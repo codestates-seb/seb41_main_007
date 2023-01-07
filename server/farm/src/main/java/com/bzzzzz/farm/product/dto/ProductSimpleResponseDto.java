@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class ProductResponseDto {
+public class ProductSimpleResponseDto {
 
     private Long productId;
 

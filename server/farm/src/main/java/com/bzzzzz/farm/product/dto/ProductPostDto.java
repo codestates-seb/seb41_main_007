@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Getter
@@ -24,6 +25,15 @@ public class ProductPostDto {
 
     @NotBlank
     private String description;
+
+    @NotBlank
+    private String shippingCountry;
+
+    @NotBlank
+    private String shippingMethod;
+
+    @Positive
+    private int shippingPrice;
 
     private List<ProductOptionPostDto> productOptionPostDtos;
 }

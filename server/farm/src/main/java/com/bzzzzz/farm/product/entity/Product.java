@@ -34,6 +34,17 @@ public class Product extends Auditable {
     private String brand;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ShippingCountry shippingCountry;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ShippingMethod shippingMethod;
+
+    @Column(nullable = false)
+    private int shippingPrice;
+
+    @Column(nullable = false)
     private int viewCount;
 
     @Column(nullable = false)
@@ -49,11 +60,38 @@ public class Product extends Auditable {
     @JoinColumn(name = "MEMBER_ID")
     private Member member; // 관리자만 올 수 있음
 
-    // 연관 관계 매핑 관련 메서드
+    // 연관 관계 매핑 관련 메서드 및 이넘
     public void addProductOption(ProductOption productOption) {
         this.productOptions.add(productOption);
         if (productOption.getProduct() != this) {
             productOption.setProduct(this);
         }
     }
+
+    public enum ShippingCountry {
+        KOREA(1, "국내 배송"),
+        FOREIGN_COUNTRY(2, "해외 배송");
+        @Getter
+        private int code;
+        @Getter
+        private String shippingType;
+        ShippingCountry(int code, String shippingType) {
+            this.code = code;
+            this.shippingType = shippingType;
+        }
+    }
+
+    public enum ShippingMethod {
+        PARCEL_SERVICE(1, "택배"),
+        INSTALLATION_SERVICE(2, "설치서비스");
+        @Getter
+        private int code;
+        @Getter
+        private String shippingMethod;
+        ShippingMethod(int code, String shippingMethod) {
+            this.code = code;
+            this.shippingMethod = shippingMethod;
+        }
+    }
+
 }
