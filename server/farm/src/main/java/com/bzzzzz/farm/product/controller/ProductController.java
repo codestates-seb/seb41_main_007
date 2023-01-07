@@ -1,7 +1,7 @@
 package com.bzzzzz.farm.product.controller;
 
 import com.bzzzzz.farm.dto.MultiResponseDto;
-import com.bzzzzz.farm.product.dto.ProductDto;
+import com.bzzzzz.farm.product.dto.ProductPostDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.mapper.ProductMapper;
 import com.bzzzzz.farm.product.service.ProductService;
@@ -24,7 +24,7 @@ public class ProductController {
     private final ProductMapper productMapper;
 
     @PostMapping
-    public ResponseEntity postProduct(@Valid @RequestBody ProductDto.Post productPostDto) {
+    public ResponseEntity postProduct(@Valid @RequestBody ProductPostDto productPostDto) {
 
         //Todo: productPostDto.setMemberId(); // 로그인 들어오고 추가 해야함
 
@@ -34,12 +34,23 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity getProducts(@Positive @RequestParam(required = false, defaultValue = "1") int page) {
+    public ResponseEntity getProducts(@Positive @RequestParam(required = false, defaultValue = "1") int page,
+                                      @RequestParam(required = false, defaultValue = "productId") String sort,
+                                      @RequestParam(required = false, defaultValue = "descending") String order,
+                                      @RequestParam(required = false, defaultValue = "") String keyword) {
 
-        Page<Product> productPage = productService.findProducts(page - 1);
+        /** 허용 파라미터 외에는 defaultValue로 자동 설정됨
+         * sort = productId(최신순), name(상품명), price(가격), brand(제조사), likeCount(인기순)
+         * order = descending(내림차순), ascending(오름차순)
+         * keyword = 검색어 (제품명, 브랜드 안에서 검색)
+         * Todo category = 카테고리별 조회
+         * */
 
+        Page<Product> productPage = productService.findProducts(page - 1, sort, order, keyword);
 
-        return new ResponseEntity(new MultiResponseDto(productPage.getContent(), productPage), HttpStatus.OK);
+        return new ResponseEntity(
+                new MultiResponseDto(productMapper.productsToProductResponseDtos(productPage.getContent()), productPage),
+                HttpStatus.OK);
     }
 
 }

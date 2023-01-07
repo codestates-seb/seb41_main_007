@@ -21,10 +21,45 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> findProducts(int page) {
-        Pageable pageable = PageRequest.of(page, 40, Sort.by("productId").descending());
+    public Page<Product> findProducts(int page, String sort, String order, String keyword) {
+        // 허용 값 이외의 값은 모두 디폴트 값으로 만들어 Pageable 객체를 생성
+        Pageable pageable = createPageable(page, verifySort(sort), order);
 
+        // 키워드가 있을 경우
+        if (keyword.length() != 0) {
+            return productRepository.findAllByNameContainsOrBrandContains(keyword, keyword, pageable);
+        }
+
+        // 키워드가 없을 경우
         return productRepository.findAll(pageable);
+    }
+
+    /**
+     * 서브 메서드
+     */
+    private String verifySort(String sort) {
+        // 허용 파라미터 외의 값이 들어올 경우 모두 productId로 간주
+        switch (sort) {
+            case "name":
+                break;
+            case "price":
+                break;
+            case "brand":
+                break;
+            case "likeCount":
+                break;
+            default:
+                sort = "productId";
+        }
+
+        return sort;
+    }
+
+    private Pageable createPageable(int page, String sort, String order) {
+        if (order.equals("ascending")) {
+            return PageRequest.of(page, 40, Sort.by(sort).ascending());
+        }
+        return PageRequest.of(page, 40, Sort.by(sort).descending());
     }
 
 }
