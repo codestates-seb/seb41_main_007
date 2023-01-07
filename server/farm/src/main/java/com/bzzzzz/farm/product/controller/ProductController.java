@@ -33,6 +33,14 @@ public class ProductController {
         return new ResponseEntity(product.getProductId(), HttpStatus.CREATED);
     }
 
+    @GetMapping("/{product-id}")
+    public ResponseEntity getProduct(@Positive @PathVariable("product-id") long productId) {
+
+        Product product = productService.findProduct(productId);
+
+        return new ResponseEntity(productMapper.productToProductDetailResponseDto(product), HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity getProducts(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                       @RequestParam(required = false, defaultValue = "productId") String sort,
@@ -49,7 +57,7 @@ public class ProductController {
         Page<Product> productPage = productService.findProducts(page - 1, sort, order, keyword);
 
         return new ResponseEntity(
-                new MultiResponseDto(productMapper.productsToProductResponseDtos(productPage.getContent()), productPage),
+                new MultiResponseDto(productMapper.productsToProductSimpleResponseDtos(productPage.getContent()), productPage),
                 HttpStatus.OK);
     }
 

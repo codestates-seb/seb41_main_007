@@ -23,6 +23,11 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
+    public Product findProduct(long productId) {
+        return findVerifiedProduct(productId);
+    }
+
+    @Transactional(readOnly = true)
     public Page<Product> findProducts(int page, String sort, String order, String keyword) {
         // 허용 값 이외의 값은 모두 디폴트 값으로 만들어 Pageable 객체를 생성
         Pageable pageable = createPageable(page, verifySort(sort), order);
