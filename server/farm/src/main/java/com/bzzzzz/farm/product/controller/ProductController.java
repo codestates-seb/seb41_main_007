@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.product.controller;
 
 import com.bzzzzz.farm.dto.MultiResponseDto;
+import com.bzzzzz.farm.product.dto.ProductDeleteDto;
 import com.bzzzzz.farm.product.dto.ProductPostDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.mapper.ProductMapper;
@@ -25,8 +26,7 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity postProduct(@Valid @RequestBody ProductPostDto productPostDto) {
-
-        //Todo: productPostDto.setMemberId(); // 로그인 들어오고 추가 해야함
+        //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
 
         Product product = productService.createProduct(productMapper.productPostDtoToProduct(productPostDto));
 
@@ -51,6 +51,15 @@ public class ProductController {
         return new ResponseEntity(
                 new MultiResponseDto(productMapper.productsToProductResponseDtos(productPage.getContent()), productPage),
                 HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteProduct(@RequestBody ProductDeleteDto productDeleteDto) {
+        //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
+
+        productService.deleteProduct(productDeleteDto.getProductId());
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 }

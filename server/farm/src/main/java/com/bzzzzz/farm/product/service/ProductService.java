@@ -10,6 +10,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -34,9 +36,19 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    public void deleteProduct(long productId) {
+        productRepository.delete(findVerifiedProduct(productId));
+    }
+
     /**
      * 서브 메서드
      */
+    @Transactional(readOnly = true)
+    private Product findVerifiedProduct(long productId) {
+        Optional<Product> optionalProduct = productRepository.findById(productId);
+        return optionalProduct.orElseThrow(() -> new RuntimeException("PRODUCT_NOT_FOUND")); //FiXME 병수님 예외코드 들어오면 고칠 것
+    }
+
     private String verifySort(String sort) {
         // 허용 파라미터 외의 값이 들어올 경우 모두 productId로 간주
         switch (sort) {
