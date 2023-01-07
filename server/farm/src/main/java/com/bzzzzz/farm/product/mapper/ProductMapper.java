@@ -22,6 +22,9 @@ public interface ProductMapper {
         product.setDescription(productPostDto.getDescription());
         product.setPhoto(productPostDto.getPhoto());
         product.setBrand(productPostDto.getBrand());
+        product.setShippingCountry(Product.ShippingCountry.valueOf(productPostDto.getShippingCountry()));
+        product.setShippingMethod(Product.ShippingMethod.valueOf(productPostDto.getShippingMethod()));
+        product.setShippingPrice(productPostDto.getShippingPrice());
 
         productPostDto.getProductOptionPostDtos().stream()
                 .forEach(productOptionPostDto -> {
