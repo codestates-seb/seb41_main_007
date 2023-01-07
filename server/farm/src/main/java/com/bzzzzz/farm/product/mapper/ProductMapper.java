@@ -1,7 +1,7 @@
 package com.bzzzzz.farm.product.mapper;
 
 import com.bzzzzz.farm.product.dto.ProductPostDto;
-import com.bzzzzz.farm.product.dto.ProductResponseDto;
+import com.bzzzzz.farm.product.dto.ProductSimpleResponseDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.entity.ProductOption;
 import org.mapstruct.Mapper;
@@ -38,6 +38,6 @@ public interface ProductMapper {
         return product;
     }
 
-    List<ProductResponseDto> productsToProductResponseDtos(List<Product> products);
+    List<ProductSimpleResponseDto> productsToProductSimpleResponseDtos(List<Product> products);
 
 }
