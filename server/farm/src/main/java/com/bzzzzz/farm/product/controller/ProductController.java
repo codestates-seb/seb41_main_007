@@ -2,6 +2,7 @@ package com.bzzzzz.farm.product.controller;
 
 import com.bzzzzz.farm.dto.MultiResponseDto;
 import com.bzzzzz.farm.product.dto.ProductDeleteDto;
+import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.dto.ProductPostDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.mapper.ProductMapper;
@@ -61,8 +62,17 @@ public class ProductController {
                 HttpStatus.OK);
     }
 
+    @PatchMapping
+    public ResponseEntity patchProduct(@Valid @RequestBody ProductPatchDto productPatchDto) {
+        //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
+
+        Product updateProduct = productService.updateProduct(productMapper.productPatchDtoToProduct(productPatchDto));
+
+        return new ResponseEntity(productMapper.productToProductDetailResponseDto(updateProduct), HttpStatus.OK);
+    }
+
     @DeleteMapping
-    public ResponseEntity deleteProduct(@RequestBody ProductDeleteDto productDeleteDto) {
+    public ResponseEntity deleteProduct(@Valid @RequestBody ProductDeleteDto productDeleteDto) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
 
         productService.deleteProduct(productDeleteDto.getProductId());

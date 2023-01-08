@@ -1,5 +1,6 @@
 package com.bzzzzz.farm.product.service;
 
+import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,23 @@ public class ProductService {
 
         // 키워드가 없을 경우
         return productRepository.findAll(pageable);
+    }
+
+    public Product updateProduct(Product product) {
+
+        Product findProduct = findVerifiedProduct(product.getProductId());
+
+        Optional.ofNullable(product.getName()).ifPresent(data -> findProduct.setName(data));
+        Optional.ofNullable(product.getPrice()).ifPresent(data -> findProduct.setPrice(data));
+        Optional.ofNullable(product.getPhoto()).ifPresent(data -> findProduct.setPhoto(data));
+        Optional.ofNullable(product.getBrand()).ifPresent(data -> findProduct.setBrand(data));
+        Optional.ofNullable(product.getDescription()).ifPresent(data -> findProduct.setDescription(data));
+        Optional.ofNullable(product.getShippingCountry()).ifPresent(data -> findProduct.setShippingCountry(data));
+        Optional.ofNullable(product.getShippingMethod()).ifPresent(data -> findProduct.setShippingMethod(data));
+        Optional.ofNullable(product.getShippingPrice()).ifPresent(data -> findProduct.setShippingPrice(data));
+        Optional.ofNullable(product.getProductOptions()).ifPresent(data -> findProduct.setProductOptions(data));
+
+        return productRepository.save(findProduct);
     }
 
     public void deleteProduct(long productId) {
