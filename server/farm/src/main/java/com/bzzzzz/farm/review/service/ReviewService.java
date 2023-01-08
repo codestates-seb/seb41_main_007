@@ -32,7 +32,10 @@ public class ReviewService {
     @Transactional(readOnly = true)
     public Page<Review> getProductReviewsList(Long productId, int page, int size) {
         Pageable pageable = createPageable(page, size);
-        return reviewRepository.findAllByProductId(productId, pageable);
+        log.info("pageable : " + pageable);
+        log.info("pageable : " + pageable.getOffset());
+        return reviewRepository.findByProduct_ProductId(productId,pageable);
+        //return reviewRepository.findAllByProduct_ProductId(productId, pageable);
         //return reviewRepository.findAll(pageable);
     }
 

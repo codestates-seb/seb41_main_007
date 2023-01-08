@@ -67,9 +67,9 @@ public class ReviewController {
     public ResponseEntity getProductReviewsList(@Positive @RequestParam Long productId,
                                                 @RequestParam(defaultValue = "1") int page,
                                                 @RequestParam(defaultValue = "10") int size) {
-        Page<Review> reviewPage = reviewService.getProductReviewsList(productId, page -1, size);
 
-        //현재 특정상품의 리뷰가 아닌 상품과 관계없이 진짜 전체 리뷰를 가져오도록 되어있어서 고쳐야함
+        Page<Review> reviewPage = reviewService.getProductReviewsList(productId, page -1, size);
+        //log.info("reviewPage 타이틀 가져오기 : " + reviewPage.getContent().get(0).getReviewTitle());
 
         return new ResponseEntity(
                 new MultiResponseDto<>(reviewMapper.reviewToReviewsResponseDto(reviewPage.getContent()), reviewPage),
