@@ -18,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductOptionService productOptionService;
 
     public Product createProduct(Product product) {
         return productRepository.save(product);
@@ -42,19 +43,23 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
-    public Product updateProduct(Product product) {
+    public Product updateProduct(ProductPatchDto productPatchDto) {
 
-        Product findProduct = findVerifiedProduct(product.getProductId());
+        Product findProduct = findVerifiedProduct(productPatchDto.getProductId());
 
-        Optional.ofNullable(product.getName()).ifPresent(data -> findProduct.setName(data));
-        Optional.ofNullable(product.getPrice()).ifPresent(data -> findProduct.setPrice(data));
-        Optional.ofNullable(product.getPhoto()).ifPresent(data -> findProduct.setPhoto(data));
-        Optional.ofNullable(product.getBrand()).ifPresent(data -> findProduct.setBrand(data));
-        Optional.ofNullable(product.getDescription()).ifPresent(data -> findProduct.setDescription(data));
-        Optional.ofNullable(product.getShippingCountry()).ifPresent(data -> findProduct.setShippingCountry(data));
-        Optional.ofNullable(product.getShippingMethod()).ifPresent(data -> findProduct.setShippingMethod(data));
-        Optional.ofNullable(product.getShippingPrice()).ifPresent(data -> findProduct.setShippingPrice(data));
-        Optional.ofNullable(product.getProductOptions()).ifPresent(data -> findProduct.setProductOptions(data));
+        Optional.ofNullable(productPatchDto.getName()).ifPresent(data -> findProduct.setName(data));
+        Optional.ofNullable(productPatchDto.getPrice()).ifPresent(data -> findProduct.setPrice(data));
+        Optional.ofNullable(productPatchDto.getPhoto()).ifPresent(data -> findProduct.setPhoto(data));
+        Optional.ofNullable(productPatchDto.getBrand()).ifPresent(data -> findProduct.setBrand(data));
+        Optional.ofNullable(productPatchDto.getDescription()).ifPresent(data -> findProduct.setDescription(data));
+        Optional.ofNullable(productPatchDto.getShippingCountry()).ifPresent(data -> findProduct.setShippingCountry(Product.ShippingCountry.valueOf(data)));
+        Optional.ofNullable(productPatchDto.getShippingMethod()).ifPresent(data -> findProduct.setShippingMethod(Product.ShippingMethod.valueOf(data)));
+        Optional.ofNullable(productPatchDto.getShippingPrice()).ifPresent(data -> findProduct.setShippingPrice(data));
+
+        // 옵션부분은 따로 빼서 전달
+        Optional.ofNullable(productPatchDto.getProductOptionPatchDtos())
+                .ifPresent(datas -> datas.stream()
+                        .forEach(productOptionPatchDto -> productOptionService.updateProductOption(productOptionPatchDto)));
 
         return productRepository.save(findProduct);
     }

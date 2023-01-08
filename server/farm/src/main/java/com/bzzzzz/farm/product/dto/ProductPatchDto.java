@@ -29,5 +29,5 @@ public class ProductPatchDto {
 
     private Integer shippingPrice;
 
-    private List<ProductPatchDto> productOptionPatchDtos;
+    private List<ProductOptionPatchDto> productOptionPatchDtos;
 }

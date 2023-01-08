@@ -66,7 +66,7 @@ public class ProductController {
     public ResponseEntity patchProduct(@Valid @RequestBody ProductPatchDto productPatchDto) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
 
-        Product updateProduct = productService.updateProduct(productMapper.productPatchDtoToProduct(productPatchDto));
+        Product updateProduct = productService.updateProduct(productPatchDto);
 
         return new ResponseEntity(productMapper.productToProductDetailResponseDto(updateProduct), HttpStatus.OK);
     }

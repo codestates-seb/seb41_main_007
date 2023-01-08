@@ -41,8 +41,6 @@ public interface ProductMapper {
         return product;
     }
 
-    Product productPatchDtoToProduct(ProductPatchDto productPatchDto);
-
     List<ProductSimpleResponseDto> productsToProductSimpleResponseDtos(List<Product> products);
 
     default ProductDetailResponseDto productToProductDetailResponseDto(Product product) {
