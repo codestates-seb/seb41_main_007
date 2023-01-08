@@ -56,7 +56,7 @@ public class ProductController {
          * Todo category = 카테고리별 조회
          * */
 
-        Page<Product> productPage = productService.findProducts(page - 1, sort, order, keyword);
+        Page<Product> productPage = productService.findProducts(page - 1, 40, sort, order, keyword);
 
         return new ResponseEntity(
                 new MultiResponseDto(productMapper.productsToProductSimpleResponseDtos(productPage.getContent()), productPage),

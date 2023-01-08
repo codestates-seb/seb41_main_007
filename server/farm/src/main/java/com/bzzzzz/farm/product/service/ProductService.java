@@ -31,9 +31,9 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> findProducts(int page, String sort, String order, String keyword) {
+    public Page<Product> findProducts(int page, int size, String sort, String order, String keyword) {
         // 허용 값 이외의 값은 모두 디폴트 값으로 만들어 Pageable 객체를 생성
-        Pageable pageable = createPageable(page, verifySort(sort), order);
+        Pageable pageable = createPageable(page, size, verifySort(sort), order);
 
         // 키워드가 있을 경우
         if (keyword.length() != 0) {
@@ -87,6 +87,8 @@ public class ProductService {
                 break;
             case "likeCount":
                 break;
+            case "soldCount":
+                break;
             default:
                 sort = "productId";
         }
@@ -94,11 +96,11 @@ public class ProductService {
         return sort;
     }
 
-    private Pageable createPageable(int page, String sort, String order) {
+    private Pageable createPageable(int page, int size, String sort, String order) {
         if (order.equals("ascending")) {
-            return PageRequest.of(page, 40, Sort.by(sort).ascending());
+            return PageRequest.of(page, size, Sort.by(sort).ascending());
         }
-        return PageRequest.of(page, 40, Sort.by(sort).descending());
+        return PageRequest.of(page, size, Sort.by(sort).descending());
     }
 
 }
