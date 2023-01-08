@@ -1,6 +1,5 @@
 package com.bzzzzz.farm.product.dto;
 
-import com.bzzzzz.farm.product.entity.Product;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,5 +17,8 @@ public class ProductDetailResponseDto {
     private int shippingPrice;
     private String description;
     private String brand;
+    private Integer viewCount;
+    private Integer likeCount;
+    private Integer soldCount;
     private List<ProductOptionResponseDto> productOptionResponseDtos;
 }
