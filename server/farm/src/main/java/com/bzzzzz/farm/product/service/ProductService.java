@@ -43,7 +43,7 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
-    public Product updateProduct(ProductPatchDto productPatchDto) {
+    public void updateProduct(ProductPatchDto productPatchDto) {
 
         Product findProduct = findVerifiedProduct(productPatchDto.getProductId());
 
@@ -60,8 +60,6 @@ public class ProductService {
         Optional.ofNullable(productPatchDto.getProductOptionPatchDtos())
                 .ifPresent(datas -> datas.stream()
                         .forEach(productOptionPatchDto -> productOptionService.updateProductOption(productOptionPatchDto)));
-
-        return productRepository.save(findProduct);
     }
 
     public void deleteProduct(long productId) {

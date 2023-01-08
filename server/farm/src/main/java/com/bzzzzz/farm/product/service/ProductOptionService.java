@@ -15,15 +15,13 @@ import java.util.Optional;
 public class ProductOptionService {
     private final ProductOptionRepository productOptionRepository;
 
-    public ProductOption updateProductOption(ProductOptionPatchDto productOptionPatchDto) {
+    public void updateProductOption(ProductOptionPatchDto productOptionPatchDto) {
 
         ProductOption findProductOption = findVerifiedProductOption(productOptionPatchDto.getProductOptionId());
 
         Optional.ofNullable(productOptionPatchDto.getProductOptionName()).ifPresent(data -> findProductOption.setProductOptionName(data));
         Optional.ofNullable(productOptionPatchDto.getPrice()).ifPresent(data -> findProductOption.setPrice(data));
         Optional.ofNullable(productOptionPatchDto.getStock()).ifPresent(data -> findProductOption.setStock(data));
-
-        return productOptionRepository.save(findProductOption);
     }
 
     @Transactional(readOnly = true)
