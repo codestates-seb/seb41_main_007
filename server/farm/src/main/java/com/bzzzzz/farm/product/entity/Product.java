@@ -23,7 +23,7 @@ public class Product extends Auditable {
     private String name;
 
     @Column(nullable = false)
-    private int price;
+    private Integer price;
 
     @Column(nullable = false)
     private String description; // 상품 메인 글
@@ -43,16 +43,16 @@ public class Product extends Auditable {
     private ShippingMethod shippingMethod;
 
     @Column(nullable = false)
-    private int shippingPrice;
+    private Integer shippingPrice;
 
     @Column(nullable = false)
-    private int viewCount;
+    private Integer viewCount = 0;
 
     @Column(nullable = false)
-    private int likeCount;
+    private Integer likeCount = 0;
 
     @Column(nullable = false)
-    private int soldCount;
+    private Integer soldCount = 0;
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<ProductOption> productOptions = new ArrayList<>();
@@ -76,10 +76,11 @@ public class Product extends Auditable {
         KOREA(1, "국내 배송"),
         FOREIGN_COUNTRY(2, "해외 배송");
         @Getter
-        private int code;
+        private Integer code;
         @Getter
         private String shippingType;
-        ShippingCountry(int code, String shippingType) {
+
+        ShippingCountry(Integer code, String shippingType) {
             this.code = code;
             this.shippingType = shippingType;
         }
@@ -89,13 +90,17 @@ public class Product extends Auditable {
         PARCEL_SERVICE(1, "택배"),
         INSTALLATION_SERVICE(2, "설치서비스");
         @Getter
-        private int code;
+        private Integer code;
         @Getter
         private String shippingMethod;
-        ShippingMethod(int code, String shippingMethod) {
+
+        ShippingMethod(Integer code, String shippingMethod) {
             this.code = code;
             this.shippingMethod = shippingMethod;
         }
     }
 
+    public void addViewCount() {
+        this.viewCount += 1;
+    }
 }

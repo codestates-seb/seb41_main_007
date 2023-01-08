@@ -1,7 +1,9 @@
 package com.bzzzzz.farm.product.controller;
 
+import com.bzzzzz.farm.dto.IdResponseDto;
 import com.bzzzzz.farm.dto.MultiResponseDto;
 import com.bzzzzz.farm.product.dto.ProductDeleteDto;
+import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.dto.ProductPostDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.mapper.ProductMapper;
@@ -30,7 +32,7 @@ public class ProductController {
 
         Product product = productService.createProduct(productMapper.productPostDtoToProduct(productPostDto));
 
-        return new ResponseEntity(product.getProductId(), HttpStatus.CREATED);
+        return new ResponseEntity(new IdResponseDto(product.getProductId()), HttpStatus.CREATED);
     }
 
     @GetMapping("/{product-id}")
@@ -54,15 +56,24 @@ public class ProductController {
          * Todo category = 카테고리별 조회
          * */
 
-        Page<Product> productPage = productService.findProducts(page - 1, sort, order, keyword);
+        Page<Product> productPage = productService.findProducts(page - 1, 40, sort, order, keyword);
 
         return new ResponseEntity(
                 new MultiResponseDto(productMapper.productsToProductSimpleResponseDtos(productPage.getContent()), productPage),
                 HttpStatus.OK);
     }
 
+    @PatchMapping
+    public ResponseEntity patchProduct(@Valid @RequestBody ProductPatchDto productPatchDto) {
+        //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
+
+        productService.updateProduct(productPatchDto);
+
+        return new ResponseEntity(new IdResponseDto(productPatchDto.getProductId()), HttpStatus.OK);
+    }
+
     @DeleteMapping
-    public ResponseEntity deleteProduct(@RequestBody ProductDeleteDto productDeleteDto) {
+    public ResponseEntity deleteProduct(@Valid @RequestBody ProductDeleteDto productDeleteDto) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
 
         productService.deleteProduct(productDeleteDto.getProductId());

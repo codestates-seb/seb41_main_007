@@ -1,5 +1,6 @@
 package com.bzzzzz.farm.product.service;
 
+import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,20 +18,22 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductOptionService productOptionService;
 
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }
 
-    @Transactional(readOnly = true)
     public Product findProduct(long productId) {
-        return findVerifiedProduct(productId);
+        Product findProduct = findVerifiedProduct(productId);
+        findProduct.addViewCount();
+        return findProduct;
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> findProducts(int page, String sort, String order, String keyword) {
+    public Page<Product> findProducts(int page, int size, String sort, String order, String keyword) {
         // 허용 값 이외의 값은 모두 디폴트 값으로 만들어 Pageable 객체를 생성
-        Pageable pageable = createPageable(page, verifySort(sort), order);
+        Pageable pageable = createPageable(page, size, verifySort(sort), order);
 
         // 키워드가 있을 경우
         if (keyword.length() != 0) {
@@ -39,6 +42,25 @@ public class ProductService {
 
         // 키워드가 없을 경우
         return productRepository.findAll(pageable);
+    }
+
+    public void updateProduct(ProductPatchDto productPatchDto) {
+
+        Product findProduct = findVerifiedProduct(productPatchDto.getProductId());
+
+        Optional.ofNullable(productPatchDto.getName()).ifPresent(data -> findProduct.setName(data));
+        Optional.ofNullable(productPatchDto.getPrice()).ifPresent(data -> findProduct.setPrice(data));
+        Optional.ofNullable(productPatchDto.getPhoto()).ifPresent(data -> findProduct.setPhoto(data));
+        Optional.ofNullable(productPatchDto.getBrand()).ifPresent(data -> findProduct.setBrand(data));
+        Optional.ofNullable(productPatchDto.getDescription()).ifPresent(data -> findProduct.setDescription(data));
+        Optional.ofNullable(productPatchDto.getShippingCountry()).ifPresent(data -> findProduct.setShippingCountry(Product.ShippingCountry.valueOf(data)));
+        Optional.ofNullable(productPatchDto.getShippingMethod()).ifPresent(data -> findProduct.setShippingMethod(Product.ShippingMethod.valueOf(data)));
+        Optional.ofNullable(productPatchDto.getShippingPrice()).ifPresent(data -> findProduct.setShippingPrice(data));
+
+        // 옵션부분은 따로 빼서 전달
+        Optional.ofNullable(productPatchDto.getProductOptionPatchDtos())
+                .ifPresent(datas -> datas.stream()
+                        .forEach(productOptionPatchDto -> productOptionService.updateProductOption(productOptionPatchDto)));
     }
 
     public void deleteProduct(long productId) {
@@ -65,6 +87,8 @@ public class ProductService {
                 break;
             case "likeCount":
                 break;
+            case "soldCount":
+                break;
             default:
                 sort = "productId";
         }
@@ -72,11 +96,11 @@ public class ProductService {
         return sort;
     }
 
-    private Pageable createPageable(int page, String sort, String order) {
+    private Pageable createPageable(int page, int size, String sort, String order) {
         if (order.equals("ascending")) {
-            return PageRequest.of(page, 40, Sort.by(sort).ascending());
+            return PageRequest.of(page, size, Sort.by(sort).ascending());
         }
-        return PageRequest.of(page, 40, Sort.by(sort).descending());
+        return PageRequest.of(page, size, Sort.by(sort).descending());
     }
 
 }

@@ -16,9 +16,9 @@ public class ProductOption extends Auditable {
     @Column(nullable = false)
     private String productOptionName;
 
-    private int price;
+    private Integer price;
 
-    private int stock;
+    private Integer stock;
 
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")
