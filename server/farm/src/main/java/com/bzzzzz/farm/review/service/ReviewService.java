@@ -39,6 +39,12 @@ public class ReviewService {
         //return reviewRepository.findAll(pageable);
     }
 
+    @Transactional(readOnly = true)
+    public Review getProductReview(Long reviewId) {
+        return reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 없습니다."));
+    }
+
+
     private Pageable createPageable(int page, int size) {
         return PageRequest.of(page, size);
     }

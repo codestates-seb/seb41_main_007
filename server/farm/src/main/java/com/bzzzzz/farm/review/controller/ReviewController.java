@@ -10,16 +10,16 @@ import com.bzzzzz.farm.review.dto.ReviewResponseDto;
 import com.bzzzzz.farm.review.entity.Review;
 import com.bzzzzz.farm.review.mapper.ReviewMapper;
 import com.bzzzzz.farm.review.service.ReviewService;
-import javax.transaction.Transactional;
-import javax.validation.Valid;
-import javax.validation.constraints.Positive;
-
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.transaction.Transactional;
+import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 
 @Log4j2
@@ -65,10 +65,11 @@ public class ReviewController {
     //특정 상품의 리뷰 전부 불러오기
     @GetMapping({""})
     public ResponseEntity getProductReviewsList(@Positive @RequestParam Long productId,
-                                                @RequestParam(defaultValue = "1") int page,
-                                                @RequestParam(defaultValue = "10") int size) {
+                                                @RequestParam(required = false, defaultValue = "1") int page,
+                                                @RequestParam(required = false, defaultValue = "10") int size,
+                                                @RequestParam(required = false) Long reviewId) {
 
-        Page<Review> reviewPage = reviewService.getProductReviewsList(productId, page -1, size);
+        Page<Review> reviewPage = reviewService.getProductReviewsList(productId, page - 1, size);
         //log.info("reviewPage 타이틀 가져오기 : " + reviewPage.getContent().get(0).getReviewTitle());
 
         return new ResponseEntity(
@@ -76,6 +77,13 @@ public class ReviewController {
                 HttpStatus.OK);
     }
 
+    //특정상품의 특정 리뷰 하나 가져오기
+    @GetMapping({"/{reviewId}"})
+    public ResponseEntity getProductReview(@PathVariable Long reviewId) {
+        Review review = reviewService.getProductReview(reviewId);
+        ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(review);
+        return new ResponseEntity(reviewResponseDto, HttpStatus.OK);
+    }
 
 
 }
