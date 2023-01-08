@@ -24,9 +24,10 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    @Transactional(readOnly = true)
     public Product findProduct(long productId) {
-        return findVerifiedProduct(productId);
+        Product findProduct = findVerifiedProduct(productId);
+        findProduct.addViewCount();
+        return findProduct;
     }
 
     @Transactional(readOnly = true)

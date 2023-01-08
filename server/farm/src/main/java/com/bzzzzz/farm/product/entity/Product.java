@@ -96,4 +96,7 @@ public class Product extends Auditable {
         }
     }
 
+    public void addViewCount() {
+        this.viewCount += 1;
+    }
 }
