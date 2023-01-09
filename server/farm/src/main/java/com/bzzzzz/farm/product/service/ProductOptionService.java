@@ -26,6 +26,9 @@ public class ProductOptionService {
         Optional.ofNullable(productOptionPatchDto.getStock()).ifPresent(data -> findProductOption.setStock(data));
     }
 
+    /**
+     * 서브 메서드
+     */
     @Transactional(readOnly = true)
     private ProductOption findVerifiedProductOption(long productOptionId) {
         Optional<ProductOption> optionalProductOption = productOptionRepository.findById(productOptionId);

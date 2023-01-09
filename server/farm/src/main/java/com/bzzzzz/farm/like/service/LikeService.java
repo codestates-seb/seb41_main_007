@@ -56,7 +56,9 @@ public class LikeService {
         likeRepository.delete(findLike);
     }
 
-    // 서브 메서드
+    /**
+     * 서브 메서드
+     */
     @Transactional(readOnly = true)
     private void verifyExistsLike(Member member, Product product) { // Like 생성시 사용
         Optional<Like> optionalLike = likeRepository.findByMemberAndProduct(member, product);
