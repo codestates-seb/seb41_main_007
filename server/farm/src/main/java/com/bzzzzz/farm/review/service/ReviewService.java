@@ -67,6 +67,12 @@ public class ReviewService {
 
     }
 
+    //특정 리뷰 삭제
+    public void deleteReview(Long reviewId){
+        Review findReview = findVerifiedReview(reviewId);
+        reviewRepository.delete(findReview);
+    }
+
     private Review findVerifiedReview(Long reviewId){
         Optional<Review> optionalReview = reviewRepository.findReviewByReviewId(reviewId);
         log.info("verifiedReview :"+ optionalReview.get().getReviewTitle());

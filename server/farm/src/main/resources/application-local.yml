@@ -7,7 +7,7 @@ spring:
     url: jdbc:h2:mem:test
   jpa:
     hibernate:
-      ddl-auto: update  # 시작 시 데이터베이스
+      ddl-auto: create  # 시작 시 데이터베이스 초기화
     show-sql: true      # 쿼리문 보여줌
     properties:
       hibernate:

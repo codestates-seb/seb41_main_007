@@ -6,6 +6,7 @@ import com.bzzzzz.farm.member.entity.Member;
 import com.bzzzzz.farm.member.service.MemberService;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.repository.ProductRepository;
+import com.bzzzzz.farm.review.dto.ReviewDeleteDto;
 import com.bzzzzz.farm.review.dto.ReviewPatchDto;
 import com.bzzzzz.farm.review.dto.ReviewPostDto;
 import com.bzzzzz.farm.review.dto.ReviewResponseDto;
@@ -90,7 +91,6 @@ public class ReviewController {
     //리뷰 수정하기
     @PatchMapping
     public ResponseEntity patchReview(@RequestBody @Valid ReviewPatchDto reviewPatchDto) {
-        log.info("reviewPatchDto : "+reviewPatchDto.getReviewTitle());
 
         Review review = reviewMapper.reviewPatchDtoToReview(reviewPatchDto);
         Member member = memberService.getLoginMember();
@@ -100,6 +100,22 @@ public class ReviewController {
         ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(updatedReview);
 
         return new ResponseEntity(reviewResponseDto,HttpStatus.OK);
+    }
+
+    //리뷰 삭제하기
+
+    @DeleteMapping
+    public ResponseEntity deleteReview(@RequestBody @Valid ReviewDeleteDto reviewDeleteDto){
+
+        /*
+        Member member = memberService.getLoginMember();
+
+        if(member.getRoles().equals())
+         */
+        reviewService.deleteReview(reviewDeleteDto.getReviewId());
+
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
 }
