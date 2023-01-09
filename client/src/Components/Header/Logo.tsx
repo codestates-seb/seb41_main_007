@@ -1,4 +1,6 @@
 import { FC } from 'react';
+import styles from './Styles/Header.module.css';
+
 type Props = {
   width?: number;
   height?: number;
@@ -7,7 +9,7 @@ type Props = {
 const Logo: FC<Props> = ({ width = 100, height = 100 }) => {
   return (
     <svg
-      className="Logo"
+      className={styles.Logo}
       width={width}
       height={height}
       viewBox="0 0 515 418"

@@ -1,19 +1,19 @@
 import { FC } from 'react';
-
 import useInput from 'CustomHook/useInput';
+import styles from './Styles/Header.module.css';
 
 const Input: FC = () => {
   const [userFormInput, onChangeForm] = useInput('');
   return (
     <div>
       <form
-        className="Header_Input_Container"
+        className={styles.Header_Input_Container}
         action={'/production/search'}
         role="search"
         method="GET"
       >
         <input
-          className="Header_Search_Input"
+          className={styles.Header_Search_Input}
           placeholder="상품검색"
           value={userFormInput}
           onChange={onChangeForm}
@@ -21,7 +21,7 @@ const Input: FC = () => {
         <input type="hidden" name="q" value={userFormInput} />
         <button>
           <svg
-            className="Header_Input_SearchIcon"
+            className={styles.Header_Input_SearchIcon}
             xmlns="http://www.w3.org/2000/svg"
             height="24"
             width="24"
