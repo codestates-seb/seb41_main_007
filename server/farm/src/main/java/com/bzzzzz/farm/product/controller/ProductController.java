@@ -2,6 +2,7 @@ package com.bzzzzz.farm.product.controller;
 
 import com.bzzzzz.farm.dto.IdResponseDto;
 import com.bzzzzz.farm.dto.MultiResponseDto;
+import com.bzzzzz.farm.like.service.LikeService;
 import com.bzzzzz.farm.product.dto.ProductDeleteDto;
 import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.dto.ProductPostDto;
@@ -24,6 +25,7 @@ import javax.validation.constraints.Positive;
 @RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
+    private final LikeService likeService;
     private final ProductMapper productMapper;
 
     @PostMapping
@@ -40,7 +42,11 @@ public class ProductController {
 
         Product product = productService.findProduct(productId);
 
-        return new ResponseEntity(productMapper.productToProductDetailResponseDto(product), HttpStatus.OK);
+        Boolean isLiked = null;
+        //Todo: 로그인 유무에 따라 내가 좋아요를 눌렀는가를 표시해주는 메서드 추가 예정
+        // isLiked = likeService.isLiked(member, product);
+
+        return new ResponseEntity(productMapper.productToProductDetailResponseDto(product, isLiked), HttpStatus.OK);
     }
 
     @GetMapping

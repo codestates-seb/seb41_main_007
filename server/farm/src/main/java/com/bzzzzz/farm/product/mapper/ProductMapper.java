@@ -46,7 +46,7 @@ public interface ProductMapper {
 
     List<ProductSimpleResponseDto> productsToProductSimpleResponseDtos(List<Product> products);
 
-    default ProductDetailResponseDto productToProductDetailResponseDto(Product product) {
+    default ProductDetailResponseDto productToProductDetailResponseDto(Product product, Boolean isLiked) {
         if (product == null) {
             return null;
         }
@@ -64,6 +64,7 @@ public interface ProductMapper {
                 .viewCount(product.getViewCount())
                 .likeCount(product.getLikeCount())
                 .soldCount(product.getSoldCount())
+                .isLiked(isLiked)
                 .productOptionResponseDtos(product.getProductOptions().stream()
                         .map(productOption -> productOptionToProductOptionResponseDto(productOption))
                         .collect(Collectors.toList()))

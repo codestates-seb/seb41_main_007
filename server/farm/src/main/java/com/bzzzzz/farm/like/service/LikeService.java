@@ -54,6 +54,7 @@ public class LikeService {
         likeRepository.delete(findLike);
     }
 
+    // 서브 메서드
     @Transactional(readOnly = true)
     private void verifyExistsLike(Member member, Product product) { // Like 생성시 사용
         Optional<Like> optionalLike = likeRepository.findByMemberAndProduct(member, product);
@@ -66,5 +67,14 @@ public class LikeService {
     private Like findVerifiedLike(Member member, Product product) { // Like 삭제시 사용
         Optional<Like> optionalLike = likeRepository.findByMemberAndProduct(member, product);
         return optionalLike.orElseThrow(() -> new RuntimeException("LIKE_NOT_FOUND")); //FiXME 병수님 예외코드 들어오면 고칠 것
+    }
+
+    @Transactional(readOnly = true)
+    public Boolean isLiked(Member member, Product product) {
+        Optional<Like> optionalLike = likeRepository.findByMemberAndProduct(member, product);
+        if (optionalLike.isPresent()) {
+            return true;
+        }
+        return false;
     }
 }
