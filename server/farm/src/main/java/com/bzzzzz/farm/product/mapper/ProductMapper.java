@@ -1,10 +1,12 @@
 package com.bzzzzz.farm.product.mapper;
 
+import com.bzzzzz.farm.category.entity.Category;
 import com.bzzzzz.farm.product.dto.ProductDetailResponseDto;
 import com.bzzzzz.farm.product.dto.ProductOptionResponseDto;
 import com.bzzzzz.farm.product.dto.ProductPostDto;
 import com.bzzzzz.farm.product.dto.ProductSimpleResponseDto;
 import com.bzzzzz.farm.product.entity.Product;
+import com.bzzzzz.farm.product.entity.ProductCategory;
 import com.bzzzzz.farm.product.entity.ProductOption;
 import org.mapstruct.Mapper;
 
@@ -29,6 +31,17 @@ public interface ProductMapper {
         product.setShippingMethod(Product.ShippingMethod.valueOf(productPostDto.getShippingMethod()));
         product.setShippingPrice(productPostDto.getShippingPrice());
 
+        // ProductCategory 추가
+        productPostDto.getProductCategoryPostDtos().stream()
+                .forEach(productCategoryPostDto -> {
+                    ProductCategory productCategory = new ProductCategory();
+                    Category category = new Category();
+                    category.setCategoryId(productCategoryPostDto.getCategoryId());
+                    productCategory.setCategory(category);
+                    product.addProductCategory(productCategory);
+                });
+
+        // 옵션값들 추가
         productPostDto.getProductOptionPostDtos().stream()
                 .forEach(productOptionPostDto -> {
                     ProductOption productOption = new ProductOption();

@@ -57,7 +57,10 @@ public class Product extends Auditable {
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<ProductOption> productOptions = new ArrayList<>();
 
-    @OneToMany(mappedBy="product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<ProductCategory> productCategories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Review> reviews = new ArrayList<>();
 
     @ManyToOne
@@ -69,6 +72,13 @@ public class Product extends Auditable {
         this.productOptions.add(productOption);
         if (productOption.getProduct() != this) {
             productOption.setProduct(this);
+        }
+    }
+
+    public void addProductCategory(ProductCategory productCategory) {
+        this.productCategories.add(productCategory);
+        if (productCategory.getProduct() != this) {
+            productCategory.setProduct(this);
         }
     }
 
