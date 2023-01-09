@@ -45,6 +45,6 @@ public class CategoryController {
 
         Page<Category> categoryPage = categoryService.findCategories(page - 1, size);
 
-        return new ResponseEntity(new MultiResponseDto(categoryPage.getContent(), categoryPage), HttpStatus.OK);
+        return new ResponseEntity(new MultiResponseDto(categoryMapper.categoriesToCategoryResponseDtos(categoryPage.getContent()), categoryPage), HttpStatus.OK);
     }
 }
