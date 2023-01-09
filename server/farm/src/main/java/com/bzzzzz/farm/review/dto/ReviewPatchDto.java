@@ -11,8 +11,9 @@ import javax.validation.constraints.Positive;
 @Setter
 @NoArgsConstructor
 @Validated
-public class ReviewPostDto {
+public class ReviewPatchDto {
     @Positive
+    private Long reviewId;
     private Long memberId;
     private Long productId;
     private String reviewTitle;

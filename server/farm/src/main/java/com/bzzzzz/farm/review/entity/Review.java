@@ -50,4 +50,11 @@ public class Review extends Auditable {
         this.reviewContent = reviewContent;
         this.rating = rating;
     }
+
+    public Review(Long reviewId, String reviewTitle, String reviewContent, float rating) {
+        this.reviewId = reviewId;
+        this.reviewTitle = reviewTitle;
+        this.reviewContent = reviewContent;
+        this.rating = rating;
+    }
 }

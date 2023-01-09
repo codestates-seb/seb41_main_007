@@ -1,10 +1,12 @@
 package com.bzzzzz.farm.review.controller;
 
+import com.bzzzzz.farm.dto.IdResponseDto;
 import com.bzzzzz.farm.dto.MultiResponseDto;
 import com.bzzzzz.farm.member.entity.Member;
 import com.bzzzzz.farm.member.service.MemberService;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.repository.ProductRepository;
+import com.bzzzzz.farm.review.dto.ReviewPatchDto;
 import com.bzzzzz.farm.review.dto.ReviewPostDto;
 import com.bzzzzz.farm.review.dto.ReviewResponseDto;
 import com.bzzzzz.farm.review.entity.Review;
@@ -66,8 +68,7 @@ public class ReviewController {
     @GetMapping({""})
     public ResponseEntity getProductReviewsList(@Positive @RequestParam Long productId,
                                                 @RequestParam(required = false, defaultValue = "1") int page,
-                                                @RequestParam(required = false, defaultValue = "10") int size,
-                                                @RequestParam(required = false) Long reviewId) {
+                                                @RequestParam(required = false, defaultValue = "10") int size) {
 
         Page<Review> reviewPage = reviewService.getProductReviewsList(productId, page - 1, size);
         //log.info("reviewPage 타이틀 가져오기 : " + reviewPage.getContent().get(0).getReviewTitle());
@@ -85,5 +86,20 @@ public class ReviewController {
         return new ResponseEntity(reviewResponseDto, HttpStatus.OK);
     }
 
+
+    //리뷰 수정하기
+    @PatchMapping
+    public ResponseEntity patchReview(@RequestBody @Valid ReviewPatchDto reviewPatchDto) {
+        log.info("reviewPatchDto : "+reviewPatchDto.getReviewTitle());
+
+        Review review = reviewMapper.reviewPatchDtoToReview(reviewPatchDto);
+        Member member = memberService.getLoginMember();
+
+        Review updatedReview = reviewService.updateReview(review, member);
+
+        ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(updatedReview);
+
+        return new ResponseEntity(reviewResponseDto,HttpStatus.OK);
+    }
 
 }
