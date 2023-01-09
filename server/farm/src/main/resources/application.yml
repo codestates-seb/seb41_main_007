@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: bbamsoo
+    active: local
     include: secret
 
 logging:
