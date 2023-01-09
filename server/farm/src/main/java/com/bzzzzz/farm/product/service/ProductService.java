@@ -71,7 +71,7 @@ public class ProductService {
      * 서브 메서드
      */
     @Transactional(readOnly = true)
-    private Product findVerifiedProduct(long productId) {
+    public Product findVerifiedProduct(long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         return optionalProduct.orElseThrow(() -> new RuntimeException("PRODUCT_NOT_FOUND")); //FiXME 병수님 예외코드 들어오면 고칠 것
     }

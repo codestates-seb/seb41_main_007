@@ -99,4 +99,8 @@ public class Product extends Auditable {
     public void addViewCount() {
         this.viewCount += 1;
     }
+
+    public void calculateLikeCount(int likeCount) {
+        this.likeCount += likeCount;
+    }
 }
