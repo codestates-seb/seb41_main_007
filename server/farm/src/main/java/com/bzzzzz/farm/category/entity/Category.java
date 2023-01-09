@@ -2,6 +2,7 @@ package com.bzzzzz.farm.category.entity;
 
 import com.bzzzzz.farm.audit.Auditable;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Category extends Auditable {
 
     @Id
@@ -20,4 +22,8 @@ public class Category extends Auditable {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+    public Category(Long categoryId) {
+        this.categoryId = categoryId;
+    }
 }

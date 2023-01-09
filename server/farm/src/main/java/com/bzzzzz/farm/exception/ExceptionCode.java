@@ -12,6 +12,7 @@ public enum ExceptionCode {
 
     PRODUCT_NOT_FOUND(404, "Product not found"),
     PRODUCT_OPTION_NOT_FOUND(404, "ProductOption not found"),
+    PRODUCT_CATEGORY_NOT_FOUND(404, "ProductCategory not found"),
 
     LIKE_EXISTS(409, "Like exists"),
     LIKE_NOT_FOUND(404, "Like not found"),
