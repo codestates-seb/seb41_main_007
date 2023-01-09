@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import './Styles/DropDown.css';
 import PersonIcon from './Icon/PersonIcon';
 import { Link } from 'react-router-dom';
 import SubmitIcon from './Icon/SubmitIcon';
 import ContactIcon from './Icon/ContactIcon';
+
+import styles from './Styles/DropDown.module.css';
 
 type DropDownProps = {
   showDropDown: boolean;
@@ -23,38 +24,38 @@ const DropDown: React.FC<DropDownProps> = ({
     toggleDropDown();
   };
 
-  const handleMouseDown = (e: any) => e.preventDefault();
+  const handleMouseDown = (e: React.MouseEvent) => e.preventDefault();
 
   return (
     <>
-      <nav className={'dropdown'}>
+      <nav className={styles.dropdown}>
         <Link
           to="/mypage/edit"
-          className="Drop_Down_Button_Container"
+          className={styles.Drop_Down_Button_Container}
           onMouseDown={handleMouseDown}
           onClick={(): void => TogglecloseHandler()}
         >
           <PersonIcon />
-          <p className="Drop_Down_Text">회원정보</p>
+          <p className={styles.Drop_Down_Text}>회원정보</p>
         </Link>
         <Link
           to="/mypage"
-          className="Drop_Down_Button_Container"
+          className={styles.Drop_Down_Button_Container}
           onMouseDown={handleMouseDown}
           onClick={(): void => TogglecloseHandler()}
         >
           <SubmitIcon />
-          <p className="Drop_Down_Text">주문조회</p>
+          <p className={styles.Drop_Down_Text}>주문조회</p>
         </Link>
 
         <Link
           to="/questions"
-          className="Drop_Down_Button_Container"
+          className={styles.Drop_Down_Button_Container}
           onMouseDown={handleMouseDown}
           onClick={(): void => TogglecloseHandler()}
         >
           <ContactIcon />
-          <p className="Drop_Down_Text">문의하기</p>
+          <p className={styles.Drop_Down_Text}>문의하기</p>
         </Link>
       </nav>
     </>

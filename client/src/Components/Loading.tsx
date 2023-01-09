@@ -1,4 +1,4 @@
-import './Styles/Loading.css';
+import styles from './Styles/Loading.module.css';
 
 export default function Loading({
   width = 20,
@@ -8,10 +8,10 @@ export default function Loading({
   height?: number;
 }) {
   return (
-    <div className={'loader'}>
-      <svg className={'circular'} viewBox="25 25 50 50">
+    <div className={styles.loader}>
+      <svg className={styles.circular} viewBox="25 25 50 50">
         <circle
-          className={'path'}
+          className={styles.path}
           cx="50"
           cy="50"
           r="20"
