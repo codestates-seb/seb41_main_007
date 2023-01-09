@@ -1,5 +1,7 @@
 package com.bzzzzz.farm.product.service;
 
+import com.bzzzzz.farm.exception.BusinessLogicException;
+import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.product.dto.ProductOptionPatchDto;
 import com.bzzzzz.farm.product.entity.ProductOption;
 import com.bzzzzz.farm.product.repository.ProductOptionRepository;
@@ -27,6 +29,6 @@ public class ProductOptionService {
     @Transactional(readOnly = true)
     private ProductOption findVerifiedProductOption(long productOptionId) {
         Optional<ProductOption> optionalProductOption = productOptionRepository.findById(productOptionId);
-        return optionalProductOption.orElseThrow(() -> new RuntimeException("PRODUCT_OPTION_NOT_FOUND")); //FiXME 병수님 예외코드 들어오면 고칠 것
+        return optionalProductOption.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_OPTION_NOT_FOUND));
     }
 }

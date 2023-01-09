@@ -1,5 +1,7 @@
 package com.bzzzzz.farm.product.service;
 
+import com.bzzzzz.farm.exception.BusinessLogicException;
+import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.repository.ProductRepository;
@@ -73,7 +75,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Product findVerifiedProduct(long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
-        return optionalProduct.orElseThrow(() -> new RuntimeException("PRODUCT_NOT_FOUND")); //FiXME 병수님 예외코드 들어오면 고칠 것
+        return optionalProduct.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
     }
 
     private String verifySort(String sort) {
