@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import DropDown from './DropDown';
-import './Styles/DropDown.css';
 import HambergerIcon from './Icon/HambergerIcon';
+
+import styles from './Styles/DropDown.module.css';
 
 const Menu: React.FC = (): JSX.Element => {
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
@@ -17,7 +18,7 @@ const Menu: React.FC = (): JSX.Element => {
 
   return (
     <div>
-      <div className="Header_DropDown_Container">
+      <div className={styles.Header_DropDown_Container}>
         <button
           onClick={(): void => toggleDropDown()}
           onBlur={(e: React.FocusEvent<HTMLButtonElement>): void =>
@@ -27,7 +28,7 @@ const Menu: React.FC = (): JSX.Element => {
           <HambergerIcon />
         </button>
       </div>
-      <div className="Header_DropDownList_Container">
+      <div className={styles.Header_DropDownList_Container}>
         {showDropDown && (
           <DropDown
             showDropDown={false}
