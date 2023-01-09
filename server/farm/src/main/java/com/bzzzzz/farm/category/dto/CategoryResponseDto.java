@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class CategoryResponseDto {
     private Long categoryId;
     private String name;
+    private Integer sequenceNum;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 }

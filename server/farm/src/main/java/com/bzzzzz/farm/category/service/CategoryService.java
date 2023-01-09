@@ -6,6 +6,9 @@ import com.bzzzzz.farm.category.repository.CategoryRepository;
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +29,13 @@ public class CategoryService {
         Category findCategory = findVerifiedCategory(categoryPatchDto.getCategoryId());
 
         Optional.ofNullable(categoryPatchDto.getName()).ifPresent(data -> findCategory.setName(data));
+        Optional.ofNullable(categoryPatchDto.getSequenceNum()).ifPresent(data -> findCategory.setSequenceNum(data));
 
         return findCategory;
+    }
+
+    public Page<Category> findCategories(int page, int size) {
+        return categoryRepository.findAll(PageRequest.of(page, size, Sort.by("sequenceNum").ascending()));
     }
 
     /**

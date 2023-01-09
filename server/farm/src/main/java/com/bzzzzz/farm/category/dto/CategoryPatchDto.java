@@ -8,6 +8,6 @@ import javax.validation.constraints.Positive;
 public class CategoryPatchDto {
     @Positive
     private Long categoryId;
-
+    private Integer sequenceNum;
     private String name;
 }
