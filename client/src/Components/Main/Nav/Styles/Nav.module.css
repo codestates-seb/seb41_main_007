@@ -1,0 +1,16 @@
+.Nav_Contents_Container {
+  width: 1000px;
+  height: 200px;
+  display: flex;
+  justify-content: space-between;
+  background-color: blue;
+}
+
+.Nav_Content {
+  width: 80px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: green;
+}
