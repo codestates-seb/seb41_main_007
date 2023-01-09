@@ -20,5 +20,6 @@ public class ProductDetailResponseDto {
     private Integer viewCount;
     private Integer likeCount;
     private Integer soldCount;
+    private Boolean isLiked;
     private List<ProductOptionResponseDto> productOptionResponseDtos;
 }
