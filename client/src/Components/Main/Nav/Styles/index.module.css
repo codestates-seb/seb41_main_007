@@ -1,7 +1,16 @@
 .Nav_Container {
-  height: 300px;
-  background-color: red;
+  height: 200px;
   display: flex;
   justify-content: center;
-  align-items: center;
+}
+
+@media (max-width: 900px) {
+  .Nav_Container {
+    height: 230px;
+  }
+}
+@media (max-width: 620px) {
+  .Nav_Container {
+    height: 260px;
+  }
 }

@@ -20,6 +20,10 @@
 
 .Header_Logo_Container {
   margin-left: 5px;
+  display: flex;
+  align-items: center;
+  height: 100px;
+  overflow: hidden;
 }
 
 .Header_Button_Container {

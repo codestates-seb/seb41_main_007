@@ -4,7 +4,14 @@ import styles from './Styles/Nav.module.css';
 const NavList: FC = () => {
   return (
     <div className={styles.Nav_Contents_Container}>
-      <div className={styles.Nav_Content}>하우스 시설 자재</div>
+      <button
+        className={styles.Nav_Content}
+        onClick={() => {
+          console.log('hi');
+        }}
+      >
+        하우스 시설 자재
+      </button>
       <div className={styles.Nav_Content}>과수 원예자재</div>
       <div className={styles.Nav_Content}>부직포 제초매트</div>
       <div className={styles.Nav_Content}>관수 배관자재 </div>
