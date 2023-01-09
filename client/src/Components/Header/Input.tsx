@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import useInput from '../../CustomHook/useInput';
+import useInput from 'CustomHook/useInput';
 
 const Input: FC = () => {
   const [userFormInput, onChangeForm] = useInput('');
