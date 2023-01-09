@@ -9,28 +9,24 @@ import com.bzzzzz.farm.member.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @Transactional
+@Service
 @AllArgsConstructor
 public class MemberService {
-
     private final MemberRepository memberRepository;
-    private final ApplicationEventPublisher publisher;
-    private final PasswordEncoder passwordEncoder;
     private final CustomAuthorityUtils authorityUtils;
+    private final ApplicationEventPublisher publisher;
+
 
     public Member createMember(Member member){
         verifyExistsEmail(member.getEmail());
 
-        String encryptedPassword = passwordEncoder.encode(member.getPassword());  //패스워드 인코딩
-        member.setPassword(encryptedPassword);
 
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
@@ -40,37 +36,36 @@ public class MemberService {
         publisher.publishEvent(new MemberRegistrationApplicationEvent(this,savedMember));
         return savedMember;
     }
-    public Member updateMember(Member member){
-        String encryptedPassword = passwordEncoder.encode(member.getPassword());
+
+    public Member updateMember(Member member) {
         Member findMember = findVerifiedMember(member.getMemberId());
-        Optional.ofNullable(member.getPassword())
-                .ifPresent(pw -> findMember.setPassword(encryptedPassword));
         Optional.ofNullable(member.getName())
                 .ifPresent(name -> findMember.setName(name));
         Optional.ofNullable(member.getAge())
                 .ifPresent(age -> findMember.setAge(age));
-        Optional.ofNullable(member.isCertification())
-                .ifPresent(certification -> findMember.setCertification(certification));
         Optional.ofNullable(member.getGender())
                 .ifPresent(gender -> findMember.setGender(gender));
         Optional.ofNullable(member.getPhone())
                 .ifPresent(phone -> findMember.setPhone(phone));
-
-
+        Optional.ofNullable(member.getAddress())
+                .ifPresent(address -> findMember.setAddress(address));
         return memberRepository.save(findMember);
     }
-    public Member findMember(long memberId){
+
+    @Transactional(readOnly = true)
+    public Member findMember(long memberId) {
         return findVerifiedMember(memberId);
     }
+
     public List<Member> findMembers(){
         return memberRepository.findAll();
     }
-    public void deleteMember(long memberId){
+
+    public void deleteMember(long memberId) {
         Member findMember = findVerifiedMember(memberId);
 
         memberRepository.delete(findMember);
     }
-
     //로그인한 회원정보 가져오기
     public Member getLoginMember(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();  //SecurityContextHolder에서 회원정보 가져오기
@@ -78,6 +73,8 @@ public class MemberService {
         if (optionalMember.isPresent()) return optionalMember.get();
         else return null;
     }
+
+    @Transactional(readOnly = true)
     public Member findVerifiedMember(long memberId) {
         Optional<Member> optionalMember =
                 memberRepository.findById(memberId);
@@ -87,6 +84,10 @@ public class MemberService {
         return findMember;
     }
 
+    public boolean existsEmail(String email) {
+        Optional<Member> member = memberRepository.findByEmail(email);
+        return member.isPresent();
+    }
     private void verifyExistsEmail(String email){
         Optional<Member> member = memberRepository.findByEmail(email);
         if (member.isPresent())

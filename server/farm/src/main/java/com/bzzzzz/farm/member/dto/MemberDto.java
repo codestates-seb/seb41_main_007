@@ -6,15 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 public class MemberDto {
     @Getter
     @AllArgsConstructor
     public static class Post{
-        @NotBlank
-        private String password;
 
         private String name;
 
@@ -23,7 +20,7 @@ public class MemberDto {
         @Email
         private String email;
 
-        private boolean certification;
+        private String address;
 
         private String gender;
 
@@ -36,13 +33,14 @@ public class MemberDto {
     @AllArgsConstructor
     public static class Patch{
         private Long memberId;
-        private String password;
         private String name;
         private int age;
 
         @Email
         private String email;
-        private boolean certification;
+
+        private String address;
+
         private String gender;
 
         @Pattern(regexp = "^010-\\d{3,4}-\\d{4}$",
@@ -60,11 +58,10 @@ public class MemberDto {
     @AllArgsConstructor
     public static class Response{
         private Long memberId;
-        private String password;
         private String name;
         private int age;
         private String email;
-        private boolean certification;
+        private String address;
         private String gender;
         private String phone;
     }
