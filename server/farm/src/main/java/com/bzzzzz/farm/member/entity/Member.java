@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,8 +22,6 @@ public class Member extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(nullable = false)
-    private String password;
 
     @Column(nullable = false)
     private String name;
@@ -33,7 +33,7 @@ public class Member extends Auditable {
     private String email;
 
     @Column(nullable = false)
-    private boolean certification;
+    private String address;
 
     @Column(nullable = false)
     private String gender;
@@ -41,5 +41,10 @@ public class Member extends Auditable {
     @Column(nullable = false, unique = true)
     private String phone;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> roles = new ArrayList<>();
 
+    public Member(String email) {
+        this.email = email;
+    }
 }
