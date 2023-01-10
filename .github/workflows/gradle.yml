@@ -33,7 +33,7 @@ jobs:
       run: chmod +x /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/gradlew
 
     - name: build
-      run: /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/gradlew build --warning-mode all
+      run: /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/gradlew build
       working-directory: ./server/farm
 
     - name: Execute Jar File
