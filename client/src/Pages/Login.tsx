@@ -13,18 +13,29 @@ const Login: React.FC = () => {
     background-size: 2500px;
     background-repeat: no-repeat;
     opacity: 0.9;
+    position: relative;
+
+    &::before {
+      position: fixed;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.2);
+      content: '';
+    }
   `;
 
   const Loginform = styled.form`
-    opacity: 0.8;
-    z-index: 5500px;
+    opacity: 0.9;
+    z-index: 5500;
 
     // position: absolute;
     margin-right: 150px;
     // margin-top: 200px;
     width: 500px;
     height: 500px;
-    background-color: white;
+    background-color: rgb(248, 249, 249);
     border: 2px solid white;
 
     border-radius: 10px;
@@ -48,6 +59,7 @@ const Login: React.FC = () => {
     justify-content: center;
     border-radius: 5px;
     border: 1px solid hsl(210, 8%, 85%);
+    position: relative;
   `;
 
   const BtnText = styled.span`
