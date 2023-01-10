@@ -35,6 +35,10 @@ public class ProductCategoryService {
         return productCategoryRepository.save(findProductCategory);
     }
 
+    public void deleteProductCategory(long productCategoryId) {
+        productCategoryRepository.delete(findVerifiedProductCategory(productCategoryId));
+    }
+
     /**
      * 서브 메서드
      */
