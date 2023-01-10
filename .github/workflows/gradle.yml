@@ -29,8 +29,11 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
-    - name: 환경변수 설정
+    - name: 환경변수 설정 1
       run: touch ./src/main/resources/application-farm.yml
+      working-directory: ./server/farm
+      
+    - name: 환경변수 설정 2
       run: echo "${{ secrets.FARM_YML }}" > ./src/main/resources/application-farm.yml
       working-directory: ./server/farm
 
