@@ -1,38 +1,21 @@
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { FC, useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 const ReactQueryTest: FC = () => {
   const [text, setText] = useState<string>('');
-  const queryClient = useQueryClient();
-  const { data, isLoading } = useQuery('products', async () => {
-    return await fetch('http://localhost:4000/test', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }).then((res: any) => {
-      return res.json();
-    });
-  });
+  const { data, isLoading, error } = useCustomQuery('/products', 'products');
 
-  const { mutate } = useMutation(
-    (suggest: any) => {
-      console.log(suggest);
-      return fetch('http://localhost:4000/test', {
-        body: JSON.stringify(suggest),
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-      });
-    },
-    {
-      onSuccess: () => queryClient.invalidateQueries('products'),
-    },
-  );
+  const { mutate } = useCustomMutation('/products', 'products', 'POST');
 
   if (isLoading) return <></>;
+  if (error) return <div> error</div>;
   return (
     <div>
-      {data.map((el: any) => {
-        return <div key={el.id}> {el.text}</div>;
-      })}
+      {data &&
+        data.data.map((el: { productId: number; name: string }) => {
+          return <div key={el.productId}> {el.name}</div>;
+        })}
       <input
         type="text"
         onChange={(e) => setText(e.target.value)}
