@@ -31,15 +31,15 @@ jobs:
 
     - name: Grand execute permission for gradlew
       run: chmod +x /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/gradlew
-      
-    - name: Setup MySQL
-      uses: samin/mysql-action@v1
-      with:
-        character set server: 'utf8' 
-        mysql version: '8.0'
-        mysql database: ${{ secrets.DATABASE_URL }}
-        mysql user: ${{ secrets.DATABASE_USER }}
-        mysql password: ${{ secrets.DATABASE_PASSWORD }}
+
+    # - name: Setup MySQL
+    #   uses: samin/mysql-action@v1
+    #   with:
+    #     character set server: 'utf8' 
+    #     mysql version: '8.0'
+    #     mysql database: ${{ secrets.DATABASE_URL }}
+    #     mysql user: ${{ secrets.DATABASE_USER }}
+    #     mysql password: ${{ secrets.DATABASE_PASSWORD }}
 
     - name: build
       run: /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/gradlew build
