@@ -1,0 +1,28 @@
+.Nav_Contents_Container {
+  width: 1000px;
+  height: 200px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  padding: 10px;
+}
+
+.Nav_Content {
+  width: 190px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #757575;
+  transition: all 0.3s;
+}
+
+.Nav_Content:hover {
+  color: black;
+}
+
+@media (max-width: 900px) {
+  .Nav_Contents_Container {
+    height: 270px;
+  }
+}
