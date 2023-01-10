@@ -34,3 +34,8 @@
 //   );
 // };
 // export default ReviewPost;
+const ReviewPost = () => {
+  return <div></div>;
+};
+
+export default ReviewPost;
