@@ -95,5 +95,6 @@ public interface ProductMapper {
                 .build();
     }
 
+    ProductCategory productCategoryPostDtoToProductCategory(ProductCategoryPostDto productCategoryPostDto);
     ProductOptionResponseDto productOptionToProductOptionResponseDto(ProductOption productOption);
 }

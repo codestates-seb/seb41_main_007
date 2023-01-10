@@ -50,7 +50,7 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    private Category findVerifiedCategory(long categoryId) {
+    public Category findVerifiedCategory(long categoryId) {
         Optional<Category> optionalCategory = categoryRepository.findById(categoryId);
         return optionalCategory.orElseThrow(() -> new BusinessLogicException(ExceptionCode.CATEGORY_NOT_FOUND));
     }
