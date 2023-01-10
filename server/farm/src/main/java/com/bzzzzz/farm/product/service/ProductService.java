@@ -1,5 +1,7 @@
 package com.bzzzzz.farm.product.service;
 
+import com.bzzzzz.farm.exception.BusinessLogicException;
+import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.repository.ProductRepository;
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductOptionService productOptionService;
+    private final ProductCategoryService productCategoryService;
 
     public Product createProduct(Product product) {
         return productRepository.save(product);
@@ -57,6 +60,11 @@ public class ProductService {
         Optional.ofNullable(productPatchDto.getShippingMethod()).ifPresent(data -> findProduct.setShippingMethod(Product.ShippingMethod.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingPrice()).ifPresent(data -> findProduct.setShippingPrice(data));
 
+        // 카테고리 부분 따로 빼서 전달
+        Optional.ofNullable(productPatchDto.getProductCategoryPatchDtos())
+                .ifPresent(datas -> datas.stream()
+                        .forEach(productCategoryPatchDto -> productCategoryService.updateProductCategory(productCategoryPatchDto)));
+
         // 옵션부분은 따로 빼서 전달
         Optional.ofNullable(productPatchDto.getProductOptionPatchDtos())
                 .ifPresent(datas -> datas.stream()
@@ -73,7 +81,7 @@ public class ProductService {
     @Transactional(readOnly = true)
     public Product findVerifiedProduct(long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
-        return optionalProduct.orElseThrow(() -> new RuntimeException("PRODUCT_NOT_FOUND")); //FiXME 병수님 예외코드 들어오면 고칠 것
+        return optionalProduct.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
     }
 
     private String verifySort(String sort) {
