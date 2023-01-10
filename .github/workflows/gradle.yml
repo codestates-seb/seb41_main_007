@@ -29,9 +29,10 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
-    - run: touch ./src/main/resources/application-farm.yml
-    - run: echo "${{ secrets.FARM_YML }}" > ./src/main/resources/application-farm.yml
-
+    - name: 환경변수 설정
+      run: touch ./src/main/resources/application-farm.yml
+      run: echo "${{ secrets.FARM_YML }}" > ./src/main/resources/application-farm.yml
+      working-directory: ./server/farm
 
     - name: Grand execute permission for gradlew
       run: chmod +x /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/gradlew
