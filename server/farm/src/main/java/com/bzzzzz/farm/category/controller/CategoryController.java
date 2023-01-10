@@ -5,6 +5,7 @@ import com.bzzzzz.farm.category.dto.CategoryPostDto;
 import com.bzzzzz.farm.category.entity.Category;
 import com.bzzzzz.farm.category.mapper.CategoryMapper;
 import com.bzzzzz.farm.category.service.CategoryService;
+import com.bzzzzz.farm.dto.IdRequestDto;
 import com.bzzzzz.farm.dto.MultiResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -46,5 +47,14 @@ public class CategoryController {
         Page<Category> categoryPage = categoryService.findCategories(page - 1, size);
 
         return new ResponseEntity(new MultiResponseDto(categoryMapper.categoriesToCategoryResponseDtos(categoryPage.getContent()), categoryPage), HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity deleteCategory(@Valid @RequestBody IdRequestDto idRequestDto) {
+        //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
+
+        categoryService.deleteCategory(idRequestDto.getId());
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

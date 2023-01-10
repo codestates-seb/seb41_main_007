@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 
 @Service
@@ -36,6 +37,16 @@ public class CategoryService {
 
     public Page<Category> findCategories(int page, int size) {
         return categoryRepository.findAll(PageRequest.of(page, size, Sort.by("sequenceNum").ascending()));
+    }
+
+    public void deleteCategory(long categoryId) {
+        Category category = findVerifiedCategory(categoryId);
+
+        if (category.getProductCategories().size() > 0) {
+            throw new BusinessLogicException(ExceptionCode.PRODUCT_CATEGORY_EXISTS);
+        }
+
+        categoryRepository.delete(category);
     }
 
     /**
