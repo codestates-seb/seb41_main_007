@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.review.mapper;
 
 
+import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerPatchDto;
 import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerPostDto;
 import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerResponseDto;
 import com.bzzzzz.farm.review.entity.ReviewAnswer;
@@ -30,6 +31,14 @@ public interface ReviewAnswerMapper {
                     reviewAnswer.getMember().getMemberId()
             );
             return reviewAnswerResponseDto;
+        }
+    }
+    default ReviewAnswer reviewAnswerPatchDtoToReviewAnswer(ReviewAnswerPatchDto reviewAnswerPatchDto) {
+        if (reviewAnswerPatchDto == null) {
+            return null;
+        } else {
+            ReviewAnswer reviewAnswer = new ReviewAnswer(reviewAnswerPatchDto.getReviewAnswerTitle(),reviewAnswerPatchDto.getReviewAnswerContent());
+            return reviewAnswer;
         }
     }
 }
