@@ -6,6 +6,7 @@ import Loading from './Components/Loading';
 import Login from './Pages/Login';
 import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
+import ProductPage from 'Pages/ProductPage';
 
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
@@ -27,11 +28,15 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
+    path: '/:product',
+    element: withLayout(ProductPage),
+  },
+  {
     path: '/Counter',
     element: <Counter />,
   },
   {
-    path: '/:id',
+    path: '/ObjectSaver',
     element: <ObjectSaver />,
   },
 ]);
