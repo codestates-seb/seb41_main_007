@@ -26,4 +26,9 @@ public class CartProduct extends Auditable {
 
     @Column(nullable = false)
     private Integer quantity;
+
+    // 편의 메서드
+    public void calculateQuantity(int quantity) {
+        this.quantity += quantity;
+    }
 }
