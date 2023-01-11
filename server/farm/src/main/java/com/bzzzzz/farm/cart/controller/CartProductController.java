@@ -19,7 +19,7 @@ import javax.validation.Valid;
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("/cartProducts")
-public class CartController {
+public class CartProductController {
     private final CartProductService cartProductService;
     private final CartProductMapper cartProductMapper;
 
