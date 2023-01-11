@@ -1,9 +1,9 @@
 package com.bzzzzz.farm.product.controller;
 
+import com.bzzzzz.farm.dto.IdRequestDto;
 import com.bzzzzz.farm.dto.IdResponseDto;
 import com.bzzzzz.farm.dto.MultiResponseDto;
 import com.bzzzzz.farm.like.service.LikeService;
-import com.bzzzzz.farm.product.dto.ProductDeleteDto;
 import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.dto.ProductPostDto;
 import com.bzzzzz.farm.product.entity.Product;
@@ -79,10 +79,10 @@ public class ProductController {
     }
 
     @DeleteMapping
-    public ResponseEntity deleteProduct(@Valid @RequestBody ProductDeleteDto productDeleteDto) {
+    public ResponseEntity deleteProduct(@Valid @RequestBody IdRequestDto idRequestDto) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
 
-        productService.deleteProduct(productDeleteDto.getProductId());
+        productService.deleteProduct(idRequestDto.getId());
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

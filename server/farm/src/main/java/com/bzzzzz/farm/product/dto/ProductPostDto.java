@@ -35,5 +35,7 @@ public class ProductPostDto {
     @Positive
     private int shippingPrice;
 
+    private List<ProductCategoryPostDto> productCategoryPostDtos;
+
     private List<ProductOptionPostDto> productOptionPostDtos;
 }

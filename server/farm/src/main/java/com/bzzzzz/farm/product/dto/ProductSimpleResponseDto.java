@@ -15,4 +15,5 @@ public class ProductSimpleResponseDto {
 
     private String photo;
 
+    private String productStatus;
 }
