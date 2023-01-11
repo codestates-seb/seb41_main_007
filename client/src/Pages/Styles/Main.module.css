@@ -2,6 +2,21 @@
   margin-top: 120px;
 }
 
+.LoadingContainer {
+  margin-top: 120px;
+  width: 100px;
+  height: 100px;
+  color: red;
+  backgroud-color: red;
+}
+
+.NoKeyword {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: var(--xlarge);
+}
+
 @media (max-width: 600px) {
   .Main_Container {
     margin-top: 100px;
@@ -12,4 +27,13 @@
   .Main_Container {
     margin-top: 80px;
   }
+}
+
+.Header {
+  font-size: 40px;
+  /* font-weight: bold; */
+}
+.Body {
+  font-size: 40px;
+  /* font-weight: bold; */
 }
