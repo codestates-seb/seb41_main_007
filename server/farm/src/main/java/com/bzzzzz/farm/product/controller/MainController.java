@@ -32,7 +32,7 @@ public class MainController {
          * 좋아요 높은 순 10개
          * 신상품 7개
          * 판매량 순 20개
-         * Todo: 최근 리뷰 ?? 4개
+         * 최근 리뷰 4개
          * */
 
         Map<String, Object> response = new HashMap<>();

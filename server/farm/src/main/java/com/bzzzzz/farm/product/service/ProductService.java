@@ -56,6 +56,7 @@ public class ProductService {
         Optional.ofNullable(productPatchDto.getPhoto()).ifPresent(data -> findProduct.setPhoto(data));
         Optional.ofNullable(productPatchDto.getBrand()).ifPresent(data -> findProduct.setBrand(data));
         Optional.ofNullable(productPatchDto.getDescription()).ifPresent(data -> findProduct.setDescription(data));
+        Optional.ofNullable(productPatchDto.getProductStatus()).ifPresent(data -> findProduct.setProductStatus(Product.ProductStatus.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingCountry()).ifPresent(data -> findProduct.setShippingCountry(Product.ShippingCountry.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingMethod()).ifPresent(data -> findProduct.setShippingMethod(Product.ShippingMethod.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingPrice()).ifPresent(data -> findProduct.setShippingPrice(data));

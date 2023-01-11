@@ -36,6 +36,10 @@ public class Product extends Auditable {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    private ProductStatus productStatus = ProductStatus.PREPARING_FOR_SALE;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private ShippingCountry shippingCountry;
 
     @Column(nullable = false)
@@ -79,6 +83,21 @@ public class Product extends Auditable {
         this.productCategories.add(productCategory);
         if (productCategory.getProduct() != this) {
             productCategory.setProduct(this);
+        }
+    }
+
+    public enum ProductStatus {
+        PREPARING_FOR_SALE(1, "판매 준비 중"),
+        FOR_SALE(2, "판매 중"),
+        SUSPENSION_OF_SALE(3, "판매 중지");
+        @Getter
+        private Integer code;
+        @Getter
+        private String status;
+
+        ProductStatus(Integer code, String status) {
+            this.code = code;
+            this.status = status;
         }
     }
 
