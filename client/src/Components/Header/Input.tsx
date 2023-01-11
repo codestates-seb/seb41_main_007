@@ -8,7 +8,7 @@ const Input: FC = () => {
     <div>
       <form
         className={styles.Header_Input_Container}
-        action={'/production/search'}
+        action={'/products'}
         role="search"
         method="GET"
       >
@@ -18,7 +18,9 @@ const Input: FC = () => {
           value={userFormInput}
           onChange={onChangeForm}
         />
-        <input type="hidden" name="q" value={userFormInput} />
+        <input type="hidden" name="keyword" value={userFormInput} />
+        <input type="hidden" name="sort" value={'likeCount'} />
+        <input type="hidden" name="order" value={'ascending'} />
         <button>
           <svg
             className={styles.Header_Input_SearchIcon}
