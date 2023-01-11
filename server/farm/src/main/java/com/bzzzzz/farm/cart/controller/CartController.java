@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/carts")
+@RequestMapping("/cartProducts")
 public class CartController {
     private final CartProductService cartProductService;
     private final CartProductMapper cartProductMapper;
