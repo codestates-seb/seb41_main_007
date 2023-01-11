@@ -6,10 +6,10 @@ import styles from './Styles/Main.module.css';
 const Main: FC = (): JSX.Element => {
   return (
     <>
-      <div className={styles.Main_Container}>
+      <main className={styles.Main_Container}>
         <Index />
         <Carousell />
-      </div>
+      </main>
     </>
   );
 };
