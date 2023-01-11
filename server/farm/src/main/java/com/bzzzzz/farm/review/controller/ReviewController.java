@@ -50,8 +50,10 @@ public class ReviewController {
     public ResponseEntity insertReview(@RequestBody @Valid ReviewPostDto reviewPostDto) {
         Review review = reviewMapper.reviewPostDtoToReview(reviewPostDto);
 
-        //로그인한 유저 불러오는 방법 getLoginUser()로 불러옴
-        Member member = memberService.getLoginMember();
+        //TODO: 로그인한 유저 불러오는 방법 getLoginUser()로 불러옴
+        //Member member = memberService.getLoginMember();
+        Member member = new Member("test@gmail.com");
+        log.info("로그인한 유저 체크: "+member.getEmail());
         review.setMember(member);
 
         Product product = productRepository.findById(reviewPostDto.getProductId()).orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));

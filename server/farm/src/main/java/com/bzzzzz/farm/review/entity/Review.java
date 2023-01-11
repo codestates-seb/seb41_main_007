@@ -42,7 +42,7 @@ public class Review extends Auditable {
 
     //답변 매핑해야함
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "reviewAnswerId", nullable = true)
+    @JoinColumn(name = "reviewAnswerId")
     private ReviewAnswer reviewAnswer;
 
     public Review(String reviewTitle, String reviewContent, float rating) {
