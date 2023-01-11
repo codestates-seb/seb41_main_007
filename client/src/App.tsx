@@ -1,4 +1,5 @@
 import React from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Header from './Components/Header/index';
 import Main from './Pages/Main';
@@ -6,7 +7,10 @@ import Loading from './Components/Loading';
 import Login from './Pages/Login';
 import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
-import ProductPage from 'Pages/ProductPage';
+import ReactQueryTest from 'Pages/ReactQueryTest';
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+});
 
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
@@ -39,12 +43,18 @@ const router = createBrowserRouter([
     path: '/ObjectSaver',
     element: <ObjectSaver />,
   },
+  {
+    path: '/test',
+    element: <ReactQueryTest />,
+  },
 ]);
 
 const App: React.FC = () => {
   return (
     <>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={queryClient}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </>
   );
 };

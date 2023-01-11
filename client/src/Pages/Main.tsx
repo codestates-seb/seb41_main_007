@@ -1,15 +1,17 @@
 import { Carousell } from 'Components/Carousel';
 import Index from 'Components/Main/Nav/Index';
-import React from 'react';
+import { FC } from 'react';
 import styles from './Styles/Main.module.css';
 
-const Test: React.FC = () => {
+const Main: FC = (): JSX.Element => {
   return (
-    <div className={styles.Main_Container}>
-      <Index />
-      <Carousell />
-    </div>
+    <>
+      <div className={styles.Main_Container}>
+        <Index />
+        <Carousell />
+      </div>
+    </>
   );
 };
 
-export default Test;
+export default Main;
