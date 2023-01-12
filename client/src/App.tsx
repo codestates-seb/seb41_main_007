@@ -53,12 +53,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/products',
-    element: (
-      <>
-        <Header />
-        <Search />
-      </>
-    ),
+    element: withLayout(Search),
   },
 ]);
 

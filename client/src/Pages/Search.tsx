@@ -16,6 +16,7 @@ const Search: FC = () => {
   );
   const params = new URLSearchParams(sch);
   const keyword = params.get('keyword');
+
   if (isLoading)
     return (
       <>
