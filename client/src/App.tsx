@@ -9,6 +9,7 @@ import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
 import ReactQueryTest from 'Pages/ReactQueryTest';
 import Search from 'Pages/Search';
+
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
 });
