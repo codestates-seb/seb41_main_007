@@ -9,6 +9,6 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 public class ResponseDto<T> {
-    private List<CategoryResponseDto> categoryResponseDtos;
     private T data;
+    private List<CategoryResponseDto> categoryResponseDtos;
 }
