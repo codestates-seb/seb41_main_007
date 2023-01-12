@@ -8,6 +8,8 @@ import Login from './Pages/Login';
 import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
 import ReactQueryTest from 'Pages/ReactQueryTest';
+import ProductPage from 'Pages/ProductPage';
+
 import Search from 'Pages/Search';
 
 const queryClient = new QueryClient({
@@ -34,7 +36,7 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: '/:product',
+    path: '/product/:productid',
     element: withLayout(ProductPage),
   },
   {
