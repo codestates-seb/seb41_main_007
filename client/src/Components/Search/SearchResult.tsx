@@ -1,5 +1,7 @@
-import { FC } from 'react';
-import ProductList from 'Components/ProductList';
+import { FC, lazy, Suspense } from 'react';
+
+import LoadingList from 'Components/Loading/LoadingList';
+const LazyProductList = lazy(() => import('Components/ProductList'));
 interface SearchProps {
   productId: number;
   name: string;
@@ -14,7 +16,9 @@ interface Props {
 const SearchResult: FC<Props> = ({ data }) => {
   return (
     <ul>
-      <ProductList products={data} />
+      <Suspense fallback={<LoadingList num={data.length} />}>
+        <LazyProductList products={data} />
+      </Suspense>
     </ul>
   );
 };

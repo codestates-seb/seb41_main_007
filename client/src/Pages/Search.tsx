@@ -4,7 +4,6 @@ import styles from './Styles/Main.module.css';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import SearchResult from 'Components/Search/SearchResult';
 import CustomTitle from 'Components/Header/CustomTitle';
-import LoadingList from 'Components/Loading/LoadingList';
 
 const Search: FC = () => {
   const location = useLocation();
@@ -15,7 +14,20 @@ const Search: FC = () => {
   );
   const params = new URLSearchParams(sch);
   const keyword = params.get('keyword');
-  if (isLoading) return <LoadingList />;
+  if (isLoading)
+    return (
+      <>
+        <CustomTitle title={`${keyword} 에 대한 검색결과`} />
+        <div
+          className={styles.Search_Result_Text_Container}
+          style={{ marginTop: '120px' }}
+        >
+          <p className={styles.Search_Result_Text}>
+            &quot;{keyword}&quot; 에 대한 검색결과
+          </p>
+        </div>
+      </>
+    );
   if (error)
     return <div className={styles.LoadingContainer}>에러 발생하였습니다.</div>;
   return (
