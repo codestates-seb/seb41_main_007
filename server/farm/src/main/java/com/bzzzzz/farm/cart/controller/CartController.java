@@ -34,7 +34,7 @@ public class CartController {
         Cart cart = cartService.findCart(cartId);
 
         return new ResponseEntity(
-                new ResponseDto<>(cart,
+                new ResponseDto<>(cartMapper.cartToCartResponseDto(cart),
                         categoryMapper.categoriesToCategoryResponseDtos(categoryService.findCategories())),
                 HttpStatus.OK);
     }
