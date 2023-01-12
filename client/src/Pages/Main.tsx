@@ -9,16 +9,14 @@ import styles from './Styles/Main.module.css';
 
 const Main: FC = (): JSX.Element => {
   return (
-    <>
-      <div className={styles.Main_Container}>
-        <Index />
-        <Carousell />
-      </div>
+    <main className={styles.Main_Container}>
+      <Index />
+      <Carousell />
       <NewCarousel />
       <ExampleBest />
       <StartDive />
       <Example />
-    </>
+    </main>
   );
 };
 

@@ -1,12 +1,10 @@
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', 'Segoe UI',
-    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
+  @apply font-sans;
 }
 
+/* EX: color: var(--green-30); */
 :root {
   --green-10: #e9f5db;
   --green-20: #cfe1b9;
