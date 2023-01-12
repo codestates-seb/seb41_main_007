@@ -20,6 +20,7 @@ public class ReviewAnswer extends Auditable {
     @Column(nullable = false)
     private String reviewAnswerTitle;
 
+    @Lob
     @Column(nullable = false)
     private String reviewAnswerContent;
 
