@@ -27,17 +27,19 @@ public class CategoryController {
     @PostMapping
     public ResponseEntity postCategory(@Valid @RequestBody CategoryPostDto categoryPostDto) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
-        Category category = categoryService.createCategory(categoryMapper.categoryPostDtoToCategory(categoryPostDto));
 
-        return new ResponseEntity(categoryMapper.categoryToCategoryResponseDto(category), HttpStatus.CREATED);
+        categoryService.createCategory(categoryMapper.categoryPostDtoToCategory(categoryPostDto));
+
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
     @PatchMapping
     public ResponseEntity patchCategory(@Valid @RequestBody CategoryPatchDto categoryPatchDto) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
-        Category category = categoryService.updateCategory(categoryPatchDto);
 
-        return new ResponseEntity(categoryMapper.categoryToCategoryResponseDto(category), HttpStatus.OK);
+        categoryService.updateCategory(categoryPatchDto);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 
     @GetMapping
