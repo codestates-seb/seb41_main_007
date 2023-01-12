@@ -138,29 +138,28 @@ const ProductPage: React.FC = () => {
     `products${param.productid}`,
   );
 
-  console.log(data);
-
   let search = location.href;
   search = 'returnUrl=' + search;
 
   // const getStorage = (object, ID) => {
   // window.location.href
   // 비로그인시 return url
-  const onClickBasket = () => {
+  const onClickBasket = (data: any) => {
     const jsondata: string | null = localStorage.getItem('baskets');
-    console.log(jsondata);
-    const baskets = JSON.parse(jsondata || '[]') || [];
-    console.log(baskets);
-    // let isSame = false;
-    // baskets.forEach((el) => {
-    //   if (object.id === el.id) isSame = true;
-    // });
 
-    // if(isSame){
-    //   console.log("이미장바구니");
-    //   return;
-    // }
-    // baskets.push(Object);
+    const baskets = JSON.parse(jsondata || '[]') || [];
+
+    let IsSame: boolean = false;
+    baskets.forEach((el: any) => {
+      if (data.id === el.id) IsSame = true;
+    });
+
+    if (IsSame) {
+      alert('장바구니에 들어있습니다');
+      return;
+    }
+    baskets.push(data);
+    console.log(baskets);
 
     localStorage.setItem('baskets', JSON.stringify(baskets));
   };
@@ -278,7 +277,10 @@ const ProductPage: React.FC = () => {
               <span>원</span>
             </Price>
           </ProductTable>
-          <BuyButton color={'var( --white-02)'} onClick={onClickBasket}>
+          <BuyButton
+            color={'var( --white-02)'}
+            onClick={() => onClickBasket(data)}
+          >
             장바구니 담기
           </BuyButton>
           <BuyButton color={'var(--green-40)'}>결제하기</BuyButton>

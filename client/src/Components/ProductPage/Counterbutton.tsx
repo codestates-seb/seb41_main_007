@@ -64,7 +64,6 @@ const CounterInput = styled.input`
 `;
 
 const CounterButton = (props: counterProps): JSX.Element => {
-  console.log(props);
   return (
     <CounterDiv>
       <CounterDivBox>
