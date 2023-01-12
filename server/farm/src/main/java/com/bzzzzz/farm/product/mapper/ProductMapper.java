@@ -55,6 +55,20 @@ public interface ProductMapper {
 
     List<ProductSimpleResponseDto> productsToProductSimpleResponseDtos(List<Product> products);
 
+    default ProductSimpleResponseDto productToProductSimpleResponseDto(Product product) {
+        if (product == null) {
+            return null;
+        }
+
+        return ProductSimpleResponseDto.builder()
+                .productId(product.getProductId())
+                .name(product.getName())
+                .price(product.getPrice())
+                .photo(product.getPhoto())
+                .productStatus(product.getProductStatus().getStatus())
+                .build();
+    }
+
     default ProductDetailResponseDto productToProductDetailResponseDto(Product product, Boolean isLiked) {
         if (product == null) {
             return null;
@@ -70,6 +84,7 @@ public interface ProductMapper {
                 .shippingPrice(product.getShippingPrice())
                 .description(product.getDescription())
                 .brand(product.getBrand())
+                .productStatus(product.getProductStatus().getStatus())
                 .viewCount(product.getViewCount())
                 .likeCount(product.getLikeCount())
                 .soldCount(product.getSoldCount())
@@ -96,5 +111,6 @@ public interface ProductMapper {
     }
 
     ProductCategory productCategoryPostDtoToProductCategory(ProductCategoryPostDto productCategoryPostDto);
+
     ProductOptionResponseDto productOptionToProductOptionResponseDto(ProductOption productOption);
 }

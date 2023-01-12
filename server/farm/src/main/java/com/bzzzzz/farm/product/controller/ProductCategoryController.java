@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.product.controller;
 
 import com.bzzzzz.farm.category.service.CategoryService;
+import com.bzzzzz.farm.dto.IdRequestDto;
 import com.bzzzzz.farm.product.dto.ProductCategoryPatchDto;
 import com.bzzzzz.farm.product.dto.ProductCategoryPostDto;
 import com.bzzzzz.farm.product.entity.ProductCategory;
@@ -48,6 +49,12 @@ public class ProductCategoryController {
         return new ResponseEntity(productMapper.productCategoryToProductCategoryResponseDto(productCategory), HttpStatus.OK);
     }
 
-//    @DeleteMapping
-//    public ResponseEntity deleteProductCategory()
+    @DeleteMapping
+    public ResponseEntity deleteProductCategory(@Valid @RequestBody IdRequestDto idRequestDto) {
+        //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
+
+        productCategoryService.deleteProductCategory(idRequestDto.getId());
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
 }

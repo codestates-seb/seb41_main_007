@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.member.service;
 
 import com.bzzzzz.farm.auth.utils.CustomAuthorityUtils;
+import com.bzzzzz.farm.cart.entiy.Cart;
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.helper.event.MemberRegistrationApplicationEvent;
@@ -30,6 +31,7 @@ public class MemberService {
 
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
+        member.setCart(new Cart());
 
         Member savedMember = memberRepository.save(member);
 

@@ -17,6 +17,7 @@ public class ProductDetailResponseDto {
     private int shippingPrice;
     private String description;
     private String brand;
+    private String productStatus;
     private Integer viewCount;
     private Integer likeCount;
     private Integer soldCount;

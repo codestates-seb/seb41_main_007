@@ -23,6 +23,8 @@ public class ProductPatchDto {
 
     private String description;
 
+    private String productStatus;
+
     private String shippingCountry;
 
     private String shippingMethod;
