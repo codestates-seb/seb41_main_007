@@ -8,6 +8,8 @@ import Loading from './Components/Loading';
 import Login from './Pages/Login';
 import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
+import { ReviewRead } from 'Components/Review/ReviewRead';
+import NewCarousel from 'Components/NewProduct/NewCss';
 
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
@@ -35,6 +37,14 @@ const router = createBrowserRouter([
   {
     path: '/:id',
     element: <ObjectSaver />,
+  },
+  {
+    path: '/review',
+    element: <ReviewRead />,
+  },
+  {
+    path: '/example/new',
+    element: <NewCarousel />,
   },
 ]);
 
