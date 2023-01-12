@@ -1,11 +1,11 @@
 import { FC, useEffect } from 'react';
 
 interface Props {
-  author: string;
+  author?: string;
   title: string;
-  description: string;
-  image: string;
-  noIndex: boolean;
+  description?: string;
+  image?: string;
+  noIndex?: boolean;
 }
 
 const CustomTitle: FC<Props> = ({

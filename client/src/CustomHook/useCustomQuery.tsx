@@ -7,9 +7,8 @@ interface OutPut {
 }
 
 export const useCustomQuery = (url: string, queryKey: string): OutPut => {
-  const host = 'http://farmandpeople.kro.kr:8080';
   const { data, isLoading, error, status } = useQuery(queryKey, () =>
-    fetch(`${host}${url}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     }).then((res: Response) => {
