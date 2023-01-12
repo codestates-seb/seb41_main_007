@@ -1,8 +1,11 @@
 package com.bzzzzz.farm.product.controller;
 
+import com.bzzzzz.farm.category.mapper.CategoryMapper;
+import com.bzzzzz.farm.category.service.CategoryService;
 import com.bzzzzz.farm.dto.IdRequestDto;
-import com.bzzzzz.farm.dto.IdResponseDto;
 import com.bzzzzz.farm.dto.MultiResponseDto;
+import com.bzzzzz.farm.dto.ResponseDto;
+import com.bzzzzz.farm.dto.SingleResponseDto;
 import com.bzzzzz.farm.like.service.LikeService;
 import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.dto.ProductPostDto;
@@ -27,6 +30,8 @@ public class ProductController {
     private final ProductService productService;
     private final LikeService likeService;
     private final ProductMapper productMapper;
+    private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
     @PostMapping
     public ResponseEntity postProduct(@Valid @RequestBody ProductPostDto productPostDto) {
@@ -34,7 +39,7 @@ public class ProductController {
 
         Product product = productService.createProduct(productMapper.productPostDtoToProduct(productPostDto));
 
-        return new ResponseEntity(new IdResponseDto(product.getProductId()), HttpStatus.CREATED);
+        return new ResponseEntity(new SingleResponseDto(product.getProductId()), HttpStatus.CREATED);
     }
 
     @GetMapping("/{product-id}")
@@ -46,7 +51,9 @@ public class ProductController {
         //Todo: 로그인 유무에 따라 내가 좋아요를 눌렀는가를 표시해주는 메서드 추가 예정
         // isLiked = likeService.isLiked(member, product);
 
-        return new ResponseEntity(productMapper.productToProductDetailResponseDto(product, isLiked), HttpStatus.OK);
+        return new ResponseEntity(new ResponseDto(productMapper.productToProductDetailResponseDto(product, isLiked),
+                categoryMapper.categoriesToCategoryResponseDtos(categoryService.findCategories()))
+                , HttpStatus.OK);
     }
 
     @GetMapping
@@ -65,7 +72,8 @@ public class ProductController {
         Page<Product> productPage = productService.findProducts(page - 1, 40, sort, order, keyword);
 
         return new ResponseEntity(
-                new MultiResponseDto(productMapper.productsToProductSimpleResponseDtos(productPage.getContent()), productPage),
+                new ResponseDto(new MultiResponseDto(productMapper.productsToProductSimpleResponseDtos(productPage.getContent()), productPage),
+                        categoryMapper.categoriesToCategoryResponseDtos(categoryService.findCategories())),
                 HttpStatus.OK);
     }
 
@@ -75,7 +83,7 @@ public class ProductController {
 
         productService.updateProduct(productPatchDto);
 
-        return new ResponseEntity(new IdResponseDto(productPatchDto.getProductId()), HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto(productPatchDto.getProductId()), HttpStatus.OK);
     }
 
     @DeleteMapping

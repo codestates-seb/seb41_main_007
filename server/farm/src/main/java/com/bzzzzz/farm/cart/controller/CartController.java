@@ -3,6 +3,9 @@ package com.bzzzzz.farm.cart.controller;
 import com.bzzzzz.farm.cart.entiy.Cart;
 import com.bzzzzz.farm.cart.mapper.CartMapper;
 import com.bzzzzz.farm.cart.service.CartService;
+import com.bzzzzz.farm.category.mapper.CategoryMapper;
+import com.bzzzzz.farm.category.service.CategoryService;
+import com.bzzzzz.farm.dto.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,8 @@ import javax.validation.constraints.Positive;
 public class CartController {
     private final CartService cartService;
     private final CartMapper cartMapper;
+    private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
     @GetMapping("/{cart-id}")
     public ResponseEntity getCart(@Positive @PathVariable("cart-id") long cartId) {
@@ -28,6 +33,9 @@ public class CartController {
 
         Cart cart = cartService.findCart(cartId);
 
-        return new ResponseEntity(cartMapper.cartToCartResponseDto(cart), HttpStatus.OK);
+        return new ResponseEntity(
+                new ResponseDto<>(cartMapper.cartToCartResponseDto(cart),
+                        categoryMapper.categoriesToCategoryResponseDtos(categoryService.findCategories())),
+                HttpStatus.OK);
     }
 }
