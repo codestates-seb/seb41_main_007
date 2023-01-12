@@ -25,12 +25,12 @@
 //   resetReview();
 // };
 
-// const ReviewPost = () => {
-//   const { id } = useParams();
-//   return (
-//     <>
-//       <div></div>
-//     </>
-//   );
-// };
-// export default ReviewPost;
+const ReviewPost = () => {
+  //const { id } = useParams();
+  return (
+    <>
+      <div></div>
+    </>
+  );
+};
+export default ReviewPost;
