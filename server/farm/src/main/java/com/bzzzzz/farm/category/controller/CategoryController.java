@@ -6,15 +6,15 @@ import com.bzzzzz.farm.category.entity.Category;
 import com.bzzzzz.farm.category.mapper.CategoryMapper;
 import com.bzzzzz.farm.category.service.CategoryService;
 import com.bzzzzz.farm.dto.IdRequestDto;
-import com.bzzzzz.farm.dto.MultiResponseDto;
+import com.bzzzzz.farm.dto.SingleResponseDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Validated
@@ -41,12 +41,11 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity getCategories(@RequestParam(required = false, defaultValue = "1") int page,
-                                        @RequestParam(required = false, defaultValue = "10") int size) {
+    public ResponseEntity getCategories() {
 
-        Page<Category> categoryPage = categoryService.findCategories(page - 1, size);
+        List<Category> categories = categoryService.findCategories();
 
-        return new ResponseEntity(new MultiResponseDto(categoryMapper.categoriesToCategoryResponseDtos(categoryPage.getContent()), categoryPage), HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto(categoryMapper.categoriesToCategoryResponseDtos(categories)), HttpStatus.OK);
     }
 
     @DeleteMapping

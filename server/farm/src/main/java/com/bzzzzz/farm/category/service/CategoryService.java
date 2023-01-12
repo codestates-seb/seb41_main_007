@@ -6,13 +6,11 @@ import com.bzzzzz.farm.category.repository.CategoryRepository;
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLIntegrityConstraintViolationException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,8 +33,8 @@ public class CategoryService {
         return findCategory;
     }
 
-    public Page<Category> findCategories(int page, int size) {
-        return categoryRepository.findAll(PageRequest.of(page, size, Sort.by("sequenceNum").ascending()));
+    public List<Category> findCategories() {
+        return categoryRepository.findAll(Sort.by("sequenceNum"));
     }
 
     public void deleteCategory(long categoryId) {
