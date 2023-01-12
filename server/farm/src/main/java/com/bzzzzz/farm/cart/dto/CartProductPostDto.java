@@ -15,7 +15,7 @@ public class CartProductPostDto {
     private Long productOptionId;
 
     @Positive
-    private Integer quantity;
+    private int quantity;
 
     // 편의 메서드
     public Cart getCart() {
