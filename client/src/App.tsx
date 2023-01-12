@@ -12,6 +12,7 @@ import ProductPage from 'Pages/ProductPage';
 
 import Search from 'Pages/Search';
 
+import Footer from 'Components/Footer';
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
 });
@@ -21,6 +22,7 @@ const withLayout = (Component: React.FC): JSX.Element => {
     <>
       <Header />
       <Component />
+      <Footer />
     </>
   );
 };
