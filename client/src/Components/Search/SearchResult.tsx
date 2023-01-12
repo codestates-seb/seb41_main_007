@@ -15,7 +15,7 @@ interface Props {
 const SearchResult: FC<Props> = ({ sch }) => {
   const { data, isLoading } = useCustomQuery(
     `/products${sch}`,
-    'productsSearch',
+    `product${sch}`,
   );
   if (isLoading) return <></>;
 
