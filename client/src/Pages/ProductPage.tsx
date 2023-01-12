@@ -183,19 +183,29 @@ const BuyButton = styled.a`
 //1번 현재주소를 받아와야함
 //2번 ?reurl= 현재주소 넣어줘야함
 //3번 읽고 돌아와야함
-const ProductPage: React.FC = () => {
+const Loadingfc: React.FC = () => {
   let param = useParams();
+  const { data, isLoading } = useCustomQuery(
+    `/products/${param.productid}`,
+    `products${param.productid}`,
+  );
+
+  if (isLoading) return <></>;
+  return <ProductPage data={data} />;
+};
+
+export default Loadingfc;
+interface props {
+  data: any;
+}
+
+const ProductPage: React.FC<props> = ({ data }) => {
+  const [count, setCount] = useState<number>(1);
+  const [result, setresult] = useState<number>(data.price);
+  console.log(data);
   let search = location.href;
   search = 'returnUrl=' + search;
-  console.log(param);
-  console.log(search);
 
-  const [count, setCount] = useState<number>(1);
-  const [result, setresult] = useState<number>(3000);
-  const { data, isLoading, error } = useCustomQuery(
-    `/products/${param}`,
-    `products${param}`,
-  );
   const onIncrease = () => {
     console.log(count, result);
     setCount((prevCount) => prevCount + 1);
@@ -308,9 +318,12 @@ const ProductPage: React.FC = () => {
         <ImageBox></ImageBox>
         <ProductBox>
           <ProductPrice Mgtop="0"></ProductPrice>
-          <ProductTitle className="font-serif">말파이트 트랙터</ProductTitle>
+          <ProductTitle className="font-serif">{data.name}</ProductTitle>
           <ProductContent>국내산 최고의 제품</ProductContent>
-          <ProductPrice Mgtop="0">3,000원</ProductPrice>
+          <ProductPrice Mgtop="0">
+            {data.price}
+            <span>원</span>
+          </ProductPrice>
           <ProductTable fontsize="14px" lhtop="14px" Mgtop="50px">
             상품수량
             <CounterDiv>
@@ -439,5 +452,3 @@ const ProductPage: React.FC = () => {
     </ProductContainer>
   );
 };
-
-export default ProductPage;
