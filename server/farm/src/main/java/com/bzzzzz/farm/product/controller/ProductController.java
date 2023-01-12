@@ -1,7 +1,7 @@
 package com.bzzzzz.farm.product.controller;
 
 import com.bzzzzz.farm.dto.IdRequestDto;
-import com.bzzzzz.farm.dto.IdResponseDto;
+import com.bzzzzz.farm.dto.SingleResponseDto;
 import com.bzzzzz.farm.dto.MultiResponseDto;
 import com.bzzzzz.farm.like.service.LikeService;
 import com.bzzzzz.farm.product.dto.ProductPatchDto;
@@ -34,7 +34,7 @@ public class ProductController {
 
         Product product = productService.createProduct(productMapper.productPostDtoToProduct(productPostDto));
 
-        return new ResponseEntity(new IdResponseDto(product.getProductId()), HttpStatus.CREATED);
+        return new ResponseEntity(new SingleResponseDto(product.getProductId()), HttpStatus.CREATED);
     }
 
     @GetMapping("/{product-id}")
@@ -75,7 +75,7 @@ public class ProductController {
 
         productService.updateProduct(productPatchDto);
 
-        return new ResponseEntity(new IdResponseDto(productPatchDto.getProductId()), HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto(productPatchDto.getProductId()), HttpStatus.OK);
     }
 
     @DeleteMapping

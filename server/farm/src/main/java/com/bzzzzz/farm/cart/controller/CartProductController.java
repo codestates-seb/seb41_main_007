@@ -5,7 +5,7 @@ import com.bzzzzz.farm.cart.dto.CartProductPostDto;
 import com.bzzzzz.farm.cart.mapper.CartMapper;
 import com.bzzzzz.farm.cart.service.CartProductService;
 import com.bzzzzz.farm.dto.IdRequestDto;
-import com.bzzzzz.farm.dto.IdResponseDto;
+import com.bzzzzz.farm.dto.SingleResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +28,7 @@ public class CartProductController {
 
         cartProductService.createCartProduct(cartMapper.cartProductPostDtoToCartProduct(cartProductPostDto));
 
-        return new ResponseEntity<>(new IdResponseDto(cartProductPostDto.getCartId()), HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto(cartProductPostDto.getCartId()), HttpStatus.CREATED);
     }
 
     @PatchMapping
@@ -37,7 +37,7 @@ public class CartProductController {
 
         cartProductService.updateCartProduct(cartProductPatchDto.getCartProductId(), cartProductPatchDto.getQuantity());
 
-        return new ResponseEntity<>(new IdResponseDto(cartProductPatchDto.getCartId()), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto(cartProductPatchDto.getCartId()), HttpStatus.OK);
     }
 
     @DeleteMapping
