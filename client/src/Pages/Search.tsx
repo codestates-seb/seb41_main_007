@@ -1,9 +1,11 @@
-import { FC } from 'react';
+import { FC, Suspense, lazy } from 'react';
 import { useLocation } from 'react-router-dom';
 import styles from './Styles/Main.module.css';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
-import SearchResult from 'Components/Search/SearchResult';
+// import SearchResult from 'Components/Search/SearchResult';
 import CustomTitle from 'Components/Header/CustomTitle';
+import LoadingList from 'Components/Loading/LoadingList';
+const SearchResult = lazy(() => import('Components/Search/SearchResult'));
 
 const Search: FC = () => {
   const location = useLocation();
@@ -47,7 +49,9 @@ const Search: FC = () => {
           검색어를 입력하지 않은 경우 추천 상품을 보여드립니다.
         </div>
       ) : (
-        <div>{data.data.length > 0 && <SearchResult data={data.data} />}</div>
+        <Suspense fallback={<LoadingList num={data.length} />}>
+          {data.data.length > 0 && <SearchResult sch={sch} />}
+        </Suspense>
       )}
     </main>
   );

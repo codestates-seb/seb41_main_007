@@ -15,9 +15,3 @@
 .Loading_Content_Img {
   @apply h-full w-full object-cover object-center group-hover:opacity-75;
 }
-
-@media (max-width: 620px) {
-  .Loading_Content_Img {
-    /* height: 420px; */
-  }
-}

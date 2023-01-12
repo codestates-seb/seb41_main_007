@@ -1,24 +1,27 @@
-import { FC, lazy, Suspense } from 'react';
-
-import LoadingList from 'Components/Loading/LoadingList';
+import { FC, lazy } from 'react';
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
 const LazyProductList = lazy(() => import('Components/ProductList'));
-interface SearchProps {
-  productId: number;
-  name: string;
-  price: number;
-  photo: string;
-}
+// interface SearchProps {
+//   productId: number;
+//   name: string;
+//   price: number;
+//   photo: string;
+// }
 
 interface Props {
-  data: SearchProps[];
+  sch: string;
 }
 
-const SearchResult: FC<Props> = ({ data }) => {
+const SearchResult: FC<Props> = ({ sch }) => {
+  const { data, isLoading } = useCustomQuery(
+    `/products${sch}`,
+    'productsSearch',
+  );
+  if (isLoading) return <></>;
+
   return (
     <ul>
-      <Suspense fallback={<LoadingList num={data.length} />}>
-        <LazyProductList products={data} />
-      </Suspense>
+      <LazyProductList products={data.data} />
     </ul>
   );
 };
