@@ -3,11 +3,12 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Header from './Components/Header/index';
 import Main from './Pages/Main';
-import Loading from './Components/Loading';
+import Loading from './Components/Loading/Loading';
 import Login from './Pages/Login';
 import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
 import ReactQueryTest from 'Pages/ReactQueryTest';
+import Search from 'Pages/Search';
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
 });
@@ -36,12 +37,21 @@ const router = createBrowserRouter([
     element: <Counter />,
   },
   {
-    path: '/:id',
+    path: '/test/counter',
     element: <ObjectSaver />,
   },
   {
     path: '/test',
     element: <ReactQueryTest />,
+  },
+  {
+    path: '/products',
+    element: (
+      <>
+        <Header />
+        <Search />
+      </>
+    ),
   },
 ]);
 
