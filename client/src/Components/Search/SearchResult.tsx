@@ -1,6 +1,6 @@
-import { FC, lazy } from 'react';
+import { FC } from 'react';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
-const LazyProductList = lazy(() => import('Components/ProductList'));
+import ProductList from 'Components/ProductList';
 // interface SearchProps {
 //   productId: number;
 //   name: string;
@@ -21,7 +21,7 @@ const SearchResult: FC<Props> = ({ sch }) => {
 
   return (
     <ul>
-      <LazyProductList products={data.data} />
+      <ProductList products={data.data} />
     </ul>
   );
 };
