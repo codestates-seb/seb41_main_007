@@ -8,6 +8,7 @@ import Login from './Pages/Login';
 import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
 import ReactQueryTest from 'Pages/ReactQueryTest';
+import Footer from 'Components/Footer';
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
 });
@@ -17,6 +18,7 @@ const withLayout = (Component: React.FC): JSX.Element => {
     <>
       <Header />
       <Component />
+      <Footer />
     </>
   );
 };
