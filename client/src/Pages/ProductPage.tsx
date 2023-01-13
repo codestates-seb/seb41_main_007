@@ -5,6 +5,8 @@ import { useCustomQuery } from 'CustomHook/useCustomQuery';
 // import { flushSync } from 'react-dom';
 import CounterButton from 'Components/ProductPage/Counterbutton';
 import { useNumberComma } from 'CustomHook/useNumberComma';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProductContainer = styled.div`
   margin-top: 120px;
@@ -117,6 +119,22 @@ const BuyButton = styled.a<{ color: string }>`
 
   background-color: ${(props) => props.color};
   margin-top: 13px;
+  :after {
+    display: block;
+    content: '';
+    border-bottom: solid 3px var(--green-60);
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+  }
+  :hover:after {
+    transform: scaleX(1);
+  }
+  .fromRight:after {
+    transform-origin: 100% 50%;
+  }
+  .fromLeft:after {
+    transform-origin: 0% 50%;
+  }
 `;
 
 export interface counterProps {
@@ -137,7 +155,17 @@ const ProductPage: React.FC = () => {
     `/products/${param.productid}`,
     `products${param.productid}`,
   );
-
+  const notify = () =>
+    toast('장바구니에 담는 중입니다.', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
   let search = location.href;
   search = 'returnUrl=' + search;
 
@@ -148,14 +176,18 @@ const ProductPage: React.FC = () => {
     const jsondata: string | null = localStorage.getItem('baskets');
 
     const baskets = JSON.parse(jsondata || '[]') || [];
-
+    console.log('안녕');
+    notify();
     let IsSame: boolean = false;
+
     baskets.forEach((el: any) => {
-      if (data.id === el.id) IsSame = true;
+      console.log(el.id);
+      if (data.productId === el.productId) IsSame = true;
     });
 
     if (IsSame) {
       alert('장바구니에 들어있습니다');
+
       return;
     }
     baskets.push(data);
@@ -227,7 +259,7 @@ const ProductPage: React.FC = () => {
         'Made from natural materials. Grain and color vary with each item.',
     },
   ];
-
+  console.log(isLoading);
   if (isLoading) return <></>;
 
   const onIncrease = () => {
@@ -283,6 +315,20 @@ const ProductPage: React.FC = () => {
           >
             장바구니 담기
           </BuyButton>
+          <ToastContainer
+            position="top-right"
+            autoClose={3000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+          {/* Same as */}
+          <ToastContainer />
           <BuyButton color={'var(--green-40)'}>결제하기</BuyButton>
         </ProductBox>
       </ProductMain>
