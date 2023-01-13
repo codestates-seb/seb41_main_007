@@ -1,7 +1,6 @@
 package com.bzzzzz.farm.review.entity;
 
 import com.bzzzzz.farm.audit.Auditable;
-import com.bzzzzz.farm.image.entity.Image;
 import com.bzzzzz.farm.member.entity.Member;
 import com.bzzzzz.farm.product.entity.Product;
 import lombok.Getter;
@@ -32,6 +31,9 @@ public class Review extends Auditable {
     @Column(nullable = false)
     private float rating;
 
+    @Column
+    private String picture;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "memberId", nullable = false)
@@ -42,8 +44,7 @@ public class Review extends Auditable {
     private Product product;
 
     //이미지 매핑
-    @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
-    private List<Image> images = new ArrayList<>();
+
 
 
     //답변 매핑해야함
