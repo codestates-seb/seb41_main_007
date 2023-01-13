@@ -4,7 +4,6 @@ import com.bzzzzz.farm.category.mapper.CategoryMapper;
 import com.bzzzzz.farm.category.service.CategoryService;
 import com.bzzzzz.farm.dto.IdRequestDto;
 import com.bzzzzz.farm.dto.MultiResponseDto;
-import com.bzzzzz.farm.dto.ResponseDto;
 import com.bzzzzz.farm.dto.SingleResponseDto;
 import com.bzzzzz.farm.like.service.LikeService;
 import com.bzzzzz.farm.product.dto.ProductPatchDto;
@@ -51,9 +50,7 @@ public class ProductController {
         //Todo: 로그인 유무에 따라 내가 좋아요를 눌렀는가를 표시해주는 메서드 추가 예정
         // isLiked = likeService.isLiked(member, product);
 
-        return new ResponseEntity(new ResponseDto(productMapper.productToProductDetailResponseDto(product, isLiked),
-                categoryMapper.categoriesToCategoryResponseDtos(categoryService.findCategories()))
-                , HttpStatus.OK);
+        return new ResponseEntity(productMapper.productToProductDetailResponseDto(product, isLiked), HttpStatus.OK);
     }
 
     @GetMapping
@@ -71,10 +68,7 @@ public class ProductController {
 
         Page<Product> productPage = productService.findProducts(page - 1, 40, sort, order, keyword);
 
-        return new ResponseEntity(
-                new ResponseDto(new MultiResponseDto(productMapper.productsToProductSimpleResponseDtos(productPage.getContent()), productPage),
-                        categoryMapper.categoriesToCategoryResponseDtos(categoryService.findCategories())),
-                HttpStatus.OK);
+        return new ResponseEntity(new MultiResponseDto(productMapper.productsToProductSimpleResponseDtos(productPage.getContent()), productPage), HttpStatus.OK);
     }
 
     @PatchMapping

@@ -6,7 +6,6 @@ import com.bzzzzz.farm.category.entity.Category;
 import com.bzzzzz.farm.category.mapper.CategoryMapper;
 import com.bzzzzz.farm.category.service.CategoryService;
 import com.bzzzzz.farm.dto.IdRequestDto;
-import com.bzzzzz.farm.dto.SingleResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +46,7 @@ public class CategoryController {
 
         List<Category> categories = categoryService.findCategories();
 
-        return new ResponseEntity(new SingleResponseDto(categoryMapper.categoriesToCategoryResponseDtos(categories)), HttpStatus.OK);
+        return new ResponseEntity(categoryMapper.categoriesToCategoryResponseDtos(categories), HttpStatus.OK);
     }
 
     @DeleteMapping
