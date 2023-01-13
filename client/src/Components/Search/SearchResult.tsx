@@ -16,7 +16,7 @@ const SearchResult: FC<Props> = ({ sch }) => {
     `product${sch}`,
   );
   const handlerSetOffset = (page: number) => {
-    return navigate(`/products${sch}&page=${page}`);
+    return navigate(`/products${sch.split('page=')[0]}page=${page}`);
   };
   if (isLoading) return <Empty />;
   const { page, totalPages } = data.pageInfo;

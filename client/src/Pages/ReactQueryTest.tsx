@@ -4,20 +4,12 @@ import { FC, useState } from 'react';
 
 const ReactQueryTest: FC = () => {
   const [text, setText] = useState<string>('');
-  const { data, isLoading, error } = useCustomQuery(
-    '/reviews?productId=1&page=1&size=10',
-    'reviews',
-  );
+  const { data, isLoading, error } = useCustomQuery('/products', 'products');
 
-  const { mutate } = useCustomMutation(
-    '/reviews?productId=1&page=1&size=10',
-    'reviews',
-    'POST',
-  );
+  const { mutate } = useCustomMutation('/products', 'products', 'POST');
 
   if (isLoading) return <></>;
   if (error) return <div> error</div>;
-  console.log(data);
   return (
     <div>
       {data &&
@@ -33,10 +25,32 @@ const ReactQueryTest: FC = () => {
       <button
         onClick={() => {
           mutate({
-            productId: 1,
-            reviewTitle: '이 장비 좋네요',
-            reviewContent: '정말 좋고 배송 빠르네요',
-            rating: 4,
+            name: '아테네',
+            price: 2000000,
+            photo:
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/First_Tractor_Company_-_old_working_model_-_01.jpg/220px-First_Tractor_Company_-_old_working_model_-_01.jpg',
+            brand: '순양자동차',
+            description: '진양철이 개발한 차량입니다.',
+            shippingCountry: 'KOREA',
+            shippingMethod: 'PARCEL_SERVICE',
+            shippingPrice: 30000,
+            productCategoryPostDtos: [
+              {
+                categoryId: 1,
+              },
+            ],
+            productOptionPostDtos: [
+              {
+                productOptionName: '자폭',
+                price: 1000000,
+                stock: 10,
+              },
+              {
+                productOptionName: '본네트를 없애서 경량화',
+                price: 1000000,
+                stock: 10,
+              },
+            ],
           });
         }}
       >

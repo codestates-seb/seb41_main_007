@@ -21,6 +21,7 @@ const Input: FC = () => {
         <input type="hidden" name="keyword" value={userFormInput} />
         <input type="hidden" name="sort" value={'likeCount'} />
         <input type="hidden" name="order" value={'ascending'} />
+        <input type="hidden" name="page" value={'1'} />
         <button>
           <svg
             className={styles.Header_Input_SearchIcon}
