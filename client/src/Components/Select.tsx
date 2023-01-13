@@ -80,7 +80,7 @@ export default function Select() {
             Bank
           </Listbox.Label>
           <div className="relative mt-1">
-            <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm">
+            <Listbox.Button className="relative w-full cursor-default rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:border-green-700 focus:outline-none focus:ring-1 focus:ring-green-700 sm:text-sm">
               <span className="flex items-center">
                 <img
                   src={selected.avatar}
@@ -110,7 +110,7 @@ export default function Select() {
                     key={person.id}
                     className={({ active }) =>
                       classNames(
-                        active ? 'text-white bg-indigo-600' : 'text-gray-900',
+                        active ? 'text-white bg-green-700' : 'text-gray-900',
                         'relative cursor-default select-none py-2 pl-3 pr-9',
                       )
                     }
@@ -137,7 +137,7 @@ export default function Select() {
                         {selected ? (
                           <span
                             className={classNames(
-                              active ? 'text-white' : 'text-indigo-600',
+                              active ? 'text-white' : 'text-grenn-700',
                               'absolute inset-y-0 right-0 flex items-center pr-4',
                             )}
                           >
