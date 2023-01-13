@@ -14,12 +14,10 @@ const Search: FC = () => {
   const sch = location.search;
   const params = new URLSearchParams(sch);
   const keyword = params.get('keyword');
-
   const { data, isLoading, error } = useCustomQuery(
     `/products${sch}`,
     `product${sch}`,
   );
-
   if (isLoading) return <></>;
   if (error)
     return <div className={styles.LoadingContainer}>에러 발생하였습니다.</div>;
