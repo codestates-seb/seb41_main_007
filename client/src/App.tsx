@@ -11,7 +11,8 @@ import ReactQueryTest from 'Pages/ReactQueryTest';
 import ProductPage from 'Pages/ProductPage';
 import BasketsPage from 'Pages/BasketPage';
 import Search from 'Pages/Search';
-import Footer from 'Components/Footer';
+
+import Footer from 'Components/Common/Footer';
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
 });
