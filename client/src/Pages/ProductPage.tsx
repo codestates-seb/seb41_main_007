@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 // import { flushSync } from 'react-dom';
 import CounterButton from 'Components/ProductPage/Counterbutton';
-import { useNumberComma } from 'CustomHook/useNumberComma';
+import { useNumberComma } from 'Utils/commonFunction';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -118,6 +118,22 @@ const BuyButton = styled.a<{ color: string }>`
   width: 350px;
   background-color: ${(props) => props.color};
   margin-top: 13px;
+  :after {
+    display: block;
+    content: '';
+    border-bottom: solid 3px var(--green-60);
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+  }
+  :hover:after {
+    transform: scaleX(1);
+  }
+  .fromRight:after {
+    transform-origin: 100% 50%;
+  }
+  .fromLeft:after {
+    transform-origin: 0% 50%;
+  }
 `;
 
 export interface counterProps {
@@ -132,14 +148,25 @@ export interface counterProps {
 
 const ProductPage: React.FC = () => {
   const [count, setCount] = useState<number>(1);
-  const [result, setresult] = useState<number>(0);
+
   let param = useParams();
   const { data, isLoading } = useCustomQuery(
     `/products/${param.productid}`,
     `products${param.productid}`,
   );
-  const notify = () =>
+  const emptyBasketAlram = () =>
     toast('장바구니에 담는 중입니다.', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+  const fullBasketAlram = () =>
+    toast('이미 장바구니에 들어있습니다.', {
       position: 'top-right',
       autoClose: 3000,
       hideProgressBar: false,
@@ -159,8 +186,7 @@ const ProductPage: React.FC = () => {
     const jsondata: string | null = localStorage.getItem('baskets');
 
     const baskets = JSON.parse(jsondata || '[]') || [];
-    console.log('안녕');
-    notify();
+
     let IsSame: boolean = false;
 
     baskets.forEach((el: any) => {
@@ -169,13 +195,13 @@ const ProductPage: React.FC = () => {
     });
 
     if (IsSame) {
-      alert('장바구니에 들어있습니다');
+      fullBasketAlram();
 
       return;
     }
     baskets.push(data);
     console.log(baskets);
-
+    emptyBasketAlram();
     localStorage.setItem('baskets', JSON.stringify(baskets));
   };
 
@@ -246,10 +272,8 @@ const ProductPage: React.FC = () => {
   if (isLoading) return <></>;
 
   const onIncrease = () => {
-    console.log(count, result);
-
     setCount((prevCount) => prevCount + 1);
-    setresult(data.price * count);
+
     console.log(count);
   };
 
@@ -260,7 +284,6 @@ const ProductPage: React.FC = () => {
       }
       return prevCount - 1;
     });
-    setresult(data.price * count);
   };
 
   //리턴 url , 로컬스토리지에 담기
