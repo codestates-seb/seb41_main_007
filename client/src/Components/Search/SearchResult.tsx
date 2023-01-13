@@ -4,7 +4,6 @@ import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import ProductList from 'Components/Search/ProductList';
 import Navigation from 'Components/Pagination/Navigation';
 import Empty from 'Components/Common/Empty';
-
 interface Props {
   sch: string;
 }
@@ -16,6 +15,7 @@ const SearchResult: FC<Props> = ({ sch }) => {
     `product${sch}`,
   );
   const handlerSetOffset = (page: number) => {
+    window.scrollTo(0, 0);
     return navigate(`/products${sch.split('page=')[0]}page=${page}`);
   };
   if (isLoading) return <Empty />;
