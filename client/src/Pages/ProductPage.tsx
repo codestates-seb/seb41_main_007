@@ -7,6 +7,7 @@ import CounterButton from 'Components/ProductPage/Counterbutton';
 import { useNumberComma } from 'Utils/commonFunction';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Empty from 'Components/Common/Empty';
 
 const ProductContainer = styled.div`
   margin-top: 120px;
@@ -269,7 +270,7 @@ const ProductPage: React.FC = () => {
     },
   ];
   console.log(isLoading);
-  if (isLoading) return <></>;
+  if (isLoading) return <Empty />;
 
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);

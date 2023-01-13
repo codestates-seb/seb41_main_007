@@ -7,6 +7,7 @@ import CustomTitle from 'Components/Header/CustomTitle';
 import LazySearchResult from 'Components/Search/SearchResult';
 
 import styles from './Styles/Main.module.css';
+import Empty from 'Components/Common/Empty';
 
 const Search: FC = () => {
   const location = useLocation();
@@ -18,7 +19,7 @@ const Search: FC = () => {
     `/products${sch}`,
     `product${sch}`,
   );
-  if (isLoading) return <></>;
+  if (isLoading) return <Empty />;
   if (error)
     return <div className={styles.LoadingContainer}>에러 발생하였습니다.</div>;
 
