@@ -116,25 +116,8 @@ const BuyButton = styled.a<{ color: string }>`
   border: 1px solid var(--gray-02);
   display: block;
   width: 350px;
-
   background-color: ${(props) => props.color};
   margin-top: 13px;
-  :after {
-    display: block;
-    content: '';
-    border-bottom: solid 3px var(--green-60);
-    transform: scaleX(0);
-    transition: transform 250ms ease-in-out;
-  }
-  :hover:after {
-    transform: scaleX(1);
-  }
-  .fromRight:after {
-    transform-origin: 100% 50%;
-  }
-  .fromLeft:after {
-    transform-origin: 0% 50%;
-  }
 `;
 
 export interface counterProps {
