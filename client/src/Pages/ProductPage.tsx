@@ -8,6 +8,7 @@ import { useNumberComma } from 'Utils/commonFunction';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Empty from 'Components/Common/Empty';
+import BuyButton from 'Components/Common/BuyButton';
 
 const ProductContainer = styled.div`
   margin-top: 120px;
@@ -96,45 +97,6 @@ const Price = styled.p`
   font-size: var(--large);
   font-weight: 600;
   color: #b41c11;
-`;
-
-const BuyButton = styled.a<{ color: string }>`
-  font-family: 'Noto Sans KR', sans-serif;
-  margin: 0;
-  vertical-align: baseline;
-  background: transparent;
-  text-decoration: none;
-  cursor: pointer;
-  box-sizing: border-box;
-  text-align: center;
-  font-size: 14px;
-  font-weight: 400;
-
-  white-space: nowrap;
-  height: 60px;
-  line-height: 60px;
-  padding: 0 12px;
-  border: 1px solid var(--gray-02);
-  display: block;
-  width: 350px;
-  background-color: ${(props) => props.color};
-  margin-top: 13px;
-  :after {
-    display: block;
-    content: '';
-    border-bottom: solid 3px var(--green-60);
-    transform: scaleX(0);
-    transition: transform 250ms ease-in-out;
-  }
-  :hover:after {
-    transform: scaleX(1);
-  }
-  .fromRight:after {
-    transform-origin: 100% 50%;
-  }
-  .fromLeft:after {
-    transform-origin: 0% 50%;
-  }
 `;
 
 export interface counterProps {
@@ -317,10 +279,10 @@ const ProductPage: React.FC = () => {
             </Price>
           </ProductTable>
           <BuyButton
-            color={'var( --white-02)'}
+            background={'var( --white-02)'}
             onClick={() => onClickBasket(data)}
           >
-            장바구니 담기
+            장바구니담기
           </BuyButton>
           <ToastContainer
             position="top-right"
@@ -336,7 +298,7 @@ const ProductPage: React.FC = () => {
           />
           {/* Same as */}
           <ToastContainer />
-          <BuyButton color={'var(--green-40)'}>결제하기</BuyButton>
+          <BuyButton background="var(--green-40)">결제하기</BuyButton>
         </ProductBox>
       </ProductMain>
       <div className="bg-white">
