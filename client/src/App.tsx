@@ -12,7 +12,7 @@ import ProductPage from 'Pages/ProductPage';
 
 import Search from 'Pages/Search';
 
-import Footer from 'Components/Footer';
+import Footer from 'Components/Common/Footer';
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
 });
