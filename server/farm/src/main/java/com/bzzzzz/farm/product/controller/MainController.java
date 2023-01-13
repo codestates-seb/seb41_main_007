@@ -10,6 +10,7 @@ import com.bzzzzz.farm.review.dto.ReviewSimpleResponseDto;
 import com.bzzzzz.farm.review.mapper.ReviewMapper;
 import com.bzzzzz.farm.review.service.ReviewService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -32,14 +33,14 @@ public class MainController {
     private final CategoryMapper categoryMapper;
 
     @GetMapping
+    @Cacheable(value = "getMain")
     public ResponseEntity getMain() {
         /**
          * 좋아요 높은 순 10개
          * 신상품 7개
-         * 판매량 순 20개
+         * 판매량 순 20개 Todo: CacheEvict 적용할 것
          * 최근 리뷰 4개
          * */
-
         Map<String, Object> response = new HashMap<>();
 
         List<ProductSimpleResponseDto> orderByLikeCount = productMapper.productsToProductSimpleResponseDtos(productService.findProducts(0, 10, "likeCount", "descending", "").getContent());
@@ -51,7 +52,6 @@ public class MainController {
         response.put("orderByProductId", orderByProductId);
         response.put("orderBySoldCount", orderBySoldCount);
         response.put("reviews", reviews);
-
         return new ResponseEntity(
                 new ResponseDto<>(response,
                         categoryMapper.categoriesToCategoryResponseDtos(categoryService.findCategories())),
