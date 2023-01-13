@@ -4,6 +4,7 @@ body {
   @apply font-sans;
 }
 
+/* EX: color: var(--green-30); */
 :root {
   --green-10: #e9f5db;
   --green-20: #cfe1b9;
