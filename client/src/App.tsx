@@ -9,6 +9,7 @@ import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
 import ReactQueryTest from 'Pages/ReactQueryTest';
 import ProductPage from 'Pages/ProductPage';
+import ReviewCss from 'Components/Review/ReviewCss';
 
 import Search from 'Pages/Search';
 
@@ -61,6 +62,10 @@ const router = createBrowserRouter([
         <Search />
       </>
     ),
+  },
+  {
+    path: '/review',
+    element: <ReviewCss />,
   },
 ]);
 
