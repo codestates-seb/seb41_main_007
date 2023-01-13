@@ -14,6 +14,7 @@ const Main = styled.div`
   background-color: #ebebeb;
   height: 340px;
   display: flex;
+  width: 1300px;
   padding: 40px 50px;
 `;
 const Client = styled.div`
@@ -28,7 +29,7 @@ const Client = styled.div`
     color: white;
     width: 220px;
     height: 40px;
-    margin-top: 15px;
+    margin-top: 30px;
     font-size: 13px;
   }
 `;
@@ -51,7 +52,7 @@ const Change = styled.div`
     color: white;
     width: 300px;
     height: 40px;
-    margin-top: 51px;
+    margin-top: 50px;
     font-size: 13px;
   }
 `;
@@ -97,7 +98,7 @@ const Footer = () => {
                 교환 및 반품을 하기위해 먼저 콜센터로 접수를 꼭 하시고 지정된
                 택배로 발송해주시기 바랍니다.
               </div>
-              <button className="hover:bg-gray-500">
+              <button className="hover:bg-gray-600">
                 배송조회 하기(CJ 대한통운 1588-1255)
               </button>
             </div>
