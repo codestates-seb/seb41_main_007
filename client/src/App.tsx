@@ -9,9 +9,8 @@ import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
 import ReactQueryTest from 'Pages/ReactQueryTest';
 import ProductPage from 'Pages/ProductPage';
-
+import BasketsPage from 'Pages/BasketPage';
 import Search from 'Pages/Search';
-
 import Footer from 'Components/Footer';
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
@@ -42,6 +41,14 @@ const router = createBrowserRouter([
     element: withLayout(ProductPage),
   },
   {
+    path: '/products',
+    element: withLayout(Search),
+  },
+  {
+    path: '/Basket',
+    element: withLayout(BasketsPage),
+  },
+  {
     path: '/Counter',
     element: <Counter />,
   },
@@ -52,10 +59,6 @@ const router = createBrowserRouter([
   {
     path: '/test',
     element: <ReactQueryTest />,
-  },
-  {
-    path: '/products',
-    element: withLayout(Search),
   },
 ]);
 
