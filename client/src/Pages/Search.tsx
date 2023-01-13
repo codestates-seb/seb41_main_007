@@ -1,11 +1,10 @@
-import { FC, Suspense, lazy } from 'react';
+import { FC } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 
 import CustomTitle from 'Components/Header/CustomTitle';
-import LoadingList from 'Components/Loading/LoadingList';
-const LazySearchResult = lazy(() => import('Components/Search/SearchResult'));
+import LazySearchResult from 'Components/Search/SearchResult';
 
 import styles from './Styles/Main.module.css';
 
@@ -39,9 +38,7 @@ const Search: FC = () => {
               &quot;{keyword}&quot; 에 대한 검색결과 ({data.data.length})
             </p>
           </div>
-          <Suspense fallback={<LoadingList num={data.data.length} />}>
-            {data.data.length > 0 && <LazySearchResult sch={sch} />}
-          </Suspense>
+          {data.data.length > 0 && <LazySearchResult sch={sch} />}
         </>
       )}
     </main>

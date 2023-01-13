@@ -19,7 +19,7 @@ const LoadingList: FC<Props> = ({ num }) => {
   );
 };
 
-const SkeletonContent = (num: number) => {
+export const SkeletonContent = (num: number) => {
   let array = [];
   for (let i = 0; i < num; i++) {
     array.push(
