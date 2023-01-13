@@ -6,6 +6,7 @@ import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +24,7 @@ public class ProductService {
     private final ProductOptionService productOptionService;
     private final ProductCategoryService productCategoryService;
 
+    @CacheEvict(value = "getMain", allEntries = true)
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }
@@ -47,6 +49,7 @@ public class ProductService {
         return productRepository.findAll(pageable);
     }
 
+    @CacheEvict(value = "getMain", allEntries = true)
     public void updateProduct(ProductPatchDto productPatchDto) {
 
         Product findProduct = findVerifiedProduct(productPatchDto.getProductId());
@@ -72,6 +75,7 @@ public class ProductService {
                         .forEach(productOptionPatchDto -> productOptionService.updateProductOption(productOptionPatchDto)));
     }
 
+    @CacheEvict(value = "getMain", allEntries = true)
     public void deleteProduct(long productId) {
         productRepository.delete(findVerifiedProduct(productId));
     }

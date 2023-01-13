@@ -8,6 +8,7 @@ import com.bzzzzz.farm.member.entity.Member;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ public class LikeService {
     private final LikeRepository likeRepository;
     private final ProductService productService;
 
+    @CacheEvict(value = "getMain", allEntries = true)
     public void createLike(long memberId, long productId) {
         //Todo: 멤버들어오면 멤버유효성 검증을 통해 찾은 멤버로 수정해야함
         Member member = new Member();
@@ -38,6 +40,7 @@ public class LikeService {
         likeRepository.save(new Like(null, member, product));
     }
 
+    @CacheEvict(value = "getMain", allEntries = true)
     public void deleteLike(long memberId, long productId) {
         //Todo: 멤버들어오면 멤버유효성 검증을 통해 찾은 멤버로 수정해야함
         Member member = new Member();
