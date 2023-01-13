@@ -15,7 +15,7 @@ interface Props {
 }
 
 const Product: FC<Props> = ({ product }) => {
-  const REF = useRef<any>(null);
+  const REF = useRef<HTMLDivElement>(null);
   const [isLoad, setIsLoad] = useState(false);
 
   useEffect(() => {
@@ -23,10 +23,10 @@ const Product: FC<Props> = ({ product }) => {
       setIsLoad(true);
     }
 
-    const imgEl = REF.current;
-    imgEl && imgEl.addEventListener(LOAD_IMG_EVENT_TYPE, loadImage);
+    const productEl = REF.current;
+    productEl && productEl.addEventListener(LOAD_EVENT_TYPE, loadImage);
     return () => {
-      imgEl && imgEl.removeEventListener(LOAD_IMG_EVENT_TYPE, loadImage);
+      productEl && productEl.removeEventListener(LOAD_EVENT_TYPE, loadImage);
     };
   }, []);
 
@@ -60,7 +60,7 @@ const Product: FC<Props> = ({ product }) => {
   );
 };
 let observer: IntersectionObserver | null = null;
-const LOAD_IMG_EVENT_TYPE = 'loadImage';
+const LOAD_EVENT_TYPE = 'load';
 
 function onIntersection(
   entries: IntersectionObserverEntry[],
@@ -69,7 +69,7 @@ function onIntersection(
   entries.forEach((entry) => {
     if (entry.isIntersecting) {
       io.unobserve(entry.target);
-      entry.target.dispatchEvent(new CustomEvent(LOAD_IMG_EVENT_TYPE));
+      entry.target.dispatchEvent(new CustomEvent(LOAD_EVENT_TYPE));
     }
   });
 }
