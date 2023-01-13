@@ -1,8 +1,5 @@
 package com.bzzzzz.farm.product.controller;
 
-import com.bzzzzz.farm.category.mapper.CategoryMapper;
-import com.bzzzzz.farm.category.service.CategoryService;
-import com.bzzzzz.farm.dto.ResponseDto;
 import com.bzzzzz.farm.product.dto.ProductSimpleResponseDto;
 import com.bzzzzz.farm.product.mapper.ProductMapper;
 import com.bzzzzz.farm.product.service.ProductService;
@@ -29,8 +26,6 @@ public class MainController {
     private final ProductMapper productMapper;
     private final ReviewService reviewService;
     private final ReviewMapper reviewMapper;
-    private final CategoryService categoryService;
-    private final CategoryMapper categoryMapper;
 
     @GetMapping
     @Cacheable(value = "getMain")
@@ -52,10 +47,7 @@ public class MainController {
         response.put("orderByProductId", orderByProductId);
         response.put("orderBySoldCount", orderBySoldCount);
         response.put("reviews", reviews);
-        return new ResponseEntity(
-                new ResponseDto<>(response,
-                        categoryMapper.categoriesToCategoryResponseDtos(categoryService.findCategories())),
-                HttpStatus.OK);
+        return new ResponseEntity(response, HttpStatus.OK);
     }
 
 }
