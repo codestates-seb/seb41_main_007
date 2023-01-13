@@ -17,7 +17,6 @@ const Navigation = ({
     Math.ceil(currentPage / 10) - 1,
   );
   function isPrev() {
-    // return false; test
     if (pageStage > 0) {
       return false;
     } else {
@@ -25,7 +24,6 @@ const Navigation = ({
     }
   }
   function isNext() {
-    // return false; test
     if (pageStage < Math.ceil(totalPage / 10) - 1) {
       return false;
     } else {

@@ -17,10 +17,6 @@
   color: var(--green-40);
 }
 
-.Nav_Button:active {
-  transform: scale(1.2);
-}
-
 .Nav_Button:hover {
   transform: scale(1.15);
   background-color: var(--green-10);
@@ -40,14 +36,13 @@
   font-family: 'paybooc-Light';
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
   text-decoration: none;
-  /* font-weight: 600; */
   transition: 0.25s;
   color: var(--green-40);
 }
 
-.Nav_Item :hover {
+.Nav_Item:hover {
   transform: scale(1.15);
-  background-color: var(--green-10);
+  background-color: var(--green-20);
   cursor: pointer;
 }
 

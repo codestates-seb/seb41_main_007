@@ -14,6 +14,7 @@ const Search: FC = () => {
   const sch = location.search;
   const params = new URLSearchParams(sch);
   const keyword = params.get('keyword');
+  // length 만 사용하는 api 스켈레톤을 보여주기위해서 여기서는 data를 안쓰고 오브젝트 수만 씁니다
   const { data, isLoading, error } = useCustomQuery(
     `/products${sch}`,
     `product${sch}`,
@@ -21,6 +22,7 @@ const Search: FC = () => {
   if (isLoading) return <></>;
   if (error)
     return <div className={styles.LoadingContainer}>에러 발생하였습니다.</div>;
+
   return (
     <main className={styles.Main_Container}>
       {!keyword ? (
