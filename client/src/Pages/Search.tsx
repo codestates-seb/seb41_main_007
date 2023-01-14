@@ -33,7 +33,7 @@ const Search: FC = () => {
         </div>
       ) : (
         <>
-          <CustomTitle title={`${keyword} 에 대한 검색결과`} />
+          <CustomTitle title={`${keyword} 에 대한 검색결과 - FARMPI`} />
           <div className={styles.Search_Result_Text_Container}>
             <p className={styles.Search_Result_Text}>
               &quot;{keyword}&quot; 에 대한 검색결과 ({data.data.length})

@@ -8,6 +8,7 @@ import { useNumberComma } from 'Utils/commonFunction';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Empty from 'Components/Common/Empty';
+import CustomTitle from 'Components/Header/CustomTitle';
 
 const ProductContainer = styled.div`
   margin-top: 120px;
@@ -292,6 +293,7 @@ const ProductPage: React.FC = () => {
     <ProductContainer>
       <ProductMenuTitle></ProductMenuTitle>
       <ProductMain>
+        <CustomTitle title={`${data.name} 상품 - FARMPI`} />
         <ImageBox src={data.photo}></ImageBox>
         <ProductBox>
           <ProductPrice Mgtop="0"></ProductPrice>
