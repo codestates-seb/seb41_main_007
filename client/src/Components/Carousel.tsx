@@ -27,20 +27,22 @@ export const Size = styled.div`
 export const Carousell = (props: any) => {
   const items = [
     {
-      url: `https://cdn.pixabay.com/photo/2022/08/09/15/20/tractor-7375252_960_720.jpg`,
+      url: `https://cdn.pixabay.com/photo/2012/06/08/06/19/clouds-49520_960_720.jpg`,
     },
     {
-      url: `https://cdn.pixabay.com/photo/2013/08/28/00/54/field-176602_960_720.jpg`,
+      url: `https://cdn.pixabay.com/photo/2020/04/26/16/56/tractor-5096163_960_720.jpg`,
     },
     {
-      url: `https://cdn.pixabay.com/photo/2013/11/21/17/06/tractor-215159_960_720.jpg`,
+      url: `https://cdn.pixabay.com/photo/2018/08/21/17/26/korea-3621711_960_720.jpg`,
     },
   ];
   return (
-    <Carousel>
-      {items.map((item, i) => (
-        <Item key={i} {...item} />
-      ))}
-    </Carousel>
+    <div className="mx-52">
+      <Carousel>
+        {items.map((item, i) => (
+          <Item key={i} {...item} />
+        ))}
+      </Carousel>
+    </div>
   );
 };
