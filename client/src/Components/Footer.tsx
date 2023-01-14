@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Select from './Select';
+import Select from './Common/Select';
 const Container = styled.div`
   width: 100%;
   height: 400px;

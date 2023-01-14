@@ -4,7 +4,7 @@ body {
   @apply font-sans;
 }
 
-/* EX: color: var(--green-30); */
+/* EX: color: var(--green-60); */
 :root {
   --green-10: #e9f5db;
   --green-20: #cfe1b9;
@@ -58,6 +58,7 @@ body {
   --red-00: #ff585b;
   --svg: #3e3e41;
   --logo: #040000;
+  --priceColor: #b41c11;
 }
 
 @tailwind base;

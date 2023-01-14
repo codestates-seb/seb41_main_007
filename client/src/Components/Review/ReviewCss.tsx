@@ -83,7 +83,7 @@ const products = [
   // More products...
 ];
 
-export default function Example() {
+export default function ReviewCss() {
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
@@ -97,7 +97,7 @@ export default function Example() {
               href={product.href}
               className="group flex gap-x-4"
             >
-              <div className="aspect-w-1 aspect-h-1  overflow-hidden rounded-lg">
+              <div className="aspect-w-28 aspect-h-28  overflow-hidden rounded-lg">
                 <img
                   src={product.imageSrc}
                   alt={product.imageAlt}

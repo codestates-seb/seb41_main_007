@@ -24,7 +24,7 @@ export const Size = styled.div`
     width: 100%;
   }
 `;
-export const Carousell = (props: any) => {
+export const Carousell: React.FC = (props: any) => {
   const items = [
     {
       url: `https://cdn.pixabay.com/photo/2012/06/08/06/19/clouds-49520_960_720.jpg`,
