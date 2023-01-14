@@ -12,8 +12,8 @@ const Main: FC = (): JSX.Element => {
     <main className={styles.Main_Container}>
       <Index />
       <Carousell />
-      <NewCarousel />
       <ExampleBest />
+      <NewCarousel />
       <StartDive />
       <Example />
     </main>
