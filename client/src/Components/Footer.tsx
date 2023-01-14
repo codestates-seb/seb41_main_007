@@ -9,6 +9,7 @@ const Container = styled.div`
   .select {
     margin-top: 65px;
   }
+  margin-top: 150px;
 `;
 const Main = styled.div`
   background-color: #ebebeb;
