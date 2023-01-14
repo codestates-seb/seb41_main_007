@@ -36,7 +36,13 @@ public class ProductCategoryService {
     }
 
     public void deleteProductCategory(long productCategoryId) {
-        productCategoryRepository.delete(findVerifiedProductCategory(productCategoryId));
+        ProductCategory productCategory = findVerifiedProductCategory(productCategoryId);
+
+        if (productCategory.getProduct().getProductCategories().size() <= 1) {
+            throw new BusinessLogicException(ExceptionCode.PRODUCT_CATEGORY_CONFLICT);
+        }
+
+        productCategoryRepository.delete(productCategory);
     }
 
     /**
