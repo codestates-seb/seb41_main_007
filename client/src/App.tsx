@@ -9,11 +9,12 @@ import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
 import ReactQueryTest from 'Pages/ReactQueryTest';
 import ProductPage from 'Pages/ProductPage';
+import BasketsPage from 'Pages/BasketPage';
 import ReviewCss from 'Components/Review/ReviewCss';
 
 import Search from 'Pages/Search';
 
-import Footer from 'Components/Footer';
+import Footer from 'Components/Common/Footer';
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
 });
@@ -43,6 +44,14 @@ const router = createBrowserRouter([
     element: withLayout(ProductPage),
   },
   {
+    path: '/products',
+    element: withLayout(Search),
+  },
+  {
+    path: '/Basket',
+    element: withLayout(BasketsPage),
+  },
+  {
     path: '/Counter',
     element: <Counter />,
   },
@@ -53,19 +62,6 @@ const router = createBrowserRouter([
   {
     path: '/test',
     element: <ReactQueryTest />,
-  },
-  {
-    path: '/products',
-    element: (
-      <>
-        <Header />
-        <Search />
-      </>
-    ),
-  },
-  {
-    path: '/review',
-    element: <ReviewCss />,
   },
 ]);
 

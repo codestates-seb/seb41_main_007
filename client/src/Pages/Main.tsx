@@ -1,5 +1,5 @@
 import ExampleBest from 'Components/BestProduct/BestCss';
-import { Carousell } from 'Components/Carousel';
+import { Carousell } from 'Components/Common/Carousel';
 import NewCarousel from 'Components/NewProduct/NewCss';
 import Example from 'Components/Review/ReviewCss';
 import StartDive from 'Components/NewProduct/StartDive';

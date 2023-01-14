@@ -24,7 +24,34 @@ const ReactQueryTest: FC = () => {
       />
       <button
         onClick={() => {
-          mutate({ id: data.length, text });
+          mutate({
+            name: '아테네',
+            price: 2000000,
+            photo:
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/First_Tractor_Company_-_old_working_model_-_01.jpg/220px-First_Tractor_Company_-_old_working_model_-_01.jpg',
+            brand: '순양자동차',
+            description: '진양철이 개발한 차량입니다.',
+            shippingCountry: 'KOREA',
+            shippingMethod: 'PARCEL_SERVICE',
+            shippingPrice: 30000,
+            productCategoryPostDtos: [
+              {
+                categoryId: 1,
+              },
+            ],
+            productOptionPostDtos: [
+              {
+                productOptionName: '자폭',
+                price: 1000000,
+                stock: 10,
+              },
+              {
+                productOptionName: '본네트를 없애서 경량화',
+                price: 1000000,
+                stock: 10,
+              },
+            ],
+          });
         }}
       >
         클릭시 변경
