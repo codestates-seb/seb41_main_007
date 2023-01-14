@@ -10,7 +10,6 @@ import ObjectSaver from 'Redux/ex/objectSave';
 import ReactQueryTest from 'Pages/ReactQueryTest';
 import ProductPage from 'Pages/ProductPage';
 import BasketsPage from 'Pages/BasketPage';
-import ReviewCss from 'Components/Review/ReviewCss';
 
 import Search from 'Pages/Search';
 
