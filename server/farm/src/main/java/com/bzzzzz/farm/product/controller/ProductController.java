@@ -1,7 +1,5 @@
 package com.bzzzzz.farm.product.controller;
 
-import com.bzzzzz.farm.category.mapper.CategoryMapper;
-import com.bzzzzz.farm.category.service.CategoryService;
 import com.bzzzzz.farm.dto.IdRequestDto;
 import com.bzzzzz.farm.dto.MultiResponseDto;
 import com.bzzzzz.farm.dto.SingleResponseDto;
@@ -29,8 +27,6 @@ public class ProductController {
     private final ProductService productService;
     private final LikeService likeService;
     private final ProductMapper productMapper;
-    private final CategoryService categoryService;
-    private final CategoryMapper categoryMapper;
 
     @PostMapping
     public ResponseEntity postProduct(@Valid @RequestBody ProductPostDto productPostDto) {
