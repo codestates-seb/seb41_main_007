@@ -23,11 +23,15 @@ public class ProductPatchDto {
 
     private String description;
 
+    private String productStatus;
+
     private String shippingCountry;
 
     private String shippingMethod;
 
     private Integer shippingPrice;
+
+    private List<ProductCategoryPatchDto> productCategoryPatchDtos;
 
     private List<ProductOptionPatchDto> productOptionPatchDtos;
 }

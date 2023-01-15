@@ -1,10 +1,7 @@
 package com.bzzzzz.farm.review.mapper;
 
 
-import com.bzzzzz.farm.review.dto.ReviewPatchDto;
-import com.bzzzzz.farm.review.dto.ReviewPostDto;
-import com.bzzzzz.farm.review.dto.ReviewResponseDto;
-import com.bzzzzz.farm.review.dto.ReviewToReviewsResponseDto;
+import com.bzzzzz.farm.review.dto.*;
 import com.bzzzzz.farm.review.entity.Review;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -62,4 +59,30 @@ public interface ReviewMapper {
         )).collect(Collectors.toList());
     }
 
+    default List<ReviewSimpleResponseDto> reviewsToReviewSimpleResponseDtos(List<Review> reviews) {
+        if ( reviews == null ) {
+            return null;
+        }
+
+        return reviews.stream()
+                .map(review -> reviewToReviewSimpleResponseDto(review))
+                .collect(Collectors.toList());
+    }
+
+    private ReviewSimpleResponseDto reviewToReviewSimpleResponseDto(Review review) {
+        if (review == null) {
+            return null;
+        }
+
+        return ReviewSimpleResponseDto.builder()
+                .reviewId(review.getReviewId())
+                .reviewTitle(review.getReviewTitle())
+                .reviewContent(review.getReviewContent())
+                .rating(review.getRating())
+                .createdAt(review.getCreatedAt())
+                .modifiedAt(review.getModifiedAt())
+                .memberName(review.getMember().getName())
+                .photo(review.getProduct().getPhoto())
+                .build();
+    }
 }

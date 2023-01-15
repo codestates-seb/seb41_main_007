@@ -1,9 +1,11 @@
 package com.bzzzzz.farm.product.controller;
 
-import com.bzzzzz.farm.dto.IdResponseDto;
+import com.bzzzzz.farm.category.mapper.CategoryMapper;
+import com.bzzzzz.farm.category.service.CategoryService;
+import com.bzzzzz.farm.dto.IdRequestDto;
 import com.bzzzzz.farm.dto.MultiResponseDto;
+import com.bzzzzz.farm.dto.SingleResponseDto;
 import com.bzzzzz.farm.like.service.LikeService;
-import com.bzzzzz.farm.product.dto.ProductDeleteDto;
 import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.dto.ProductPostDto;
 import com.bzzzzz.farm.product.entity.Product;
@@ -27,6 +29,8 @@ public class ProductController {
     private final ProductService productService;
     private final LikeService likeService;
     private final ProductMapper productMapper;
+    private final CategoryService categoryService;
+    private final CategoryMapper categoryMapper;
 
     @PostMapping
     public ResponseEntity postProduct(@Valid @RequestBody ProductPostDto productPostDto) {
@@ -34,7 +38,7 @@ public class ProductController {
 
         Product product = productService.createProduct(productMapper.productPostDtoToProduct(productPostDto));
 
-        return new ResponseEntity(new IdResponseDto(product.getProductId()), HttpStatus.CREATED);
+        return new ResponseEntity(new SingleResponseDto(product.getProductId()), HttpStatus.CREATED);
     }
 
     @GetMapping("/{product-id}")
@@ -64,9 +68,7 @@ public class ProductController {
 
         Page<Product> productPage = productService.findProducts(page - 1, 40, sort, order, keyword);
 
-        return new ResponseEntity(
-                new MultiResponseDto(productMapper.productsToProductSimpleResponseDtos(productPage.getContent()), productPage),
-                HttpStatus.OK);
+        return new ResponseEntity(new MultiResponseDto(productMapper.productsToProductSimpleResponseDtos(productPage.getContent()), productPage), HttpStatus.OK);
     }
 
     @PatchMapping
@@ -75,14 +77,14 @@ public class ProductController {
 
         productService.updateProduct(productPatchDto);
 
-        return new ResponseEntity(new IdResponseDto(productPatchDto.getProductId()), HttpStatus.OK);
+        return new ResponseEntity(new SingleResponseDto(productPatchDto.getProductId()), HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity deleteProduct(@Valid @RequestBody ProductDeleteDto productDeleteDto) {
+    public ResponseEntity deleteProduct(@Valid @RequestBody IdRequestDto idRequestDto) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
 
-        productService.deleteProduct(productDeleteDto.getProductId());
+        productService.deleteProduct(idRequestDto.getId());
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

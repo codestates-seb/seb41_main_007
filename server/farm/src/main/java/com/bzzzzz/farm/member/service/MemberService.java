@@ -83,15 +83,6 @@ public class MemberService {
                         new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
         return findMember;
     }
-    @Transactional(readOnly = true)
-    public Member findVerifiedEmail(String email) {
-        Optional<Member> optionalMember =
-                memberRepository.findByEmail(email);
-        Member findMember =
-                optionalMember.orElseThrow(() ->
-                        new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        return findMember;
-    }
 
     public boolean existsEmail(String email) {
         Optional<Member> member = memberRepository.findByEmail(email);

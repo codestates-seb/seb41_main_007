@@ -4,19 +4,18 @@ package com.bzzzzz.farm.review.service;
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.member.entity.Member;
-import com.bzzzzz.farm.review.dto.ReviewPatchDto;
 import com.bzzzzz.farm.review.entity.Review;
 import com.bzzzzz.farm.review.repository.ReviewRepository;
-
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Log4j2
@@ -29,6 +28,7 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
     }
 
+    @CacheEvict(value = "getMain", allEntries = true)
     public Review insertReview(Review review) {
         Review saveReview = reviewRepository.save(review);
         return saveReview;
@@ -46,6 +46,7 @@ public class ReviewService {
         return reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 없습니다."));
     }
 
+    @CacheEvict(value = "getMain", allEntries = true)
     public Review updateReview(Review review, Member member){
 
         log.info("updateReview : "+review.getReviewId());
@@ -68,6 +69,7 @@ public class ReviewService {
     }
 
     //특정 리뷰 삭제
+    @CacheEvict(value = "getMain", allEntries = true)
     public void deleteReview(Long reviewId){
         Review findReview = findVerifiedReview(reviewId);
         reviewRepository.delete(findReview);
@@ -84,5 +86,10 @@ public class ReviewService {
 
     private Pageable createPageable(int page, int size) {
         return PageRequest.of(page, size);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Review> findReviewsOrderByReviewId() { // 메인페이지에 하단부에 사용
+        return reviewRepository.findAll(PageRequest.of(0, 4, Sort.by("reviewId").descending())).getContent();
     }
 }
