@@ -24,8 +24,8 @@ public class ProductService {
     private final MemberService memberService;
 
     public Product createProduct(Product product) {
-//        Member member = memberService.getLoginMember();
-//        product.setMember(member);
+        Member member = memberService.getLoginMember();
+        product.setMember(member);
         return productRepository.save(product);
     }
 
