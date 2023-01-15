@@ -7,6 +7,7 @@ import com.bzzzzz.farm.member.entity.Member;
 import com.bzzzzz.farm.review.entity.Review;
 import com.bzzzzz.farm.review.repository.ReviewRepository;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +28,7 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
     }
 
+    @CacheEvict(value = "getMain", allEntries = true)
     public Review insertReview(Review review) {
         Review saveReview = reviewRepository.save(review);
         return saveReview;
@@ -44,6 +46,7 @@ public class ReviewService {
         return reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 없습니다."));
     }
 
+    @CacheEvict(value = "getMain", allEntries = true)
     public Review updateReview(Review review, Member member){
 
         log.info("updateReview : "+review.getReviewId());
@@ -66,6 +69,7 @@ public class ReviewService {
     }
 
     //특정 리뷰 삭제
+    @CacheEvict(value = "getMain", allEntries = true)
     public void deleteReview(Long reviewId){
         Review findReview = findVerifiedReview(reviewId);
         reviewRepository.delete(findReview);
