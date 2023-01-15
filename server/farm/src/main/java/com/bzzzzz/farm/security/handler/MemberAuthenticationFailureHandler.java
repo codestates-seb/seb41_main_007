@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.auth.handler;
+package com.bzzzzz.farm.security.handler;
 
 import com.bzzzzz.farm.dto.ErrorResponse;
 import com.google.gson.Gson;

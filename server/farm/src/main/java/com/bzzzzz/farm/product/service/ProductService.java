@@ -2,6 +2,8 @@ package com.bzzzzz.farm.product.service;
 
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
+import com.bzzzzz.farm.member.entity.Member;
+import com.bzzzzz.farm.member.service.MemberService;
 import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.repository.ProductRepository;
@@ -22,8 +24,11 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductOptionService productOptionService;
     private final ProductCategoryService productCategoryService;
+    private final MemberService memberService;
 
     public Product createProduct(Product product) {
+//        Member member = memberService.getLoginMember();
+//        product.setMember(member);
         return productRepository.save(product);
     }
 
@@ -56,15 +61,9 @@ public class ProductService {
         Optional.ofNullable(productPatchDto.getPhoto()).ifPresent(data -> findProduct.setPhoto(data));
         Optional.ofNullable(productPatchDto.getBrand()).ifPresent(data -> findProduct.setBrand(data));
         Optional.ofNullable(productPatchDto.getDescription()).ifPresent(data -> findProduct.setDescription(data));
-        Optional.ofNullable(productPatchDto.getProductStatus()).ifPresent(data -> findProduct.setProductStatus(Product.ProductStatus.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingCountry()).ifPresent(data -> findProduct.setShippingCountry(Product.ShippingCountry.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingMethod()).ifPresent(data -> findProduct.setShippingMethod(Product.ShippingMethod.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingPrice()).ifPresent(data -> findProduct.setShippingPrice(data));
-
-        // 카테고리 부분 따로 빼서 전달
-        Optional.ofNullable(productPatchDto.getProductCategoryPatchDtos())
-                .ifPresent(datas -> datas.stream()
-                        .forEach(productCategoryPatchDto -> productCategoryService.updateProductCategory(productCategoryPatchDto)));
 
         // 옵션부분은 따로 빼서 전달
         Optional.ofNullable(productPatchDto.getProductOptionPatchDtos())
