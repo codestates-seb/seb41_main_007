@@ -2,10 +2,7 @@ package com.bzzzzz.farm.member.entity;
 
 import com.bzzzzz.farm.audit.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,6 +19,8 @@ public class Member extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
+    @Column(nullable = false)
+    private String password;
 
     @Column(nullable = false)
     private String name;

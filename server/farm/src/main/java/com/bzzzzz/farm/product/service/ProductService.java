@@ -1,5 +1,7 @@
 package com.bzzzzz.farm.product.service;
 
+import com.bzzzzz.farm.member.entity.Member;
+import com.bzzzzz.farm.member.service.MemberService;
 import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.repository.ProductRepository;
@@ -19,8 +21,11 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductOptionService productOptionService;
+    private final MemberService memberService;
 
     public Product createProduct(Product product) {
+//        Member member = memberService.getLoginMember();
+//        product.setMember(member);
         return productRepository.save(product);
     }
 

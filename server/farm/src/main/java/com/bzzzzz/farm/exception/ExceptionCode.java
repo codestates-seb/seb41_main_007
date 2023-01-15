@@ -8,6 +8,7 @@ public enum ExceptionCode {
     NOT_LOGIN(400,"login, please"),
 
     REVIEW_NOT_FOUND(404,"Review not found"),
+    REFRESH_TOKEN_NOT_FOUND(404, "Refresh token not found"),
     INVALID_USER(405,"Method not allowed");
 
     @Getter

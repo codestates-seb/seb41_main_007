@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.auth.utils;
+package com.bzzzzz.farm.security.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,6 +13,9 @@ import java.util.stream.Collectors;
 public class CustomAuthorityUtils {
     @Value("${mail.address.admin}")
     private String adminMailAddress;
+
+//    @Value("${mail.address}")
+//    private List<String> admins;
 
     private final List<GrantedAuthority> ADMIN_ROLES =
             AuthorityUtils.createAuthorityList("ROLE_ADMIN", "ROLE_USER");

@@ -1,6 +1,6 @@
 package com.bzzzzz.farm.member.service;
 
-import com.bzzzzz.farm.auth.utils.CustomAuthorityUtils;
+import com.bzzzzz.farm.security.utils.CustomAuthorityUtils;
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.helper.event.MemberRegistrationApplicationEvent;
@@ -78,6 +78,15 @@ public class MemberService {
     public Member findVerifiedMember(long memberId) {
         Optional<Member> optionalMember =
                 memberRepository.findById(memberId);
+        Member findMember =
+                optionalMember.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        return findMember;
+    }
+    @Transactional(readOnly = true)
+    public Member findVerifiedEmail(String email) {
+        Optional<Member> optionalMember =
+                memberRepository.findByEmail(email);
         Member findMember =
                 optionalMember.orElseThrow(() ->
                         new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));

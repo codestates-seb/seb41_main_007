@@ -12,6 +12,7 @@ public class MemberDto {
     @Getter
     @AllArgsConstructor
     public static class Post{
+        private String password;
 
         private String name;
 
@@ -33,6 +34,7 @@ public class MemberDto {
     @AllArgsConstructor
     public static class Patch{
         private Long memberId;
+        private String password;
         private String name;
         private int age;
 
