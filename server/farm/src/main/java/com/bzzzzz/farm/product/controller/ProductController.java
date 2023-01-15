@@ -1,7 +1,5 @@
 package com.bzzzzz.farm.product.controller;
 
-import com.bzzzzz.farm.category.mapper.CategoryMapper;
-import com.bzzzzz.farm.category.service.CategoryService;
 import com.bzzzzz.farm.dto.IdRequestDto;
 import com.bzzzzz.farm.dto.MultiResponseDto;
 import com.bzzzzz.farm.dto.SingleResponseDto;
@@ -10,11 +8,14 @@ import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.dto.ProductPostDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.mapper.ProductMapper;
+import com.bzzzzz.farm.product.service.ProductCategoryService;
+import com.bzzzzz.farm.product.service.ProductOptionService;
 import com.bzzzzz.farm.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,14 +30,20 @@ public class ProductController {
     private final ProductService productService;
     private final LikeService likeService;
     private final ProductMapper productMapper;
-    private final CategoryService categoryService;
-    private final CategoryMapper categoryMapper;
+    private final ProductCategoryService productCategoryService;
+    private final ProductOptionService productOptionService;
 
     @PostMapping
+    @Transactional
     public ResponseEntity postProduct(@Valid @RequestBody ProductPostDto productPostDto) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
 
         Product product = productService.createProduct(productMapper.productPostDtoToProduct(productPostDto));
+        product.getProductCategories().stream()
+                .forEach(productCategory -> productCategoryService.createProductCategory(productCategory));
+        product.getProductOptions().stream()
+                .forEach(productOption -> productOptionService.createProductOption(productOption));
+
 
         return new ResponseEntity(new SingleResponseDto(product.getProductId()), HttpStatus.CREATED);
     }
