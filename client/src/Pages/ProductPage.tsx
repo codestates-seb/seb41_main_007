@@ -236,8 +236,6 @@ const ProductPage: React.FC = () => {
 
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);
-
-    console.log(count);
   };
 
   const onDecrease = () => {

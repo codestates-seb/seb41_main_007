@@ -1,5 +1,5 @@
-import { FC } from 'react';
 import styled from 'styled-components';
+import { FC, useState, Dispatch, SetStateAction, useEffect } from 'react';
 
 const Counterdiv = styled.div`
   box-sizing: border-box;
@@ -33,18 +33,40 @@ const Counterinput = styled.input`
   font-size: 12px;
   border: 1px solid var(--gray-15);
 `;
+interface props {
+  setnumber: Dispatch<SetStateAction<number>>;
+}
 
-const CounterButton2: FC = () => {
+const CounterButton2: FC<props> = ({ setnumber }) => {
+  const [count, setCount] = useState<number>(1);
+  const onIncrease = () => {
+    setCount((prevCount) => prevCount + 1);
+    console.log(count);
+  };
+
+  const onDecrease = () => {
+    setCount((prevCount) => {
+      if (prevCount === 1) {
+        return prevCount;
+      }
+      return prevCount - 1;
+    });
+  };
+
+  useEffect(() => {
+    setnumber(count);
+  }, [count]);
+
   return (
     <Counterdiv>
-      <Counterbutton isTrue={true}>
+      <Counterbutton onClick={onIncrease} isTrue={true}>
         <CounterImg
           src="https://www.zipbanchan.co.kr/shop/remain/pc/imgs/icon/+.svg"
           alt="add"
         />
       </Counterbutton>
-      <Counterinput type="text" value="1" data-idx="0"></Counterinput>
-      <Counterbutton isTrue={false}>
+      <Counterinput type="text" value={count} data-idx="0"></Counterinput>
+      <Counterbutton onClick={onDecrease} isTrue={false}>
         <CounterImg
           src="https://www.zipbanchan.co.kr/shop/remain/pc/imgs/icon/-.svg"
           alt="minus"

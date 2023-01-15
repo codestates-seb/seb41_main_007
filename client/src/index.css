@@ -12,6 +12,9 @@ body {
   --green-40: #97a97c;
   --green-50: #87986a;
   --green-60: #718355;
+  --greenlogo:#16A34A
+  --priceColor: #b41c11;
+
   --xxlarge: 32px;
   --xlarge: 24px;
   --large: 20px;
@@ -58,7 +61,7 @@ body {
   --red-00: #ff585b;
   --svg: #3e3e41;
   --logo: #040000;
-  --priceColor: #b41c11;
+ 
 }
 
 @tailwind base;
