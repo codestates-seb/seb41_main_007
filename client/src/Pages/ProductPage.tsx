@@ -10,6 +10,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import Empty from 'Components/Common/Empty';
 import CustomTitle from 'Components/Header/CustomTitle';
 import BuyButton from 'Components/Common/BuyButton';
+import useScrollTop from 'CustomHook/useScrollTop';
+import { useAppDispatch } from 'Redux/app/hook';
+import { countset } from 'Redux/reducer/priceSlice';
 
 const ProductContainer = styled.div`
   margin-top: 120px;
@@ -112,7 +115,8 @@ export interface counterProps {
 
 const ProductPage: React.FC = () => {
   const [count, setCount] = useState<number>(1);
-
+  const dispatch = useAppDispatch();
+  useScrollTop();
   let param = useParams();
   const { data, isLoading } = useCustomQuery(
     `/products/${param.productid}`,
@@ -163,6 +167,7 @@ const ProductPage: React.FC = () => {
 
       return;
     }
+    dispatch(countset({ id: data.productId, price: data.price, count: 1 }));
     baskets.push(data);
     console.log(baskets);
     emptyBasketAlram();

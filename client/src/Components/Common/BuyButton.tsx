@@ -1,7 +1,11 @@
 import { FC } from 'react';
 import styled from 'styled-components';
 
-const Buybutton = styled.a<{ background?: string; color?: string }>`
+const Buybutton = styled.a<{
+  background?: string;
+  color?: string;
+  margin?: string;
+}>`
   font-family: 'Noto Sans KR', sans-serif;
   margin: 0;
   vertical-align: baseline;
@@ -17,8 +21,9 @@ const Buybutton = styled.a<{ background?: string; color?: string }>`
   height: 60px;
   line-height: 60px;
   padding: 0 12px;
-  border: 1px solid var(--gray-02);
+  border: 1px solid var(--black-20);
   display: block;
+  margin: ${(props) => props.margin};
   width: 350px;
   background-color: ${(props) => props.background};
   margin-top: 13px;
@@ -29,15 +34,27 @@ interface Props {
   onClick?: () => void;
   background?: string;
   color?: string;
+  margin?: string;
 }
 
-const BuyButton: FC<Props> = ({ background, color, children, onClick }) => {
+const BuyButton: FC<Props> = ({
+  background,
+  color,
+  children,
+  onClick,
+  margin,
+}) => {
   console.log(children);
   console.log(background);
 
   return (
     <>
-      <Buybutton onClick={onClick} background={background} color={color}>
+      <Buybutton
+        onClick={onClick}
+        background={background}
+        color={color}
+        margin={margin}
+      >
         {children}
       </Buybutton>
     </>

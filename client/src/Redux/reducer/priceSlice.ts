@@ -20,9 +20,8 @@ const priceSlice = createSlice({
   initialState,
   reducers: {
     countset: (state, action: PayloadAction<Pricestate>) => {
-      console.log('왓다');
       const found = state.find((e) => e.id === action.payload.id);
-      console.log(found);
+
       //같은게 있으면 종료 아닐경우에 넣어야함
       if (!found) {
         state.push({
