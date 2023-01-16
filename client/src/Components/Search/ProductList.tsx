@@ -1,17 +1,10 @@
 import { FC } from 'react';
 import styles from './Styles/ProductList.module.css';
 import Product from './Product';
-
-interface Products {
-  productId: number;
-  name: string;
-  price: number;
-  photo: string;
-  alt?: string;
-}
+import { TYPE_Product } from '../../Types/common/product.d';
 
 interface Props {
-  products: Products[];
+  products: TYPE_Product[];
 }
 
 const ProductList: FC<Props> = ({ products }) => {
