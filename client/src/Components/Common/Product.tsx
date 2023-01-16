@@ -1,8 +1,8 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Styles/ProductList.module.css';
+import styles from './Styles/Product.module.css';
 import { SkeletonContent } from 'Components/Loading/LoadingList';
-import { TYPE_Product } from '../../Types/common/product.d';
+import { TYPE_Product } from '../../Types/common/product';
 interface Props {
   product: TYPE_Product;
 }

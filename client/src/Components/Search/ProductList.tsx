@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import styles from './Styles/ProductList.module.css';
-import Product from './Product';
+import Product from '../Common/Product';
 import { TYPE_Product } from '../../Types/common/product.d';
 
 interface Props {
