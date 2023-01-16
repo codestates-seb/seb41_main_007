@@ -29,12 +29,12 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
 
-    - name: 환경변수 설정 1
-      run: touch ./src/main/resources/application-farm.yml
+    - name: application-prod.yml 생성
+      run: echo "${{ secrets.PROD_YML }}" > ./src/main/resources/application-prod.yml
       working-directory: ./server/farm
       
-    - name: 환경변수 설정 2
-      run: echo "${{ secrets.FARM_YML }}" > ./src/main/resources/application-farm.yml
+    - name: application-secret.yml 생성
+      run: echo "${{ secrets.SECRET_YML }}" > ./src/main/resources/application-secret.yml
       working-directory: ./server/farm
 
     - name: Grand execute permission for gradlew
