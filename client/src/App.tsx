@@ -10,7 +10,7 @@ import ObjectSaver from 'Redux/ex/objectSave';
 import ReactQueryTest from 'Pages/ReactQueryTest';
 import ProductPage from 'Pages/ProductPage';
 import BasketsPage from 'Pages/BasketPage';
-
+import ProductListPage from 'Pages/ProductListPage';
 import Search from 'Pages/Search';
 
 import Footer from 'Components/Common/Footer';
@@ -61,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: '/test',
     element: <ReactQueryTest />,
+  },
+  {
+    path: '/products/:categoryId',
+    element: withLayout(ProductListPage),
   },
 ]);
 
