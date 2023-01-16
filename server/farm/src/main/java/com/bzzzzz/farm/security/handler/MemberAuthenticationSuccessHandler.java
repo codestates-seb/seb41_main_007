@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.auth.handler;
+package com.bzzzzz.farm.security.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

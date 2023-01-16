@@ -1,27 +1,26 @@
-package com.bzzzzz.farm.auth.utils;
+package com.bzzzzz.farm.security.utils;
 
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.member.entity.Member;
 import com.bzzzzz.farm.member.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Optional;
 
 @Component
+@RequiredArgsConstructor
 public class MemberDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils authorityUtils;
-
-    public MemberDetailsService(MemberRepository memberRepository, CustomAuthorityUtils authorityUtils) {
-        this.memberRepository = memberRepository;
-        this.authorityUtils = authorityUtils;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -30,22 +29,16 @@ public class MemberDetailsService implements UserDetailsService {
 
         return new MemberDetails(findMember);
     }
-
-    private final class MemberDetails extends Member implements UserDetails {
-        MemberDetails(Member member) {
+    private final class MemberDetails extends Member implements UserDetails{
+        MemberDetails(Member member){
             setMemberId(member.getMemberId());
             setEmail(member.getEmail());
+            setPassword(member.getPassword());
             setRoles(member.getRoles());
         }
-
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return authorityUtils.createAuthorities(this.getRoles());
-        }
-
-        @Override
-        public String getPassword() {
-            return null;
         }
 
         @Override

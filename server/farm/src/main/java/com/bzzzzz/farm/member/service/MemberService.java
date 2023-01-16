@@ -1,7 +1,6 @@
 package com.bzzzzz.farm.member.service;
 
-import com.bzzzzz.farm.auth.utils.CustomAuthorityUtils;
-import com.bzzzzz.farm.cart.entiy.Cart;
+import com.bzzzzz.farm.security.utils.CustomAuthorityUtils;
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.helper.event.MemberRegistrationApplicationEvent;
@@ -23,21 +22,6 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils authorityUtils;
     private final ApplicationEventPublisher publisher;
-
-
-    public Member createMember(Member member){
-        verifyExistsEmail(member.getEmail());
-
-
-        List<String> roles = authorityUtils.createRoles(member.getEmail());
-        member.setRoles(roles);
-        member.setCart(new Cart());
-
-        Member savedMember = memberRepository.save(member);
-
-        publisher.publishEvent(new MemberRegistrationApplicationEvent(this,savedMember));
-        return savedMember;
-    }
 
     public Member updateMember(Member member) {
         Member findMember = findVerifiedMember(member.getMemberId());
