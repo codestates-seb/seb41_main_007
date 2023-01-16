@@ -23,20 +23,6 @@ public class MemberService {
     private final CustomAuthorityUtils authorityUtils;
     private final ApplicationEventPublisher publisher;
 
-
-    public Member createMember(Member member){
-        verifyExistsEmail(member.getEmail());
-
-
-        List<String> roles = authorityUtils.createRoles(member.getEmail());
-        member.setRoles(roles);
-
-        Member savedMember = memberRepository.save(member);
-
-        publisher.publishEvent(new MemberRegistrationApplicationEvent(this,savedMember));
-        return savedMember;
-    }
-
     public Member updateMember(Member member) {
         Member findMember = findVerifiedMember(member.getMemberId());
         Optional.ofNullable(member.getName())
