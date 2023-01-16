@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: bbamsoo
+    active: prod
     include: secret
 
 logging:

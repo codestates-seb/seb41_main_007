@@ -34,17 +34,23 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> findProducts(int page, int size, String sort, String order, String keyword) {
+    public Page<Product> findProducts(int page, int size, String sort, String order, long categoryId, String keyword) {
         // 허용 값 이외의 값은 모두 디폴트 값으로 만들어 Pageable 객체를 생성
         Pageable pageable = createPageable(page, size, verifySort(sort), order);
 
-        // 키워드가 있을 경우
-        if (keyword.length() != 0) {
-            return productRepository.findAllByNameContainsOrBrandContains(keyword, keyword, pageable);
+        if (categoryId > 0) {
+            return keyword.length() != 0
+                    // 카테고리: O, 키워드: O
+                    ? productRepository.findAllByProductCategories_Category_CategoryIdAndNameContainsOrProductCategories_Category_CategoryIdAndBrandContains(categoryId, keyword, categoryId, keyword, pageable)
+                    // 카테고리: O, 키워드: X
+                    : productRepository.findAllByProductCategories_Category_CategoryId(categoryId, pageable);
+        } else {
+            return keyword.length() != 0
+                    // 카테고리: X, 키워드: O
+                    ? productRepository.findAllByNameContainsOrBrandContains(keyword, keyword, pageable)
+                    // 카테고리: X, 키워드: X
+                    : productRepository.findAll(pageable);
         }
-
-        // 키워드가 없을 경우
-        return productRepository.findAll(pageable);
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
