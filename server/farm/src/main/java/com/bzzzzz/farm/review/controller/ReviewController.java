@@ -1,6 +1,5 @@
 package com.bzzzzz.farm.review.controller;
 
-import com.bzzzzz.farm.dto.IdResponseDto;
 import com.bzzzzz.farm.dto.MultiResponseDto;
 import com.bzzzzz.farm.member.entity.Member;
 import com.bzzzzz.farm.member.service.MemberService;

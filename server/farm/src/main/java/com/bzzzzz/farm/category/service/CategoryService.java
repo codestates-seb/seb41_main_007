@@ -6,12 +6,13 @@ import com.bzzzzz.farm.category.repository.CategoryRepository;
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,11 +21,13 @@ import java.util.Optional;
 public class CategoryService {
     private final CategoryRepository categoryRepository;
 
+    @CacheEvict(value = {"findCategories", "getMain"}, allEntries = true)
     public Category createCategory(Category category) {
         verifyExistsCategory(category.getName());
         return categoryRepository.save(category);
     }
 
+    @CacheEvict(value = {"findCategories", "getMain"}, allEntries = true)
     public Category updateCategory(CategoryPatchDto categoryPatchDto) {
         Category findCategory = findVerifiedCategory(categoryPatchDto.getCategoryId());
 
@@ -34,8 +37,21 @@ public class CategoryService {
         return findCategory;
     }
 
-    public Page<Category> findCategories(int page, int size) {
-        return categoryRepository.findAll(PageRequest.of(page, size, Sort.by("sequenceNum").ascending()));
+    @Transactional(readOnly = true)
+    @Cacheable(value = "findCategories")
+    public List<Category> findCategories() {
+        return categoryRepository.findAll(Sort.by("sequenceNum"));
+    }
+
+    @CacheEvict(value = {"findCategories", "getMain"}, allEntries = true)
+    public void deleteCategory(long categoryId) {
+        Category category = findVerifiedCategory(categoryId);
+
+        if (category.getProductCategories().size() > 0) {
+            throw new BusinessLogicException(ExceptionCode.PRODUCT_CATEGORY_EXISTS);
+        }
+
+        categoryRepository.delete(category);
     }
 
     /**

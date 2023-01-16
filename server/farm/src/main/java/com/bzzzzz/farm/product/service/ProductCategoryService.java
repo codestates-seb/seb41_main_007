@@ -35,6 +35,16 @@ public class ProductCategoryService {
         return productCategoryRepository.save(findProductCategory);
     }
 
+    public void deleteProductCategory(long productCategoryId) {
+        ProductCategory productCategory = findVerifiedProductCategory(productCategoryId);
+
+        if (productCategory.getProduct().getProductCategories().size() <= 1) {
+            throw new BusinessLogicException(ExceptionCode.PRODUCT_CATEGORY_CONFLICT);
+        }
+
+        productCategoryRepository.delete(productCategory);
+    }
+
     /**
      * 서브 메서드
      */

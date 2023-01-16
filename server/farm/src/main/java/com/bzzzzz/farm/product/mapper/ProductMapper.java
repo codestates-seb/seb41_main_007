@@ -1,6 +1,5 @@
 package com.bzzzzz.farm.product.mapper;
 
-import com.bzzzzz.farm.category.entity.Category;
 import com.bzzzzz.farm.product.dto.*;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.entity.ProductCategory;
@@ -30,30 +29,32 @@ public interface ProductMapper {
 
         // ProductCategory 추가
         productPostDto.getProductCategoryPostDtos().stream()
-                .forEach(productCategoryPostDto -> {
-                    ProductCategory productCategory = new ProductCategory();
-                    Category category = new Category(productCategoryPostDto.getCategoryId());
-                    productCategory.setCategory(category);
-                    product.addProductCategory(productCategory);
-                });
+                .forEach(productCategoryPostDto ->
+                        product.addProductCategory(productCategoryPostDtoToProductCategory(productCategoryPostDto)));
 
         // 옵션값들 추가
         productPostDto.getProductOptionPostDtos().stream()
-                .forEach(productOptionPostDto -> {
-                    ProductOption productOption = new ProductOption();
-
-                    productOption.setProduct(product);
-                    productOption.setProductOptionName(productOptionPostDto.getProductOptionName());
-                    productOption.setPrice(productOptionPostDto.getPrice());
-                    productOption.setStock(productOptionPostDto.getStock());
-
-                    product.addProductOption(productOption);
-                });
+                .forEach(productOptionPostDto ->
+                        product.addProductOption(productOptionPostDtoToProductOption(productOptionPostDto)));
 
         return product;
     }
 
     List<ProductSimpleResponseDto> productsToProductSimpleResponseDtos(List<Product> products);
+
+    default ProductSimpleResponseDto productToProductSimpleResponseDto(Product product) {
+        if (product == null) {
+            return null;
+        }
+
+        return ProductSimpleResponseDto.builder()
+                .productId(product.getProductId())
+                .name(product.getName())
+                .price(product.getPrice())
+                .photo(product.getPhoto())
+                .productStatus(product.getProductStatus().getStatus())
+                .build();
+    }
 
     default ProductDetailResponseDto productToProductDetailResponseDto(Product product, Boolean isLiked) {
         if (product == null) {
@@ -70,6 +71,7 @@ public interface ProductMapper {
                 .shippingPrice(product.getShippingPrice())
                 .description(product.getDescription())
                 .brand(product.getBrand())
+                .productStatus(product.getProductStatus().getStatus())
                 .viewCount(product.getViewCount())
                 .likeCount(product.getLikeCount())
                 .soldCount(product.getSoldCount())
@@ -96,5 +98,9 @@ public interface ProductMapper {
     }
 
     ProductCategory productCategoryPostDtoToProductCategory(ProductCategoryPostDto productCategoryPostDto);
+
+
+    ProductOption productOptionPostDtoToProductOption(ProductOptionPostDto productOptionPostDto);
+
     ProductOptionResponseDto productOptionToProductOptionResponseDto(ProductOption productOption);
 }

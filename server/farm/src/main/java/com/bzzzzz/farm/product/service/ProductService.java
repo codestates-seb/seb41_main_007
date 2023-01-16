@@ -6,6 +6,7 @@ import com.bzzzzz.farm.product.dto.ProductPatchDto;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,9 +21,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
-    private final ProductOptionService productOptionService;
-    private final ProductCategoryService productCategoryService;
 
+    @CacheEvict(value = "getMain", allEntries = true)
     public Product createProduct(Product product) {
         return productRepository.save(product);
     }
@@ -34,19 +34,26 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> findProducts(int page, int size, String sort, String order, String keyword) {
+    public Page<Product> findProducts(int page, int size, String sort, String order, long categoryId, String keyword) {
         // 허용 값 이외의 값은 모두 디폴트 값으로 만들어 Pageable 객체를 생성
         Pageable pageable = createPageable(page, size, verifySort(sort), order);
 
-        // 키워드가 있을 경우
-        if (keyword.length() != 0) {
-            return productRepository.findAllByNameContainsOrBrandContains(keyword, keyword, pageable);
+        if (categoryId > 0) {
+            return keyword.length() != 0
+                    // 카테고리: O, 키워드: O
+                    ? productRepository.findAllByProductCategories_Category_CategoryIdAndNameContainsOrProductCategories_Category_CategoryIdAndBrandContains(categoryId, keyword, categoryId, keyword, pageable)
+                    // 카테고리: O, 키워드: X
+                    : productRepository.findAllByProductCategories_Category_CategoryId(categoryId, pageable);
+        } else {
+            return keyword.length() != 0
+                    // 카테고리: X, 키워드: O
+                    ? productRepository.findAllByNameContainsOrBrandContains(keyword, keyword, pageable)
+                    // 카테고리: X, 키워드: X
+                    : productRepository.findAll(pageable);
         }
-
-        // 키워드가 없을 경우
-        return productRepository.findAll(pageable);
     }
 
+    @CacheEvict(value = "getMain", allEntries = true)
     public void updateProduct(ProductPatchDto productPatchDto) {
 
         Product findProduct = findVerifiedProduct(productPatchDto.getProductId());
@@ -56,21 +63,13 @@ public class ProductService {
         Optional.ofNullable(productPatchDto.getPhoto()).ifPresent(data -> findProduct.setPhoto(data));
         Optional.ofNullable(productPatchDto.getBrand()).ifPresent(data -> findProduct.setBrand(data));
         Optional.ofNullable(productPatchDto.getDescription()).ifPresent(data -> findProduct.setDescription(data));
+        Optional.ofNullable(productPatchDto.getProductStatus()).ifPresent(data -> findProduct.setProductStatus(Product.ProductStatus.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingCountry()).ifPresent(data -> findProduct.setShippingCountry(Product.ShippingCountry.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingMethod()).ifPresent(data -> findProduct.setShippingMethod(Product.ShippingMethod.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingPrice()).ifPresent(data -> findProduct.setShippingPrice(data));
-
-        // 카테고리 부분 따로 빼서 전달
-        Optional.ofNullable(productPatchDto.getProductCategoryPatchDtos())
-                .ifPresent(datas -> datas.stream()
-                        .forEach(productCategoryPatchDto -> productCategoryService.updateProductCategory(productCategoryPatchDto)));
-
-        // 옵션부분은 따로 빼서 전달
-        Optional.ofNullable(productPatchDto.getProductOptionPatchDtos())
-                .ifPresent(datas -> datas.stream()
-                        .forEach(productOptionPatchDto -> productOptionService.updateProductOption(productOptionPatchDto)));
     }
 
+    @CacheEvict(value = "getMain", allEntries = true)
     public void deleteProduct(long productId) {
         productRepository.delete(findVerifiedProduct(productId));
     }

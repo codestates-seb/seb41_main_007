@@ -1,4 +1,4 @@
-# 배포용 yml 입니다.
+# 개발용 yml 입니다.
 
 spring:
   datasource: # mysql 관련 설정

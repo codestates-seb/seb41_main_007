@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @Getter
 public class ProductPatchDto {
@@ -23,13 +22,11 @@ public class ProductPatchDto {
 
     private String description;
 
+    private String productStatus;
+
     private String shippingCountry;
 
     private String shippingMethod;
 
     private Integer shippingPrice;
-
-    private List<ProductCategoryPatchDto> productCategoryPatchDtos;
-
-    private List<ProductOptionPatchDto> productOptionPatchDtos;
 }
