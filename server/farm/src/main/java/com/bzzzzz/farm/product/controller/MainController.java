@@ -38,9 +38,9 @@ public class MainController {
          * */
         Map<String, Object> response = new HashMap<>();
 
-        List<ProductSimpleResponseDto> orderByLikeCount = productMapper.productsToProductSimpleResponseDtos(productService.findProducts(0, 10, "likeCount", "descending", "").getContent());
-        List<ProductSimpleResponseDto> orderByProductId = productMapper.productsToProductSimpleResponseDtos(productService.findProducts(0, 7, "productId", "descending", "").getContent());
-        List<ProductSimpleResponseDto> orderBySoldCount = productMapper.productsToProductSimpleResponseDtos(productService.findProducts(0, 20, "soldCount", "descending", "").getContent());
+        List<ProductSimpleResponseDto> orderByLikeCount = productMapper.productsToProductSimpleResponseDtos(productService.findProducts(0, 10, "likeCount", "descending", 0, "").getContent());
+        List<ProductSimpleResponseDto> orderByProductId = productMapper.productsToProductSimpleResponseDtos(productService.findProducts(0, 7, "productId", "descending", 0, "").getContent());
+        List<ProductSimpleResponseDto> orderBySoldCount = productMapper.productsToProductSimpleResponseDtos(productService.findProducts(0, 20, "soldCount", "descending", 0, "").getContent());
         List<ReviewSimpleResponseDto> reviews = reviewMapper.reviewsToReviewSimpleResponseDtos(reviewService.findReviewsOrderByReviewId());
 
         response.put("orderByLikeCount", orderByLikeCount);

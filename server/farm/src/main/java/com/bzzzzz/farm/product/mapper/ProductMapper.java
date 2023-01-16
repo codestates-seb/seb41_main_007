@@ -1,6 +1,5 @@
 package com.bzzzzz.farm.product.mapper;
 
-import com.bzzzzz.farm.category.entity.Category;
 import com.bzzzzz.farm.product.dto.*;
 import com.bzzzzz.farm.product.entity.Product;
 import com.bzzzzz.farm.product.entity.ProductCategory;
@@ -30,25 +29,13 @@ public interface ProductMapper {
 
         // ProductCategory 추가
         productPostDto.getProductCategoryPostDtos().stream()
-                .forEach(productCategoryPostDto -> {
-                    ProductCategory productCategory = new ProductCategory();
-                    Category category = new Category(productCategoryPostDto.getCategoryId());
-                    productCategory.setCategory(category);
-                    product.addProductCategory(productCategory);
-                });
+                .forEach(productCategoryPostDto ->
+                        product.addProductCategory(productCategoryPostDtoToProductCategory(productCategoryPostDto)));
 
         // 옵션값들 추가
         productPostDto.getProductOptionPostDtos().stream()
-                .forEach(productOptionPostDto -> {
-                    ProductOption productOption = new ProductOption();
-
-                    productOption.setProduct(product);
-                    productOption.setProductOptionName(productOptionPostDto.getProductOptionName());
-                    productOption.setPrice(productOptionPostDto.getPrice());
-                    productOption.setStock(productOptionPostDto.getStock());
-
-                    product.addProductOption(productOption);
-                });
+                .forEach(productOptionPostDto ->
+                        product.addProductOption(productOptionPostDtoToProductOption(productOptionPostDto)));
 
         return product;
     }
@@ -111,6 +98,9 @@ public interface ProductMapper {
     }
 
     ProductCategory productCategoryPostDtoToProductCategory(ProductCategoryPostDto productCategoryPostDto);
+
+
+    ProductOption productOptionPostDtoToProductOption(ProductOptionPostDto productOptionPostDto);
 
     ProductOptionResponseDto productOptionToProductOptionResponseDto(ProductOption productOption);
 }
