@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import Basket from './Basket';
 import { useAppSelector } from 'Redux/app/hook';
 import { selectprice, Pricestate } from 'Redux/reducer/priceSlice';
-
+import useScrollTop from 'CustomHook/useScrollTop';
 import { useNumberComma } from 'Utils/commonFunction';
+import BuyButton from 'Components/Common/BuyButton';
 
 const BasketForm = styled.div`
   width: 1180px;
@@ -117,22 +118,25 @@ const TotalPrice = styled.div`
 `;
 
 const ButtonContainer = styled.div`
+  display: flex;
   text-align: center;
   padding: 60px 0;
+  justify-content: center;
 `;
 
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
+  console.log(resultarr);
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]');
-
-  const result: number = resultarr.reduce((acc, cur) => {
+  useScrollTop();
+  console.log('허공');
+  let result: number = resultarr.reduce((acc, cur) => {
     acc = acc + cur.price * cur.count;
     return acc;
   }, 0);
   const resultCount: number = resultarr.reduce((acc, cur) => {
-    console.log(cur);
     acc = acc + cur.count;
     return acc;
   }, 0);
@@ -162,14 +166,29 @@ const BasketList: FC = () => {
     }
   };
 
-  console.log(checkItems);
+  const deleteAllCheck = () => {
+    // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
+    if (checkItems.length === baskets.length) {
+      setCheckItems([]);
+      localStorage.clear();
+    }
+    const deleteSave = baskets.filter((el: any) => {
+      return !checkItems.includes(el.productId);
+    });
+    console.log(deleteSave);
+    localStorage.setItem('baskets', JSON.stringify(deleteSave));
+    setCheckItems([]);
+    // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
+  };
+
+  console.log(resultarr);
 
   return (
     <>
       <BasketForm>
         <Baskethead>
           <BasketLefthead>일반반찬세트</BasketLefthead>
-          <BasketRighthead>선택삭제</BasketRighthead>
+          <BasketRighthead onClick={deleteAllCheck}>선택삭제</BasketRighthead>
         </Baskethead>
         <table>
           <thead>
@@ -179,7 +198,11 @@ const BasketList: FC = () => {
                   type="checkbox"
                   value="basic"
                   onChange={(e) => handleAllCheck(e.target.checked)}
-                  checked={checkItems.length === baskets.length ? true : false}
+                  checked={
+                    checkItems.length === baskets.length && baskets.length !== 0
+                      ? true
+                      : false
+                  }
                 ></THinput>
               </Tableheader1>
               <Tableheader2>상품정보</Tableheader2>
@@ -207,9 +230,20 @@ const BasketList: FC = () => {
           </TotalPrice>
         </TableBottom>
       </BasketForm>
-      <ButtonContainer>안녕</ButtonContainer>
+      <ButtonContainer>
+        <BuyButton background={'var( --white-02)'} margin={'0 12px 0 12px'}>
+          계속 쇼핑하기
+        </BuyButton>
+        <BuyButton background="var(--green-40)" margin={'0 12px 0 12px'}>
+          주문하기
+        </BuyButton>
+      </ButtonContainer>
     </>
   );
 };
 
 export default BasketList;
+
+//새로고침 했을때 총값 업데이트 되기
+//총값 계산 업데이트 안되는 문제 해결
+// 페이지 이동시 리덕스값이 사라짐

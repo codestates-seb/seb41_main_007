@@ -10,6 +10,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import Empty from 'Components/Common/Empty';
 import CustomTitle from 'Components/Header/CustomTitle';
 import BuyButton from 'Components/Common/BuyButton';
+import useScrollTop from 'CustomHook/useScrollTop';
+import { useAppDispatch, useAppSelector } from 'Redux/app/hook';
+import { countset, selectprice, Pricestate } from 'Redux/reducer/priceSlice';
 
 const ProductContainer = styled.div`
   margin-top: 120px;
@@ -112,7 +115,8 @@ export interface counterProps {
 
 const ProductPage: React.FC = () => {
   const [count, setCount] = useState<number>(1);
-
+  const dispatch = useAppDispatch();
+  useScrollTop();
   let param = useParams();
   const { data, isLoading } = useCustomQuery(
     `/products/${param.productid}`,
@@ -154,7 +158,6 @@ const ProductPage: React.FC = () => {
     let IsSame: boolean = false;
 
     baskets.forEach((el: any) => {
-      console.log(el.id);
       if (data.productId === el.productId) IsSame = true;
     });
 
@@ -163,11 +166,14 @@ const ProductPage: React.FC = () => {
 
       return;
     }
+    dispatch(countset({ id: data.productId, price: data.price, count: 1 }));
     baskets.push(data);
-    console.log(baskets);
+
     emptyBasketAlram();
     localStorage.setItem('baskets', JSON.stringify(baskets));
   };
+  const resultarr: Pricestate[] = useAppSelector(selectprice);
+  console.log(resultarr);
 
   const products = [
     {
@@ -232,7 +238,7 @@ const ProductPage: React.FC = () => {
         'Made from natural materials. Grain and color vary with each item.',
     },
   ];
-  console.log(isLoading);
+
   if (isLoading) return <Empty />;
 
   const onIncrease = () => {

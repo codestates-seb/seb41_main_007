@@ -11,6 +11,7 @@ import ReactQueryTest from 'Pages/ReactQueryTest';
 import ProductPage from 'Pages/ProductPage';
 import BasketsPage from 'Pages/BasketPage';
 import ProductListPage from 'Pages/ProductListPage';
+import Mypage from 'Pages/MyPage';
 import Search from 'Pages/Search';
 import NotFoundPage from 'Pages/NotFoundPage';
 
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
   {
     path: '/products',
     element: withLayout(Search),
+  },
+  {
+    path: '/mypage',
+    element: withLayout(Mypage),
   },
   {
     path: '/Basket',

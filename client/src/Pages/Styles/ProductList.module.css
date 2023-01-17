@@ -9,5 +9,6 @@
   margin-right: auto;
   border-bottom: 1px solid black;
   font-size: var(--xxlarge);
+  padding-bottom: 10px;
   @apply font-serif;
 }

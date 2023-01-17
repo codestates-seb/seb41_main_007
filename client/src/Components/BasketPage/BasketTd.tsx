@@ -4,6 +4,7 @@ import { useNumberComma } from 'Utils/commonFunction';
 import CounterButton2 from './CounterButton2';
 import { useAppDispatch } from 'Redux/app/hook';
 import { countset, countput } from 'Redux/reducer/priceSlice';
+import { Link } from 'react-router-dom';
 
 const Tablebody1 = styled.th`
   background: white;
@@ -24,7 +25,7 @@ const Tablebody2 = styled.td`
   background: white;
   width: 793px;
   height: 161px;
-  border-top: 1px solid var(--gray-05);
+
   border-bottom: 1px solid var(--gray-05);
   padding: 20px 0;
   font-size: var(--small);
@@ -33,7 +34,7 @@ const Tablebody2 = styled.td`
   vertical-align: middle;
 `;
 
-const TableA = styled.a`
+const TB2Container = styled.div`
   text-align: left;
   position: relative;
   display: flex;
@@ -129,23 +130,29 @@ const BasketTd: FC<checkBoxtype> = ({
   checkItems,
 }): JSX.Element => {
   const [number, setnumber] = useState<number>(1);
-
+  // const [deleteb, setdeleteb] = useState<any[] | []>([]);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log(el);
-
     dispatch(countset({ id: el.productId, price: el.price, count: number }));
-    console.log('야호');
   }, []);
 
   useEffect(() => {
     dispatch(countput({ id: el.productId, count: number }));
-    console.log('바꼈떠');
   }, [number]);
 
-  const plusHandler = (e: boolean) => {
-    handleSingleCheck(e, el.productId);
+  const deleteBasket = (data: any) => {
+    const jsondata: string | null = localStorage.getItem('baskets');
+    const baskets = JSON.parse(jsondata || '[]') || [];
+    handleSingleCheck(false, data.productId);
+
+    const save = baskets.filter((el: any) => {
+      return el.productId !== data.productId;
+    });
+
+    dispatch(countput({ id: el.productId, count: 0 })); //딜리트만들기 확인하기
+    localStorage.setItem('baskets', JSON.stringify(save));
+    // setnumber(0); 스택오버플로우에 올리기
   };
 
   return (
@@ -153,25 +160,29 @@ const BasketTd: FC<checkBoxtype> = ({
       <Tablebody1>
         <THinput
           type="checkbox"
-          value="basic"
-          onChange={(e) => plusHandler(e.target.checked)}
+          defaultValue="basic"
+          onChange={(e) => handleSingleCheck(e.target.checked, el.productId)}
           // 체크된 아이템 배열에 해당 아이템이 있을 경우 선택 활성화, 아닐 시 해제
           checked={checkItems.includes(el.productId) ? true : false}
         ></THinput>
       </Tablebody1>
+
       <Tablebody2>
-        <TableA>
-          <TableimgDiv url={el.photo}></TableimgDiv>
-          <TableProduct>
-            <TableTitle>{el.name}</TableTitle>
-            <TableContent>{el.description}</TableContent>
-            <TablePrice>
-              {useNumberComma(el.price)}
-              <span>원</span>
-            </TablePrice>
-          </TableProduct>
-        </TableA>
+        <Link key={el.productId} to={`/product/${el.productId}`}>
+          <TB2Container>
+            <TableimgDiv url={el.photo}></TableimgDiv>
+            <TableProduct>
+              <TableTitle>{el.name}</TableTitle>
+              <TableContent>{el.description}</TableContent>
+              <TablePrice>
+                {useNumberComma(el.price)}
+                <span>원</span>
+              </TablePrice>
+            </TableProduct>
+          </TB2Container>
+        </Link>
       </Tablebody2>
+
       <Tablebody3>
         <CounterButton2 setnumber={setnumber} />
       </Tablebody3>
@@ -181,7 +192,7 @@ const BasketTd: FC<checkBoxtype> = ({
       </Tablebody4>
 
       <Tablebody5>
-        <Xbutton>
+        <Xbutton onClick={() => deleteBasket(el)}>
           <img
             src="https://www.zipbanchan.co.kr/shop/remain/pc/imgs/icon/x.svg"
             alt="xxx"
