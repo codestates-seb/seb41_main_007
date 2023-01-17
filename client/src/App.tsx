@@ -12,8 +12,10 @@ import ProductPage from 'Pages/ProductPage';
 import BasketsPage from 'Pages/BasketPage';
 import ProductListPage from 'Pages/ProductListPage';
 import Search from 'Pages/Search';
+import NotFoundPage from 'Pages/NotFoundPage';
 
 import Footer from 'Components/Common/Footer';
+
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
 });
@@ -66,6 +68,7 @@ const router = createBrowserRouter([
     path: '/products/:categoryId',
     element: withLayout(ProductListPage),
   },
+  { path: '*', element: <NotFoundPage /> },
 ]);
 
 const App: React.FC = () => {
