@@ -21,12 +21,6 @@ public class MemberController {
     private final MemberService memberService;
     private final MemberMapper mapper;
 
-    //회원가입
-    @PostMapping
-    public ResponseEntity postMember(@Valid @RequestBody MemberDto.Post requestBody){
-        Member member = memberService.createMember(mapper.memberPostToMember(requestBody));
-        return ResponseEntity.ok(mapper.memberToMemberResponse(member));
-    }
 
     //회원 정보 수정
     @PatchMapping("/{member-id}")

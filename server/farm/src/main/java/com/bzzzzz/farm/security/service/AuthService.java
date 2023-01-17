@@ -62,11 +62,12 @@ public class AuthService {
 
     // 토큰 재발급
     public TokenDto reissue(TokenRequestDto tokenRequestDto) {
-        if (!jwtTokenizer.validateToken(tokenRequestDto.getRefreshToken())) {
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+        if (!jwtTokenizer.validateToken(tokenRequestDto.getRefreshToken(),base64EncodedSecretKey)) {
             throw new RuntimeException("Refresh Token 이 유효하지 않습니다.");
         }
 
-        Authentication authentication = jwtTokenizer.getAuthentication(tokenRequestDto.getAccessToken());
+        Authentication authentication = jwtTokenizer.getAuthentication(tokenRequestDto.getAccessToken(), base64EncodedSecretKey);
 
         RefreshToken refreshToken =
                 refreshTokenRepository.findByKey(authentication.getName())
@@ -94,8 +95,9 @@ public class AuthService {
     }
 
     private TokenDto createToken(Authentication authentication) {
-        String accessToken = jwtTokenizer.generateAccessToken(authentication);
-        String refreshToken = jwtTokenizer.generateRefreshToken(authentication);
+        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
+        String accessToken = jwtTokenizer.generateAccessToken(authentication, base64EncodedSecretKey);
+        String refreshToken = jwtTokenizer.generateRefreshToken(authentication, base64EncodedSecretKey);
         TokenDto tokenDto = new TokenDto(accessToken, refreshToken);
         return tokenDto;
     }

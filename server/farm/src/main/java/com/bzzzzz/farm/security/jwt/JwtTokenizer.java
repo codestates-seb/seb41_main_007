@@ -23,17 +23,19 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class JwtTokenizer {
-    private final Key key;
+    @Getter
+    @Value("${jwt.key}")
+    private String secretKey;
 
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60;    // 액세스 토큰 만료 시간 : 1시간
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7; // 리프레쉬 토큰 만료 시간 : 7일
 
-    public JwtTokenizer(@Value("${jwt.key}") String secretKey){
-        this.key = getKeyFromBase64EncodedKey(secretKey);
+    public String encodeBase64SecretKey(String secretKey) {
+        return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
 
 
-    public String generateAccessToken(Authentication authentication) {
+    public String generateAccessToken(Authentication authentication,String base64EncodedSecretKey) {
         // claim 생성
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -51,11 +53,10 @@ public class JwtTokenizer {
                 .setSubject(authentication.getName())    // JWT 제목 payload "sub": "email"
                 .setIssuedAt(Calendar.getInstance().getTime())  // JWT 발행일자 payload "iat": "발행일자"
                 .setExpiration(accessTokenExpiresIn)  // 만료일자 payload "exp": "발행시간 + 1시간"
-                .signWith(key)
+                .signWith(getKey(base64EncodedSecretKey))
                 .compact();
     }
-    public String generateRefreshToken(Authentication authentication) {
-
+    public String generateRefreshToken(Authentication authentication, String base64EncodedSecretKey) {
         long now = (new Date()).getTime();
 
         return Jwts.builder()
@@ -63,22 +64,14 @@ public class JwtTokenizer {
                 .setSubject(authentication.getName())    // JWT 제목 payload "sub": "email"
                 .setIssuedAt(Calendar.getInstance().getTime())  // JWT 발행일자 payload "iat": "발행일자"
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))  // 만료일자 payload "exp": "발행시간 + 7일"
-                .signWith(key)
+                .signWith(getKey(base64EncodedSecretKey))
                 .compact();
     }
 
-    //JWT 검증
-    public void verifySignature(String jws, String base64EncodedSecretKey) {
-        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
-
-        Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(jws);
-    }
     // 엑세스 토큰에서 인증정보 가져오기
-    public Authentication getAuthentication(String accessToken) {
-        Claims claims = parseClaims(accessToken);
+    public Authentication getAuthentication(String accessToken, String base64EncodedSecretKey) {
+
+        Claims claims = parseClaims(accessToken, base64EncodedSecretKey);
 
         if (claims.get("auth") == null) {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
@@ -96,9 +89,9 @@ public class JwtTokenizer {
     }
 
     // 토큰 정보를 검증
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token, String base64EncodedSecretKey) {
         try {
-            Jwts.parserBuilder().setSigningKey(key)
+            Jwts.parserBuilder().setSigningKey(getKey(base64EncodedSecretKey))
                     .build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
@@ -114,28 +107,29 @@ public class JwtTokenizer {
     }
 
     // 만료된 토큰이어도 정보를 꺼내는 로직
-    private Claims parseClaims(String accessToken) {
+    private Claims parseClaims(String accessToken, String base64EncodedSecretKey) {
         try {
-            return Jwts.parserBuilder().setSigningKey(key)
+            return Jwts.parserBuilder().setSigningKey(getKey(base64EncodedSecretKey))
                     .build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
     }
 
-    private Key getKeyFromBase64EncodedKey(String base64EncodedSecretKey) {
+    public Key getKeyFromBase64EncodedKey(String base64EncodedSecretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(base64EncodedSecretKey);
         Key key = Keys.hmacShaKeyFor(keyBytes);
 
         return key;
     }
     public Jws<Claims> getClaims(String jws, String base64EncodedSecretKey) {
-        Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
-
         Jws<Claims> claims = Jwts.parserBuilder()
-                .setSigningKey(key)
+                .setSigningKey(getKey(base64EncodedSecretKey))
                 .build()
                 .parseClaimsJws(jws);
         return claims;
+    }
+    private Key getKey(String base64EncodedSecretKey){
+        return getKeyFromBase64EncodedKey(base64EncodedSecretKey);
     }
 }

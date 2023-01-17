@@ -75,7 +75,6 @@ public class ProductController {
          * sort = productId(최신순), name(상품명), price(가격), brand(제조사), likeCount(인기순)
          * order = descending(내림차순), ascending(오름차순)
          * keyword = 검색어 (제품명, 브랜드 안에서 검색)
-         * Todo category = 카테고리별 조회
          * */
 
         Page<Product> productPage = productService.findProducts(page - 1, size, sort, order, categoryId, keyword);

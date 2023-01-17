@@ -1,7 +1,6 @@
 package com.bzzzzz.farm.member.service;
 
 import com.bzzzzz.farm.security.utils.CustomAuthorityUtils;
-import com.bzzzzz.farm.auth.utils.CustomAuthorityUtils;
 import com.bzzzzz.farm.cart.entiy.Cart;
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
@@ -10,9 +9,7 @@ import com.bzzzzz.farm.member.entity.Member;
 import com.bzzzzz.farm.member.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +31,7 @@ public class MemberService {
 
         List<String> roles = authorityUtils.createRoles(member.getEmail());
         member.setRoles(roles);
+        member.setCart(new Cart());
 
         Member savedMember = memberRepository.save(member);
 
