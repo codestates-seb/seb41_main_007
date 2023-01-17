@@ -13,8 +13,12 @@ const SearchResult: FC<Props> = ({ sch, searchList, searchPageInfo }) => {
   const navigate = useNavigate();
   const { totalPages, page } = searchPageInfo;
   const handlerSetOffset = (page: number) => {
+    const params = new URLSearchParams(sch);
+    const keyword = params.get('keyword');
     window.scrollTo(0, 0);
-    return navigate(`/products${sch.split('page=')[0]}page=${page}`);
+    return navigate(
+      `/products?keyword=${keyword}&sort=likeCount&order=ascending&page=${page}`,
+    );
   };
   return (
     <ul>
