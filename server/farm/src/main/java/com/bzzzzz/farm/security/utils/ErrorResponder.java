@@ -1,6 +1,6 @@
 package com.bzzzzz.farm.security.utils;
 
-import com.bzzzzz.farm.dto.ErrorResponse;
+import com.bzzzzz.farm.global.dto.ErrorResponse;
 import com.google.gson.Gson;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

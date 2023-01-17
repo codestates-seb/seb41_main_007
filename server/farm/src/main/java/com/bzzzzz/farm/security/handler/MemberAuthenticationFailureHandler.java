@@ -1,6 +1,6 @@
 package com.bzzzzz.farm.security.handler;
 
-import com.bzzzzz.farm.dto.ErrorResponse;
+import com.bzzzzz.farm.global.dto.ErrorResponse;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
