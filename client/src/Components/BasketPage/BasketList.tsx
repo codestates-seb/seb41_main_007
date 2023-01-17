@@ -127,11 +127,11 @@ const ButtonContainer = styled.div`
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
-  console.log(resultarr);
+
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]');
   useScrollTop();
-  console.log('허공');
+
   let result: number = resultarr.reduce((acc, cur) => {
     acc = acc + cur.price * cur.count;
     return acc;
@@ -141,10 +141,8 @@ const BasketList: FC = () => {
     return acc;
   }, 0);
 
-  console.log(checkItems);
   // 체크박스 단일 선택
   const handleSingleCheck = (checked?: boolean, id?: number) => {
-    console.log('치킨');
     if (checked && id) {
       // 단일 선택 시 체크된 아이템을 배열에 추가
       setCheckItems([...checkItems, id]);
@@ -175,13 +173,11 @@ const BasketList: FC = () => {
     const deleteSave = baskets.filter((el: any) => {
       return !checkItems.includes(el.productId);
     });
-    console.log(deleteSave);
+
     localStorage.setItem('baskets', JSON.stringify(deleteSave));
     setCheckItems([]);
     // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
   };
-
-  console.log(resultarr);
 
   return (
     <>
@@ -247,3 +243,4 @@ export default BasketList;
 //새로고침 했을때 총값 업데이트 되기
 //총값 계산 업데이트 안되는 문제 해결
 // 페이지 이동시 리덕스값이 사라짐
+//새로고침시 리덕스 초기화 되는 문제

@@ -11,7 +11,6 @@ const Basket: FC<checkBoxtype> = ({ handleSingleCheck, checkItems }) => {
   const jsondata: string | null = localStorage.getItem('baskets');
 
   const baskets = JSON.parse(jsondata || '[]');
-  console.log(baskets);
 
   if (baskets.length === 0) return <></>;
 

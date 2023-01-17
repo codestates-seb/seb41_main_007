@@ -11,8 +11,8 @@ import Empty from 'Components/Common/Empty';
 import CustomTitle from 'Components/Header/CustomTitle';
 import BuyButton from 'Components/Common/BuyButton';
 import useScrollTop from 'CustomHook/useScrollTop';
-import { useAppDispatch, useAppSelector } from 'Redux/app/hook';
-import { countset, selectprice, Pricestate } from 'Redux/reducer/priceSlice';
+import { useAppDispatch } from 'Redux/app/hook';
+import { countset } from 'Redux/reducer/priceSlice';
 
 const ProductContainer = styled.div`
   margin-top: 120px;
@@ -172,8 +172,6 @@ const ProductPage: React.FC = () => {
     emptyBasketAlram();
     localStorage.setItem('baskets', JSON.stringify(baskets));
   };
-  const resultarr: Pricestate[] = useAppSelector(selectprice);
-  console.log(resultarr);
 
   const products = [
     {
