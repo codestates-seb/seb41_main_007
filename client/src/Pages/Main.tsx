@@ -6,10 +6,12 @@ import StartDive from 'Components/NewProduct/StartDive';
 import Index from 'Components/Main/Nav/Index';
 import { FC } from 'react';
 import styles from './Styles/Main.module.css';
+import CustomTitle from 'Components/Header/CustomTitle';
 
 const Main: FC = (): JSX.Element => {
   return (
     <main className={styles.Main_Container}>
+      <CustomTitle title="FarmPi" description={'팜피에 오신걸 환영합니다!'} />
       <Index />
       <Carousell />
       <ExampleBest />

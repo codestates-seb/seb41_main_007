@@ -4,6 +4,8 @@ import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import styles from './Styles/ProductList.module.css';
 import { FC } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
+import CustomTitle from 'Components/Header/CustomTitle';
+import NotFoundPage from './NotFoundPage';
 
 const ProductListPage: FC = () => {
   let { categoryId } = useParams();
@@ -15,13 +17,33 @@ const ProductListPage: FC = () => {
     pageQuery
       ? `/products?categoryId=${categoryId}&page=${parseInt(pageQuery)}`
       : `/products?categoryId=${categoryId}`,
-    `categories${categoryId}page${pageQuery}`,
+    `categoryId${categoryId}page${pageQuery}`,
   );
-  if (isLoading) return <Empty />;
-  if (error || data.data.length === 0) return <div>error</div>;
+  if (isLoading)
+    return (
+      <>
+        <CustomTitle
+          title={`${categoryId} 상품 리스트 | FarmPi`}
+          description={`카테고리${categoryId}번 상품입니다`}
+        />
+        <Empty />;
+      </>
+    );
+  if (error || data.data.length === 0)
+    return (
+      <>
+        <NotFoundPage />
+      </>
+    );
   return (
     <main className={styles.Main_Container}>
-      <div className={styles.Line_Container}>카테고리 1번 상품들</div>
+      <CustomTitle
+        title={`${categoryId} 상품 리스트 | FarmPi`}
+        description={`카테고리${categoryId}번 상품입니다`}
+      />
+      <div className={styles.Line_Container}>
+        카테고리 {categoryId}번 상품들
+      </div>
       <ProductList
         productList={data.data}
         pageInfo={data.pageInfo}

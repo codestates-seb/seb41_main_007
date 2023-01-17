@@ -4,24 +4,35 @@ import { useLocation } from 'react-router-dom';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 
 import CustomTitle from 'Components/Header/CustomTitle';
-import LazySearchResult from 'Components/Search/SearchResult';
+import SearchResult from 'Components/Search/SearchResult';
 
 import styles from './Styles/Main.module.css';
 import Empty from 'Components/Common/Empty';
+import NotFoundPage from './NotFoundPage';
 
 const Search: FC = () => {
   const location = useLocation();
   const sch = location.search;
   const params = new URLSearchParams(sch);
   const keyword = params.get('keyword');
-  // length 만 사용하는 api 스켈레톤을 보여주기위해서 여기서는 data를 안쓰고 오브젝트 수만 씁니다
   const { data, isLoading, error } = useCustomQuery(
     `/products${sch}`,
     `product${sch}`,
   );
-  if (isLoading) return <Empty />;
+  if (isLoading)
+    return (
+      <>
+        <CustomTitle title={`${keyword} 에 대한 검색결과 - FARMPI`} />
+        <Empty />
+      </>
+    );
   if (error)
-    return <div className={styles.LoadingContainer}>에러 발생하였습니다.</div>;
+    return (
+      <>
+        <CustomTitle title={`${keyword} 에 대한 검색결과 - FARMPI`} />
+        <NotFoundPage />
+      </>
+    );
 
   return (
     <main className={styles.Main_Container}>
@@ -39,7 +50,13 @@ const Search: FC = () => {
               &quot;{keyword}&quot; 에 대한 검색결과 ({data.data.length})
             </p>
           </div>
-          {data.data.length > 0 && <LazySearchResult sch={sch} />}
+          {data.data.length > 0 && (
+            <SearchResult
+              sch={sch}
+              searchList={data.data}
+              searchPageInfo={data.pageInfo}
+            />
+          )}
         </>
       )}
     </main>
