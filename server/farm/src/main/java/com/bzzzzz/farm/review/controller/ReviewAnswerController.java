@@ -56,9 +56,10 @@ public class ReviewAnswerController {
     @PatchMapping
     public ResponseEntity updateReviewAnswer(@RequestBody @Valid ReviewAnswerPatchDto reviewAnswerPatchDto) {
 
-        //TODO:작성자 Member 정보 가져오는 부분 넣어야함
+        Member member = memberService.getLoginMember();
 
         ReviewAnswer reviewAnswer = reviewAnswerMapper.reviewAnswerPatchDtoToReviewAnswer(reviewAnswerPatchDto);
+        reviewAnswer.setMember(member);
         ReviewAnswer updatedReviewAnswer = reviewAnswerService.updateReviewAnswer(reviewAnswer);
 
         //리뷰앤서리스폰스dto 생성
