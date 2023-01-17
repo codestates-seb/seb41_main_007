@@ -1,7 +1,8 @@
 package com.bzzzzz.farm.review.controller;
 
 
-import com.bzzzzz.farm.review.dto.ReviewDeleteDto;
+import com.bzzzzz.farm.member.entity.Member;
+import com.bzzzzz.farm.member.service.MemberService;
 import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerDeleteDto;
 import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerPatchDto;
 import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerPostDto;
@@ -28,26 +29,28 @@ public class ReviewAnswerController {
     private final ReviewAnswerService reviewAnswerService;
     private final ReviewAnswerMapper reviewAnswerMapper;
 
-    public ReviewAnswerController(ReviewAnswerService reviewAnswerService, ReviewAnswerMapper reviewAnswerMapper) {
+    private final MemberService memberService;
+
+    public ReviewAnswerController(ReviewAnswerService reviewAnswerService, ReviewAnswerMapper reviewAnswerMapper, MemberService memberService) {
         this.reviewAnswerService = reviewAnswerService;
         this.reviewAnswerMapper = reviewAnswerMapper;
+        this.memberService = memberService;
     }
 
     @PostMapping({""})
     public ResponseEntity insertReviewAnswer(@RequestBody @Valid ReviewAnswerPostDto reviewAnswerPostDto) {
 
-        //TODO:작성자 Member 정보 가져오는 부분 넣어야함
+        Member member = memberService.getLoginMember();
+        if(member.getRoles().equals("ROLE_ADMIN")){
+            ReviewAnswer reviewAnswer = reviewAnswerMapper.reviewAnswerPostDtoToReviewAnswer(reviewAnswerPostDto);
+            reviewAnswer.setMember(member);
+            ReviewAnswer insertedReviewAnswer = reviewAnswerService.insertReviewAnswer(reviewAnswer);
+            ReviewAnswerResponseDto reviewAnswerResponseDto = reviewAnswerMapper.reviewAnswerToReviewAnswerResponseDto(insertedReviewAnswer);
+            return new ResponseEntity<>(reviewAnswerResponseDto,HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
 
-        ReviewAnswer reviewAnswer = reviewAnswerMapper.reviewAnswerPostDtoToReviewAnswer(reviewAnswerPostDto);
-        ReviewAnswer insertedReviewAnswer = reviewAnswerService.insertReviewAnswer(reviewAnswer);
-
-        //TODO: review DB에 저장된 것 답변 등록된걸로 수정되도록 하기
-        //Review updatedReview = reviewService.updateReview(review, member);
-
-        //리뷰앤서리스폰스dto 생성
-        ReviewAnswerResponseDto reviewAnswerResponseDto = reviewAnswerMapper.reviewAnswerToReviewAnswerResponseDto(insertedReviewAnswer);
-
-        return new ResponseEntity<>(reviewAnswerResponseDto,HttpStatus.CREATED);
     }
 
     @PatchMapping

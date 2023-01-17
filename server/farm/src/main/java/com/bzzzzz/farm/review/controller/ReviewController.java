@@ -50,8 +50,7 @@ public class ReviewController {
         Review review = reviewMapper.reviewPostDtoToReview(reviewPostDto);
 
         //TODO: 로그인한 유저 불러오는 방법 getLoginUser()로 불러옴
-        //Member member = memberService.getLoginMember();
-        Member member = new Member("test@gmail.com");
+        Member member = memberService.getLoginMember();
         log.info("로그인한 유저 체크: "+member.getEmail());
         review.setMember(member);
 
@@ -104,16 +103,17 @@ public class ReviewController {
     }
 
     //리뷰 삭제하기
-
     @DeleteMapping
     public ResponseEntity deleteReview(@RequestBody @Valid ReviewDeleteDto reviewDeleteDto){
 
-        /*
+
         Member member = memberService.getLoginMember();
 
-        if(member.getRoles().equals())
-         */
-        reviewService.deleteReview(reviewDeleteDto.getReviewId());
+        if(member.getRoles().contains("ROLE_ADMIN")) {
+            reviewService.deleteReview(reviewDeleteDto.getReviewId());
+        }else{
+            throw new IllegalArgumentException("관리자만 삭제가 가능합니다.");
+        }
 
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);

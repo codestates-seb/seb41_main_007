@@ -52,8 +52,7 @@ public class ProductService {
                     : productRepository.findAll(pageable);
         }
 
-        // 키워드가 없을 경우
-        return productRepository.findAll(pageable);
+        // 키워드가 없을 경우;
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
