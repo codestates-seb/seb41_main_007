@@ -1,13 +1,13 @@
 package com.bzzzzz.farm.security.controller;
 
 import com.bzzzzz.farm.security.dto.LoginDto;
-import com.bzzzzz.farm.member.dto.MemberDto;
+import com.bzzzzz.farm.domain.member.dto.MemberDto;
 import com.bzzzzz.farm.security.dto.TokenDto;
 import com.bzzzzz.farm.security.dto.TokenRequestDto;
-import com.bzzzzz.farm.member.entity.Member;
-import com.bzzzzz.farm.member.mapper.MemberMapper;
+import com.bzzzzz.farm.domain.member.entity.Member;
+import com.bzzzzz.farm.domain.member.mapper.MemberMapper;
 import com.bzzzzz.farm.security.service.AuthService;
-import com.bzzzzz.farm.member.service.MemberService;
+import com.bzzzzz.farm.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

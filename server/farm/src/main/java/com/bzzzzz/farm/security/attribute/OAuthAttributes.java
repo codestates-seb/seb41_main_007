@@ -1,6 +1,6 @@
 package com.bzzzzz.farm.security.attribute;
 
-import com.bzzzzz.farm.member.entity.Member;
+import com.bzzzzz.farm.domain.member.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 

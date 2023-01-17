@@ -1,19 +1,17 @@
 package com.bzzzzz.farm.security.utils;
 
-import com.bzzzzz.farm.exception.BusinessLogicException;
-import com.bzzzzz.farm.exception.ExceptionCode;
-import com.bzzzzz.farm.member.entity.Member;
-import com.bzzzzz.farm.member.repository.MemberRepository;
+import com.bzzzzz.farm.global.exception.BusinessLogicException;
+import com.bzzzzz.farm.global.exception.ExceptionCode;
+import com.bzzzzz.farm.domain.member.entity.Member;
+import com.bzzzzz.farm.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 
 @Component

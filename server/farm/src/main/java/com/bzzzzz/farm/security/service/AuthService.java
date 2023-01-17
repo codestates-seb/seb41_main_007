@@ -2,14 +2,14 @@ package com.bzzzzz.farm.security.service;
 
 import com.bzzzzz.farm.security.jwt.JwtTokenizer;
 import com.bzzzzz.farm.security.utils.CustomAuthorityUtils;
-import com.bzzzzz.farm.exception.BusinessLogicException;
-import com.bzzzzz.farm.exception.ExceptionCode;
+import com.bzzzzz.farm.global.exception.BusinessLogicException;
+import com.bzzzzz.farm.global.exception.ExceptionCode;
 import com.bzzzzz.farm.security.dto.LoginDto;
 import com.bzzzzz.farm.security.dto.TokenDto;
 import com.bzzzzz.farm.security.dto.TokenRequestDto;
-import com.bzzzzz.farm.member.entity.Member;
+import com.bzzzzz.farm.domain.member.entity.Member;
 import com.bzzzzz.farm.security.refresh.RefreshToken;
-import com.bzzzzz.farm.member.repository.MemberRepository;
+import com.bzzzzz.farm.domain.member.repository.MemberRepository;
 import com.bzzzzz.farm.security.refresh.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

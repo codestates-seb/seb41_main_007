@@ -1,8 +1,8 @@
 package com.bzzzzz.farm.security.service;
 
 import com.bzzzzz.farm.security.attribute.OAuthAttributes;
-import com.bzzzzz.farm.member.entity.Member;
-import com.bzzzzz.farm.member.repository.MemberRepository;
+import com.bzzzzz.farm.domain.member.entity.Member;
+import com.bzzzzz.farm.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
