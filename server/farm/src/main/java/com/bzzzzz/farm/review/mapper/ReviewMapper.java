@@ -60,7 +60,7 @@ public interface ReviewMapper {
     }
 
     default List<ReviewSimpleResponseDto> reviewsToReviewSimpleResponseDtos(List<Review> reviews) {
-        if ( reviews == null ) {
+        if (reviews == null) {
             return null;
         }
 

@@ -1,10 +1,10 @@
-package com.bzzzzz.farm.review.mapper;
+package com.bzzzzz.farm.review.mapper.reviewanswer;
 
 
 import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerPatchDto;
 import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerPostDto;
 import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerResponseDto;
-import com.bzzzzz.farm.review.entity.ReviewAnswer;
+import com.bzzzzz.farm.review.entity.reviewanswer.ReviewAnswer;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

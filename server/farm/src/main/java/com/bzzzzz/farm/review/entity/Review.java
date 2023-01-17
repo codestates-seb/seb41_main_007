@@ -3,13 +3,12 @@ package com.bzzzzz.farm.review.entity;
 import com.bzzzzz.farm.audit.Auditable;
 import com.bzzzzz.farm.member.entity.Member;
 import com.bzzzzz.farm.product.entity.Product;
+import com.bzzzzz.farm.review.entity.reviewanswer.ReviewAnswer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Getter

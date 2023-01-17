@@ -2,7 +2,7 @@ package com.bzzzzz.farm.review.service.reviewanswer;
 
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
-import com.bzzzzz.farm.review.entity.ReviewAnswer;
+import com.bzzzzz.farm.review.entity.reviewanswer.ReviewAnswer;
 import com.bzzzzz.farm.review.repository.reviewAnswer.ReviewAnswerRepository;
 import org.springframework.stereotype.Service;
 

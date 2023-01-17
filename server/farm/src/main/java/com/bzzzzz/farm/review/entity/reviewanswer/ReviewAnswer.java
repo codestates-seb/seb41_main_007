@@ -1,7 +1,8 @@
-package com.bzzzzz.farm.review.entity;
+package com.bzzzzz.farm.review.entity.reviewanswer;
 
 import com.bzzzzz.farm.audit.Auditable;
 import com.bzzzzz.farm.member.entity.Member;
+import com.bzzzzz.farm.review.entity.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

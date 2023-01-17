@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.review.controller;
+package com.bzzzzz.farm.review.controller.reviewanswer;
 
 
 import com.bzzzzz.farm.member.entity.Member;
@@ -7,8 +7,8 @@ import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerDeleteDto;
 import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerPatchDto;
 import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerPostDto;
 import com.bzzzzz.farm.review.dto.reviewanswer.ReviewAnswerResponseDto;
-import com.bzzzzz.farm.review.entity.ReviewAnswer;
-import com.bzzzzz.farm.review.mapper.ReviewAnswerMapper;
+import com.bzzzzz.farm.review.entity.reviewanswer.ReviewAnswer;
+import com.bzzzzz.farm.review.mapper.reviewanswer.ReviewAnswerMapper;
 import com.bzzzzz.farm.review.service.reviewanswer.ReviewAnswerService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
