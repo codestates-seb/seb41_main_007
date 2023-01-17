@@ -127,10 +127,11 @@ const ButtonContainer = styled.div`
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
+  console.log(resultarr);
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]');
   useScrollTop();
-  console.log(resultarr);
+  console.log('허공');
   let result: number = resultarr.reduce((acc, cur) => {
     acc = acc + cur.price * cur.count;
     return acc;
@@ -245,3 +246,4 @@ export default BasketList;
 
 //새로고침 했을때 총값 업데이트 되기
 //총값 계산 업데이트 안되는 문제 해결
+// 페이지 이동시 리덕스값이 사라짐

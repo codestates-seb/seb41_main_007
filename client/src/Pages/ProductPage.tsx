@@ -11,8 +11,8 @@ import Empty from 'Components/Common/Empty';
 import CustomTitle from 'Components/Header/CustomTitle';
 import BuyButton from 'Components/Common/BuyButton';
 import useScrollTop from 'CustomHook/useScrollTop';
-import { useAppDispatch } from 'Redux/app/hook';
-import { countset } from 'Redux/reducer/priceSlice';
+import { useAppDispatch, useAppSelector } from 'Redux/app/hook';
+import { countset, selectprice, Pricestate } from 'Redux/reducer/priceSlice';
 
 const ProductContainer = styled.div`
   margin-top: 120px;
@@ -158,7 +158,6 @@ const ProductPage: React.FC = () => {
     let IsSame: boolean = false;
 
     baskets.forEach((el: any) => {
-      console.log(el.id);
       if (data.productId === el.productId) IsSame = true;
     });
 
@@ -169,10 +168,12 @@ const ProductPage: React.FC = () => {
     }
     dispatch(countset({ id: data.productId, price: data.price, count: 1 }));
     baskets.push(data);
-    console.log(baskets);
+
     emptyBasketAlram();
     localStorage.setItem('baskets', JSON.stringify(baskets));
   };
+  const resultarr: Pricestate[] = useAppSelector(selectprice);
+  console.log(resultarr);
 
   const products = [
     {
@@ -237,7 +238,7 @@ const ProductPage: React.FC = () => {
         'Made from natural materials. Grain and color vary with each item.',
     },
   ];
-  console.log(isLoading);
+
   if (isLoading) return <Empty />;
 
   const onIncrease = () => {

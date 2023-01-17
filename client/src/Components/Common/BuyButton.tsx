@@ -44,9 +44,6 @@ const BuyButton: FC<Props> = ({
   onClick,
   margin,
 }) => {
-  console.log(children);
-  console.log(background);
-
   return (
     <>
       <Buybutton

@@ -21,9 +21,11 @@ const priceSlice = createSlice({
   reducers: {
     countset: (state, action: PayloadAction<Pricestate>) => {
       const found = state.find((e) => e.id === action.payload.id);
-
+      console.log('트라이');
       //같은게 있으면 종료 아닐경우에 넣어야함
       if (!found) {
+        console.log('저장');
+        console.log(action.payload.id);
         state.push({
           id: action.payload.id,
           price: action.payload.price,
@@ -42,6 +44,8 @@ const priceSlice = createSlice({
 
 export const { countset, countput } = priceSlice.actions;
 
-export const selectprice = (state: RootState) => state.priceCheck;
+export const selectprice = (state: RootState) => (
+  console.log('안녕'), console.log(state.priceCheck), state.priceCheck
+);
 
 export default priceSlice.reducer;
