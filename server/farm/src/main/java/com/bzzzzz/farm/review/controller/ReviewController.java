@@ -49,7 +49,6 @@ public class ReviewController {
     public ResponseEntity insertReview(@RequestBody @Valid ReviewPostDto reviewPostDto) {
         Review review = reviewMapper.reviewPostDtoToReview(reviewPostDto);
 
-        //TODO: 로그인한 유저 불러오는 방법 getLoginUser()로 불러옴
         Member member = memberService.getLoginMember();
         log.info("로그인한 유저 체크: "+member.getEmail());
         review.setMember(member);
@@ -72,7 +71,6 @@ public class ReviewController {
                                                 @RequestParam(required = false, defaultValue = "10") int size) {
 
         Page<Review> reviewPage = reviewService.getProductReviewsList(productId, page - 1, size);
-        //log.info("reviewPage 타이틀 가져오기 : " + reviewPage.getContent().get(0).getReviewTitle());
 
         return new ResponseEntity(
                 new MultiResponseDto<>(reviewMapper.reviewToReviewsResponseDto(reviewPage.getContent()), reviewPage),

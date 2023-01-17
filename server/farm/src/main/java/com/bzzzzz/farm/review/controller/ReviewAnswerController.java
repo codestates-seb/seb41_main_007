@@ -70,7 +70,6 @@ public class ReviewAnswerController {
 
     @DeleteMapping
     public ResponseEntity deleteReviewAnswer(@RequestBody @Valid ReviewAnswerDeleteDto reviewAnswerDeleteDto) {
-        //TODO: 관리자인지 검증하는 로직 추가
         Member member = memberService.getLoginMember();
         if(member.getRoles().equals("ROLE_ADMIN")) {
             reviewAnswerService.deleteReviewAnswer(reviewAnswerDeleteDto.getReviewAnswerId());
@@ -78,8 +77,6 @@ public class ReviewAnswerController {
         }else{
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
-
-
 
     }
 }
