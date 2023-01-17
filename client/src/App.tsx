@@ -68,7 +68,15 @@ const router = createBrowserRouter([
     path: '/products/:categoryId',
     element: withLayout(ProductListPage),
   },
-  { path: '*', element: <NotFoundPage /> },
+  {
+    path: '*',
+    element: (
+      <>
+        <Header />
+        <NotFoundPage />
+      </>
+    ),
+  },
 ]);
 
 const App: React.FC = () => {
