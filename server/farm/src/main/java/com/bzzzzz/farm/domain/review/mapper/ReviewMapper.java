@@ -2,7 +2,6 @@ package com.bzzzzz.farm.domain.review.mapper;
 
 
 import com.bzzzzz.farm.domain.review.dto.*;
-import com.bzzzzz.farm.review.dto.*;
 import com.bzzzzz.farm.domain.review.entity.Review;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

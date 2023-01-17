@@ -3,7 +3,6 @@ package com.bzzzzz.farm.domain.product.mapper;
 import com.bzzzzz.farm.domain.product.dto.*;
 import com.bzzzzz.farm.domain.product.entity.ProductCategory;
 import com.bzzzzz.farm.domain.product.entity.ProductOption;
-import com.bzzzzz.farm.product.dto.*;
 import com.bzzzzz.farm.domain.product.entity.Product;
 import org.mapstruct.Mapper;
 
