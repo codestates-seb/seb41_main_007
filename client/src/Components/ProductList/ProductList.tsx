@@ -14,11 +14,10 @@ interface Props {
 
 const ProductList: FC<Props> = ({ productList, pageInfo, categoryId }) => {
   const navigate = useNavigate();
-  console.log(productList, pageInfo);
   const { page, totalPages } = pageInfo;
   const handlerSetOffset = (page: number) => {
     window.scrollTo(0, 0);
-    return navigate(`/products${categoryId}page=${page}`);
+    return navigate(`/products/${categoryId}?page=${page}`);
   };
   return (
     <div>
