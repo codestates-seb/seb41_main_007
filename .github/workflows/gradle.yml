@@ -37,9 +37,9 @@ jobs:
       run: echo "${{ secrets.SECRET_YML }}" > ./src/main/resources/application-secret.yml
       working-directory: ./server/farm
 
-    - name: farm.p12 생성
-      run: echo "${{ secrets.FARM_P12 }}" > ./src/main/resources/farm.p12
-      working-directory: ./server/farm
+#    - name: farm.p12 생성
+#      run: echo "${{ secrets.FARM_P12 }}" > ./src/main/resources/farm.p12
+#      working-directory: ./server/farm
 
     - name: Grand execute permission for gradlew
       run: chmod +x /root/actions-runner/_work/seb41_main_007/seb41_main_007/server/farm/gradlew
