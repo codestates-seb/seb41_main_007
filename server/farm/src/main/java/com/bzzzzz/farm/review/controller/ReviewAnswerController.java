@@ -71,8 +71,15 @@ public class ReviewAnswerController {
     @DeleteMapping
     public ResponseEntity deleteReviewAnswer(@RequestBody @Valid ReviewAnswerDeleteDto reviewAnswerDeleteDto) {
         //TODO: 관리자인지 검증하는 로직 추가
-        //TODO: Review 테이블에서 답변 등록되어있던거 지우는 로직 추가해야함
-        reviewAnswerService.deleteReviewAnswer(reviewAnswerDeleteDto.getReviewAnswerId());
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        Member member = memberService.getLoginMember();
+        if(member.getRoles().equals("ROLE_ADMIN")) {
+            reviewAnswerService.deleteReviewAnswer(reviewAnswerDeleteDto.getReviewAnswerId());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+
+
     }
 }
