@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.member.service;
 
 import com.bzzzzz.farm.security.utils.CustomAuthorityUtils;
+import com.bzzzzz.farm.cart.entiy.Cart;
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.helper.event.MemberRegistrationApplicationEvent;
@@ -22,6 +23,21 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils authorityUtils;
     private final ApplicationEventPublisher publisher;
+
+
+    public Member createMember(Member member){
+        verifyExistsEmail(member.getEmail());
+
+
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
+        member.setCart(new Cart());
+
+        Member savedMember = memberRepository.save(member);
+
+        publisher.publishEvent(new MemberRegistrationApplicationEvent(this,savedMember));
+        return savedMember;
+    }
 
     public Member updateMember(Member member) {
         Member findMember = findVerifiedMember(member.getMemberId());
@@ -64,6 +80,15 @@ public class MemberService {
     public Member findVerifiedMember(long memberId) {
         Optional<Member> optionalMember =
                 memberRepository.findById(memberId);
+        Member findMember =
+                optionalMember.orElseThrow(() ->
+                        new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
+        return findMember;
+    }
+    @Transactional(readOnly = true)
+    public Member findVerifiedEmail(String email) {
+        Optional<Member> optionalMember =
+                memberRepository.findByEmail(email);
         Member findMember =
                 optionalMember.orElseThrow(() ->
                         new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));

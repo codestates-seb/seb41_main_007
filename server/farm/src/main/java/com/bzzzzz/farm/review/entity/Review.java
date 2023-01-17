@@ -3,6 +3,7 @@ package com.bzzzzz.farm.review.entity;
 import com.bzzzzz.farm.audit.Auditable;
 import com.bzzzzz.farm.member.entity.Member;
 import com.bzzzzz.farm.product.entity.Product;
+import com.bzzzzz.farm.review.entity.reviewanswer.ReviewAnswer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +30,9 @@ public class Review extends Auditable {
     @Column(nullable = false)
     private float rating;
 
+    @Column
+    private String picture;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "memberId", nullable = false)
@@ -38,11 +42,13 @@ public class Review extends Auditable {
     @JoinColumn(name = "productId", nullable = false)
     private Product product;
 
-    //사진 추가로 매핑해야함
+    //이미지 매핑
+
+
 
     //답변 매핑해야함
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "reviewAnswerId", nullable = true)
+    @JoinColumn(name = "reviewAnswerId")
     private ReviewAnswer reviewAnswer;
 
     public Review(String reviewTitle, String reviewContent, float rating) {

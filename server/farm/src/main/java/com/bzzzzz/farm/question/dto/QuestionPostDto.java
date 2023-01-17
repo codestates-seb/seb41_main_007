@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.review.dto.reviewanswer;
+package com.bzzzzz.farm.question.dto;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +11,9 @@ import javax.validation.constraints.Positive;
 @Setter
 @NoArgsConstructor
 @Validated
-public class ReviewAnswerPostDto {
+public class QuestionPostDto {
     @Positive
     private Long memberId;
-    private Long productId;
-    private Long reviewId;
-    private String reviewAnswerTitle;
-    private String reviewAnswerContent;
+    private String questionTitle;
+    private String questionContent;
 }

@@ -51,6 +51,8 @@ public class ProductService {
                     // 카테고리: X, 키워드: X
                     : productRepository.findAll(pageable);
         }
+
+        // 키워드가 없을 경우;
     }
 
     @CacheEvict(value = "getMain", allEntries = true)

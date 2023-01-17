@@ -62,8 +62,6 @@ public class ReviewService {
         findReview.setReviewTitle(review.getReviewTitle());
         findReview.setReviewContent(review.getReviewContent());
 
-        //TODO: 첨부파일 관련 로직 추가해야함
-
         return reviewRepository.save(findReview);
 
     }

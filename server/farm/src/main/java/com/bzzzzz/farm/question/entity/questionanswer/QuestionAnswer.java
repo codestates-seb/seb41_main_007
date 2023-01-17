@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.review.entity;
+package com.bzzzzz.farm.question.entity.questionanswer;
 
 import com.bzzzzz.farm.audit.Auditable;
 import lombok.Getter;
@@ -11,16 +11,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class ReviewAnswer extends Auditable {
+public class QuestionAnswer extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long reviewAnswerId;
+    private Long questionAnswerId;
 
     @Column(nullable = false)
-    private String reviewAnswerTitle;
+    private String questionAnswerTitle;
 
     @Column(nullable = false)
-    private String reviewAnswerContent;
-
+    private String questionAnswerContent;
 
 }
