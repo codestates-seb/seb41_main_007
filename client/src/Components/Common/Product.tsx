@@ -1,17 +1,10 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Styles/ProductList.module.css';
+import styles from './Styles/Product.module.css';
 import { SkeletonContent } from 'Components/Loading/LoadingList';
-
-interface Product {
-  productId: number;
-  name: string;
-  price: number;
-  photo: string;
-  alt?: string;
-}
+import { TYPE_Product } from '../../Types/common/product';
 interface Props {
-  product: Product;
+  product: TYPE_Product;
 }
 
 const Product: FC<Props> = ({ product }) => {

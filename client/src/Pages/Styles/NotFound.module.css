@@ -1,0 +1,52 @@
+.NotFound_Container {
+  display: flex;
+  padding-top: 320px;
+  width: 1024px;
+  margin: 0 auto;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.NotFound_Image {
+  width: 400px;
+  height: 400px;
+}
+
+.NotFound_Description {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.NotFound_Title {
+  font-size: 49px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  color: var(--green-40);
+}
+
+.NotFound_Buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.NotFound_Home_Button {
+  display: flex;
+  width: 150px;
+  height: 60px;
+  fontsize: var(--xxlarge);
+  border-radius: 3px;
+  border: 1px solid rgb(234, 236, 237);
+  background-color: white;
+  padding: 5px;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: var(--green-40);
+}
+
+.NotFound_Home_Button:hover {
+  background-color: var(--green-10);
+  border-color: var(--green-20);
+}
