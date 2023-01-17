@@ -22,14 +22,12 @@ const SearchResult: FC<Props> = ({ sch }) => {
   const { page, totalPages } = data.pageInfo;
   return (
     <ul>
-      <>
-        <ProductList products={data.data} />
-        <Navigation
-          totalPage={totalPages}
-          currentPage={page}
-          callbackFunc={handlerSetOffset}
-        />
-      </>
+      <ProductList products={data.data} />
+      <Navigation
+        totalPage={totalPages}
+        currentPage={page}
+        callbackFunc={handlerSetOffset}
+      />
     </ul>
   );
 };
