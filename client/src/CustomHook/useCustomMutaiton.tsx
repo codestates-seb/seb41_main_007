@@ -5,11 +5,10 @@ export const useCustomMutation = (
   queryKey: string,
   method: string,
 ) => {
-  const host = 'http://farmandpeople.kro.kr:8080';
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
     (suggest: any) => {
-      return fetch(`${host}${url}`, {
+      return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
         body: JSON.stringify(suggest),
         headers: { 'Content-Type': 'application/json' },
         method: method,

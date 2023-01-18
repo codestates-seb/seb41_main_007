@@ -13,7 +13,19 @@ export interface ObjectSaveState {
   modified_at?: string;
 }
 
-const initialState: ObjectSaveState[] = [];
+const initialState: ObjectSaveState[] = [
+  {
+    review_id: 3,
+    member_id: 2,
+    product_id: 5,
+    review_title: '제목이에요',
+    review_content: '이건 내용이에용내에용에욘ㅇ',
+    rating: 5,
+    created_at: '2022-10-5',
+    modified_at: '2022-12-06',
+    // review_image: ,
+  },
+];
 
 const objectSaveSlice = createSlice({
   name: 'objectSave',
