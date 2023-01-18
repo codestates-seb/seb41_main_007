@@ -5,6 +5,7 @@ import com.bzzzzz.farm.domain.product.controller.ProductController;
 import com.bzzzzz.farm.domain.product.dto.ProductCategoryResponseDto;
 import com.bzzzzz.farm.domain.product.dto.ProductDetailResponseDto;
 import com.bzzzzz.farm.domain.product.dto.ProductOptionResponseDto;
+import com.bzzzzz.farm.domain.product.dto.ProductSimpleResponseDto;
 import com.bzzzzz.farm.domain.product.entity.Product;
 import com.bzzzzz.farm.domain.product.mapper.ProductMapper;
 import com.bzzzzz.farm.domain.product.service.ProductCategoryService;
@@ -48,6 +49,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 @WebMvcTest(ProductController.class)
 @MockBean(JpaMetamodelMappingContext.class)
+@WithMockUser(roles = {"USER", "ADMIN"})
 public class ProductControllerTest {
     @Autowired
     private MockMvc mockMvc;
@@ -65,7 +67,6 @@ public class ProductControllerTest {
     private ProductOptionService productOptionService;
 
     @Test
-    @WithMockUser(roles = "USER")
     void getProduct() throws Exception {
         // given
         long productId = 1L;
@@ -169,6 +170,87 @@ public class ProductControllerTest {
                                 fieldWithPath("productCategoryResponseDtos[*].categoryId").type(JsonFieldType.NUMBER).description("카테고리 식별자(실제 카테고리)"),
                                 fieldWithPath("productCategoryResponseDtos[*].name").type(JsonFieldType.STRING).description("카테고리명(실제 카테고리)")
                         ))
+                ))
+                .andReturn();
+
+        System.out.println("\nresult = " + result.getResponse().getContentAsString() + "\n");
+    }
+
+    @Test
+    void getProducts() throws Exception {
+        // given
+
+        // Page<Product> 생성
+        List<Product> products = new ArrayList<>();
+        for (int i = 100; i >= 1; i--) {
+            products.add(new Product());
+        }
+        Page<Product> productPage = new PageImpl<>(
+                products, PageRequest.of(0, 40, Sort.by("productId").descending()), 3
+        );
+
+        // 응답 데이터 생성
+        List<ProductSimpleResponseDto> response = new ArrayList<>();
+        for (long i = 40; i >= 1; i--) {
+            response.add(ProductSimpleResponseDto
+                    .builder()
+                    .productId(i)
+                    .name("테스트 제품" + i)
+                    .price(30000)
+                    .photo("http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg")
+                    .productStatus("판매 중")
+                    .build());
+        }
+
+        given(productService.findProducts(
+                Mockito.anyInt(),
+                Mockito.anyInt(),
+                Mockito.anyString(),
+                Mockito.anyString(),
+                Mockito.anyLong(),
+                Mockito.anyString()
+        )).willReturn(productPage);
+        given(productMapper.productsToProductSimpleResponseDtos(Mockito.anyList())).willReturn(response);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                get("/products?page=1&size=40&categoryId=0&sort=productId&order=descending&keyword=")
+                        .accept(MediaType.APPLICATION_JSON)
+        );
+
+        // then
+        MvcResult result = actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").isArray())
+                .andExpect(jsonPath("$.pageInfo.page").value(productPage.getNumber() + 1))
+                .andExpect(jsonPath("$.pageInfo.size").value(productPage.getSize()))
+                .andExpect(jsonPath("$.pageInfo.totalElements").value(productPage.getTotalElements()))
+                .andExpect(jsonPath("$.pageInfo.totalPages").value(productPage.getTotalPages()))
+                .andDo(document(
+                        "getProducts",
+                        preprocessResponse(prettyPrint()),
+                        requestParameters(
+                                parameterWithName("page").description("요청할 페이지 (기본값 = 1) * 이하 미입력시 기본값 혹은 값을 주지 않습니다 *"),
+                                parameterWithName("size").description("한 페이지당 표시할 게시물 수 (기본값 = 40)"),
+                                parameterWithName("categoryId").description("특정 카테고리에 속한 제품들을 보고 싶은 경우 카테고리의 식별자를 입력"),
+                                parameterWithName("sort").description("정렬 기준 = productId(최신순, 기본값), name(상품이름순), price(가격순), brand(제조사순), likeCount(인기순)"),
+                                parameterWithName("order").description("정렬 방법 = descending(내림차순, 기본값), ascending(오름차순)"),
+                                parameterWithName("keyword").description("검색어 = 제품명, 브랜드안에서 검색")
+                        ),
+                        responseFields(
+                                List.of(
+                                        fieldWithPath("data").type(JsonFieldType.ARRAY).description("결과 데이터"),
+                                        fieldWithPath("data[*].productId").type(JsonFieldType.NUMBER).description("제품 식별자"),
+                                        fieldWithPath("data[*].name").type(JsonFieldType.STRING).description("제품 명"),
+                                        fieldWithPath("data[*].price").type(JsonFieldType.NUMBER).description("제품 가격"),
+                                        fieldWithPath("data[*].photo").type(JsonFieldType.STRING).description("제품 썸네일 사진 URL"),
+                                        fieldWithPath("data[*].productStatus").type(JsonFieldType.STRING).description("제품 상태"),
+                                        fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
+                                        fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지"),
+                                        fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("한 페이지당 표시할 데이터 수"),
+                                        fieldWithPath("pageInfo.totalElements").type(JsonFieldType.NUMBER).description("총 데이터 수"),
+                                        fieldWithPath("pageInfo.totalPages").type(JsonFieldType.NUMBER).description("총 페이지 수")
+                                ))
                 ))
                 .andReturn();
 
