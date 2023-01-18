@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.global.security.refresh;
+package com.bzzzzz.farm.global.security.entity;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
