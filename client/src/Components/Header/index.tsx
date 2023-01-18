@@ -1,13 +1,11 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from './Logo';
-import LoginRequiredButton from './LoginRequiredButton';
-import LoggedInButton from './LoggedInButton';
 import Input from './Input';
 import styles from './Styles/Header.module.css';
+import TopColRight from './TopColRight';
 
 const Header: FC = () => {
-  let isUser = true;
   return (
     <header>
       <div className={styles.Header_Container}>
@@ -18,7 +16,7 @@ const Header: FC = () => {
               <Logo width={230} height={230} />
             </Link>
           </div>
-          {isUser ? <LoggedInButton /> : <LoginRequiredButton />}
+          <TopColRight />
         </div>
       </div>
     </header>

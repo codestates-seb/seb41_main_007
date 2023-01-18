@@ -1,7 +1,4 @@
 .Nav_All_Container {
-  padding-top: 15px;
-
-  transition: all 0.3s;
 }
 .Nav_Container1 {
   display: flex;
@@ -17,7 +14,6 @@
   width: 250px;
   gap: 20px;
   padding-top: 20px;
-  /* background-color: red; */
 }
 
 .Nav_Menu1 {
@@ -25,10 +21,17 @@
   font-size: var(--small);
   color: #757575;
 }
+.Nav_Menu1:hover {
+  color: var(--green-60);
+}
 
 .Nav_Menu2 {
   float: left;
   font-size: var(--slarge);
   color: #000;
   transition: all 0.3s;
+}
+
+.Nav_Menu2:hover {
+  color: var(--green-60);
 }
