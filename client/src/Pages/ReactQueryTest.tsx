@@ -1,20 +1,43 @@
+import Empty from 'Components/Common/Empty';
 import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { FC, useState } from 'react';
 
+interface Review {
+  productId: number;
+  reviewId: number;
+  memberId: number;
+  reviewTitle: string;
+  reviewContent: string;
+  rating: number;
+}
+
 const ReactQueryTest: FC = () => {
   const [text, setText] = useState<string>('');
-  const { data, isLoading, error } = useCustomQuery('/products', 'products');
+  const productId = 1;
+  //해당하는 id 를 ${productId} 넣어서 사용하기
+  const page = 1;
+  const size = 10;
+  const { data, isLoading, error } = useCustomQuery(
+    `/reviews?productId=${productId}&page=${page}&size=${size}`,
+    `reviews?productId=${productId}&page=${page}&size=${size}`,
+  );
 
-  const { mutate } = useCustomMutation('/products', 'products', 'POST');
-
-  if (isLoading) return <></>;
-  if (error) return <div> error</div>;
+  const { mutate } = useCustomMutation('/reviews', 'reviews', 'POST');
+  // 아직 api post reviews 미완성
+  if (isLoading) return <Empty />;
+  if (error) return <></>;
+  console.log(data);
   return (
     <div>
       {data &&
-        data.data.map((el: { productId: number; name: string }) => {
-          return <div key={el.productId}> {el.name}</div>;
+        data.data.map((el: Review) => {
+          return (
+            <div key={el.reviewId}>
+              <div>{el.reviewTitle}</div>
+              <div>{el.reviewContent}</div>
+            </div>
+          );
         })}
       <input
         type="text"
@@ -25,32 +48,10 @@ const ReactQueryTest: FC = () => {
       <button
         onClick={() => {
           mutate({
-            name: '아테네',
-            price: 2000000,
-            photo:
-              'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/First_Tractor_Company_-_old_working_model_-_01.jpg/220px-First_Tractor_Company_-_old_working_model_-_01.jpg',
-            brand: '순양자동차',
-            description: '진양철이 개발한 차량입니다.',
-            shippingCountry: 'KOREA',
-            shippingMethod: 'PARCEL_SERVICE',
-            shippingPrice: 30000,
-            productCategoryPostDtos: [
-              {
-                categoryId: 1,
-              },
-            ],
-            productOptionPostDtos: [
-              {
-                productOptionName: '자폭',
-                price: 1000000,
-                stock: 10,
-              },
-              {
-                productOptionName: '본네트를 없애서 경량화',
-                price: 1000000,
-                stock: 10,
-              },
-            ],
+            productId: 1,
+            reviewTitle: '이 상품 뭔가요',
+            reviewContent: '이 상품 너무 좋아요',
+            rating: 4,
           });
         }}
       >
