@@ -14,6 +14,10 @@ import BasketsPage from 'Pages/BasketPage';
 import Search from 'Pages/Search';
 
 import Footer from 'Components/Common/Footer';
+import Address from 'Components/PaymentPage/Address';
+
+import PaymentPage from 'Pages/PaymentPage';
+import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
 });
@@ -61,6 +65,18 @@ const router = createBrowserRouter([
   {
     path: '/test',
     element: <ReactQueryTest />,
+  },
+  {
+    path: '/address',
+    element: <Address />,
+  },
+  {
+    path: '/payment',
+    element: <PaymentPage />,
+  },
+  {
+    path: '/test/review',
+    element: <ReviewQueryTest />,
   },
 ]);
 
