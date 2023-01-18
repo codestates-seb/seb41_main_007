@@ -8,7 +8,11 @@ import { useNumberComma } from 'Utils/commonFunction';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Empty from 'Components/Common/Empty';
+import CustomTitle from 'Components/Header/CustomTitle';
 import BuyButton from 'Components/Common/BuyButton';
+import useScrollTop from 'CustomHook/useScrollTop';
+import { useAppDispatch } from 'Redux/app/hook';
+import { countset } from 'Redux/reducer/priceSlice';
 
 const ProductContainer = styled.div`
   margin-top: 120px;
@@ -111,7 +115,8 @@ export interface counterProps {
 
 const ProductPage: React.FC = () => {
   const [count, setCount] = useState<number>(1);
-
+  const dispatch = useAppDispatch();
+  useScrollTop();
   let param = useParams();
   const { data, isLoading } = useCustomQuery(
     `/products/${param.productid}`,
@@ -153,7 +158,6 @@ const ProductPage: React.FC = () => {
     let IsSame: boolean = false;
 
     baskets.forEach((el: any) => {
-      console.log(el.id);
       if (data.productId === el.productId) IsSame = true;
     });
 
@@ -162,8 +166,9 @@ const ProductPage: React.FC = () => {
 
       return;
     }
+    dispatch(countset({ id: data.productId, price: data.price, count: 1 }));
     baskets.push(data);
-    console.log(baskets);
+
     emptyBasketAlram();
     localStorage.setItem('baskets', JSON.stringify(baskets));
   };
@@ -231,13 +236,11 @@ const ProductPage: React.FC = () => {
         'Made from natural materials. Grain and color vary with each item.',
     },
   ];
-  console.log(isLoading);
+
   if (isLoading) return <Empty />;
 
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);
-
-    console.log(count);
   };
 
   const onDecrease = () => {
@@ -254,6 +257,7 @@ const ProductPage: React.FC = () => {
     <ProductContainer>
       <ProductMenuTitle></ProductMenuTitle>
       <ProductMain>
+        <CustomTitle title={`${data.name} 상품 - FARMPI`} />
         <ImageBox src={data.photo}></ImageBox>
         <ProductBox>
           <ProductPrice Mgtop="0"></ProductPrice>

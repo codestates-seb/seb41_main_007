@@ -1,6 +1,11 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import styled from 'styled-components';
 import Basket from './Basket';
+import { useAppSelector } from 'Redux/app/hook';
+import { selectprice, Pricestate } from 'Redux/reducer/priceSlice';
+import useScrollTop from 'CustomHook/useScrollTop';
+import { useNumberComma } from 'Utils/commonFunction';
+import BuyButton from 'Components/Common/BuyButton';
 
 const BasketForm = styled.div`
   width: 1180px;
@@ -95,37 +100,106 @@ const TableBottom = styled.div`
   border-bottom: 1px solid #f0f0f0;
   height: 134px;
   min-height: 50px;
+  display: flex;
+
+  flex-direction: column;
+  align-items: flex-end;
 `;
 const TotalPrice = styled.div`
-  position: absolute;
-  top: 60px;
-  right: 28px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  font-size: 100%;
-  vertical-align: baseline;
+  // position: absolute;
+  // top: 60px;
+  // right: 28px;
+  // margin: 0;
+  // padding: 0;
+  // border: 0;
+  // outline: 0;
+  // font-size: 100%;
+  // vertical-align: baseline;
 `;
 
 const ButtonContainer = styled.div`
+  display: flex;
   text-align: center;
   padding: 60px 0;
+  justify-content: center;
 `;
 
 const BasketList: FC = () => {
+  const [checkItems, setCheckItems] = useState<number[]>([]);
+  const resultarr: Pricestate[] = useAppSelector(selectprice);
+
+  const jsondata: string | null = localStorage.getItem('baskets');
+  const baskets = JSON.parse(jsondata || '[]');
+  useScrollTop();
+
+  let result: number = resultarr.reduce((acc, cur) => {
+    acc = acc + cur.price * cur.count;
+    return acc;
+  }, 0);
+  const resultCount: number = resultarr.reduce((acc, cur) => {
+    acc = acc + cur.count;
+    return acc;
+  }, 0);
+
+  // 체크박스 단일 선택
+  const handleSingleCheck = (checked?: boolean, id?: number) => {
+    if (checked && id) {
+      // 단일 선택 시 체크된 아이템을 배열에 추가
+      setCheckItems([...checkItems, id]);
+    } else {
+      // 단일 선택 해제 시 체크된 아이템을 제외한 배열 (필터)
+      setCheckItems(checkItems.filter((el) => el !== id));
+    }
+  };
+
+  const handleAllCheck = (checked: boolean) => {
+    if (checked) {
+      // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
+      const idArray: number[] = [];
+      baskets.forEach((el: any) => idArray.push(el.productId));
+      setCheckItems(idArray);
+    } else {
+      // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
+      setCheckItems([]);
+    }
+  };
+
+  const deleteAllCheck = () => {
+    // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
+    if (checkItems.length === baskets.length) {
+      setCheckItems([]);
+      localStorage.clear();
+    }
+    const deleteSave = baskets.filter((el: any) => {
+      return !checkItems.includes(el.productId);
+    });
+
+    localStorage.setItem('baskets', JSON.stringify(deleteSave));
+    setCheckItems([]);
+    // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
+  };
+
   return (
     <>
       <BasketForm>
         <Baskethead>
           <BasketLefthead>일반반찬세트</BasketLefthead>
-          <BasketRighthead>선택삭제</BasketRighthead>
+          <BasketRighthead onClick={deleteAllCheck}>선택삭제</BasketRighthead>
         </Baskethead>
         <table>
           <thead>
             <tr>
               <Tableheader1>
-                <THinput type="checkbox" value="basic"></THinput>
+                <THinput
+                  type="checkbox"
+                  value="basic"
+                  onChange={(e) => handleAllCheck(e.target.checked)}
+                  checked={
+                    checkItems.length === baskets.length && baskets.length !== 0
+                      ? true
+                      : false
+                  }
+                ></THinput>
               </Tableheader1>
               <Tableheader2>상품정보</Tableheader2>
               <Tableheader3>수량</Tableheader3>
@@ -133,15 +207,40 @@ const BasketList: FC = () => {
               <Tableheader5></Tableheader5>
             </tr>
           </thead>
-          <Basket></Basket>
+          <Basket
+            handleSingleCheck={handleSingleCheck}
+            checkItems={checkItems}
+          />
         </table>
         <TableBottom>
-          <TotalPrice>예상 주문금액</TotalPrice>
+          <TotalPrice>
+            {' '}
+            <span>주문 개수 </span>
+            {resultCount}
+            <span> 개</span>
+          </TotalPrice>
+          <TotalPrice>
+            <span>예상 주문금액 </span>
+            {useNumberComma(result)}
+            <span> 원</span>
+          </TotalPrice>
         </TableBottom>
       </BasketForm>
-      <ButtonContainer>안녕</ButtonContainer>
+      <ButtonContainer>
+        <BuyButton background={'var( --white-02)'} margin={'0 12px 0 12px'}>
+          계속 쇼핑하기
+        </BuyButton>
+        <BuyButton background="var(--green-40)" margin={'0 12px 0 12px'}>
+          주문하기
+        </BuyButton>
+      </ButtonContainer>
     </>
   );
 };
 
 export default BasketList;
+
+//새로고침 했을때 총값 업데이트 되기
+//총값 계산 업데이트 안되는 문제 해결
+// 페이지 이동시 리덕스값이 사라짐
+//새로고침시 리덕스 초기화 되는 문제
