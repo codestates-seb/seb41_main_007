@@ -4,7 +4,7 @@ import com.bzzzzz.farm.global.security.utils.CustomAuthorityUtils;
 import com.bzzzzz.farm.domain.cart.entiy.Cart;
 import com.bzzzzz.farm.global.exception.BusinessLogicException;
 import com.bzzzzz.farm.global.exception.ExceptionCode;
-import com.bzzzzz.farm.global.helper.event.MemberRegistrationApplicationEvent;
+import com.bzzzzz.farm.global.helper.MemberRegistrationApplicationEvent;
 import com.bzzzzz.farm.domain.member.entity.Member;
 import com.bzzzzz.farm.domain.member.repository.MemberRepository;
 import lombok.AllArgsConstructor;

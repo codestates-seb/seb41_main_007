@@ -1,17 +1,20 @@
-package com.bzzzzz.farm.global.security.utils;
+package com.bzzzzz.farm.global.security.service;
 
 import com.bzzzzz.farm.global.exception.BusinessLogicException;
 import com.bzzzzz.farm.global.exception.ExceptionCode;
 import com.bzzzzz.farm.domain.member.entity.Member;
 import com.bzzzzz.farm.domain.member.repository.MemberRepository;
+import com.bzzzzz.farm.global.security.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 @Component
@@ -27,13 +30,19 @@ public class MemberDetailsService implements UserDetailsService {
 
         return new MemberDetails(findMember);
     }
-    private final class MemberDetails extends Member implements UserDetails{
+    private final class MemberDetails extends Member implements UserDetails , OAuth2User {
         MemberDetails(Member member){
             setMemberId(member.getMemberId());
             setEmail(member.getEmail());
             setPassword(member.getPassword());
             setRoles(member.getRoles());
         }
+
+        @Override
+        public Map<String, Object> getAttributes() {
+            return getAttributes();
+        }
+
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
             return authorityUtils.createAuthorities(this.getRoles());
