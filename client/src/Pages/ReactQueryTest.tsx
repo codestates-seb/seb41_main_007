@@ -6,7 +6,7 @@ const ReactQueryTest: FC = () => {
   const [text, setText] = useState<string>('');
   const { data, isLoading, error } = useCustomQuery('/products', 'products');
 
-  const { mutate } = useCustomMutation('/categories', 'categories', 'POST');
+  const { mutate } = useCustomMutation('/reviews', 'reviews', 'POST');
 
   if (isLoading) return <></>;
   if (error) return <div> error</div>;
@@ -25,7 +25,10 @@ const ReactQueryTest: FC = () => {
       <button
         onClick={() => {
           mutate({
-            name: '부직포 및 제초매트',
+            productId: 1,
+            reviewTitle: '이 상품 뭔가요',
+            reviewContent: '이 상품 너무 좋아요',
+            rating: 4,
           });
         }}
       >

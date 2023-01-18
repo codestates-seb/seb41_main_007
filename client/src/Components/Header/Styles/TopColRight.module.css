@@ -1,0 +1,30 @@
+.Nav_Container1 {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  text-align: right;
+  list-style: none;
+}
+.Nav_Container2 {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  width: 250px;
+  gap: 20px;
+  padding-top: 10px;
+  /* background-color: red; */
+}
+
+.Nav_Menu1 {
+  float: left;
+  font-size: 14px;
+  color: #757575;
+  transition: all 0.3s;
+}
+
+.Nav_Menu2 {
+  float: left;
+  font-size: 18px;
+  color: #000;
+  transition: all 0.3s;
+}

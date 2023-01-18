@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import Menu from './Menu';
+import TopColRight from './TopColRight';
 
 const LoggedInButton: FC = () => {
-  return <Menu />;
+  return <TopColRight />;
 };
 
 export default LoggedInButton;
