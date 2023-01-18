@@ -11,8 +11,7 @@
   justify-content: flex-end;
   width: 250px;
   gap: 20px;
-  padding-top: 10px;
-  /* background-color: red; */
+  padding-top: 20px;
 }
 
 .Nav_Menu1 {
@@ -21,10 +20,17 @@
   color: #757575;
   transition: all 0.3s;
 }
+.Nav_Menu1:hover {
+  color: var(--green-60);
+}
 
 .Nav_Menu2 {
   float: left;
   font-size: 18px;
   color: #000;
   transition: all 0.3s;
+}
+
+.Nav_Menu2:hover {
+  color: var(--green-60);
 }
