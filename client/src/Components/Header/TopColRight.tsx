@@ -1,10 +1,11 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import styles from './Styles/TopColRight.module.css';
-
 import { Link } from 'react-router-dom';
 
 const Logined = () => {
-  const logoutHandler = (e: React.MouseEvent<Element, MouseEvent>) => {
+  const logoutHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     localStorage.removeItem('access_token');
     window.location.href = '/';
   };

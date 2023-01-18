@@ -5,13 +5,8 @@ import styles from './Styles/Header.module.css';
 const Input: FC = () => {
   const [userFormInput, onChangeForm] = useInput('');
   return (
-    <div>
-      <form
-        className={styles.Header_Input_Container}
-        action={'/products'}
-        role="search"
-        method="GET"
-      >
+    <div style={{ paddingTop: '10px' }}>
+      <form action={'/products'} role="search" method="GET">
         <input
           className={styles.Header_Search_Input}
           placeholder="검색어를 입력해주세요."

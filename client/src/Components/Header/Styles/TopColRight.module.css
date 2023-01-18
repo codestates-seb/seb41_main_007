@@ -1,3 +1,8 @@
+.Nav_All_Container {
+  padding-top: 15px;
+
+  transition: all 0.3s;
+}
 .Nav_Container1 {
   display: flex;
   justify-content: flex-end;
@@ -16,9 +21,8 @@
 
 .Nav_Menu1 {
   float: left;
-  font-size: 14px;
+  font-size: var(--small);
   color: #757575;
-  transition: all 0.3s;
 }
 .Nav_Menu1:hover {
   color: var(--green-60);
@@ -26,7 +30,7 @@
 
 .Nav_Menu2 {
   float: left;
-  font-size: 18px;
+  font-size: var(--slarge);
   color: #000;
   transition: all 0.3s;
 }
