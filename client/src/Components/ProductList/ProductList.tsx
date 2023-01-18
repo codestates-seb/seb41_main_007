@@ -5,7 +5,7 @@ import Product from 'Components/Common/Product';
 
 import styles from './Styles/Product.module.css';
 import { TYPE_PageInfo, TYPE_Product } from '../../Types/common/product.d';
-
+import useScrollTop from '../../CustomHook/useScrollTop';
 interface Props {
   productList: TYPE_Product[];
   pageInfo: TYPE_PageInfo;
@@ -13,6 +13,7 @@ interface Props {
 }
 
 const ProductList: FC<Props> = ({ productList, pageInfo, categoryId }) => {
+  useScrollTop();
   const navigate = useNavigate();
   const { page, totalPages } = pageInfo;
   const handlerSetOffset = (page: number) => {
