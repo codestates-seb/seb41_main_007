@@ -1,3 +1,5 @@
+import { FC } from 'react';
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
 const products = [
   {
     id: 1,
@@ -74,14 +76,26 @@ const products = [
   // More products...
 ];
 
-export default function ExampleBest() {
+const ExampleBest: FC = () => {
+  const size = 8;
+  const page = 1;
+  const sort = 'likeCount';
+  const order = 'descending';
+  const { data, isLoading, error } = useCustomQuery(
+    `/products?sort=${sort}&order=${order}&page=${page}&size=${size}`,
+    `product?sort=${sort}&order=${order}&page=${page}&size=${size}`,
+  );
+
+  if (isLoading) return <></>;
+  if (error) return <>error낫음</>;
+  console.log(data.data);
+
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">
           Best
         </h2>
-
         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {products.map((product) => (
             <div key={product.id} className="group relative">
@@ -111,4 +125,6 @@ export default function ExampleBest() {
       </div>
     </div>
   );
-}
+};
+
+export default ExampleBest;
