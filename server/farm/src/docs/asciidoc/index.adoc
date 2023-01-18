@@ -1,0 +1,42 @@
+= FarmAndPeople 애플리케이션
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Table of Contents
+:source-highlighter: prettify
+
+Kim siyeong, Kim byeongsoo, Lee hyunsoo
+
+If you have any questions, please contact me via email below
+
+<philip2767@gmail.com, , >
+
+v1.0.0, 2023.01.18
+
+***
+== ProductController
+
+=== 제품 등록
+
+=== 제품 정보 수정
+
+=== 제품 삭제
+
+=== 제품 상세정보 조회
+
+.curl-request
+include::{snippets}/getProduct/curl-request.adoc[]
+
+.http-request
+include::{snippets}/getProduct/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/getProduct/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/getProduct/http-response.adoc[]
+
+.response-fields
+include::{snippets}/getProduct/response-fields.adoc[]
+
+=== 제품 전체목록 조회(검색)
