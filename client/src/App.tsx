@@ -20,6 +20,7 @@ import Address from 'Components/PaymentPage/Address';
 
 import PaymentPage from 'Pages/PaymentPage';
 import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
+import OauthTest from 'Pages/OauthTest';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
@@ -72,6 +73,10 @@ const router = createBrowserRouter([
   {
     path: '/test',
     element: <ReactQueryTest />,
+  },
+  {
+    path: '/test2',
+    element: <OauthTest />,
   },
   {
     path: '/products/:categoryId',
