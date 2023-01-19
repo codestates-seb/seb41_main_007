@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: prod
+    active: local
     include: secret
 
 logging:
@@ -13,3 +13,22 @@ server:
   servlet:
     encoding:
       force-response: true
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+cloud:
+  aws:
+    credentials:
+      accessKey: ${AWS_ACCESS_KEY}
+      secretKey: ${AWS_SECRET_KEY}
+    region:
+      static: ap-northeast-1
+    stack:
+      auto: false
+
+application:
+  bucket:
+    name: sebmain007
