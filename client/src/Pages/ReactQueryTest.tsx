@@ -32,14 +32,6 @@ const ReactQueryTest: FC = () => {
     `/reviews?productId=${productId}&page=${page}&size=${size}`,
     `reviews?productId=${productId}&page=${page}&size=${size}`,
   );
-  const productId = 1;
-  //해당하는 id 를 ${productId} 넣어서 사용하기
-  const page = 1;
-  const size = 10;
-  const { data, isLoading, error } = useCustomQuery(
-    `/reviews?productId=${productId}&page=${page}&size=${size}`,
-    `reviews?productId=${productId}&page=${page}&size=${size}`,
-  );
 
   const { mutate } = useCustomMutation('/reviews', 'reviews', 'POST');
   // 아직 api post reviews 미완성
@@ -49,13 +41,6 @@ const ReactQueryTest: FC = () => {
   return (
     <div>
       {data &&
-        data.data.map((el: Review) => {
-          return (
-            <div key={el.reviewId}>
-              <div>{el.reviewTitle}</div>
-              <div>{el.reviewContent}</div>
-            </div>
-          );
         data.data.map((el: Review) => {
           return (
             <div key={el.reviewId}>
