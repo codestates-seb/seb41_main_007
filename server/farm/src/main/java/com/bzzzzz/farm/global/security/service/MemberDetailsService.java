@@ -10,18 +10,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class MemberDetailsService implements UserDetailsService {
     private final MemberRepository memberRepository;
-    private final CustomAuthorityUtils authorityUtils;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -30,7 +27,7 @@ public class MemberDetailsService implements UserDetailsService {
 
         return new MemberDetails(findMember);
     }
-    private final class MemberDetails extends Member implements UserDetails , OAuth2User {
+    private final class MemberDetails extends Member implements UserDetails {
         MemberDetails(Member member){
             setMemberId(member.getMemberId());
             setEmail(member.getEmail());
@@ -39,13 +36,8 @@ public class MemberDetailsService implements UserDetailsService {
         }
 
         @Override
-        public Map<String, Object> getAttributes() {
-            return getAttributes();
-        }
-
-        @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            return authorityUtils.createAuthorities(this.getRoles());
+            return CustomAuthorityUtils.createAuthorities(this.getRoles());
         }
 
         @Override
