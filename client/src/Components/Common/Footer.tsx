@@ -6,6 +6,7 @@ const Container = styled.div`
   background-color: #f4f4f4;
   border: 1px solid #e7e7e7;
   padding: 27px 180px;
+  margin: 0px auto;
   .select {
     margin-top: 65px;
   }
@@ -15,8 +16,9 @@ const Main = styled.div`
   background-color: #ebebeb;
   height: 340px;
   display: flex;
-  width: 1300px;
+  width: 1240px;
   padding: 50px 50px;
+  margin: 0px 190px;
 `;
 const Client = styled.div`
   width: 490px;
