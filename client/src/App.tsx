@@ -16,6 +16,10 @@ import Search from 'Pages/Search';
 import NotFoundPage from 'Pages/NotFoundPage';
 
 import Footer from 'Components/Common/Footer';
+import Address from 'Components/PaymentPage/Address';
+
+import PaymentPage from 'Pages/PaymentPage';
+import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { refetchOnWindowFocus: false } },
@@ -81,6 +85,18 @@ const router = createBrowserRouter([
         <NotFoundPage />
       </>
     ),
+  },
+  {
+    path: '/address',
+    element: <Address />,
+  },
+  {
+    path: '/payment',
+    element: withLayout(PaymentPage),
+  },
+  {
+    path: '/test/review',
+    element: <ReviewQueryTest />,
   },
 ]);
 

@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import Product from 'Components/Common/Product';
 const products = [
   {
     id: 1,
@@ -76,7 +77,7 @@ const products = [
   // More products...
 ];
 
-const ExampleBest: FC = () => {
+const BestProduct: FC = () => {
   const size = 8;
   const page = 1;
   const sort = 'likeCount';
@@ -93,42 +94,65 @@ const ExampleBest: FC = () => {
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <h2 className="text-4xl font-bold font-serif tracking-tight text-gray-900">
-          베스트 상품
+        <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+          Best
         </h2>
-        <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-          {/* Component/Common/Product.
-          {data.data && data.data.map((el:any)=>{ */}
-          {/* return <Product key={product.productId} product={product} />          
-          }); } */}
-          {products.map((product) => (
-            <div key={product.id} className="group relative">
+        <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8"></div>
+        {data.data &&
+          data.data.map((el: any) => (
+            <div key={el.productId} className="group relative">
               <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
                 <img
-                  src={product.imageSrc}
-                  alt={product.imageAlt}
+                  src={el.photo}
+                  alt={el.description}
                   className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                 />
               </div>
               <div className="mt-4">
                 <div>
                   <h3 className="text-sm text-gray-700">
-                    <a href={product.href}>
+                    <a href={el.href}>
                       <span aria-hidden="true" className="absolute inset-0" />
-                      {product.name}
+                      {el.name}
                     </a>
                   </h3>
                 </div>
-                <p className="text-sm font-medium text-gray-900">
-                  {product.price}
-                </p>
+                <p className="text-sm font-medium text-gray-900">{el.price}</p>
               </div>
             </div>
           ))}
-        </div>
       </div>
     </div>
   );
 };
 
-export default ExampleBest;
+export default BestProduct;
+
+// {data.data &&
+//   data.data.map((el: any) => {
+//     return <Product key={product.productId} product={product} />;
+//   })}
+// {products.map((product) => (
+//   <div key={product.id} className="group relative">
+//     <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
+//       <img
+//         src={product.imageSrc}
+//         alt={product.imageAlt}
+//         className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+//       />
+//     </div>
+//     <div className="mt-4">
+//       <div>
+//         <h3 className="text-sm text-gray-700">
+//           <a href={product.href}>
+//             <span aria-hidden="true" className="absolute inset-0" />
+//             {product.name}
+//           </a>
+//         </h3>
+//       </div>
+//       <p className="text-sm font-medium text-gray-900">
+//         {product.price}
+//       </p>
+//     </div>
+//   </div>
+// ))}

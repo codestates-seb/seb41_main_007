@@ -21,17 +21,16 @@ const Content = styled.div`
     height: 250px;
     margin-bottom: 5px;
   }
-  .new_title {
-    margin-top: 3px;
-  }
 `;
 const Data = ({ url }: useItemProps) => {
   return (
     <>
       <Content>
         <img src={url} alt="carousel"></img>
-        <span className="font-semibold">새로운 상품 새모이 장비</span>
-        <div className="new_title">7200원</div>
+        <div className="text-red-500">#신제품</div>
+        <div className="font-semibold">새로운 상품 새모이 장비</div>
+        <div className="text-gray-400">주문시 10% 추가 할인쿠폰 사용 가능</div>
+        <div className="text-red-500 font-semibold">7200원</div>
       </Content>
     </>
   );
@@ -100,8 +99,8 @@ const NewCarousel: React.FC = (): JSX.Element => {
   return (
     <>
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <h2 className="pb-7 text-2xl font-bold tracking-tight text-gray-900">
-          New
+        <h2 className="pb-7 text-4xl font-bold tracking-tight text-gray-900 font-serif">
+          새로운 상품
         </h2>
         <Container>
           <StyledSlider {...settings}>

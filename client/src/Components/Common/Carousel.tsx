@@ -37,7 +37,7 @@ export const Carousell = (props: any) => {
     },
   ];
   return (
-    <div className="mx-52">
+    <div className="mx-80 px-32">
       <Carousel>
         {items.map((item, i) => (
           <Item key={i} {...item} />

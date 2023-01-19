@@ -2,16 +2,6 @@ import Empty from 'Components/Common/Empty';
 import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { FC, useState } from 'react';
-import NotFoundPage from './NotFoundPage';
-
-interface Review {
-  productId: number;
-  reviewId: number;
-  memberId: number;
-  reviewTitle: string;
-  reviewContent: string;
-  rating: number;
-}
 
 interface Review {
   productId: number;
