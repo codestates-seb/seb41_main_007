@@ -3,10 +3,11 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { BGcontainer } from 'Components/Common/BGcontainer';
 
 export default function SimpleAccordion() {
   return (
-    <div>
+    <BGcontainer>
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
@@ -46,6 +47,6 @@ export default function SimpleAccordion() {
           <Typography>Disabled Accordion</Typography>
         </AccordionSummary>
       </Accordion>
-    </div>
+    </BGcontainer>
   );
 }
