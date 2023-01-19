@@ -15,6 +15,8 @@ public class WebMvcConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);   // json을 자바스크립트에서 처리할 수 있음
         config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("https://farmpi.link/");
+        config.addAllowedOrigin("https://www.farmpi.link/");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
