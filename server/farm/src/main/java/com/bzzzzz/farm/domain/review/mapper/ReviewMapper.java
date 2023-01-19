@@ -17,7 +17,8 @@ public interface ReviewMapper {
         } else {
             Review review = new Review(reviewPostDto.getReviewTitle(),
                     reviewPostDto.getReviewContent(),
-                    reviewPostDto.getRating());
+                    reviewPostDto.getRating(),
+                    reviewPostDto.getReviewImage());
             return review;
         }
     }
@@ -30,7 +31,8 @@ public interface ReviewMapper {
                     reviewPatchDto.getReviewId(),
                     reviewPatchDto.getReviewTitle(),
                     reviewPatchDto.getReviewContent(),
-                    reviewPatchDto.getRating());
+                    reviewPatchDto.getRating(),
+                    reviewPatchDto.getReviewImage());
             return review;
         }
     }
@@ -42,6 +44,7 @@ public interface ReviewMapper {
                 review.getReviewTitle(),
                 review.getReviewContent(),
                 review.getRating(),
+                review.getReviewImage(),
                 review.getCreatedAt(),
                 review.getModifiedAt());
     }
@@ -54,6 +57,7 @@ public interface ReviewMapper {
                 review.getReviewTitle(),
                 review.getReviewContent(),
                 review.getRating(),
+                review.getReviewImage(),
                 review.getCreatedAt(),
                 review.getModifiedAt()
         )).collect(Collectors.toList());

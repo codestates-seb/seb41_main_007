@@ -18,5 +18,7 @@ public class ReviewPostDto {
     private String reviewTitle;
     private String reviewContent;
     private float rating;
+    //리뷰 s3 이미지 링크들 string으로 넣어줌
+    private String reviewImage;
 
 }
