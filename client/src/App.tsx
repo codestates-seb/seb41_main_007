@@ -51,7 +51,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/mypage',
-    element: withLayout(Mypage),
+    element: <Mypage />,
   },
   {
     path: '/Basket',

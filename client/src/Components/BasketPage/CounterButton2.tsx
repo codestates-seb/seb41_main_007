@@ -41,7 +41,6 @@ const CounterButton2: FC<props> = ({ setnumber }) => {
   const [count, setCount] = useState<number>(1);
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);
-    console.log(count);
   };
 
   const onDecrease = () => {
@@ -65,11 +64,7 @@ const CounterButton2: FC<props> = ({ setnumber }) => {
           alt="add"
         />
       </Counterbutton>
-      <Counterinput
-        type="text"
-        defaultValue={count}
-        data-idx="0"
-      ></Counterinput>
+      <Counterinput type="text" value={count} data-idx="0"></Counterinput>
       <Counterbutton onClick={onDecrease} isTrue={false}>
         <CounterImg
           src="https://www.zipbanchan.co.kr/shop/remain/pc/imgs/icon/-.svg"
