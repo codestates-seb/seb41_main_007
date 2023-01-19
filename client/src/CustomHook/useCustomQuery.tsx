@@ -8,7 +8,7 @@ interface OutPut {
 
 export const useCustomQuery = (url: string, queryKey: string): OutPut => {
   const { data, isLoading, error, status } = useQuery(queryKey, () =>
-    fetch(`${url}`, {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
     }).then((res: Response) => {

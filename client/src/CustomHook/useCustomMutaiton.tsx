@@ -8,7 +8,7 @@ export const useCustomMutation = (
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
     (suggest: any) => {
-      return fetch(`${url}`, {
+      return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
         body: JSON.stringify(suggest),
         headers: { 'Content-Type': 'application/json' },
         method: method,
