@@ -9,7 +9,7 @@ Kim siyeong, Kim byeongsoo, Lee hyunsoo
 
 If you have any questions, please contact me via email below
 
-<philip2767@gmail.com, , >
+<philip2767@gmail.com, 추가하셔요!, 추가하셔요!>
 
 v1.0.0, 2023.01.18
 
@@ -17,6 +17,21 @@ v1.0.0, 2023.01.18
 == ProductController
 
 === 제품 등록
+
+.curl-request
+include::{snippets}/postProduct/curl-request.adoc[]
+
+.http-request
+include::{snippets}/postProduct/http-request.adoc[]
+
+.request-fields
+include::{snippets}/postProduct/request-fields.adoc[]
+
+.http-response
+include::{snippets}/postProduct/http-response.adoc[]
+
+.response-fields
+include::{snippets}/postProduct/response-fields.adoc[]
 
 === 제품 정보 수정
 

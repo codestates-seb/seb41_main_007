@@ -2,11 +2,10 @@ package com.bzzzzz.farm.domain.product;
 
 import com.bzzzzz.farm.domain.like.service.LikeService;
 import com.bzzzzz.farm.domain.product.controller.ProductController;
-import com.bzzzzz.farm.domain.product.dto.ProductCategoryResponseDto;
-import com.bzzzzz.farm.domain.product.dto.ProductDetailResponseDto;
-import com.bzzzzz.farm.domain.product.dto.ProductOptionResponseDto;
-import com.bzzzzz.farm.domain.product.dto.ProductSimpleResponseDto;
+import com.bzzzzz.farm.domain.product.dto.*;
 import com.bzzzzz.farm.domain.product.entity.Product;
+import com.bzzzzz.farm.domain.product.entity.ProductCategory;
+import com.bzzzzz.farm.domain.product.entity.ProductOption;
 import com.bzzzzz.farm.domain.product.mapper.ProductMapper;
 import com.bzzzzz.farm.domain.product.service.ProductCategoryService;
 import com.bzzzzz.farm.domain.product.service.ProductOptionService;
@@ -26,6 +25,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -43,6 +43,7 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -65,6 +66,74 @@ public class ProductControllerTest {
     private ProductCategoryService productCategoryService;
     @MockBean
     private ProductOptionService productOptionService;
+
+    @Test
+    void postProduct() throws Exception {
+        // given
+        Product product = new Product();
+        product.setProductId(1L);
+        ProductPostDto post = ProductPostDto
+                .builder()
+                .name("테스트제품")
+                .price(30000)
+                .photo("http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg")
+                .brand("테스트브랜드")
+                .description("테스트 제품 설명")
+                .shippingCountry("KOREA")
+                .shippingMethod("PARCEL_SERVICE")
+                .shippingPrice(3000)
+                .productCategoryPostDtos(List.of(new ProductCategoryPostDto(1L)))
+                .productOptionPostDtos(List.of(new ProductOptionPostDto("옵션이름", 5000, 100)))
+                .build();
+
+        given(productMapper.productPostDtoToProduct(Mockito.any(ProductPostDto.class))).willReturn(new Product());
+        given(productService.createProduct(Mockito.any(Product.class))).willReturn(product);
+        given(productCategoryService.createProductCategory(Mockito.any(ProductCategory.class))).willReturn(new ProductCategory());
+        doNothing().when(productOptionService).createProductOption(Mockito.any(ProductOption.class));
+
+        String content = gson.toJson(post);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                post("/products")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .content(content)
+        );
+
+        // then
+        MvcResult result = actions
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data").value(product.getProductId()))
+                .andDo(document(
+                        "postProduct",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                List.of(
+                                        fieldWithPath("name").type(JsonFieldType.STRING).description("제품명"),
+                                        fieldWithPath("price").type(JsonFieldType.NUMBER).description("제품 가격"),
+                                        fieldWithPath("photo").type(JsonFieldType.STRING).description("제품 썸네일 사진 URL"),
+                                        fieldWithPath("brand").type(JsonFieldType.STRING).description("제조사"),
+                                        fieldWithPath("description").type(JsonFieldType.STRING).description("제품 설명"),
+                                        fieldWithPath("shippingCountry").type(JsonFieldType.STRING).description("국내/해외 배송 여부"),
+                                        fieldWithPath("shippingMethod").type(JsonFieldType.STRING).description("배송 방법"),
+                                        fieldWithPath("shippingPrice").type(JsonFieldType.NUMBER).description("배송비"),
+                                        fieldWithPath("productCategoryPostDtos").type(JsonFieldType.ARRAY).description("제품이 포함될 카테고리 (1개 이상 필수)"),
+                                        fieldWithPath("productCategoryPostDtos[*].categoryId").type(JsonFieldType.NUMBER).description("카테고리 식별자"),
+                                        fieldWithPath("productOptionPostDtos").type(JsonFieldType.ARRAY).description("제품 옵션 목록 (1개 이상 필수)"),
+                                        fieldWithPath("productOptionPostDtos[*].productOptionName").type(JsonFieldType.STRING).description("옵션명"),
+                                        fieldWithPath("productOptionPostDtos[*].price").type(JsonFieldType.NUMBER).description("옵션 가격"),
+                                        fieldWithPath("productOptionPostDtos[*].stock").type(JsonFieldType.NUMBER).description("옵션 재고")
+                                )
+                        ),
+                        responseFields(fieldWithPath("data").description("생성된 제품 식별자"))
+                ))
+                .andReturn();
+
+        System.out.println("\nresult = " + result.getResponse().getContentAsString() + "\n");
+    }
 
     @Test
     void getProduct() throws Exception {
@@ -150,7 +219,7 @@ public class ProductControllerTest {
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("제품명"),
                                 fieldWithPath("price").type(JsonFieldType.NUMBER).description("제품 가격"),
                                 fieldWithPath("photo").type(JsonFieldType.STRING).description("제품 썸네일 사진 URL"),
-                                fieldWithPath("shippingCountry").type(JsonFieldType.STRING).description("배송 출발지"),
+                                fieldWithPath("shippingCountry").type(JsonFieldType.STRING).description("국내/해외 배송 여부"),
                                 fieldWithPath("shippingMethod").type(JsonFieldType.STRING).description("배송 방법"),
                                 fieldWithPath("shippingPrice").type(JsonFieldType.NUMBER).description("배송비"),
                                 fieldWithPath("description").type(JsonFieldType.STRING).description("제품 설명"),

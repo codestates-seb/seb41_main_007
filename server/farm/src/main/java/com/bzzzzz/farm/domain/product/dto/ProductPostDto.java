@@ -1,5 +1,6 @@
 package com.bzzzzz.farm.domain.product.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,6 +10,7 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Getter
+@Builder
 public class ProductPostDto {
     @Setter
     private Long memberId;
