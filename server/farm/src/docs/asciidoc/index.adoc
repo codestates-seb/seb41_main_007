@@ -52,6 +52,18 @@ include::{snippets}/patchProduct/response-fields.adoc[]
 
 === 제품 삭제
 
+.curl-request
+include::{snippets}/deleteProduct/curl-request.adoc[]
+
+.http-request
+include::{snippets}/deleteProduct/http-request.adoc[]
+
+.request-fields
+include::{snippets}/deleteProduct/request-fields.adoc[]
+
+.http-response
+include::{snippets}/deleteProduct/http-response.adoc[]
+
 === 제품 상세정보 조회
 
 .curl-request
