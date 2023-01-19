@@ -1,81 +1,81 @@
 import { FC } from 'react';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
-import Product from 'Components/Common/Product';
-const products = [
-  {
-    id: 1,
-    name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
-    href: '#',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '27,000원',
-  },
-  {
-    id: 2,
-    name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
-    href: '#',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '27,000원',
-  },
-  {
-    id: 3,
-    name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
-    href: '#',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '27,000원',
-  },
-  {
-    id: 4,
-    name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
-    href: '#',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '27,000원',
-  },
-  {
-    id: 5,
-    name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
-    href: '#',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '27,000원',
-  },
-  {
-    id: 6,
-    name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
-    href: '#',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '27,000원',
-  },
-  {
-    id: 7,
-    name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
-    href: '#',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '27,000원',
-  },
-  {
-    id: 8,
-    name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
-    href: '#',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
-    imageAlt: "Front of men's Basic Tee in black.",
-    price: '27,000원',
-  },
-  // More products...
-];
+// import Product from 'Components/Common/Product';
+// const products = [
+//   {
+//     id: 1,
+//     name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
+//     href: '#',
+//     imageSrc:
+//       'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '27,000원',
+//   },
+//   {
+//     id: 2,
+//     name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
+//     href: '#',
+//     imageSrc:
+//       'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '27,000원',
+//   },
+//   {
+//     id: 3,
+//     name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
+//     href: '#',
+//     imageSrc:
+//       'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '27,000원',
+//   },
+//   {
+//     id: 4,
+//     name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
+//     href: '#',
+//     imageSrc:
+//       'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '27,000원',
+//   },
+//   {
+//     id: 5,
+//     name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
+//     href: '#',
+//     imageSrc:
+//       'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '27,000원',
+//   },
+//   {
+//     id: 6,
+//     name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
+//     href: '#',
+//     imageSrc:
+//       'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '27,000원',
+//   },
+//   {
+//     id: 7,
+//     name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
+//     href: '#',
+//     imageSrc:
+//       'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '27,000원',
+//   },
+//   {
+//     id: 8,
+//     name: '방조망 벽색 1.5cm/5kg 참새망 그물 조류방지',
+//     href: '#',
+//     imageSrc:
+//       'https://tailwindui.com/img/ecommerce-images/product-page-01-related-product-01.jpg',
+//     imageAlt: "Front of men's Basic Tee in black.",
+//     price: '27,000원',
+//   },
+//   // More products...
+// ];
 
 const BestProduct: FC = () => {
   const size = 8;

@@ -64,7 +64,12 @@ const CounterButton2: FC<props> = ({ setnumber }) => {
           alt="add"
         />
       </Counterbutton>
-      <Counterinput type="text" value={count} data-idx="0"></Counterinput>
+      <Counterinput
+        type="text"
+        value={count}
+        data-idx="0"
+        readOnly
+      ></Counterinput>
       <Counterbutton onClick={onDecrease} isTrue={false}>
         <CounterImg
           src="https://www.zipbanchan.co.kr/shop/remain/pc/imgs/icon/-.svg"

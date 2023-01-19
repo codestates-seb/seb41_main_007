@@ -2,8 +2,7 @@ import Address from 'Components/PaymentPage/Address';
 import Payment from 'Components/PaymentPage/Payment';
 import styled from 'styled-components';
 import { useState } from 'react';
-import { faArrowUp } from '@fortawesome/free-solid-svg-icons';
-import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Container = styled.div`
   margin: 130px auto;
@@ -16,6 +15,7 @@ const Title = styled.div`
   justify-content: space-between;
   padding-right: 30px;
 `;
+
 const PaymentPage: React.FC = () => {
   const [address, setAddress] = useState<boolean>(true); //배송지
   const [payment, setPayment] = useState<boolean>(true); //결제수단

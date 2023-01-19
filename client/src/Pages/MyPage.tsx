@@ -2,14 +2,28 @@ import { BGcontainer } from 'Components/Common/BGcontainer';
 import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
+
 import Box from '@mui/material/Box';
+import MyProfile from 'Components/Mypage/MyProfile';
+import Payment from 'Components/PaymentPage/Payment';
+import styled from 'styled-components';
+import { useState } from 'react';
+import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
+const ShortContainer = styled.div`
+  width: 750px;
+  margin: 0 auto;
+`;
 
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+const Title = styled.div`
+  border-top: 1px solid black;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: space-between;
+  padding-right: 30px;
+`;
+
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
@@ -27,11 +41,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 }
@@ -45,6 +55,8 @@ function a11yProps(index: number) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
+  const [Profile, setProfile] = useState<boolean>(false); //배송지
+  const [payment, setPayment] = useState<boolean>(false); //결제수단
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -52,70 +64,47 @@ export default function BasicTabs() {
 
   return (
     <BGcontainer>
-      <Box sx={{ width: '100%' }}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-          >
-            <Tab label="Item One" {...a11yProps(0)} />
-            <Tab label="Item Two" {...a11yProps(1)} />
-            <Tab label="Item Three" {...a11yProps(2)} />
-          </Tabs>
+      <ShortContainer>
+        <Box sx={{ width: '100%' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+            >
+              <Tab label="내 프로필" {...a11yProps(0)} />
+              <Tab label="주문 조회" {...a11yProps(1)} />
+            </Tabs>
+          </Box>
+          <TabPanel value={value} index={0}>
+            <Title>
+              <div className="text-base font-semibold py-4">내 정보 관리</div>
+              <button onClick={() => setProfile(!Profile)}>
+                {Profile ? (
+                  <FontAwesomeIcon icon={faArrowUp} />
+                ) : (
+                  <FontAwesomeIcon icon={faArrowDown} />
+                )}
+              </button>
+            </Title>
+            {Profile && <MyProfile />}
+            <Title>
+              <div className="text-base font-semibold py-4">배송지 관리</div>
+              <button onClick={() => setPayment(!payment)}>
+                {payment ? (
+                  <FontAwesomeIcon icon={faArrowUp} />
+                ) : (
+                  <FontAwesomeIcon icon={faArrowDown} />
+                )}
+              </button>
+            </Title>
+            {payment && <Payment />}
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            Item Two
+          </TabPanel>
         </Box>
-        <TabPanel value={value} index={0}>
-          <div>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1a-content"
-                id="panel1a-header"
-              >
-                <Typography>Accordion 1</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                  eget.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
-              >
-                <Typography>Accordion 2</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-                  eget.
-                </Typography>
-              </AccordionDetails>
-            </Accordion>
-            <Accordion disabled>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel3a-content"
-                id="panel3a-header"
-              >
-                <Typography>Disabled Accordion</Typography>
-              </AccordionSummary>
-            </Accordion>
-          </div>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          Item Two
-        </TabPanel>
-        <TabPanel value={value} index={2}>
-          Item Three
-        </TabPanel>
-      </Box>
+      </ShortContainer>
     </BGcontainer>
   );
 }
