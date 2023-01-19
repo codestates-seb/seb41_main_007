@@ -92,7 +92,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/payment',
-    element: <PaymentPage />,
+    element: withLayout(PaymentPage),
   },
   {
     path: '/test/review',
