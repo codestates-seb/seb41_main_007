@@ -179,3 +179,19 @@ include::{snippets}/postProductOption/request-fields.adoc[]
 
 .http-response
 include::{snippets}/postProductOption/http-response.adoc[]
+
+=== 옵션 수정
+
+patchProductOption()
+
+.curl-request
+include::{snippets}/patchProductOption/curl-request.adoc[]
+
+.http-request
+include::{snippets}/patchProductOption/http-request.adoc[]
+
+.request-fields
+include::{snippets}/patchProductOption/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patchProductOption/http-response.adoc[]

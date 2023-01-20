@@ -1,20 +1,16 @@
 package com.bzzzzz.farm.controller;
 
+import com.bzzzzz.farm.mapper.ProductMapper;
+import com.bzzzzz.farm.model.dto.IdRequestDto;
+import com.bzzzzz.farm.model.dto.product.*;
 import com.bzzzzz.farm.model.entity.Category;
-import com.bzzzzz.farm.service.CategoryService;
-import com.bzzzzz.farm.controller.ProductSubController;
-import com.bzzzzz.farm.model.dto.product.ProductCategoryPatchDto;
-import com.bzzzzz.farm.model.dto.product.ProductCategoryPostDto;
-import com.bzzzzz.farm.model.dto.product.ProductCategoryResponseDto;
-import com.bzzzzz.farm.model.dto.product.ProductOptionPostDto;
 import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.model.entity.ProductCategory;
 import com.bzzzzz.farm.model.entity.ProductOption;
-import com.bzzzzz.farm.mapper.ProductMapper;
+import com.bzzzzz.farm.service.CategoryService;
 import com.bzzzzz.farm.service.ProductCategoryService;
 import com.bzzzzz.farm.service.ProductOptionService;
 import com.bzzzzz.farm.service.ProductService;
-import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -237,5 +233,41 @@ public class ProductSubControllerTest {
                                 )
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("옵션 수정")
+    void patchProductOption() throws Exception {
+        // given
+        ProductOptionPatchDto request = new ProductOptionPatchDto(1L, "수정할 옵션명", 10000, 200);
+
+        doNothing().when(productOptionService).updateProductOption(Mockito.any(ProductOptionPatchDto.class));
+
+        String content = gson.toJson(request);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                patch("/products/options")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .content(content)
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "patchProductOption",
+                        preprocessRequest(prettyPrint()),
+                        requestFields(
+                                List.of(
+                                        fieldWithPath("productOptionId").type(JsonFieldType.NUMBER).description("옵션 식별자"),
+                                        fieldWithPath("productOptionName").type(JsonFieldType.STRING).description("옵션명"),
+                                        fieldWithPath("price").type(JsonFieldType.NUMBER).description("옵션 가격"),
+                                        fieldWithPath("stock").type(JsonFieldType.NUMBER).description("옵션 재고")
+                                )
+                        )
+                ));
+
     }
 }
