@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.domain.product;
+package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.model.entity.Category;
 import com.bzzzzz.farm.service.CategoryService;
