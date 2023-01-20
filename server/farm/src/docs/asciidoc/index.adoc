@@ -14,6 +14,25 @@ If you have any questions, please contact me via email below
 v1.0.0, 2023.01.18
 
 ***
+== MainController
+
+=== 메인 페이지 가져오기
+
+getMain()
+
+.curl-request
+include::{snippets}/getMain/curl-request.adoc[]
+
+.http-request
+include::{snippets}/getMain/http-request.adoc[]
+
+.http-response
+include::{snippets}/getMain/http-response.adoc[]
+
+.response-fields
+include::{snippets}/getMain/response-fields.adoc[]
+
+***
 == ProductController
 
 === 제품 등록
