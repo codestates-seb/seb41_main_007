@@ -4,9 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Getter
@@ -17,7 +17,7 @@ public class ProductPostDto {
 
     @NotBlank
     private String name;
-
+    @Min(value = 0)
     private int price;
 
     @NotBlank
@@ -35,7 +35,7 @@ public class ProductPostDto {
     @NotBlank
     private String shippingMethod;
 
-    @Positive
+    @Min(value = 0)
     private int shippingPrice;
 
     @NotNull
