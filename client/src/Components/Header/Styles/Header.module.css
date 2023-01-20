@@ -6,6 +6,7 @@
   width: 100%;
   z-index: 9999;
   position: fixed;
+  border-bottom: 1px solid var(--green-10);
 }
 
 .Header_Contents_Container {
