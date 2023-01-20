@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, ElementType } from 'react';
 import RadiusButton from './RadiusButton';
 import styled from 'styled-components';
 
@@ -13,8 +13,8 @@ const TextDiv = styled.div`
 
 interface Props {
   children?: string;
-  onClick?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  Component?: React.FC;
+  onSave?: (name: string, value: string) => void;
+  Component?: ElementType<any> | undefined;
   namevalue?: string;
 }
 
@@ -32,33 +32,38 @@ const ComponentsInput: React.FC<Props> = ({
   Component,
   children,
   namevalue,
-  onClick,
+  onSave,
 }) => {
   const [control, setcontrol] = useState<boolean>(true);
-
+  const [data, setdata] = useState<string>('');
   const errorempty: string = `${namevalue}이 등록되지 않았습니다.
   입력해 주세요.`;
   const onClickForm = () => {
     setcontrol(!control);
+  };
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    onSave?.(name, value);
+    setdata(value);
   };
 
   return (
     <div className="mb-5 flex">
       {control ? (
         <div className="flex">
-          <TextDiv>하이</TextDiv>
+          <TextDiv>{data}</TextDiv>
           <RadiusButton onClick={onClickForm}>수정</RadiusButton>
         </div>
       ) : (
         <div className="flex">
           {Component ? (
-            <Component />
+            <Component onChange={onChange} />
           ) : (
             <Textinput
               data-type="text"
               name={namevalue ? namevalue : 'text'}
               maxLength={10}
-              onChange={onClick}
+              onChange={onChange}
               type="text"
               data-error-empty={errorempty}
             ></Textinput>

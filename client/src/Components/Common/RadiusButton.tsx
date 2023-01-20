@@ -7,7 +7,7 @@ const Radiusbutton = styled.button`
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 26px;
   font-size: 12px;
-  color: #252525;
+  color: black;
   font-weight: bold;
   margin-left: 4px;
 `;

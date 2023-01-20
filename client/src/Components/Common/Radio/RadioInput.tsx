@@ -8,27 +8,18 @@ export default function RadioInput() {
   };
   return (
     <form
-      onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        alert(`${e.target}를 통해 연락드리겠습니다!`);
+      onSubmit={() => {
+        alert(`${valueSave}를 통해 연락드리겠습니다!`);
       }}
     >
       <RadioGroup>
-        <Radio name="contact" value="EMAIL" defaultChecked>
-          이메일
+        <Radio name="gender" value="남성" onSave={onSave} defaultChecked>
+          남성
         </Radio>
-        <Radio name="contact" value="PHONE">
-          전화
-        </Radio>
-        <Radio name="contact" value="FAX">
-          팩스
-        </Radio>
-        <Radio name="contact" value="MAIL" disabled>
-          우편
+        <Radio name="gender" value="여성" onSave={onSave}>
+          여성
         </Radio>
       </RadioGroup>
-      <button>제출</button>
     </form>
   );
 }

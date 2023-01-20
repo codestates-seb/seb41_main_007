@@ -16,8 +16,8 @@ const AddressInput = styled.div``;
 
 const MyProfile: React.FC = () => {
   const [values, setValues] = useState({});
-  const onSave = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+  const onSave = (name: string, value: string) => {
+    setValues({ ...values, [name]: value });
   };
   console.log(values);
   return (
@@ -25,7 +25,11 @@ const MyProfile: React.FC = () => {
       <Container>
         <User>
           <div className="text-sm font-semibold my-2">이름</div>
-          <ComponentsInput onClick={onSave}></ComponentsInput>
+          <ComponentsInput onSave={onSave}></ComponentsInput>
+          <ComponentsInput
+            onSave={onSave}
+            Component={RadioInput}
+          ></ComponentsInput>
         </User>
         <RadioInput></RadioInput>
         <AddressInput>
