@@ -1,11 +1,13 @@
 package com.bzzzzz.farm.domain.product.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.Positive;
 
 @Getter
+@Builder
 public class ProductPatchDto {
     @Positive
     private Long productId;
