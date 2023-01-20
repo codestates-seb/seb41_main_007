@@ -1,6 +1,6 @@
 package com.bzzzzz.farm.global.helper;
 
-import com.bzzzzz.farm.domain.member.entity.Member;
+import com.bzzzzz.farm.model.entity.Member;
 import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: prod
+    active: local
     include: secret
 
 logging:
@@ -13,8 +13,3 @@ server:
   servlet:
     encoding:
       force-response: true
-    multipart:
-      enabled: true
-      file-size-threshold: 2MB
-      max-file-size: 10MB
-      max-request-size: 10MB
