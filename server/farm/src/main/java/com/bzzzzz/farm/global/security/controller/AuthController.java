@@ -22,6 +22,7 @@ public class AuthController {
     private final AuthService authService;
     private final MemberService memberService;
     private final MemberMapper mapper;
+
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody MemberDto.Post memberPostDto){
         Member member = authService.createMember(mapper.memberPostToMember(memberPostDto));

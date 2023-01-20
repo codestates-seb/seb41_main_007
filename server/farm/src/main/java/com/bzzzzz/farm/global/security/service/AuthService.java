@@ -29,6 +29,7 @@ public class AuthService {
     private final CustomAuthorityUtils authorityUtils;
     private final RefreshTokenRepository refreshTokenRepository;
     private final MemberRepository memberRepository;
+
     //회원가입
     public Member createMember(Member member){
         if (memberRepository.findByEmail(member.getEmail()).isPresent()){
@@ -58,6 +59,7 @@ public class AuthService {
 
         return tokenDto;
     }
+
     // 토큰 재발급
     public TokenDto reissue(TokenRequestDto tokenRequestDto) {
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());

@@ -21,6 +21,7 @@ import java.util.Collections;
 public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final MemberRepository memberRepository;
     private final CustomAuthorityUtils authorityUtils;
+
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
@@ -51,4 +52,5 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
                 }).orElse(authAttributes.toEntity());  //없다면 새로운 멤버 생성
         return memberRepository.save(member);
     }
+
 }
