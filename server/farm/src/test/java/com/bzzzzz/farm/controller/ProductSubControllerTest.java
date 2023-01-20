@@ -270,4 +270,35 @@ public class ProductSubControllerTest {
                 ));
 
     }
+
+    @Test
+    @DisplayName("옵션 삭제")
+    void deleteProductOption() throws Exception {
+        // given
+        IdRequestDto request = new IdRequestDto();
+        request.setId(1L);
+
+        doNothing().when(productOptionService).deleteProductOption(Mockito.anyLong());
+
+        String content = gson.toJson(request);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                delete("/products/options")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .content(content)
+        );
+
+        // then
+        actions
+                .andExpect(status().isNoContent())
+                .andDo(document(
+                        "deleteProductOption",
+                        preprocessRequest(prettyPrint()),
+                        requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 대상의 식별자"))
+
+                ))
+                .andReturn();
+    }
 }

@@ -195,3 +195,19 @@ include::{snippets}/patchProductOption/request-fields.adoc[]
 
 .http-response
 include::{snippets}/patchProductOption/http-response.adoc[]
+
+=== 옵션 삭제
+
+deleteProductOption()
+
+.curl-request
+include::{snippets}/deleteProductOption/curl-request.adoc[]
+
+.http-request
+include::{snippets}/deleteProductOption/http-request.adoc[]
+
+.request-fields
+include::{snippets}/deleteProductOption/request-fields.adoc[]
+
+.http-response
+include::{snippets}/deleteProductOption/http-response.adoc[]
