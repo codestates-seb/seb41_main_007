@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ProductList from 'Components/Search/ProductList';
+import ProductList from 'Components/Common/ProductList';
 import Navigation from 'Components/Pagination/Navigation';
 import { TYPE_Product, TYPE_PageInfo } from 'Types/common/product';
 interface Props {

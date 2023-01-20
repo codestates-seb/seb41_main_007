@@ -42,7 +42,10 @@ const TopColRight: FC = () => {
     <div className={styles.Nav_All_Container}>
       {isUser ? <Logined /> : <LoginRequired />}
       <ul className={styles.Nav_Container2}>
-        <Link to="/products/1" style={{ display: 'flex', gap: '6px' }}>
+        <Link
+          to="/products/all?sort=likeCount&order=ascending&page=1"
+          style={{ display: 'flex', gap: '6px' }}
+        >
           <ShopingCartIcon />
           <li className={styles.Nav_Menu2}>상품보기</li>
         </Link>
