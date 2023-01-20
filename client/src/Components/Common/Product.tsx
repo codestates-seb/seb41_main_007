@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import styles from './Styles/Product.module.css';
 import { SkeletonContent } from 'Components/Loading/LoadingList';
 import { TYPE_Product } from '../../Types/common/product';
+import { useNumberComma } from 'Utils/commonFunction';
 interface Props {
   product: TYPE_Product;
 }
@@ -44,7 +45,9 @@ const Product: FC<Props> = ({ product }) => {
             />
           </div>
           <h3 className={styles.Product_Name_Content}>{product.name}</h3>
-          <p className={styles.Product_Price_Content}>{product.price}원</p>
+          <p className={styles.Product_Price_Content}>
+            {useNumberComma(product.price)}원
+          </p>
         </Link>
       ) : (
         <ul>{SkeletonContent(1)}</ul>

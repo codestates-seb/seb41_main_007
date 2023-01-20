@@ -1,0 +1,28 @@
+.Category_Container {
+  box-sizing: border-box;
+  width: 280px;
+  float: left;
+  padding: 50px 20px 50px 0;
+  height: 500px;
+  overflow-y: scroll;
+}
+
+.Category_Title {
+  display: block;
+  border-bottom: 1px solid #000;
+  font-size: var(--xlarge);
+  color: var(--black-10);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.Category_Content {
+  display: block;
+  font-size: 14px;
+  color: #757575;
+  padding: 12px 0;
+}
+
+.Category_Content:hover {
+  color: var(--black-10);
+}

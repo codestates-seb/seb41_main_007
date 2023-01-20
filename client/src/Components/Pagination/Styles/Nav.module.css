@@ -1,14 +1,12 @@
 .Nav_Container {
   display: flex;
   justify-content: center;
-  margin: 16px 0;
-  margin-bottom: 100px;
 }
 
 .Nav_Button {
   border: none;
   display: inline-block;
-  padding: 15px 15px;
+  padding: 20px 20px;
   border-radius: 15px;
   font-family: 'paybooc-Light';
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
@@ -31,7 +29,7 @@
   margin: 0 4px;
   border: none;
   display: inline-block;
-  padding: 8px 13px;
+  padding: 10px 15px;
   border-radius: 15px;
   font-family: 'paybooc-Light';
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
