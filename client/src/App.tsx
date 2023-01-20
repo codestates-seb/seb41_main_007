@@ -22,6 +22,7 @@ import PaymentPage from 'Pages/PaymentPage';
 import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
 import OauthTest from 'Pages/OauthTest';
 import AllProductsPage from 'Pages/AllProductsPage';
+import Auth from 'Pages/Auth';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -110,6 +111,7 @@ const router = createBrowserRouter([
     path: '/test/review',
     element: <ReviewQueryTest />,
   },
+  { path: '/auth', element: <Auth /> },
 ]);
 
 const App: React.FC = () => {

@@ -6,6 +6,8 @@ import Product from 'Components/Common/Product';
 import styles from './Styles/Product.module.css';
 import { TYPE_PageInfo, TYPE_Product } from '../../Types/common/product.d';
 import useScrollTop from '../../CustomHook/useScrollTop';
+import CategoryList from 'Components/Common/CategoryList';
+import { BGcontainer } from 'Components/Common/BGcontainer';
 interface Props {
   productList: TYPE_Product[];
   pageInfo: TYPE_PageInfo;
@@ -21,20 +23,23 @@ const ProductList: FC<Props> = ({ productList, pageInfo, categoryId }) => {
     return navigate(`/products/${categoryId}?page=${page}`);
   };
   return (
-    <div>
-      <div className={styles.Products_Container}>
-        <div className={styles.Product_List_Container}>
-          {productList.map((product: TYPE_Product) => (
-            <Product key={product.productId} product={product} />
-          ))}
+    <main>
+      <BGcontainer>
+        <CategoryList />
+        <div className={styles.Products_Container}>
+          <div className={styles.Product_List_Container}>
+            {productList.map((product: TYPE_Product) => (
+              <Product key={product.productId} product={product} />
+            ))}
+          </div>
         </div>
-      </div>
+      </BGcontainer>
       <Navigation
         totalPage={totalPages}
         currentPage={page}
         callbackFunc={handlerSetOffset}
       />
-    </div>
+    </main>
   );
 };
 

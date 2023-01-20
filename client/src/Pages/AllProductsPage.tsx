@@ -8,6 +8,7 @@ import ProductList from 'Components/Common/ProductList';
 
 import Navigation from 'Components/Pagination/Navigation';
 import { useNavigate } from 'react-router-dom';
+import CategoryList from 'Components/Common/CategoryList';
 
 const AllProductsPage: FC = () => {
   const navigate = useNavigate();
@@ -16,7 +17,7 @@ const AllProductsPage: FC = () => {
   const page = params.get('page');
   const queryKey = `productsAll${page}`;
   const { isLoading, data, error } = useCustomQuery(
-    `/products?sort=likeCount&order=ascending&page=${page}`,
+    `/products?sort=likeCount&order=ascending&page=${page}&size=20`,
     queryKey,
   );
   if (isLoading)
@@ -31,20 +32,21 @@ const AllProductsPage: FC = () => {
   const handlerSetOffset = (page: number) => {
     window.scrollTo(0, 0);
     return navigate(
-      `/products/all?sort=likeCount&order=ascending&page=${page}`,
+      `/products/all?sort=likeCount&order=ascending&page=${page}&size=20`,
     );
   };
 
   return (
     <main>
       <BGcontainer>
+        <CategoryList />
         <ProductList products={data.data} />
-        <Navigation
-          totalPage={data.pageInfo.totalPages}
-          currentPage={data.pageInfo.page}
-          callbackFunc={handlerSetOffset}
-        />
       </BGcontainer>
+      <Navigation
+        totalPage={data.pageInfo.totalPages}
+        currentPage={data.pageInfo.page}
+        callbackFunc={handlerSetOffset}
+      />
     </main>
   );
 };
