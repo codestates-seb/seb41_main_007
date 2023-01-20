@@ -13,20 +13,10 @@ const TextDiv = styled.div`
 
 interface Props {
   children?: string;
-  onSave?: (name: string, value: string) => void;
+  onSave: (name: string, value: string) => void;
   Component?: ElementType<any> | undefined;
   namevalue?: string;
 }
-
-// interface Value {
-//   inputBoolean?: boolean;
-//   checkBoolean?: boolean;
-// }
-
-// const INITIAL = {
-//   inputBoolean: true,
-//   checkBoolean: true,
-// };
 
 const ComponentsInput: React.FC<Props> = ({
   Component,
@@ -41,9 +31,18 @@ const ComponentsInput: React.FC<Props> = ({
   const onClickForm = () => {
     setcontrol(!control);
   };
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const onData = (name: string, value: string) => {
+    console.log('안녕');
+    onSave(name, value);
+    setdata(value);
+  };
+
+  const onChangeSave = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    onSave?.(name, value);
+    console.log(name, value);
+    onSave(name, value);
+
     setdata(value);
   };
 
@@ -57,13 +56,13 @@ const ComponentsInput: React.FC<Props> = ({
       ) : (
         <div className="flex">
           {Component ? (
-            <Component onChange={onChange} />
+            <Component onChangeSave={onChangeSave} onSave={onData} />
           ) : (
             <Textinput
               data-type="text"
               name={namevalue ? namevalue : 'text'}
               maxLength={10}
-              onChange={onChange}
+              onChange={onChangeSave}
               type="text"
               data-error-empty={errorempty}
             ></Textinput>
@@ -78,3 +77,5 @@ const ComponentsInput: React.FC<Props> = ({
 };
 
 export default ComponentsInput;
+
+//onSave?.(name, value);

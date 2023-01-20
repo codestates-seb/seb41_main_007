@@ -4,7 +4,7 @@ interface props {
   defaultChecked?: boolean;
   disabled?: boolean;
   children?: string;
-  onSave?: (el: string) => void;
+  onSave: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Radio: React.FC<props> = ({
@@ -17,7 +17,8 @@ const Radio: React.FC<props> = ({
 }) => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    onSave && onSave(value);
+    console.log(value);
+    onSave(e);
   };
 
   return (

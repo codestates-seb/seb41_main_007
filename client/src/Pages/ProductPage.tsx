@@ -398,3 +398,4 @@ const ProductPage: React.FC = () => {
 export default ProductPage;
 
 //버튼 후버기능 제거하기
+//카운터 버튼 오류 안보이게 하기
