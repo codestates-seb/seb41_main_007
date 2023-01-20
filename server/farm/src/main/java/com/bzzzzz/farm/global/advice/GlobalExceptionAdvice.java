@@ -1,7 +1,7 @@
 package com.bzzzzz.farm.global.advice;
 
-import com.bzzzzz.farm.global.dto.ErrorResponse;
-import com.bzzzzz.farm.global.exception.BusinessLogicException;
+import com.bzzzzz.farm.model.dto.ErrorResponse;
+import com.bzzzzz.farm.exception.BusinessLogicException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;

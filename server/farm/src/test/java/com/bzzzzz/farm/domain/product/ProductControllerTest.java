@@ -1,16 +1,16 @@
 package com.bzzzzz.farm.domain.product;
 
-import com.bzzzzz.farm.domain.like.service.LikeService;
-import com.bzzzzz.farm.domain.product.controller.ProductController;
-import com.bzzzzz.farm.domain.product.dto.*;
-import com.bzzzzz.farm.domain.product.entity.Product;
-import com.bzzzzz.farm.domain.product.entity.ProductCategory;
-import com.bzzzzz.farm.domain.product.entity.ProductOption;
-import com.bzzzzz.farm.domain.product.mapper.ProductMapper;
-import com.bzzzzz.farm.domain.product.service.ProductCategoryService;
-import com.bzzzzz.farm.domain.product.service.ProductOptionService;
-import com.bzzzzz.farm.domain.product.service.ProductService;
-import com.bzzzzz.farm.global.dto.IdRequestDto;
+import com.bzzzzz.farm.model.dto.product.*;
+import com.bzzzzz.farm.service.LikeService;
+import com.bzzzzz.farm.controller.ProductController;
+import com.bzzzzz.farm.model.entity.Product;
+import com.bzzzzz.farm.model.entity.ProductCategory;
+import com.bzzzzz.farm.model.entity.ProductOption;
+import com.bzzzzz.farm.mapper.ProductMapper;
+import com.bzzzzz.farm.service.ProductCategoryService;
+import com.bzzzzz.farm.service.ProductOptionService;
+import com.bzzzzz.farm.service.ProductService;
+import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
