@@ -2,6 +2,8 @@ package com.bzzzzz.farm.global.security.handler;
 
 import com.bzzzzz.farm.domain.member.entity.Member;
 import com.bzzzzz.farm.domain.member.service.MemberService;
+import com.bzzzzz.farm.global.security.entity.RefreshToken;
+import com.bzzzzz.farm.global.security.entity.RefreshTokenRepository;
 import com.bzzzzz.farm.global.security.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -19,7 +21,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenizer jwtTokenizer;
-    private final MemberService memberService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -31,6 +33,12 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
         String accessToken = jwtTokenizer.generateAccessToken(authentication, base64EncodedSecretKey);
         String refreshToken = jwtTokenizer.generateRefreshToken(authentication, base64EncodedSecretKey);
+
+        RefreshToken token = new RefreshToken();
+        token.setKey(email);
+        token.setValue(refreshToken);
+
+        refreshTokenRepository.save(token);
 
         String url = makeRedirectUrl(accessToken, refreshToken);
 

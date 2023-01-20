@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.global.security.config;
 
 import com.bzzzzz.farm.domain.member.service.MemberService;
+import com.bzzzzz.farm.global.security.entity.RefreshTokenRepository;
 import com.bzzzzz.farm.global.security.handler.MemberAccessDeniedHandler;
 import com.bzzzzz.farm.global.security.handler.MemberAuthenticationEntryPoint;
 import com.bzzzzz.farm.global.security.handler.OAuth2MemberSuccessHandler;
@@ -24,7 +25,7 @@ public class SecurityConfig {
     private final CorsFilter corsFilter;
     private final JwtTokenizer jwtTokenizer;
     private final MemberAuthenticationEntryPoint memberAuthenticationEntryPoint;
-    private final MemberService memberService;
+    private final RefreshTokenRepository refreshTokenRepository;
     private final MemberAccessDeniedHandler memberAccessDeniedHandler;
     private final CustomOAuth2MemberService customOAuth2MemberService;
 
@@ -75,7 +76,7 @@ public class SecurityConfig {
                 .userInfoEndpoint()
                 .userService(customOAuth2MemberService)
                 .and()
-                .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer,memberService))
+                .successHandler(new OAuth2MemberSuccessHandler(jwtTokenizer, refreshTokenRepository))
                 .and()
                 .logout()
                 .disable();
