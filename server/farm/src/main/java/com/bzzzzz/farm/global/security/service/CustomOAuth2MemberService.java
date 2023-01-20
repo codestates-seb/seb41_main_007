@@ -52,5 +52,4 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
                 }).orElse(authAttributes.toEntity());  //없다면 새로운 멤버 생성
         return memberRepository.save(member);
     }
-
 }

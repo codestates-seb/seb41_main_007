@@ -55,7 +55,6 @@ public class JwtTokenizer {
                 .signWith(getKey(base64EncodedSecretKey))
                 .compact();
     }
-
     public String generateRefreshToken(Authentication authentication, String base64EncodedSecretKey) {
         long now = (new Date()).getTime();
 
@@ -124,5 +123,4 @@ public class JwtTokenizer {
     private Key getKey(String base64EncodedSecretKey){
         return getKeyFromBase64EncodedKey(base64EncodedSecretKey);
     }
-
 }
