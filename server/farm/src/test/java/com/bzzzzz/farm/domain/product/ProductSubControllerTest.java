@@ -126,8 +126,52 @@ public class ProductSubControllerTest {
     @Test
     @DisplayName("제품이 속한 카테고리 위치를 수정")
     void patchProductCategory() throws Exception {
+        // given
         ProductCategoryPatchDto patch = new ProductCategoryPatchDto(1L, 2L);
+        ProductCategoryResponseDto response = ProductCategoryResponseDto
+                .builder()
+                .productCategoryId(patch.getProductCategoryId())
+                .categoryId(patch.getCategoryId())
+                .build();
 
+        given(categoryService.findVerifiedCategory(Mockito.anyLong())).willReturn(new Category());
+        given(productCategoryService.updateProductCategory(Mockito.any(ProductCategoryPatchDto.class))).willReturn(new ProductCategory());
+        given(productMapper.productCategoryToProductCategoryResponseDto(Mockito.any(ProductCategory.class))).willReturn(response);
 
+        String content = gson.toJson(patch);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                patch("/products/categories")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .content(content)
+        );
+
+        // then
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.productCategoryId").value(patch.getProductCategoryId()))
+                .andExpect(jsonPath("$.categoryId").value(patch.getCategoryId()))
+                .andExpect(jsonPath("$.name").value(response.getName()))
+                .andDo(document(
+                        "patchProductCategory",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                List.of(
+                                        fieldWithPath("productCategoryId").type(JsonFieldType.NUMBER).description("수정할 대상의 식별자"),
+                                        fieldWithPath("categoryId").type(JsonFieldType.NUMBER).description("카테고리 식별자")
+                                )
+                        ),
+                        responseFields(
+                                List.of(
+                                        fieldWithPath("productCategoryId").type(JsonFieldType.NUMBER).description("수정할 대상의 식별자"),
+                                        fieldWithPath("categoryId").type(JsonFieldType.NUMBER).description("카테고리 식별자"),
+                                        fieldWithPath("name").type(JsonFieldType.NULL).description("카테고리명 (null이 들어오면 정상입니다)")
+                                )
+                        )
+                ));
     }
 }
