@@ -18,7 +18,7 @@ const Main = styled.div`
   display: flex;
   width: 1240px;
   padding: 50px 50px;
-  margin: 0px 190px;
+  margin: 0px auto;
 `;
 const Client = styled.div`
   width: 490px;
