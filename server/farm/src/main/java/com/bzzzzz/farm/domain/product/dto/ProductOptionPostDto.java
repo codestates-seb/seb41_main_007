@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.domain.product.dto;
 
 import com.bzzzzz.farm.domain.product.entity.Product;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProductOptionPostDto {
     @NotBlank
     private String productOptionName;

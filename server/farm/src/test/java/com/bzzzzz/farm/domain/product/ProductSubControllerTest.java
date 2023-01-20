@@ -2,13 +2,14 @@ package com.bzzzzz.farm.domain.product;
 
 import com.bzzzzz.farm.domain.category.entity.Category;
 import com.bzzzzz.farm.domain.category.service.CategoryService;
-import com.bzzzzz.farm.domain.product.controller.ProductController;
 import com.bzzzzz.farm.domain.product.controller.ProductSubController;
 import com.bzzzzz.farm.domain.product.dto.ProductCategoryPatchDto;
 import com.bzzzzz.farm.domain.product.dto.ProductCategoryPostDto;
 import com.bzzzzz.farm.domain.product.dto.ProductCategoryResponseDto;
+import com.bzzzzz.farm.domain.product.dto.ProductOptionPostDto;
 import com.bzzzzz.farm.domain.product.entity.Product;
 import com.bzzzzz.farm.domain.product.entity.ProductCategory;
+import com.bzzzzz.farm.domain.product.entity.ProductOption;
 import com.bzzzzz.farm.domain.product.mapper.ProductMapper;
 import com.bzzzzz.farm.domain.product.service.ProductCategoryService;
 import com.bzzzzz.farm.domain.product.service.ProductOptionService;
@@ -22,10 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -33,7 +30,6 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -42,7 +38,6 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -183,7 +178,7 @@ public class ProductSubControllerTest {
         IdRequestDto request = new IdRequestDto();
         request.setId(1L);
 
-        doNothing().when(productCategoryService).deleteProductCategory(request.getId());
+        doNothing().when(productCategoryService).deleteProductCategory(Mockito.anyLong());
 
         String content = gson.toJson(request);
 
@@ -205,5 +200,42 @@ public class ProductSubControllerTest {
 
                 ))
                 .andReturn();
+    }
+
+    @Test
+    @DisplayName("제품에 옵션을 추가")
+    void postProductOption() throws Exception {
+        // given
+        ProductOptionPostDto request = new ProductOptionPostDto("추가할 옵션명", 5000, 100, 1L);
+
+        given(productService.findVerifiedProduct(Mockito.anyLong())).willReturn(new Product());
+        given(productMapper.productOptionPostDtoToProductOption(Mockito.any(ProductOptionPostDto.class))).willReturn(new ProductOption());
+        doNothing().when(productOptionService).createProductOption(Mockito.any(ProductOption.class));
+
+        String content = gson.toJson(request);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                post("/products/options")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .content(content)
+        );
+
+        // then
+        actions
+                .andExpect(status().isCreated())
+                .andDo(document(
+                        "postProductOption",
+                        preprocessRequest(prettyPrint()),
+                        requestFields(
+                                List.of(
+                                        fieldWithPath("productOptionName").type(JsonFieldType.STRING).description("추가할 옵션명"),
+                                        fieldWithPath("price").type(JsonFieldType.NUMBER).description("옵션 가격"),
+                                        fieldWithPath("stock").type(JsonFieldType.NUMBER).description("옵션 재고"),
+                                        fieldWithPath("productId").type(JsonFieldType.NUMBER).description("옵션을 추가할 대상 제품 식별자")
+                                )
+                        )
+                ));
     }
 }

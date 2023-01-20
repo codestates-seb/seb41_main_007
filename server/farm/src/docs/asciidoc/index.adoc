@@ -163,3 +163,19 @@ include::{snippets}/deleteProductCategory/request-fields.adoc[]
 
 .http-response
 include::{snippets}/deleteProductCategory/http-response.adoc[]
+
+=== 제품에 옵션을 추가
+
+postProductOption()
+
+.curl-request
+include::{snippets}/postProductOption/curl-request.adoc[]
+
+.http-request
+include::{snippets}/postProductOption/http-request.adoc[]
+
+.request-fields
+include::{snippets}/postProductOption/request-fields.adoc[]
+
+.http-response
+include::{snippets}/postProductOption/http-response.adoc[]
