@@ -97,3 +97,22 @@ include::{snippets}/getProducts/http-response.adoc[]
 
 .response-fields
 include::{snippets}/getProducts/response-fields.adoc[]
+
+== ProductSubController
+
+=== 카테고리에 제품을 추가
+
+.curl-request
+include::{snippets}/postProductCategory/curl-request.adoc[]
+
+.http-request
+include::{snippets}/postProductCategory/http-request.adoc[]
+
+.request-fields
+include::{snippets}/postProductCategory/request-fields.adoc[]
+
+.http-response
+include::{snippets}/postProductCategory/http-response.adoc[]
+
+.response-fields
+include::{snippets}/postProductCategory/response-fields.adoc[]

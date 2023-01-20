@@ -2,13 +2,19 @@ package com.bzzzzz.farm.domain.product.dto;
 
 import com.bzzzzz.farm.domain.category.entity.Category;
 import com.bzzzzz.farm.domain.product.entity.Product;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Positive;
+
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class ProductCategoryPostDto {
+    @Positive
     private Long productId;
+    @Positive
     private Long categoryId;
 
     // 편의 메서드
