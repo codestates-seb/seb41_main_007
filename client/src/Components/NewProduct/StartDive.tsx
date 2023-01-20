@@ -22,7 +22,7 @@ const StartDive = () => {
               href="#!"
               className="inline-flex items-center justify-center rounded-md border border-transparent bg-white px-5 py-3 text-base font-medium text-green-600 hover:bg-green-50"
             >
-              Learn more
+              FarmAndPeople
             </a>
           </div>
         </div>
