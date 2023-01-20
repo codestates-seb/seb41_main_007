@@ -13,6 +13,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -43,7 +44,9 @@ public class JwtTokenizer {
 
         Map<String, String> claims = new HashMap<>();
         claims.put("auth", authorities);
-
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        claims.put("email",(String) oAuth2User.getAttributes().get("email"));
+        claims.put("name",(String) oAuth2User.getAttributes().get("name"));
         long now = (new Date()).getTime();
 
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
