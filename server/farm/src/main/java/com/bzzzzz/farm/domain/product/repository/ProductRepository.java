@@ -6,10 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+    //Todo: 쿼리DSL 꼭해보자!!
     Page<Product> findAllByNameContainsOrBrandContains(String name, String brand, Pageable pageable);
 
     // 카테고리아이디 값을 이용해서 제품리스트를 검색
