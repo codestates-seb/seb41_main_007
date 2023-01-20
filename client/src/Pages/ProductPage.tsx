@@ -125,7 +125,7 @@ const ProductPage: React.FC = () => {
   const emptyBasketAlram = () =>
     toast('장바구니에 담는 중입니다.', {
       position: 'top-right',
-      autoClose: 2000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -136,7 +136,7 @@ const ProductPage: React.FC = () => {
   const fullBasketAlram = () =>
     toast('이미 장바구니에 들어있습니다.', {
       position: 'top-right',
-      autoClose: 2000,
+      autoClose: 1000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,

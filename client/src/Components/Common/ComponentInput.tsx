@@ -79,3 +79,5 @@ const ComponentsInput: React.FC<Props> = ({
 export default ComponentsInput;
 
 //onSave?.(name, value);
+//컴포넌트화 시킬때 두가지 함수가 필요했따
+//e , stringx

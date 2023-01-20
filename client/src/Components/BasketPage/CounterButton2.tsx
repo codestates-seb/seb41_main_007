@@ -26,6 +26,7 @@ const CounterImg = styled.img`
   margin: 0;
 `;
 const Counterinput = styled.input`
+  outline: none;
   box-sizing: border-box;
   width: 100%;
   height: 40px;
