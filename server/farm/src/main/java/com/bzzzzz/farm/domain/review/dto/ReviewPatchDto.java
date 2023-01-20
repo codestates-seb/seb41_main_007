@@ -19,5 +19,6 @@ public class ReviewPatchDto {
     private String reviewTitle;
     private String reviewContent;
     private float rating;
+    private String reviewImage;
 
 }

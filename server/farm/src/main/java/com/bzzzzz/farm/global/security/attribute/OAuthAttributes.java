@@ -34,10 +34,6 @@ public class OAuthAttributes {
 
     public Member toEntity(){
         Member member = new Member();
-        member.setAddress(" ");
-        member.setAge(0);
-        member.setPhone("010-0000-0000");
-        member.setGender("neutrality");
         member.setName(name);
         member.setEmail(email);
         return member;

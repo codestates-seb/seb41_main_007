@@ -31,7 +31,7 @@ public class Review extends Auditable {
     private float rating;
 
     @Column
-    private String picture;
+    private String reviewImage;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -42,8 +42,6 @@ public class Review extends Auditable {
     @JoinColumn(name = "productId", nullable = false)
     private Product product;
 
-    //이미지 매핑
-
 
 
     //답변 매핑해야함
@@ -51,16 +49,18 @@ public class Review extends Auditable {
     @JoinColumn(name = "reviewAnswerId")
     private ReviewAnswer reviewAnswer;
 
-    public Review(String reviewTitle, String reviewContent, float rating) {
+    public Review(String reviewTitle, String reviewContent, float rating, String reviewImage) {
         this.reviewTitle = reviewTitle;
         this.reviewContent = reviewContent;
         this.rating = rating;
+        this.reviewImage = reviewImage;
     }
 
-    public Review(Long reviewId, String reviewTitle, String reviewContent, float rating) {
+    public Review(Long reviewId, String reviewTitle, String reviewContent, float rating, String reviewImage) {
         this.reviewId = reviewId;
         this.reviewTitle = reviewTitle;
         this.reviewContent = reviewContent;
         this.rating = rating;
+        this.reviewImage = reviewImage;
     }
 }

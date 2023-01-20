@@ -2,7 +2,7 @@ package com.bzzzzz.farm.global.security.config;
 
 import com.bzzzzz.farm.global.security.filter.JwtVerificationFilter;
 import com.bzzzzz.farm.global.security.jwt.JwtTokenizer;
-import com.bzzzzz.farm.global.security.utils.HeaderUtil;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
