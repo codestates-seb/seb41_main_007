@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.global.helper.event;
+package com.bzzzzz.farm.global.helper;
 
 import com.bzzzzz.farm.domain.member.entity.Member;
 import lombok.Getter;

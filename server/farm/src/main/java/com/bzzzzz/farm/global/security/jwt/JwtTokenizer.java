@@ -48,7 +48,6 @@ public class JwtTokenizer {
 
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         return Jwts.builder()
-//                .setIssuer(ISSUER)
                 .setClaims(claims)  // JWT에 담는 body
                 .setSubject(authentication.getName())    // JWT 제목 payload "sub": "email"
                 .setIssuedAt(Calendar.getInstance().getTime())  // JWT 발행일자 payload "iat": "발행일자"
@@ -60,7 +59,6 @@ public class JwtTokenizer {
         long now = (new Date()).getTime();
 
         return Jwts.builder()
-//                .setIssuer(ISSUER)  // "iss": "catVillage"
                 .setSubject(authentication.getName())    // JWT 제목 payload "sub": "email"
                 .setIssuedAt(Calendar.getInstance().getTime())  // JWT 발행일자 payload "iat": "발행일자"
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))  // 만료일자 payload "exp": "발행시간 + 7일"
@@ -121,13 +119,6 @@ public class JwtTokenizer {
         Key key = Keys.hmacShaKeyFor(keyBytes);
 
         return key;
-    }
-    public Jws<Claims> getClaims(String jws, String base64EncodedSecretKey) {
-        Jws<Claims> claims = Jwts.parserBuilder()
-                .setSigningKey(getKey(base64EncodedSecretKey))
-                .build()
-                .parseClaimsJws(jws);
-        return claims;
     }
     private Key getKey(String base64EncodedSecretKey){
         return getKeyFromBase64EncodedKey(base64EncodedSecretKey);
