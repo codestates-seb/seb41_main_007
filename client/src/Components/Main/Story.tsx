@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Container = styled.div`
-  margin-left: 450px;
+  margin-left: 220px;
   margin-top: 40px;
   display: flex;
   .main {
