@@ -21,9 +21,17 @@ import Address from 'Components/PaymentPage/Address';
 import PaymentPage from 'Pages/PaymentPage';
 import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
 import OauthTest from 'Pages/OauthTest';
+import AllProductsPage from 'Pages/AllProductsPage';
+import Auth from 'Pages/Auth';
 
 const queryClient = new QueryClient({
-  defaultOptions: { queries: { refetchOnWindowFocus: false } },
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: false,
+      refetchOnMount: false,
+    },
+  },
 });
 
 const withLayout = (Component: React.FC): JSX.Element => {
@@ -50,6 +58,7 @@ const router = createBrowserRouter([
     path: '/product/:productid',
     element: withLayout(ProductPage),
   },
+
   {
     path: '/products',
     element: withLayout(Search),
@@ -79,17 +88,16 @@ const router = createBrowserRouter([
     element: <OauthTest />,
   },
   {
+    path: '/products/all',
+    element: withLayout(AllProductsPage),
+  },
+  {
     path: '/products/:categoryId',
     element: withLayout(ProductListPage),
   },
   {
     path: '*',
-    element: (
-      <>
-        <Header />
-        <NotFoundPage />
-      </>
-    ),
+    element: withLayout(NotFoundPage),
   },
   {
     path: '/address',
@@ -103,6 +111,7 @@ const router = createBrowserRouter([
     path: '/test/review',
     element: <ReviewQueryTest />,
   },
+  { path: '/auth', element: <Auth /> },
 ]);
 
 const App: React.FC = () => {

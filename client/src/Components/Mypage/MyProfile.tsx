@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import ComponentsInput from 'Components/Common/ComponentInput';
 import { useState } from 'react';
 import RadioInput from 'Components/Common/Radio/RadioInput';
+import DatepickerInput from 'Components/Common/DatepickerInput';
 
 const Container = styled.div``;
 
@@ -16,18 +17,26 @@ const AddressInput = styled.div``;
 
 const MyProfile: React.FC = () => {
   const [values, setValues] = useState({});
-  const onSave = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
+  const onSave = (name: string, value: string) => {
+    setValues({ ...values, [name]: value });
   };
-  console.log(values);
+
   return (
     <>
       <Container>
         <User>
           <div className="text-sm font-semibold my-2">이름</div>
-          <ComponentsInput onClick={onSave}></ComponentsInput>
+          <ComponentsInput onSave={onSave}></ComponentsInput>
+          <ComponentsInput
+            onSave={onSave}
+            Component={RadioInput}
+          ></ComponentsInput>
+          <ComponentsInput
+            onSave={onSave}
+            Component={DatepickerInput}
+          ></ComponentsInput>
         </User>
-        <RadioInput></RadioInput>
+
         <AddressInput>
           <div className="text-sm font-semibold mb-2">주소</div>
           <div className="bg-gray-50 py-2 text-xs mb-2 flex">

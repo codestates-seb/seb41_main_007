@@ -61,7 +61,7 @@ export default function BasicTabs() {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-
+  console.log(Profile);
   return (
     <BGcontainer>
       <ShortContainer>
