@@ -1,5 +1,11 @@
 import { FC } from 'react';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import styled from 'styled-components';
+const Content = styled.div`
+  span {
+    display: block;
+  }
+`;
 const products = [
   {
     id: 1,
@@ -96,7 +102,7 @@ const ExampleBest: FC = () => {
         <h2 className="text-4xl font-bold font-serif tracking-tight text-gray-900">
           베스트 상품
         </h2>
-        <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+        <div className="mt-8 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {/* Component/Common/Product.
           {data.data && data.data.map((el:any)=>{ */}
           {/* return <Product key={product.productId} product={product} />          
@@ -110,19 +116,21 @@ const ExampleBest: FC = () => {
                   className="h-full w-full object-cover object-center lg:h-full lg:w-full"
                 />
               </div>
-              <div className="mt-4">
-                <div>
-                  <h3 className="text-sm text-gray-700">
-                    <a href={product.href}>
-                      <span aria-hidden="true" className="absolute inset-0" />
-                      {product.name}
-                    </a>
-                  </h3>
+              <Content>
+                <div className="mt-4">
+                  <span className="text-sm font-medium text-gray-900"></span>
+                  <span className="text-red-600 text-xs mt-4">#신제품</span>
+                  <span className="font-semibold text-sm mt-2">
+                    {product.name}
+                  </span>
+                  <span className="text-gray-400 text-xs mt-1">
+                    주문시 10% 추가 할인쿠폰 사용 가능
+                  </span>
+                  <span className="text-red-700 font-semibold text-sm mt-2">
+                    {product.price}
+                  </span>
                 </div>
-                <p className="text-sm font-medium text-gray-900">
-                  {product.price}
-                </p>
-              </div>
+              </Content>
             </div>
           ))}
         </div>
