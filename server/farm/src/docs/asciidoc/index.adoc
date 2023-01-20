@@ -147,3 +147,19 @@ include::{snippets}/patchProductCategory/http-response.adoc[]
 
 .response-fields
 include::{snippets}/patchProductCategory/response-fields.adoc[]
+
+=== 카테고리에서 제품을 제외
+
+deleteProductCategory()
+
+.curl-request
+include::{snippets}/deleteProductCategory/curl-request.adoc[]
+
+.http-request
+include::{snippets}/deleteProductCategory/http-request.adoc[]
+
+.request-fields
+include::{snippets}/deleteProductCategory/request-fields.adoc[]
+
+.http-response
+include::{snippets}/deleteProductCategory/http-response.adoc[]

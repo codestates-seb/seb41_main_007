@@ -70,7 +70,7 @@ public class ProductControllerTest {
         // given
         Product product = new Product();
         product.setProductId(1L);
-        ProductPostDto post = ProductPostDto
+        ProductPostDto request = ProductPostDto
                 .builder()
                 .name("테스트제품")
                 .price(30000)
@@ -89,7 +89,7 @@ public class ProductControllerTest {
         given(productCategoryService.createProductCategory(Mockito.any(ProductCategory.class))).willReturn(new ProductCategory());
         doNothing().when(productOptionService).createProductOption(Mockito.any(ProductOption.class));
 
-        String content = gson.toJson(post);
+        String content = gson.toJson(request);
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -332,7 +332,7 @@ public class ProductControllerTest {
     @DisplayName("제품 정보 수정")
     void patchProduct() throws Exception {
         // given
-        ProductPatchDto patch = ProductPatchDto
+        ProductPatchDto request = ProductPatchDto
                 .builder()
                 .productId(1L)
                 .name("패치 테스트 제품명")
@@ -347,7 +347,7 @@ public class ProductControllerTest {
                 .build();
 
         doNothing().when(productService).updateProduct(Mockito.any(ProductPatchDto.class));
-        String content = gson.toJson(patch);
+        String content = gson.toJson(request);
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -401,11 +401,11 @@ public class ProductControllerTest {
     @DisplayName("제품 삭제")
     void deleteProduct() throws Exception {
         // given
-        IdRequestDto delete = new IdRequestDto();
-        delete.setId(1L);
+        IdRequestDto request = new IdRequestDto();
+        request.setId(1L);
 
-        doNothing().when(productService).deleteProduct(delete.getId());
-        String content = gson.toJson(delete);
+        doNothing().when(productService).deleteProduct(request.getId());
+        String content = gson.toJson(request);
 
         // when
         ResultActions actions = mockMvc.perform(

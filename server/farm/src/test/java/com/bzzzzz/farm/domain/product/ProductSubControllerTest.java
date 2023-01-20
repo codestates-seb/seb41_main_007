@@ -13,6 +13,7 @@ import com.bzzzzz.farm.domain.product.mapper.ProductMapper;
 import com.bzzzzz.farm.domain.product.service.ProductCategoryService;
 import com.bzzzzz.farm.domain.product.service.ProductOptionService;
 import com.bzzzzz.farm.domain.product.service.ProductService;
+import com.bzzzzz.farm.global.dto.IdRequestDto;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -70,7 +71,7 @@ public class ProductSubControllerTest {
     @DisplayName("카테고리에 제품을 추가")
     void postProductCategory() throws Exception {
         // given
-        ProductCategoryPostDto post = new ProductCategoryPostDto(1L, 1L);
+        ProductCategoryPostDto request = new ProductCategoryPostDto(1L, 1L);
 
         ProductCategoryResponseDto response = ProductCategoryResponseDto
                 .builder()
@@ -85,7 +86,7 @@ public class ProductSubControllerTest {
         given(productCategoryService.createProductCategory(Mockito.any(ProductCategory.class))).willReturn(new ProductCategory());
         given(productMapper.productCategoryToProductCategoryResponseDto(Mockito.any(ProductCategory.class))).willReturn(response);
 
-        String content = gson.toJson(post);
+        String content = gson.toJson(request);
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -100,7 +101,7 @@ public class ProductSubControllerTest {
         actions
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.productCategoryId").value(response.getProductCategoryId()))
-                .andExpect(jsonPath("$.categoryId").value(post.getCategoryId()))
+                .andExpect(jsonPath("$.categoryId").value(request.getCategoryId()))
                 .andExpect(jsonPath("$.name").value(response.getName()))
                 .andDo(document(
                         "postProductCategory",
@@ -127,18 +128,18 @@ public class ProductSubControllerTest {
     @DisplayName("제품이 속한 카테고리 위치를 수정")
     void patchProductCategory() throws Exception {
         // given
-        ProductCategoryPatchDto patch = new ProductCategoryPatchDto(1L, 2L);
+        ProductCategoryPatchDto request = new ProductCategoryPatchDto(1L, 2L);
         ProductCategoryResponseDto response = ProductCategoryResponseDto
                 .builder()
-                .productCategoryId(patch.getProductCategoryId())
-                .categoryId(patch.getCategoryId())
+                .productCategoryId(request.getProductCategoryId())
+                .categoryId(request.getCategoryId())
                 .build();
 
         given(categoryService.findVerifiedCategory(Mockito.anyLong())).willReturn(new Category());
         given(productCategoryService.updateProductCategory(Mockito.any(ProductCategoryPatchDto.class))).willReturn(new ProductCategory());
         given(productMapper.productCategoryToProductCategoryResponseDto(Mockito.any(ProductCategory.class))).willReturn(response);
 
-        String content = gson.toJson(patch);
+        String content = gson.toJson(request);
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -152,8 +153,8 @@ public class ProductSubControllerTest {
         // then
         actions
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.productCategoryId").value(patch.getProductCategoryId()))
-                .andExpect(jsonPath("$.categoryId").value(patch.getCategoryId()))
+                .andExpect(jsonPath("$.productCategoryId").value(request.getProductCategoryId()))
+                .andExpect(jsonPath("$.categoryId").value(request.getCategoryId()))
                 .andExpect(jsonPath("$.name").value(response.getName()))
                 .andDo(document(
                         "patchProductCategory",
@@ -173,5 +174,36 @@ public class ProductSubControllerTest {
                                 )
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("카테고리에서 제품을 제외")
+    void deleteProductCategory() throws Exception {
+        // given
+        IdRequestDto request = new IdRequestDto();
+        request.setId(1L);
+
+        doNothing().when(productCategoryService).deleteProductCategory(request.getId());
+
+        String content = gson.toJson(request);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                delete("/products/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .content(content)
+        );
+
+        // then
+        actions
+                .andExpect(status().isNoContent())
+                .andDo(document(
+                        "deleteProductCategory",
+                        preprocessRequest(prettyPrint()),
+                        requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 대상의 식별자"))
+
+                ))
+                .andReturn();
     }
 }
