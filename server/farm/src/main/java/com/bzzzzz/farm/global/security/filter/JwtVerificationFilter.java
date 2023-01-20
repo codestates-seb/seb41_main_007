@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.global.security.filter;
 
 import com.bzzzzz.farm.global.security.jwt.JwtTokenizer;
+import com.bzzzzz.farm.global.security.utils.HeaderUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,7 +21,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     // JWT 토큰의 인증 정보를 현재 쓰레드의 SecurityContext에 저장하는 역할 수행
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String jwt = resolveToken(request);
+        String jwt = HeaderUtil.getAccessToken(request);
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
         if (StringUtils.hasText(jwt) && jwtTokenizer.validateToken(jwt, base64EncodedSecretKey)) {
             Authentication authentication = jwtTokenizer.getAuthentication(jwt, base64EncodedSecretKey);
@@ -29,7 +30,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request, response);
     }
-
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {

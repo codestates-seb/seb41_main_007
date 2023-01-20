@@ -1,6 +1,6 @@
 package com.bzzzzz.farm.global.security.jwt;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.*;
+import java.util.;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,7 +29,6 @@ public class JwtTokenizer {
 
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60;    // 액세스 토큰 만료 시간 : 1시간
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7; // 리프레쉬 토큰 만료 시간 : 7일
-
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
@@ -48,7 +47,6 @@ public class JwtTokenizer {
 
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         return Jwts.builder()
-//                .setIssuer(ISSUER)
                 .setClaims(claims)  // JWT에 담는 body
                 .setSubject(authentication.getName())    // JWT 제목 payload "sub": "email"
                 .setIssuedAt(Calendar.getInstance().getTime())  // JWT 발행일자 payload "iat": "발행일자"
@@ -60,14 +58,12 @@ public class JwtTokenizer {
         long now = (new Date()).getTime();
 
         return Jwts.builder()
-//                .setIssuer(ISSUER)  // "iss": "catVillage"
                 .setSubject(authentication.getName())    // JWT 제목 payload "sub": "email"
                 .setIssuedAt(Calendar.getInstance().getTime())  // JWT 발행일자 payload "iat": "발행일자"
                 .setExpiration(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))  // 만료일자 payload "exp": "발행시간 + 7일"
                 .signWith(getKey(base64EncodedSecretKey))
                 .compact();
     }
-
     // 엑세스 토큰에서 인증정보 가져오기
     public Authentication getAuthentication(String accessToken, String base64EncodedSecretKey) {
 
@@ -105,7 +101,6 @@ public class JwtTokenizer {
         }
         return false;
     }
-
     // 만료된 토큰이어도 정보를 꺼내는 로직
     private Claims parseClaims(String accessToken, String base64EncodedSecretKey) {
         try {
@@ -121,13 +116,6 @@ public class JwtTokenizer {
         Key key = Keys.hmacShaKeyFor(keyBytes);
 
         return key;
-    }
-    public Jws<Claims> getClaims(String jws, String base64EncodedSecretKey) {
-        Jws<Claims> claims = Jwts.parserBuilder()
-                .setSigningKey(getKey(base64EncodedSecretKey))
-                .build()
-                .parseClaimsJws(jws);
-        return claims;
     }
     private Key getKey(String base64EncodedSecretKey){
         return getKeyFromBase64EncodedKey(base64EncodedSecretKey);

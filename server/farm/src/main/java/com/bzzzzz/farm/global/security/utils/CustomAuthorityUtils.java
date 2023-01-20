@@ -25,12 +25,12 @@ public class CustomAuthorityUtils {
         if (adminMailAddress.contains(email)) {
             return ADMIN_ROLES;
         }
-        return USER_ROLES;
+        return USERROLES;
     }
 
-    public List<GrantedAuthority> createAuthorities(List<String> roles) {
+    public static List<GrantedAuthority> createAuthorities(List<String> roles) {
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                .map(role -> new SimpleGrantedAuthority("ROLE" + role))
                 .collect(Collectors.toList());
     }
 

@@ -1,16 +1,16 @@
 package com.bzzzzz.farm.global.security.service;
 
-import com.bzzzzz.farm.global.security.dto.LoginDto;
-import com.bzzzzz.farm.global.security.dto.TokenDto;
-import com.bzzzzz.farm.global.security.dto.TokenRequestDto;
 import com.bzzzzz.farm.global.security.jwt.JwtTokenizer;
-import com.bzzzzz.farm.global.security.refresh.RefreshToken;
-import com.bzzzzz.farm.global.security.refresh.RefreshTokenRepository;
 import com.bzzzzz.farm.global.security.utils.CustomAuthorityUtils;
 import com.bzzzzz.farm.global.exception.BusinessLogicException;
 import com.bzzzzz.farm.global.exception.ExceptionCode;
+import com.bzzzzz.farm.global.security.dto.LoginDto;
+import com.bzzzzz.farm.global.security.dto.TokenDto;
+import com.bzzzzz.farm.global.security.dto.TokenRequestDto;
 import com.bzzzzz.farm.domain.member.entity.Member;
+import com.bzzzzz.farm.global.security.entity.RefreshToken;
 import com.bzzzzz.farm.domain.member.repository.MemberRepository;
+import com.bzzzzz.farm.global.security.entity.RefreshTokenRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -29,7 +29,6 @@ public class AuthService {
     private final CustomAuthorityUtils authorityUtils;
     private final RefreshTokenRepository refreshTokenRepository;
     private final MemberRepository memberRepository;
-
     //회원가입
     public Member createMember(Member member){
         if (memberRepository.findByEmail(member.getEmail()).isPresent()){
@@ -59,7 +58,6 @@ public class AuthService {
 
         return tokenDto;
     }
-
     // 토큰 재발급
     public TokenDto reissue(TokenRequestDto tokenRequestDto) {
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());

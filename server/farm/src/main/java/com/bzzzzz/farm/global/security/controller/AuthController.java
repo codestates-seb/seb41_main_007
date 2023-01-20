@@ -1,12 +1,12 @@
 package com.bzzzzz.farm.global.security.controller;
 
-import com.bzzzzz.farm.global.security.dto.TokenDto;
+import com.bzzzzz.farm.global.security.dto.TokenRequestDto;
+import com.bzzzzz.farm.global.security.service.AuthService;
 import com.bzzzzz.farm.global.security.dto.LoginDto;
 import com.bzzzzz.farm.domain.member.dto.MemberDto;
-import com.bzzzzz.farm.global.security.dto.TokenRequestDto;
+import com.bzzzzz.farm.global.security.dto.TokenDto;
 import com.bzzzzz.farm.domain.member.entity.Member;
 import com.bzzzzz.farm.domain.member.mapper.MemberMapper;
-import com.bzzzzz.farm.global.security.service.AuthService;
 import com.bzzzzz.farm.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -22,7 +22,6 @@ public class AuthController {
     private final AuthService authService;
     private final MemberService memberService;
     private final MemberMapper mapper;
-
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody MemberDto.Post memberPostDto){
         Member member = authService.createMember(mapper.memberPostToMember(memberPostDto));
