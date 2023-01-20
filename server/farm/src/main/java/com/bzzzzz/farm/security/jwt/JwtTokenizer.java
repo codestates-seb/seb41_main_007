@@ -43,7 +43,7 @@ public class JwtTokenizer {
                 .collect(Collectors.joining(","));
 
         Map<String, String> claims = new HashMap<>();
-        claims.put("auth", authorities);
+        claims.put("roles", authorities);
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         claims.put("email",(String) oAuth2User.getAttributes().get("email"));
         claims.put("name",(String) oAuth2User.getAttributes().get("name"));
