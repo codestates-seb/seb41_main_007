@@ -1,25 +1,26 @@
-import { FC } from 'react';
-import { LoginSocialGoogle } from 'reactjs-social-login';
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import { FC, useEffect } from 'react';
 
 const OauthTest: FC = () => {
+  const { mutate } = useCustomMutation('/signup', 'test2', 'POST');
+  // const { isLoading, data, error } = useCustomQuery(
+  //   '/oauth2/authorization/google',
+  //   'test',
+  // );
+  // if (isLoading) return <>로딩중</>;
+  // if (error) return <>error발생</>;
+  // console.log(data);
+
   return (
     <div>
-      <LoginSocialGoogle
-        client_id={process.env.REACT_APP_GOOGLE_CLIENT as string}
-        scope="openid profile email"
-        access_type="online"
-        // ux_mode="redirect"
-        // redirect_uri="http://localhost:3000"
-        onResolve={({ provider, data }) => {
-          console.log(data, provider);
-        }}
-        onReject={(e) => {
-          console.log(e);
-        }}
+      <button
+        onClick={() =>
+          (window.location.href = `${process.env.REACT_APP_BACKEND_URL}/oauth2/authorization/google`)
+        }
       >
-        버튼입니다
-      </LoginSocialGoogle>
-      ,
+        fetch api 전송
+      </button>
     </div>
   );
 };
