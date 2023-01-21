@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import styled from 'styled-components';
 import BasketList from 'Components/BasketPage/BasketList';
+import { BGcontainer } from 'Components/Common/BGcontainer';
 
 const Cart = styled.div`
   margin-top: 120px;
@@ -18,12 +19,14 @@ const BasketTitle = styled.h2`
 
 const basketsPage: FC = () => {
   return (
-    <Cart>
-      <BasketForm>
-        <BasketTitle>장바구니</BasketTitle>
-        <BasketList />
-      </BasketForm>
-    </Cart>
+    <BGcontainer>
+      <Cart>
+        <BasketForm>
+          <BasketTitle>장바구니</BasketTitle>
+          <BasketList />
+        </BasketForm>
+      </Cart>
+    </BGcontainer>
   );
 };
 

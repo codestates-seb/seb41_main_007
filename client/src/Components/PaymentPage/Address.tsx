@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Postcode from './Postcode';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import RadiusButton from 'Components/Common/RadiusButton';
 const Container = styled.div``;
 
 const User = styled.div`
@@ -11,7 +12,13 @@ const User = styled.div`
 `;
 const AddressInput = styled.div``;
 
-const Address: React.FC = () => {
+interface Props {
+  children?: string;
+  oncontrolCilck?: () => void;
+}
+
+const Address: React.FC<Props> = ({ oncontrolCilck, children }) => {
+  console.log(oncontrolCilck);
   return (
     <>
       <Container>
@@ -22,11 +29,13 @@ const Address: React.FC = () => {
               type="text"
               placeholder="이름"
               className="text-sm mr-2 w-5/12 h-8"
+              readOnly
             ></input>
             <input
               type="text"
               placeholder="휴대폰 번호"
               className="text-sm w-5/12 h-8"
+              readOnly
             ></input>
           </div>
         </User>
@@ -43,6 +52,7 @@ const Address: React.FC = () => {
           <Postcode />
         </AddressInput>
       </Container>
+      <RadiusButton onClick={oncontrolCilck}>저장</RadiusButton>
     </>
   );
 };
