@@ -20,7 +20,7 @@ const SearchResult: FC<Props> = ({ sch, searchList, searchPageInfo }) => {
   const handlerSetOffset = (page: number) => {
     window.scrollTo(0, 0);
     return navigate(
-      `/products?keyword=${keyword}&sort=likeCount&order=ascending&page=${page}`,
+      `/products?size=20&keyword=${keyword}&sort=likeCount&order=ascending&page=${page}`,
     );
   };
 

@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
-import Empty from 'Components/Common/Empty';
+
 import CustomTitle from 'Components/Header/CustomTitle';
 import NotFoundPage from './NotFoundPage';
 import { BGcontainer } from 'Components/Common/BGcontainer';
@@ -23,8 +23,10 @@ const AllProductsPage: FC = () => {
   if (isLoading)
     return (
       <>
-        <CustomTitle title={`상품 리스트 | FarmPi`} />
-        <Empty />;
+        <BGcontainer>
+          <CustomTitle title={`상품 리스트 | FarmPi`} />
+          <CategoryList />
+        </BGcontainer>
       </>
     );
   if (error) return <NotFoundPage />;

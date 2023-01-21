@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import Empty from 'Components/Common/Empty';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import CustomTitle from 'Components/Header/CustomTitle';
@@ -19,19 +18,19 @@ const ProductListPage: FC = () => {
   const queryKey = `categoryId${categoryId}page${pageQuery}`;
   const { isLoading, data, error } = useCustomQuery(
     pageQuery
-      ? `/products?categoryId=${categoryId}&page=${pageQuery}`
-      : `/products?categoryId=${categoryId}`,
+      ? `/products?size=20&categoryId=${categoryId}&page=${pageQuery}`
+      : `/products?size=20&categoryId=${categoryId}`,
     queryKey,
   );
   if (isLoading)
     return (
-      <>
+      <BGcontainer>
         <CustomTitle
           title={`${categoryId} 상품 리스트 | FarmPi`}
           description={`카테고리${categoryId}번 상품입니다`}
         />
-        <BGcontainer></BGcontainer>
-      </>
+        <CategoryList />
+      </BGcontainer>
     );
   if (error || data.data.length === 0) return <NotFoundPage />;
 

@@ -1,15 +1,15 @@
 import { FC } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 
 import CustomTitle from 'Components/Header/CustomTitle';
 import SearchResult from 'Components/Search/SearchResult';
 
-import styles from './Styles/Main.module.css';
-import Empty from 'Components/Common/Empty';
+import styles from './Styles/Search.module.css';
 import NotFoundPage from './NotFoundPage';
 import { BGcontainer } from 'Components/Common/BGcontainer';
+import CategoryList from 'Components/Common/CategoryList';
 
 const Search: FC = () => {
   const location = useLocation();
@@ -22,10 +22,10 @@ const Search: FC = () => {
   );
   if (isLoading)
     return (
-      <>
+      <BGcontainer>
         <CustomTitle title={`${keyword} 에 대한 검색결과 - FARMPI`} />
-        <Empty />
-      </>
+        <CategoryList />
+      </BGcontainer>
     );
   if (error)
     return (
