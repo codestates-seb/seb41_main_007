@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.mapper.CartMapper;
+import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.cart.CartProductPatchDto;
 import com.bzzzzz.farm.model.dto.cart.CartProductPostDto;
 import com.bzzzzz.farm.model.dto.cart.CartProductResponseDto;
@@ -16,10 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -28,7 +25,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.BDDMockito.given;
@@ -37,7 +33,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -244,6 +241,32 @@ public class CartControllerTest {
                 ));
     }
 
-//    @Test
-//    @DisplayName("")
+    @Test
+    @DisplayName("장바구니에서 제품을 삭제")
+    void deleteCartProduct() throws Exception {
+        // given
+        IdRequestDto request = new IdRequestDto();
+        request.setId(1L);
+
+        doNothing().when(cartService).deleteCartProduct(Mockito.anyLong());
+
+        String content = gson.toJson(request);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                delete("/carts/products")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .content(content)
+        );
+
+        // then
+        actions
+                .andExpect(status().isNoContent())
+                .andDo(document(
+                        "deleteCartProduct",
+                        preprocessRequest(prettyPrint()),
+                        requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 제품 식별자"))
+                ));
+    }
 }

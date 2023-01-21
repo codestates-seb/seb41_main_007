@@ -421,8 +421,6 @@ public class ProductControllerTest {
                         "deleteProduct",
                         preprocessRequest(prettyPrint()),
                         requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 제품 식별자"))
-
-                ))
-                .andReturn();
+                ));
     }
 }
