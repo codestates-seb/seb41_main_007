@@ -304,3 +304,22 @@ include::{snippets}/postCartProduct/http-response.adoc[]
 
 .response-fields
 include::{snippets}/postCartProduct/response-fields.adoc[]
+
+=== 장바구니에 담긴 제품 수량 수정
+
+patchCartProduct()
+
+.curl-request
+include::{snippets}/patchCartProduct/curl-request.adoc[]
+
+.http-request
+include::{snippets}/patchCartProduct/http-request.adoc[]
+
+.request-fields
+include::{snippets}/patchCartProduct/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patchCartProduct/http-response.adoc[]
+
+.response-fields
+include::{snippets}/patchCartProduct/response-fields.adoc[]

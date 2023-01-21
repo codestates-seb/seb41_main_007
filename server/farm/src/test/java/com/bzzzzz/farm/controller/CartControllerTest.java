@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.mapper.CartMapper;
+import com.bzzzzz.farm.model.dto.cart.CartProductPatchDto;
 import com.bzzzzz.farm.model.dto.cart.CartProductPostDto;
 import com.bzzzzz.farm.model.dto.cart.CartProductResponseDto;
 import com.bzzzzz.farm.model.dto.cart.CartResponseDto;
@@ -208,13 +209,41 @@ public class CartControllerTest {
     }
 
     @Test
-    @DisplayName("장바구니에 담긴 제품 수정")
-    void patchCartProduct()throws Exception {
+    @DisplayName("장바구니에 담긴 제품 수량 수정")
+    void patchCartProduct() throws Exception {
         // given
+        CartProductPatchDto request = new CartProductPatchDto(1L, 1L, -1);
+
+        doNothing().when(cartService).updateCartProduct(Mockito.anyLong(), Mockito.anyInt());
+
+        String content = gson.toJson(request);
 
         // when
+        ResultActions actions = mockMvc.perform(
+                patch("/carts/products")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .content(content)
+        );
 
         // then
-
+        actions
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data").value(request.getCartId()))
+                .andDo(document(
+                        "patchCartProduct",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(List.of(
+                                fieldWithPath("cartProductId").type(JsonFieldType.NUMBER).description("변경할 대상의 식별자"),
+                                fieldWithPath("cartId").type(JsonFieldType.NUMBER).description("대상이 속한 장바구니의 식별자"),
+                                fieldWithPath("quantity").type(JsonFieldType.NUMBER).description("변경할 수량 (기존 + quantity 방식, 음수가능, 계산시 대상의 수량이 0이하일시 삭제됨)")
+                        )),
+                        responseFields(fieldWithPath("data").type(JsonFieldType.NUMBER).description("장바구니 식별자"))
+                ));
     }
+
+//    @Test
+//    @DisplayName("")
 }
