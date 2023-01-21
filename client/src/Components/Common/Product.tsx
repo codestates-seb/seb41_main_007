@@ -28,7 +28,7 @@ const Product: FC<Props> = ({ product }) => {
     if (!observer) {
       observer = new IntersectionObserver(onIntersection, {
         // 확인을 위해 이미지 0.9정도 나타날 때 로딩한다.
-        threshold: 0.9,
+        threshold: 0.8,
       });
     }
     REF.current && observer.observe(REF.current);

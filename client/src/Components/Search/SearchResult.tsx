@@ -3,6 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import ProductList from 'Components/Common/ProductList';
 import Navigation from 'Components/Pagination/Navigation';
 import { TYPE_Product, TYPE_PageInfo } from 'Types/common/product';
+import { BGcontainer } from 'Components/Common/BGcontainer';
+import CategoryList from 'Components/Common/CategoryList';
+import styles from './Styles/Search.module.css';
 interface Props {
   searchList: TYPE_Product[];
   searchPageInfo: TYPE_PageInfo;
@@ -11,24 +14,44 @@ interface Props {
 
 const SearchResult: FC<Props> = ({ sch, searchList, searchPageInfo }) => {
   const navigate = useNavigate();
+  const params = new URLSearchParams(sch);
+  const keyword = params.get('keyword');
   const { totalPages, page } = searchPageInfo;
   const handlerSetOffset = (page: number) => {
-    const params = new URLSearchParams(sch);
-    const keyword = params.get('keyword');
     window.scrollTo(0, 0);
     return navigate(
-      `/products?keyword=${keyword}&sort=likeCount&order=ascending&page=${page}`,
+      `/products?size=20&keyword=${keyword}&sort=likeCount&order=ascending&page=${page}`,
     );
   };
+
   return (
-    <ul>
-      <ProductList products={searchList} />
-      <Navigation
-        totalPage={totalPages}
-        currentPage={page}
-        callbackFunc={handlerSetOffset}
-      />
-    </ul>
+    <>
+      <CategoryList />
+      <div className={styles.Search_Result_Text_Container}>
+        <p className={styles.Search_Result_Text}>
+          &quot;{keyword}&quot; 에 대한 검색결과
+        </p>
+      </div>
+      {searchList.length !== 0 ? (
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <ProductList products={searchList} />
+          <Navigation
+            totalPage={totalPages}
+            currentPage={page}
+            callbackFunc={handlerSetOffset}
+          />
+        </div>
+      ) : (
+        <div className={styles.Search_Text_Container}>
+          search에 대한 결과가없습니다
+        </div>
+      )}
+    </>
   );
 };
 

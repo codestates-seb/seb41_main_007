@@ -1,10 +1,9 @@
 .Category_Container {
-  box-sizing: border-box;
   width: 280px;
   float: left;
   padding: 50px 20px 50px 0;
   height: 500px;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
 }
 
 .Category_Title {

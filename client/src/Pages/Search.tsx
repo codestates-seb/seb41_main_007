@@ -6,9 +6,10 @@ import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import CustomTitle from 'Components/Header/CustomTitle';
 import SearchResult from 'Components/Search/SearchResult';
 
-import styles from './Styles/Main.module.css';
-import Empty from 'Components/Common/Empty';
+import styles from './Styles/Search.module.css';
 import NotFoundPage from './NotFoundPage';
+import { BGcontainer } from 'Components/Common/BGcontainer';
+import CategoryList from 'Components/Common/CategoryList';
 
 const Search: FC = () => {
   const location = useLocation();
@@ -21,10 +22,10 @@ const Search: FC = () => {
   );
   if (isLoading)
     return (
-      <>
+      <BGcontainer>
         <CustomTitle title={`${keyword} 에 대한 검색결과 - FARMPI`} />
-        <Empty />
-      </>
+        <CategoryList />
+      </BGcontainer>
     );
   if (error)
     return (
@@ -35,7 +36,7 @@ const Search: FC = () => {
     );
 
   return (
-    <main className={styles.Main_Container}>
+    <BGcontainer>
       {!keyword ? (
         <div className={styles.Search_Result_Text_Container}>
           <div className={styles.NoKeyword}>
@@ -44,22 +45,14 @@ const Search: FC = () => {
         </div>
       ) : (
         <>
-          <CustomTitle title={`${keyword} 에 대한 검색결과 - FARMPI`} />
-          <div className={styles.Search_Result_Text_Container}>
-            <p className={styles.Search_Result_Text}>
-              &quot;{keyword}&quot; 에 대한 검색결과 ({data.data.length})
-            </p>
-          </div>
-          {data.data.length > 0 && (
-            <SearchResult
-              sch={sch}
-              searchList={data.data}
-              searchPageInfo={data.pageInfo}
-            />
-          )}
+          <SearchResult
+            sch={sch}
+            searchList={data.data}
+            searchPageInfo={data.pageInfo}
+          />
         </>
       )}
-    </main>
+    </BGcontainer>
   );
 };
 

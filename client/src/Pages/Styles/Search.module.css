@@ -1,0 +1,13 @@
+.LoadingContainer {
+  margin-top: 120px;
+  width: 100px;
+  height: 100px;
+  color: red;
+}
+
+.NoKeyword {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  font-size: var(--xlarge);
+}
