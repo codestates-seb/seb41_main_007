@@ -5,9 +5,10 @@ import Tab from '@mui/material/Tab';
 import AccordionTitle from 'Components/Common/AccordionTitle';
 import Box from '@mui/material/Box';
 import MyProfile from 'Components/Mypage/MyProfile';
-import Payment from 'Components/PaymentPage/Payment';
+import DeliveryAdress from 'Components/Mypage/Deliveryadress';
 import styled from 'styled-components';
 import useScrollTop from 'CustomHook/useScrollTop';
+import Address from 'Components/PaymentPage/Address';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -75,7 +76,8 @@ export default function BasicTabs() {
           </Box>
           <TabPanel value={value} index={0}>
             <AccordionTitle ATvalue="내 정보 관리" Component={MyProfile} />
-            <AccordionTitle ATvalue="배송지관리" Component={Payment} />
+            <AccordionTitle ATvalue="배송지관리" Component={DeliveryAdress} />
+            <AccordionTitle ATvalue="배송지추가" Component={Address} />
           </TabPanel>
           <TabPanel value={value} index={1}></TabPanel>
         </Box>

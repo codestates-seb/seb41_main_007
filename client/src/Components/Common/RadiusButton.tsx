@@ -10,6 +10,7 @@ const Radiusbutton = styled.button`
   color: black;
   font-weight: bold;
   margin-left: 4px;
+  padding-right: 2px;
 `;
 interface Props {
   children?: string;

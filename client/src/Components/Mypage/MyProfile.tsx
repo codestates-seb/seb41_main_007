@@ -1,12 +1,11 @@
 import styled from 'styled-components';
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import ComponentsInput from 'Components/Common/ComponentInput';
 import { useState } from 'react';
 import RadioInput from 'Components/Common/Radio/RadioInput';
 import DatepickerInput from 'Components/Common/DatepickerInput';
 import TinyTitle from 'Components/Common/TinyTitle';
-import PersonalInformation from './PersonalInformation';
+
 const Container = styled.div``;
 
 const User = styled.div`

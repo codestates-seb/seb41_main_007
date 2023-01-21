@@ -44,8 +44,9 @@ const Postcode: React.FC = () => {
         <input
           value={number}
           onClick={handleClick}
-          className="w-10/12"
+          className="w-9/12"
           placeholder="우편번호 버튼을 눌러주세요"
+          readOnly
         ></input>
         <button type="button" onClick={handleClick} className="w-26 ml-6">
           우편번호
@@ -55,6 +56,7 @@ const Postcode: React.FC = () => {
             value={address}
             onClick={handleClick}
             className="w-full"
+            readOnly
           ></input>
         </div>
         <div>
