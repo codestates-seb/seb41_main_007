@@ -1,9 +1,11 @@
 package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.mapper.CartMapper;
+import com.bzzzzz.farm.model.dto.cart.CartProductPostDto;
 import com.bzzzzz.farm.model.dto.cart.CartProductResponseDto;
 import com.bzzzzz.farm.model.dto.cart.CartResponseDto;
 import com.bzzzzz.farm.model.entity.Cart;
+import com.bzzzzz.farm.model.entity.CartProduct;
 import com.bzzzzz.farm.service.CartService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
@@ -169,8 +171,45 @@ public class CartControllerTest {
     }
 
     @Test
-    @DisplayName("")
-    void postCartProduct()throws Exception {
+    @DisplayName("장바구니에 제품 담기")
+    void postCartProduct() throws Exception {
+        // given
+        CartProductPostDto request = new CartProductPostDto(1L, 1L, 1);
+
+        given(cartMapper.cartProductPostDtoToCartProduct(Mockito.any(CartProductPostDto.class))).willReturn(new CartProduct());
+        doNothing().when(cartService).createCartProduct(Mockito.any(CartProduct.class));
+
+        String content = gson.toJson(request);
+
+        // when
+        ResultActions actions = mockMvc.perform(
+                post("/carts/products")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .content(content)
+        );
+
+        // then
+        actions
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.data").value(request.getCartId()))
+                .andDo(document(
+                        "postCartProduct",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(List.of(
+                                fieldWithPath("cartId").type(JsonFieldType.NUMBER).description("장바구니 식별자 (없어질수있음)"),
+                                fieldWithPath("productOptionId").type(JsonFieldType.NUMBER).description("장바구니에 추가할 제품의 옵션 식별자"),
+                                fieldWithPath("quantity").type(JsonFieldType.NUMBER).description("추가할 수량")
+                        )),
+                        responseFields(fieldWithPath("data").type(JsonFieldType.NUMBER).description("장바구니 식별자 (없어질수있음)"))
+                ));
+    }
+
+    @Test
+    @DisplayName("장바구니에 담긴 제품 수정")
+    void patchCartProduct()throws Exception {
         // given
 
         // when

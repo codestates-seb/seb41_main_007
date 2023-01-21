@@ -285,3 +285,22 @@ include::{snippets}/getCart/http-response.adoc[]
 
 .response-fields
 include::{snippets}/getCart/response-fields.adoc[]
+
+=== 장바구니에 제품 담기
+
+postCartProduct()
+
+.curl-request
+include::{snippets}/postCartProduct/curl-request.adoc[]
+
+.http-request
+include::{snippets}/postCartProduct/http-request.adoc[]
+
+.request-fields
+include::{snippets}/postCartProduct/request-fields.adoc[]
+
+.http-response
+include::{snippets}/postCartProduct/http-response.adoc[]
+
+.response-fields
+include::{snippets}/postCartProduct/response-fields.adoc[]

@@ -2,11 +2,15 @@ package com.bzzzzz.farm.model.dto.cart;
 
 import com.bzzzzz.farm.model.entity.Cart;
 import com.bzzzzz.farm.model.entity.ProductOption;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Positive;
 
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class CartProductPostDto {
     @Positive
     private Long cartId;
