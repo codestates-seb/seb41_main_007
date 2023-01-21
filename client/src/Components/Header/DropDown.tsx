@@ -5,6 +5,8 @@ import SubmitIcon from './Icon/SubmitIcon';
 import ContactIcon from './Icon/ContactIcon';
 
 import styles from './Styles/DropDown.module.css';
+import BasketIcon from './Icon/BaskectIcon';
+import ShopingCartIcon from './Icon/ShopingCartIcon';
 
 type DropDownProps = {
   showDropDown: boolean;
@@ -30,32 +32,34 @@ const DropDown: React.FC<DropDownProps> = ({
     <>
       <nav className={styles.dropdown}>
         <Link
-          to="/mypage/edit"
-          className={styles.Drop_Down_Button_Container}
-          onMouseDown={handleMouseDown}
-          onClick={(): void => TogglecloseHandler()}
-        >
-          <PersonIcon />
-          <p className={styles.Drop_Down_Text}>회원정보</p>
-        </Link>
-        <Link
           to="/mypage"
           className={styles.Drop_Down_Button_Container}
           onMouseDown={handleMouseDown}
           onClick={(): void => TogglecloseHandler()}
+          style={{ display: 'flex', gap: '6px' }}
         >
-          <SubmitIcon />
-          <p className={styles.Drop_Down_Text}>주문조회</p>
+          <PersonIcon />
+          <p className={styles.Drop_Down_Text}>내정보</p>
         </Link>
-
         <Link
-          to="/questions"
+          to="/products/all?sort=likeCount&order=ascending&page=1&size=20"
           className={styles.Drop_Down_Button_Container}
           onMouseDown={handleMouseDown}
           onClick={(): void => TogglecloseHandler()}
+          style={{ display: 'flex', gap: '6px' }}
         >
-          <ContactIcon />
-          <p className={styles.Drop_Down_Text}>문의하기</p>
+          <ShopingCartIcon />
+          <p className={styles.Drop_Down_Text}>상품보기</p>
+        </Link>
+        <Link
+          to="/basket"
+          className={styles.Drop_Down_Button_Container}
+          onMouseDown={handleMouseDown}
+          onClick={(): void => TogglecloseHandler()}
+          style={{ display: 'flex', gap: '6px' }}
+        >
+          <BasketIcon />
+          <p className={styles.Drop_Down_Text}>장바구니</p>
         </Link>
       </nav>
     </>
