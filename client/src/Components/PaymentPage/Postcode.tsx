@@ -47,7 +47,7 @@ const Postcode: React.FC = () => {
           className="w-10/12"
           placeholder="우편번호 버튼을 눌러주세요"
         ></input>
-        <button type="button" onClick={handleClick} className="w-1/12 ml-14">
+        <button type="button" onClick={handleClick} className="w-26 ml-6">
           우편번호
         </button>
         <div>

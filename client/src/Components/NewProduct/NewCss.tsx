@@ -8,7 +8,7 @@ import styled from 'styled-components';
 const Container = styled.div`
   div {
     width: 1200px;
-    height: 300px;
+    height: 360px;
   }
 `;
 interface useItemProps {
@@ -21,16 +21,23 @@ const Content = styled.div`
     height: 250px;
     margin-bottom: 5px;
   }
+  span {
+    display: block;
+  }
 `;
 const Data = ({ url }: useItemProps) => {
   return (
     <>
       <Content>
         <img src={url} alt="carousel"></img>
-        <div className="text-red-500">#신제품</div>
-        <div className="font-semibold">새로운 상품 새모이 장비</div>
-        <div className="text-gray-400">주문시 10% 추가 할인쿠폰 사용 가능</div>
-        <div className="text-red-500 font-semibold">7200원</div>
+        <span className="text-red-600 text-xs mt-4">#신제품</span>
+        <span className="font-semibold text-sm mt-2">
+          새로운 상품 새모이 장비
+        </span>
+        <span className="text-gray-400 text-xs mt-1">
+          주문시 10% 추가 할인쿠폰 사용 가능
+        </span>
+        <span className="text-red-700 font-semibold text-sm mt-2">7200원</span>
       </Content>
     </>
   );
@@ -41,7 +48,7 @@ const StyledSlider = styled(Slider)`
   height: 400px;
 
   .slick-prev {
-    top: 45%;
+    top: 40%;
     left: -5%;
     z-index: 1;
     background-color: #7f7f7f;
@@ -63,8 +70,8 @@ const StyledSlider = styled(Slider)`
   }
 
   .slick-next {
-    top: 45%;
-    right: -4%;
+    top: 40%;
+    right: -3%;
     z-index: 1;
     background-color: #7f7f7f;
     width: 40px;
