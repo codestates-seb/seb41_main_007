@@ -5,7 +5,8 @@ import ComponentsInput from 'Components/Common/ComponentInput';
 import { useState } from 'react';
 import RadioInput from 'Components/Common/Radio/RadioInput';
 import DatepickerInput from 'Components/Common/DatepickerInput';
-
+import TinyTitle from 'Components/Common/TinyTitle';
+import PersonalInformation from './PersonalInformation';
 const Container = styled.div``;
 
 const User = styled.div`
@@ -20,24 +21,27 @@ const MyProfile: React.FC = () => {
   const onSave = (name: string, value: string) => {
     setValues({ ...values, [name]: value });
   };
+  console.log(values);
 
   return (
     <>
       <Container>
         <User>
-          <div className="text-sm font-semibold my-2">이름</div>
+          <TinyTitle>이름</TinyTitle>
           <ComponentsInput onSave={onSave}></ComponentsInput>
+          <TinyTitle>성별</TinyTitle>
           <ComponentsInput
             onSave={onSave}
             Component={RadioInput}
           ></ComponentsInput>
+          <TinyTitle>생일</TinyTitle>
           <ComponentsInput
             onSave={onSave}
             Component={DatepickerInput}
           ></ComponentsInput>
         </User>
 
-        <AddressInput>
+        {/* <AddressInput>
           <div className="text-sm font-semibold mb-2">주소</div>
           <div className="bg-gray-50 py-2 text-xs mb-2 flex">
             <div className="text-lg mx-2">
@@ -47,7 +51,7 @@ const MyProfile: React.FC = () => {
               상세주소가 없는 경우는 없음 으로 입력해 주세요.
             </div>
           </div>
-        </AddressInput>
+        </AddressInput> */}
       </Container>
     </>
   );

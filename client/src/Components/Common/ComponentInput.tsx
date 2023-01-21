@@ -3,12 +3,16 @@ import RadiusButton from './RadiusButton';
 import styled from 'styled-components';
 
 const Textinput = styled.input`
-  width: 200px;
+  width: 384px;
+  margin: 10px 0;
+  height: 28px;
 `;
 
 const TextDiv = styled.div`
   border-bottom: 1px solid #ebebeb;
-  width: 200px;
+  width: 384px;
+  margin: 10px 0;
+  height: 28px;
 `;
 
 interface Props {
@@ -47,14 +51,14 @@ const ComponentsInput: React.FC<Props> = ({
   };
 
   return (
-    <div className="mb-5 flex">
+    <div className="mb-5 flex ">
       {control ? (
-        <div className="flex">
+        <div className="flex items-center">
           <TextDiv>{data}</TextDiv>
           <RadiusButton onClick={onClickForm}>수정</RadiusButton>
         </div>
       ) : (
-        <div className="flex">
+        <div className="flex items-center">
           {Component ? (
             <Component onChangeSave={onChangeSave} onSave={onData} />
           ) : (

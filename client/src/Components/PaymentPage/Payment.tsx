@@ -10,11 +10,9 @@ import InboxIcon from '@mui/icons-material/Inbox';
 import AddCardOutlinedIcon from '@mui/icons-material/AddCardOutlined';
 import SmartphoneOutlinedIcon from '@mui/icons-material/SmartphoneOutlined';
 import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
-import { Fragment } from 'react';
+import { Fragment, FC, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { useState } from 'react';
-import { FC } from 'react';
 
 const classNames: FC = (...classes: any) => {
   return classes.filter(Boolean).join(' ');

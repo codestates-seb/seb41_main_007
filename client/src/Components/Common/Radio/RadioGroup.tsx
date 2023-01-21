@@ -5,7 +5,7 @@ interface props {
 
 const RadioGroup: React.FC<props> = ({ label, children }) => {
   return (
-    <fieldset>
+    <fieldset className=" w-96 my-2.5 ">
       <legend>{label}</legend>
       {children}
     </fieldset>

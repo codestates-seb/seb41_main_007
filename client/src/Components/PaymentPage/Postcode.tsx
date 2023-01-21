@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
-import { useState } from 'react';
+
 import useInput from 'CustomHook/useInput';
 import styled from '@emotion/styled';
 const PostcodeContainer = styled.div`

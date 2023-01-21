@@ -2,14 +2,12 @@ import { BGcontainer } from 'Components/Common/BGcontainer';
 import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-
+import AccordionTitle from 'Components/Common/AccordionTitle';
 import Box from '@mui/material/Box';
 import MyProfile from 'Components/Mypage/MyProfile';
 import Payment from 'Components/PaymentPage/Payment';
 import styled from 'styled-components';
-import { useState } from 'react';
-import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import useScrollTop from 'CustomHook/useScrollTop';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -55,13 +53,12 @@ function a11yProps(index: number) {
 
 export default function BasicTabs() {
   const [value, setValue] = React.useState(0);
-  const [Profile, setProfile] = useState<boolean>(false); //배송지
-  const [payment, setPayment] = useState<boolean>(false); //결제수단
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  console.log(Profile);
+  useScrollTop();
+
   return (
     <BGcontainer>
       <ShortContainer>
@@ -77,32 +74,10 @@ export default function BasicTabs() {
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            <Title>
-              <div className="text-base font-semibold py-4">내 정보 관리</div>
-              <button onClick={() => setProfile(!Profile)}>
-                {Profile ? (
-                  <FontAwesomeIcon icon={faArrowUp} />
-                ) : (
-                  <FontAwesomeIcon icon={faArrowDown} />
-                )}
-              </button>
-            </Title>
-            {Profile && <MyProfile />}
-            <Title>
-              <div className="text-base font-semibold py-4">배송지 관리</div>
-              <button onClick={() => setPayment(!payment)}>
-                {payment ? (
-                  <FontAwesomeIcon icon={faArrowUp} />
-                ) : (
-                  <FontAwesomeIcon icon={faArrowDown} />
-                )}
-              </button>
-            </Title>
-            {payment && <Payment />}
+            <AccordionTitle ATvalue="내 정보 관리" Component={MyProfile} />
+            <AccordionTitle ATvalue="배송지관리" Component={Payment} />
           </TabPanel>
-          <TabPanel value={value} index={1}>
-            Item Two
-          </TabPanel>
+          <TabPanel value={value} index={1}></TabPanel>
         </Box>
       </ShortContainer>
     </BGcontainer>
