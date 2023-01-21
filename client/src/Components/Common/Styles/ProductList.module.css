@@ -1,11 +1,16 @@
-.Products_Container {
-  @apply py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8;
+.Product_List_Container {
+  @apply grid  gap-y-10 gap-x-6  grid-cols-4 py-16 px-4;
 }
 
-.Product_List_Container {
-  width: calc(100% - 300px);
-  float: right;
-  overflow: scroll;
-  height: 800px;
-  @apply grid  gap-y-10 gap-x-6  grid-cols-4;
+.Product_List_Container::-webkit-scrollbar {
+  width: 10px;
+}
+.Product_List_Container::-webkit-scrollbar-thumb {
+  background-color: var(--green-40);
+  border-radius: 10px;
+}
+.Product_List_Container::-webkit-scrollbar-track {
+  background-color: var(--green-20);
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
 }

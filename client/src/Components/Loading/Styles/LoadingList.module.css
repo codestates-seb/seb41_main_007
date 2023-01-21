@@ -8,10 +8,10 @@
 .Loading_Img_Contanier {
   border-radius: 0.8rem;
   overflow: hidden;
-  height: 320px;
   width: 100%;
 }
 
 .Loading_Content_Img {
-  @apply h-full w-full object-cover object-center group-hover:opacity-75;
+  height: 220px;
+  @apply w-full object-cover object-center group-hover:opacity-75;
 }

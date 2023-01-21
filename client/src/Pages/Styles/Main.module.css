@@ -13,19 +13,8 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  /* align-items: center; */
   font-size: var(--xlarge);
-}
-
-.Search_Result_Text_Container {
-  display: flex;
-  justify-content: center;
-  padding: 52px 0 20px 0;
-}
-
-.Search_Result_Text {
-  font-size: var(--xlarge);
-  color: rgb(17 24 39 / var(--tw-text-opacity));
-  letter-spacing: -0.025em;
 }
 
 @media (max-width: 600px) {
