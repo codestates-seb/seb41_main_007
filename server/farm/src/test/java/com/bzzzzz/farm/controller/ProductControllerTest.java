@@ -1,16 +1,15 @@
 package com.bzzzzz.farm.controller;
 
+import com.bzzzzz.farm.mapper.ProductMapper;
+import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.product.*;
-import com.bzzzzz.farm.service.LikeService;
-import com.bzzzzz.farm.controller.ProductController;
 import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.model.entity.ProductCategory;
 import com.bzzzzz.farm.model.entity.ProductOption;
-import com.bzzzzz.farm.mapper.ProductMapper;
+import com.bzzzzz.farm.service.LikeService;
 import com.bzzzzz.farm.service.ProductCategoryService;
 import com.bzzzzz.farm.service.ProductOptionService;
 import com.bzzzzz.farm.service.ProductService;
-import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

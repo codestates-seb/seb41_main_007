@@ -230,3 +230,37 @@ include::{snippets}/deleteProductOption/request-fields.adoc[]
 
 .http-response
 include::{snippets}/deleteProductOption/http-response.adoc[]
+
+== LikeController
+
+=== 제품 추천하기(좋아요)
+
+postLike()
+
+.curl-request
+include::{snippets}/postLike/curl-request.adoc[]
+
+.http-request
+include::{snippets}/postLike/http-request.adoc[]
+
+.request-fields
+include::{snippets}/postLike/request-fields.adoc[]
+
+.http-response
+include::{snippets}/postLike/http-response.adoc[]
+
+=== 추천 취소하기(좋아요취소)
+
+deleteLike()
+
+.curl-request
+include::{snippets}/deleteLike/curl-request.adoc[]
+
+.http-request
+include::{snippets}/deleteLike/http-request.adoc[]
+
+.request-fields
+include::{snippets}/deleteLike/request-fields.adoc[]
+
+.http-response
+include::{snippets}/deleteLike/http-response.adoc[]
