@@ -264,3 +264,24 @@ include::{snippets}/deleteLike/request-fields.adoc[]
 
 .http-response
 include::{snippets}/deleteLike/http-response.adoc[]
+
+== CartController
+
+=== 내 장바구니 보기
+
+getCart()
+
+.curl-request
+include::{snippets}/getCart/curl-request.adoc[]
+
+.http-request
+include::{snippets}/getCart/http-request.adoc[]
+
+.path-parameters
+include::{snippets}/getCart/path-parameters.adoc[]
+
+.http-response
+include::{snippets}/getCart/http-response.adoc[]
+
+.response-fields
+include::{snippets}/getCart/response-fields.adoc[]
