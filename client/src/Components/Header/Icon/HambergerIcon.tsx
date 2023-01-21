@@ -5,8 +5,8 @@ const HambergerIcon: FC = (): JSX.Element => {
   return (
     <div className={styles.menu}>
       <svg
-        width="80"
-        height="80"
+        width="70"
+        height="70"
         viewBox="0 0 100 100"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
