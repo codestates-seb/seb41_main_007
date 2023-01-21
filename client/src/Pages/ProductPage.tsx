@@ -123,7 +123,7 @@ const ProductPage: React.FC = () => {
     `products${param.productid}`,
   );
   const emptyBasketAlram = () =>
-    toast('장바구니에 담는 중입니다.', {
+    toast.success('장바구니에 담는 중입니다.', {
       position: 'top-right',
       autoClose: 1000,
       hideProgressBar: false,
@@ -134,7 +134,7 @@ const ProductPage: React.FC = () => {
       theme: 'light',
     });
   const fullBasketAlram = () =>
-    toast('이미 장바구니에 들어있습니다.', {
+    toast.warning('이미 장바구니에 들어있습니다.', {
       position: 'top-right',
       autoClose: 1000,
       hideProgressBar: false,
@@ -399,3 +399,12 @@ export default ProductPage;
 
 //버튼 후버기능 제거하기
 //카운터 버튼 오류 안보이게 하기
+// const notify = () => toast.info("toastify test!");
+// // 성공 알람 ( 초록색 창 )
+// const success = () => toast.success("Success!");
+// // 실패 알람 ( 빨간색 창 )
+// const error = () => toast.error("Error!");
+// // 경고 알람 ( 노란색 창 )
+// const warning = () => toast.warning("Warnning!");
+// // 정보 알람
+// const info = () => toast.info("Info...");

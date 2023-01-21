@@ -3,12 +3,21 @@
   margin: 0;
   box-sizing: border-box;
   @apply font-sans;
+  
+}
+@layer base {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 *::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
 }
 *::-webkit-scrollbar-thumb {
-  background-color: var(--green-40);
+  background-color: var(--green-20);
   border-radius: 10px;
 }
 *::-webkit-scrollbar-track {

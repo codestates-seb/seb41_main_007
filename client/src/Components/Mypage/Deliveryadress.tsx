@@ -10,19 +10,19 @@ const DeliveryAdress = () => {
   const Delivery = [
     {
       productId: 1,
-      addresname: '우리집',
+      adressname: '우리집',
       name: '황낙준',
-      addres: '(331-726) 충남 천안시 서북구',
+      adress: '(06035) 서울 강남구 가로수길 5 (지하철 1호선)',
 
       phonenumber: '010-6693-2258',
     },
     {
       productId: 2,
-      addresname: '선물 보낼 곳',
+      adressname: '선물보낼곳',
       name: '서형민',
-      addres: '(331-726) 인천 광역시 서북구',
+      adress: '(30257) 서울 강남구 가로수길 5 (지하철 1호선)',
 
-      phonenumber: '010-6693-2258',
+      phonenumber: '010-6673-2258',
     },
   ];
 

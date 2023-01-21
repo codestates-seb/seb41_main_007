@@ -1,4 +1,4 @@
-import Address from 'Components/PaymentPage/Address';
+import Address from 'Components/PaymentPage/Adress';
 import Payment from 'Components/PaymentPage/Payment';
 import styled from 'styled-components';
 import { useState } from 'react';

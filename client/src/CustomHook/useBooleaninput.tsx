@@ -5,9 +5,9 @@ type OutputProps = [boolean, () => void];
 const useBooleanInput = (initialValue: boolean): OutputProps => {
   const [Control, setControl] = useState<boolean>(initialValue);
 
-  const onClickForm = useCallback(() => {
+  const onClickForm = () => {
     setControl(!Control);
-  }, []);
+  };
 
   return [Control, onClickForm];
 };
