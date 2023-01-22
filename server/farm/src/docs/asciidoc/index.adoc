@@ -389,3 +389,19 @@ include::{snippets}/deleteCategory/request-fields.adoc[]
 
 .http-response
 include::{snippets}/deleteCategory/http-response.adoc[]
+
+=== 카테고리 전체 가져오기
+
+getCategories()
+
+.curl-request
+include::{snippets}/getCategories/curl-request.adoc[]
+
+.http-request
+include::{snippets}/getCategories/http-request.adoc[]
+
+.http-response
+include::{snippets}/getCategories/http-response.adoc[]
+
+.response-fields
+include::{snippets}/getCategories/response-fields.adoc[]
