@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.mapper.CategoryMapper;
+import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.category.CategoryPatchDto;
 import com.bzzzzz.farm.model.dto.category.CategoryPostDto;
 import com.bzzzzz.farm.model.entity.Category;
@@ -128,10 +129,28 @@ public class CategoryControllerTest {
     @DisplayName("카테고리 삭제")
     void deleteCategory() throws Exception {
         // given
+        IdRequestDto request = new IdRequestDto();
+        request.setId(1L);
+
+        doNothing().when(categoryService).deleteCategory(Mockito.anyLong());
+
+        String content = gson.toJson(request);
 
         // when
+        ResultActions actions = mockMvc.perform(
+                delete("/categories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf())
+                        .content(content)
+        );
 
         // then
-
+        actions
+                .andExpect(status().isNoContent())
+                .andDo(document(
+                        "deleteCategory",
+                        preprocessRequest(prettyPrint()),
+                        requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 카테고리 식별자"))
+                ));
     }
 }

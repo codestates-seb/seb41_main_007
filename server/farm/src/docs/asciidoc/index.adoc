@@ -373,3 +373,19 @@ include::{snippets}/patchCategory/request-fields.adoc[]
 
 .http-response
 include::{snippets}/patchCategory/http-response.adoc[]
+
+=== 카테고리 삭제
+
+deleteCategory()
+
+.curl-request
+include::{snippets}/deleteCategory/curl-request.adoc[]
+
+.http-request
+include::{snippets}/deleteCategory/http-request.adoc[]
+
+.request-fields
+include::{snippets}/deleteCategory/request-fields.adoc[]
+
+.http-response
+include::{snippets}/deleteCategory/http-response.adoc[]
