@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import PersonIcon from './Icon/PersonIcon';
 import { Link } from 'react-router-dom';
-import SubmitIcon from './Icon/SubmitIcon';
-import ContactIcon from './Icon/ContactIcon';
+import PersonIcon from './Icon/PersonIcon';
 
 import styles from './Styles/DropDown.module.css';
 import BasketIcon from './Icon/BaskectIcon';
 import ShopingCartIcon from './Icon/ShopingCartIcon';
+import LogoutIcon from './Icon/LogoutIcon';
 
 type DropDownProps = {
   showDropDown: boolean;
@@ -27,6 +26,13 @@ const DropDown: React.FC<DropDownProps> = ({
   };
 
   const handleMouseDown = (e: React.MouseEvent) => e.preventDefault();
+
+  const logoutHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    localStorage.removeItem('access_token');
+    window.location.href = '/';
+  };
 
   return (
     <>
@@ -61,6 +67,14 @@ const DropDown: React.FC<DropDownProps> = ({
           <BasketIcon />
           <p className={styles.Drop_Down_Text}>장바구니</p>
         </Link>
+        <button
+          onClick={logoutHandler}
+          className={styles.Drop_Down_Button_Container}
+          style={{ display: 'flex', gap: '6px' }}
+        >
+          <LogoutIcon />
+          <p className={styles.Drop_Down_Text}> 로그아웃</p>
+        </button>
       </nav>
     </>
   );

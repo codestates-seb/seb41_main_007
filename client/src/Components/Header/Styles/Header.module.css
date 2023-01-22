@@ -89,4 +89,23 @@
   .Header_Contents_Container {
     display: none;
   }
+  .Header_Search_Input {
+    margin-left: 40px;
+  }
+}
+
+@media (max-width: 900px) {
+  .Header_Search_Input {
+    width: 170px;
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .Header_Search_Input {
+    display: none;
+  }
+  .Header_Input_SearchIcon {
+    display: none;
+  }
 }

@@ -10,9 +10,25 @@
   justify-content: space-between;
   align-items: center;
 }
+.Mobile_Header_Logo_Container {
+  padding-right: 10px;
+}
+
+.MobileHeader_Input_SearchIcon {
+  padding: 15px;
+  opacity: 0.7;
+  background-color: var(--green-50);
+  display: none;
+}
 
 @media (max-width: 1260px) {
   .MobileHeader_Container {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .MobileHeader_Input_SearchIcon {
     display: block;
   }
 }
