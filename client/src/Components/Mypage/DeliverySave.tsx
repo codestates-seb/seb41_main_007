@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import TinyTitle from 'Components/Common/TinyTitle';
 import RadiusButton from 'Components/Common/RadiusButton';
 import { useState } from 'react';
-import Adress from 'Components/PaymentPage/Adress';
+import address from 'Components/PaymentPage/address';
 import useBooleanInput from 'CustomHook/useBooleaninput';
 import { TYPE_Product } from 'Types/common/product';
 
@@ -39,16 +39,16 @@ interface dataprops {
   data: UserProfile;
 }
 export interface UserProfile extends TYPE_Product {
-  adressname: string;
-  adress: string;
+  addressname: string;
+  address: string;
   phonenumber: string;
 }
 
 // {
 //   productId: 1,
-//   adressname: '우리집',
+//   addressname: '우리집',
 //   name: '황낙준',
-//   adress: '(331-726) 충남 천안시 서북구',
+//   address: '(331-726) 충남 천안시 서북구',
 
 //   phonenumber: '010-6693-2258',
 // },
@@ -71,24 +71,24 @@ const DeliverySave: React.FC<dataprops> = ({ data }) => {
       {control ? (
         <Deliverydl>
           <Deliverydt>
-            <TinyTitle>{dataput.adressname}</TinyTitle>
+            <TinyTitle>{dataput.addressname}</TinyTitle>
             <DeliverydtLeft>
               <RadiusButton onClick={oncontrolCilck}>수정</RadiusButton>
             </DeliverydtLeft>
           </Deliverydt>
           <Deliverydd>
             <Deliveryp>{dataput.name}</Deliveryp>
-            <Deliveryp>{dataput.adress}</Deliveryp>
+            <Deliveryp>{dataput.address}</Deliveryp>
             <Deliveryp>{dataput.phonenumber}</Deliveryp>
           </Deliverydd>
         </Deliverydl>
       ) : (
         <div>
-          <Adress
+          <address
             oncontrolCilck={oncontrolCilck}
             onSave={onSave}
             data={dataput}
-          ></Adress>
+          ></address>
         </div>
       )}
     </div>

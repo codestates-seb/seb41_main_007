@@ -8,7 +8,7 @@ import TinyTitle from 'Components/Common/TinyTitle';
 
 interface FormValue {
   name: string;
-  adressname: string;
+  addressname: string;
   phonenumber: string;
 }
 
@@ -48,8 +48,8 @@ const Address: React.FC<Props> = ({
             type="text"
             placeholder="배송지명"
             className="text-sm mr-2 w-5/12 h-8"
-            name="adressname"
-            value={data?.adressname}
+            name="addressname"
+            value={data?.addressname}
             onChange={onChangeForm}
             maxLength={5}
           ></input>
