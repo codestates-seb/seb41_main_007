@@ -339,3 +339,37 @@ include::{snippets}/deleteCartProduct/request-fields.adoc[]
 
 .http-response
 include::{snippets}/deleteCartProduct/http-response.adoc[]
+
+== CategoryController
+
+=== 카테고리 등록
+
+postCategory()
+
+.curl-request
+include::{snippets}/postCategory/curl-request.adoc[]
+
+.http-request
+include::{snippets}/postCategory/http-request.adoc[]
+
+.request-fields
+include::{snippets}/postCategory/request-fields.adoc[]
+
+.http-response
+include::{snippets}/postCategory/http-response.adoc[]
+
+=== 카테고리 수정
+
+patchCategory()
+
+.curl-request
+include::{snippets}/patchCategory/curl-request.adoc[]
+
+.http-request
+include::{snippets}/patchCategory/http-request.adoc[]
+
+.request-fields
+include::{snippets}/patchCategory/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patchCategory/http-response.adoc[]
