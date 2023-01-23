@@ -1,13 +1,13 @@
 package com.bzzzzz.farm.controller;
 
+import com.bzzzzz.farm.mapper.ProductMapper;
 import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.MultiResponseDto;
 import com.bzzzzz.farm.model.dto.SingleResponseDto;
-import com.bzzzzz.farm.service.LikeService;
 import com.bzzzzz.farm.model.dto.product.ProductPatchDto;
 import com.bzzzzz.farm.model.dto.product.ProductPostDto;
 import com.bzzzzz.farm.model.entity.Product;
-import com.bzzzzz.farm.mapper.ProductMapper;
+import com.bzzzzz.farm.service.LikeService;
 import com.bzzzzz.farm.service.ProductCategoryService;
 import com.bzzzzz.farm.service.ProductOptionService;
 import com.bzzzzz.farm.service.ProductService;
@@ -63,18 +63,18 @@ public class ProductController {
     @GetMapping
     public ResponseEntity getProducts(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                       @Positive @RequestParam(required = false, defaultValue = "40") int size,
-                                      @RequestParam(required = false, defaultValue = "0") long categoryId,
+                                      @RequestParam(required = false) Long categoryId,
                                       @RequestParam(required = false, defaultValue = "productId") String sort,
                                       @RequestParam(required = false, defaultValue = "descending") String order,
-                                      @RequestParam(required = false, defaultValue = "") String keyword) {
+                                      @RequestParam(required = false) String keyword) {
 
         /** 허용 파라미터 외에는 defaultValue로 자동 설정됨
          * page = 원하는 페이지
          * size = 한 페이지당 볼 게시물 수
          * categoryId = 카테고리 별로 보고 싶은 경우
-         * sort = productId(최신순), name(상품명), price(가격), brand(제조사), likeCount(인기순)
+         * sort = productId(최신순), name(상품명), price(가격), brand(제조사), likeCount(인기순), soldCount(판매량순)
          * order = descending(내림차순), ascending(오름차순)
-         * keyword = 검색어 (제품명, 브랜드 안에서 검색)
+         * keyword = 검색어 (제품명, 본문, 브랜드 안에서 검색)
          * */
 
         Page<Product> productPage = productService.findProducts(page - 1, size, sort, order, categoryId, keyword);
