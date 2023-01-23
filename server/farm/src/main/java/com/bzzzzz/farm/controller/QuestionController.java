@@ -71,6 +71,21 @@ public class QuestionController {
         );
     }
 
+    //특정 문의 수정
+    @PatchMapping
+    public ResponseEntity patchQuestion(@RequestBody @Valid QuestionPostDto questionPatchDto){
+        Question question = questionMapper.questionPostDtoToQuestion(questionPatchDto);
+        Member member = memberService.getLoginMember();
+
+        Question updatedQuestion = questionService.updateQuestion(question,member);
+
+        QuestionResponseDto questionResponseDto = questionMapper.questionToQuestionResponseDto(updatedQuestion);
+        return new ResponseEntity(questionResponseDto, HttpStatus.OK);
+    }
+
+
+
+    //특정 문의 삭제
     @DeleteMapping({""})
     public ResponseEntity deleteQuestion(@RequestBody @Valid QuestionDeleteDto questionDeleteDto){
         Member member = memberService.getLoginMember();

@@ -118,7 +118,5 @@ public class ReviewController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-    //TODO: 리뷰에 사진 업로드 가능하게 하기
-
 
 }

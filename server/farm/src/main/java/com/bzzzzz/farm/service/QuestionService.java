@@ -2,6 +2,7 @@ package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
+import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.model.entity.Question;
 import com.bzzzzz.farm.model.entity.Review;
 import com.bzzzzz.farm.repository.QuestionRepository;
@@ -48,6 +49,20 @@ public class QuestionService {
     public void deleteQuestion(Long questionId){
         Question question = findVerifiedQuestion(questionId);
         questionRepository.delete(question);
+    }
+
+    //질문 글 수정
+    public Question updateQuestion(Question question, Member member){
+        Question findQuestion = findVerifiedQuestion(question.getQuestionId());
+
+        //글 작성 유저와 현재 로그인된 유저가 같은지 검증
+        if(!findQuestion.getMember().getEmail().equals(member.getEmail())){
+            throw new BusinessLogicException(ExceptionCode.INVALID_USER);
+        }
+        findQuestion.setQuestionTitle(question.getQuestionTitle());
+        findQuestion.setQuestionContent(question.getQuestionContent());
+
+        return questionRepository.save(findQuestion);
     }
 
     private Pageable createPageable(int page, int size) {
