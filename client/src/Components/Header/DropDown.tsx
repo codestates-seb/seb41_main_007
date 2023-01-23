@@ -15,6 +15,7 @@ type DropDownProps = {
 const DropDown: React.FC<DropDownProps> = ({
   toggleDropDown,
 }: DropDownProps): JSX.Element => {
+  let isUser = true;
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
 
   useEffect(() => {
@@ -38,16 +39,6 @@ const DropDown: React.FC<DropDownProps> = ({
     <>
       <nav className={styles.dropdown}>
         <Link
-          to="/mypage"
-          className={styles.Drop_Down_Button_Container}
-          onMouseDown={handleMouseDown}
-          onClick={(): void => TogglecloseHandler()}
-          style={{ display: 'flex', gap: '6px' }}
-        >
-          <PersonIcon />
-          <p className={styles.Drop_Down_Text}>내정보</p>
-        </Link>
-        <Link
           to="/products/all?sort=likeCount&order=ascending&page=1&size=20"
           className={styles.Drop_Down_Button_Container}
           onMouseDown={handleMouseDown}
@@ -67,15 +58,41 @@ const DropDown: React.FC<DropDownProps> = ({
           <BasketIcon />
           <p className={styles.Drop_Down_Text}>장바구니</p>
         </Link>
-        <button
-          onClick={logoutHandler}
-          onMouseDown={handleMouseDown}
-          className={styles.Drop_Down_Button_Container}
-          style={{ display: 'flex', gap: '6px' }}
-        >
-          <LogoutIcon />
-          <p className={styles.Drop_Down_Text}> 로그아웃</p>
-        </button>
+        {isUser ? (
+          <>
+            <Link
+              to="/mypage"
+              className={styles.Drop_Down_Button_Container}
+              onMouseDown={handleMouseDown}
+              onClick={(): void => TogglecloseHandler()}
+              style={{ display: 'flex', gap: '6px' }}
+            >
+              <PersonIcon />
+              <p className={styles.Drop_Down_Text}>내정보</p>
+            </Link>
+            <button
+              onClick={logoutHandler}
+              onMouseDown={handleMouseDown}
+              className={styles.Drop_Down_Button_Container}
+              style={{ display: 'flex', gap: '6px' }}
+            >
+              <LogoutIcon />
+              <p className={styles.Drop_Down_Text}> 로그아웃</p>
+            </button>
+          </>
+        ) : (
+          <>
+            <Link
+              to={'/login'}
+              onMouseDown={handleMouseDown}
+              className={styles.Drop_Down_Button_Container}
+              style={{ display: 'flex', gap: '6px' }}
+            >
+              <LogoutIcon />
+              <p className={styles.Drop_Down_Text}> 로그인</p>
+            </Link>
+          </>
+        )}
       </nav>
     </>
   );

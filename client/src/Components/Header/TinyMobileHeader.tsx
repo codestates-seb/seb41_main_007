@@ -23,7 +23,7 @@ const TinyMobileHeader: FC = () => {
       // Unbind the event listener on clean up
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  });
+  }, [isOpen]);
 
   const openHandler = (event: React.MouseEvent<HTMLButtonElement>) => {
     setIsOpen(!isOpen);
