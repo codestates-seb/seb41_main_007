@@ -11,7 +11,7 @@ import { useAppDispatch } from 'Redux/app/hook';
 import { countset } from 'Redux/reducer/priceSlice';
 
 const ProductMain = styled.div`
-  margin: 0 auto;
+  margin: 0 auto 50px auto;
   width: 920px;
   height: 480px;
 

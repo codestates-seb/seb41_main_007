@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import styled from '@emotion/styled/types/base';
 
 interface TabPanelProps {
   children?: React.ReactNode;

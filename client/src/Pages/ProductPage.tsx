@@ -8,18 +8,40 @@ import useScrollTop from 'CustomHook/useScrollTop';
 import { BGcontainer } from 'Components/Common/BGcontainer';
 import ProductMainBox from 'Components/ProductPage/ProductMainBox';
 import ProductDetailBox from 'Components/ProductPage/productDetailBox';
+import CategoryList from 'Components/Common/CategoryList';
+import TabPanel from 'Components/Mypage/TabPanel';
 
 const ProductContainer = styled.div`
-  margin: 120px auto 0 auto;
+  margin: 120px auto 120px auto;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  .select {
+    min-width: 875px;
+    width: 875px;
+    margin-left: 42px;
+    height: 50px;
+    border-bottom: 1px solid var(--black-09);
+  }
 `;
 const ProductMenuTitle = styled.h2`
   font-size: var(--xlarge);
   font-weight: bold;
   padding: 30px;
+`;
+
+const TabButton = styled.button<{ isTrue?: boolean }>`
+  ${(props) =>
+    props.isTrue
+      ? 'background: var(--green-70); color:white'
+      : 'background: white; color:black'};
+  font-weight: 400;
+  width: 150px;
+  height: 50px;
+  line-height: 48px;
+  font-size: var(--small);
+  border-bottom: 1px solid var(--black-09);
 `;
 
 export interface counterProps {
@@ -33,6 +55,11 @@ export interface counterProps {
 //3번 읽고 돌아와야함
 
 const ProductPage: React.FC = () => {
+  const [value, setValue] = useState<number>(0);
+
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
   useScrollTop();
   let param = useParams(); //공부
   const { data, isLoading, error } = useCustomQuery(
@@ -47,12 +74,29 @@ const ProductPage: React.FC = () => {
   //리턴 url , 로컬스토리지에 담기
   return (
     <BGcontainer>
+      <CategoryList />
       <ProductContainer>
-        <ProductMenuTitle></ProductMenuTitle>
+        <ProductMenuTitle />
         <ProductMainBox data={data}></ProductMainBox>
+        <div className="mt-24  ">
+          <div className="relative select border-solid border-b-2">
+            <div className="absolute left-0 top-0">
+              <TabButton isTrue={value === 0} onClick={() => setValue(0)}>
+                1십십십십싯
+              </TabButton>
+              <TabButton isTrue={value === 1} onClick={() => setValue(1)}>
+                1십십십십싯
+              </TabButton>
+            </div>
+          </div>
+          <TabPanel value={value} index={0}>
+            <ProductDetailBox />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <ProductDetailBox />
+          </TabPanel>
+        </div>
       </ProductContainer>
-
-      <ProductDetailBox />
     </BGcontainer>
   );
 };
@@ -72,3 +116,4 @@ export default ProductPage;
 // const info = () => toast.info("Info...");
 // toast
 // 도트깨짐
+//styled 컴퍼넌트 마지막  두개넣으려면; 차이

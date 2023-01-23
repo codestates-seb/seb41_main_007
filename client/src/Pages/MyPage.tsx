@@ -1,5 +1,5 @@
 import { BGcontainer } from 'Components/Common/BGcontainer';
-import * as React from 'react';
+import { useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -15,16 +15,8 @@ const ShortContainer = styled.div`
   margin: 0 auto;
 `;
 
-const Title = styled.div`
-  border-top: 1px solid black;
-  border-bottom: 1px solid #e5e5e5;
-  display: flex;
-  justify-content: space-between;
-  padding-right: 30px;
-`;
-
 export default function BasicTabs() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState<number>(0);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
