@@ -1,5 +1,7 @@
 package com.bzzzzz.farm.service;
 
+import com.bzzzzz.farm.exception.BusinessLogicException;
+import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.model.entity.Question;
 import com.bzzzzz.farm.model.entity.Review;
 import com.bzzzzz.farm.repository.QuestionRepository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -42,9 +45,18 @@ public class QuestionService {
         return questionRepository.findAll(pageable);
     }
 
+    public void deleteQuestion(Long questionId){
+        Question question = findVerifiedQuestion(questionId);
+        questionRepository.delete(question);
+    }
+
     private Pageable createPageable(int page, int size) {
         return PageRequest.of(page, size);
     }
 
-
+    private Question findVerifiedQuestion(Long questionId){
+        Optional<Question> optionalQuestion = questionRepository.findById(questionId);
+        Question question = optionalQuestion.orElseThrow(()-> new BusinessLogicException(ExceptionCode.QUESTION_NOT_FOUND));
+        return question;
+    }
 }
