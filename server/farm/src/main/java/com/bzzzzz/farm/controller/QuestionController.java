@@ -100,6 +100,8 @@ public class QuestionController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
+
+    //질문 답변 작성
     @PostMapping("/answers")
     public ResponseEntity insertQuestionAnswer(@RequestBody @Valid QuestionAnswerPostDto questionAnswerPostDto){
         Member member = memberService.getLoginMember();
@@ -113,4 +115,30 @@ public class QuestionController {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
+
+    //질문 답변 수정
+    @PatchMapping("/answers")
+    public ResponseEntity updateQuestionAnswer(@RequestBody @Valid QuestionAnswerPatchDto questionAnswerPatchDto){
+        Member member = memberService.getLoginMember();
+
+        QuestionAnswer questionAnswer = questionAnswerMapper.questionAnswerPatchDtoToQuestionAnswer(questionAnswerPatchDto);
+        questionAnswer.setMember(member);
+        QuestionAnswer updatedQuestionAnswer = questionAnswerService.updateQuestionAnswer(questionAnswer);
+
+        QuestionAnswerResponseDto questionAnswerResponseDto = questionAnswerMapper.questionAnswerToQuestionAnswerResponseDto(updatedQuestionAnswer);
+
+        return new ResponseEntity<>(questionAnswerResponseDto,HttpStatus.OK);
+    }
+
+    @DeleteMapping("/answers")
+    public ResponseEntity deleteQuestionAnswer(@RequestBody @Valid QuestionAnswerDeleteDto questionAnswerDeleteDto){
+        Member member = memberService.getLoginMember();
+        if(member.getRoles().equals("ROLE_ADMIN")){
+            questionAnswerService.deleteQuestionAnswer(questionAnswerDeleteDto.getQuestionAnswerId());
+            return new ResponseEntity(HttpStatus.OK);
+        }else{
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
 }

@@ -28,7 +28,8 @@ public enum ExceptionCode {
     CART_PRODUCT_NOT_FOUND(404, "CartProduct not found"),
     CART_NOT_FOUND(404, "Cart not found"),
 
-    QUESTION_NOT_FOUND(404,"Question not found");
+    QUESTION_NOT_FOUND(404,"Question not found"),
+    QUESTION_ANSWER_NOT_FOUND(404,"Question answer not found");
     @Getter
     private int status;
 

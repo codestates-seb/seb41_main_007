@@ -1,5 +1,6 @@
 package com.bzzzzz.farm.mapper;
 
+import com.bzzzzz.farm.model.dto.question.QuestionAnswerPatchDto;
 import com.bzzzzz.farm.model.dto.question.QuestionAnswerPostDto;
 import com.bzzzzz.farm.model.dto.question.QuestionAnswerResponseDto;
 import com.bzzzzz.farm.model.entity.QuestionAnswer;
@@ -31,5 +32,16 @@ public interface QuestionAnswerMapper {
                 questionAnswer.getModifiedAt()
 
         );
+    }
+    default QuestionAnswer questionAnswerPatchDtoToQuestionAnswer(QuestionAnswerPatchDto questionAnswerPatchDto){
+        if(questionAnswerPatchDto == null){
+            return null;
+        }else{
+            QuestionAnswer questionAnswer = new QuestionAnswer(
+                    questionAnswerPatchDto.getQuestionAnswerTitle(),
+                    questionAnswerPatchDto.getQuestionAnswerContent()
+            );
+            return questionAnswer;
+        }
     }
 }
