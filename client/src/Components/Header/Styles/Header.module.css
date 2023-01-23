@@ -91,6 +91,7 @@
   }
   .Header_Search_Input {
     margin-left: 40px;
+    margin-bottom: 15px;
   }
 }
 
@@ -103,9 +104,12 @@
 
 @media (max-width: 600px) {
   .Header_Search_Input {
-    display: none;
+    width: 230px;
+    margin-left: 0px;
+    height: 46px;
+    margin-bottom: 15px;
   }
   .Header_Input_SearchIcon {
-    display: none;
+    padding: 11px;
   }
 }

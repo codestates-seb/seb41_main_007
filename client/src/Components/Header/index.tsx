@@ -5,11 +5,13 @@ import Input from './Input';
 import styles from './Styles/Header.module.css';
 import TopColRight from './TopColRight';
 import MobileHeader from './MobileHeader';
+import TinyMobileHeader from './TinyMobileHeader';
 
 const Header: FC = () => {
   return (
     <header>
       <div className={styles.Header_Container}>
+        <TinyMobileHeader />
         <MobileHeader />
         <div className={styles.Header_Contents_Container}>
           <Input />
