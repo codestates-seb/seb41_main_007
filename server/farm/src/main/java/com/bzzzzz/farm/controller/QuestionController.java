@@ -1,14 +1,15 @@
 package com.bzzzzz.farm.controller;
 
 
+import com.bzzzzz.farm.mapper.QuestionAnswerMapper;
 import com.bzzzzz.farm.model.dto.MultiResponseDto;
-import com.bzzzzz.farm.model.dto.question.QuestionDeleteDto;
-import com.bzzzzz.farm.model.dto.question.QuestionPostDto;
-import com.bzzzzz.farm.model.dto.question.QuestionResponseDto;
+import com.bzzzzz.farm.model.dto.question.*;
 import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.model.entity.Question;
 import com.bzzzzz.farm.mapper.QuestionMapper;
+import com.bzzzzz.farm.model.entity.QuestionAnswer;
 import com.bzzzzz.farm.service.MemberService;
+import com.bzzzzz.farm.service.QuestionAnswerService;
 import com.bzzzzz.farm.service.QuestionService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -32,10 +33,14 @@ public class QuestionController {
 
     private final MemberService memberService;
 
-    public QuestionController(QuestionService questionService, QuestionMapper questionMapper, MemberService memberService) {
+    private final QuestionAnswerMapper questionAnswerMapper;
+    private final QuestionAnswerService questionAnswerService;
+    public QuestionController(QuestionService questionService, QuestionMapper questionMapper, MemberService memberService, QuestionAnswerMapper questionAnswerMapper, QuestionAnswerService questionAnswerService) {
         this.questionService = questionService;
         this.questionMapper = questionMapper;
         this.memberService = memberService;
+        this.questionAnswerMapper = questionAnswerMapper;
+        this.questionAnswerService = questionAnswerService;
     }
 
     //문의등록
@@ -95,5 +100,17 @@ public class QuestionController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-
+    @PostMapping("/answers")
+    public ResponseEntity insertQuestionAnswer(@RequestBody @Valid QuestionAnswerPostDto questionAnswerPostDto){
+        Member member = memberService.getLoginMember();
+        if(member.getRoles().equals("ROLE_ADMIN")){
+            QuestionAnswer questionAnswer = questionAnswerMapper.questionAnswerPostDtoToQuestionAnswer(questionAnswerPostDto);
+            questionAnswer.setMember(member);
+            QuestionAnswer insertedQuestionAnswer = questionAnswerService.insertQuestionAnswer(questionAnswer);
+            QuestionAnswerResponseDto questionAnswerResponseDto = questionAnswerMapper.questionAnswerToQuestionAnswerResponseDto(insertedQuestionAnswer);
+            return new ResponseEntity<>(questionAnswerResponseDto,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
 }

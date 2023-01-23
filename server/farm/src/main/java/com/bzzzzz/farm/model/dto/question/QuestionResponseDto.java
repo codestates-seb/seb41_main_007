@@ -19,7 +19,7 @@ public class QuestionResponseDto {
     private String createdAt;
     private String lastModifiedAt;
 
-    public QuestionResponseDto(Long questionId,Long memberId ,String questionTitle, String questionContent, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public QuestionResponseDto(Long questionId, Long memberId, String questionTitle, String questionContent, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.questionId = questionId;
         this.memberId = memberId;
         this.questionTitle = questionTitle;
