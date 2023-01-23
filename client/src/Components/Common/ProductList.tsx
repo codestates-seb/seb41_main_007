@@ -11,12 +11,10 @@ interface Props {
 const ProductList: FC<Props> = ({ products }) => {
   useScrollTop();
   return (
-    <div className={styles.Products_Container}>
-      <div className={styles.Product_List_Container}>
-        {products.map((product) => (
-          <Product key={product.productId} product={product} />
-        ))}
-      </div>
+    <div className={styles.Product_List_Container}>
+      {products.map((product) => (
+        <Product key={product.productId} product={product} />
+      ))}
     </div>
   );
 };

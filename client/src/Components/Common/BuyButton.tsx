@@ -15,7 +15,7 @@ const Buybutton = styled.a<{
   box-sizing: border-box;
   text-align: center;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: bold;
   color: ${(props) => props.color};
   white-space: nowrap;
   height: 60px;

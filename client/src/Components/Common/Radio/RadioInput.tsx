@@ -17,9 +17,10 @@ interface Props {
 const RadioInput: React.FC<Props> = ({ children, onChangeSave }) => {
   return (
     <form
-    // onSubmit={() => {
-    //   alert(`${valueSave}를 통해 연락드리겠습니다!`);
-    // }}
+      // onSubmit={() => {
+      //   alert(`${valueSave}를 통해 연락드리겠습니다!`);
+      // }}
+      className=" w-96 h-12 "
     >
       <RadioGroup>
         <Radio name="gender" value="남성" onSave={onChangeSave}>

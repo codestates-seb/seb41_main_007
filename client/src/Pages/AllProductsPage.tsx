@@ -1,13 +1,13 @@
-import Empty from 'Components/Common/Empty';
-import CustomTitle from 'Components/Header/CustomTitle';
-import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
+
+import CustomTitle from 'Components/Header/CustomTitle';
 import NotFoundPage from './NotFoundPage';
 import { BGcontainer } from 'Components/Common/BGcontainer';
 import ProductList from 'Components/Common/ProductList';
 
 import Navigation from 'Components/Pagination/Navigation';
-import { useNavigate } from 'react-router-dom';
 import CategoryList from 'Components/Common/CategoryList';
 
 const AllProductsPage: FC = () => {
@@ -23,11 +23,13 @@ const AllProductsPage: FC = () => {
   if (isLoading)
     return (
       <>
-        <CustomTitle title={`상품 리스트 | FarmPi`} />
-        <Empty />;
+        <BGcontainer>
+          <CustomTitle title={`상품 리스트 | FarmPi`} />
+          <CategoryList />
+        </BGcontainer>
       </>
     );
-  if (error || data.data.length === 0) return <NotFoundPage />;
+  if (error) return <NotFoundPage />;
 
   const handlerSetOffset = (page: number) => {
     window.scrollTo(0, 0);
@@ -37,17 +39,22 @@ const AllProductsPage: FC = () => {
   };
 
   return (
-    <main>
-      <BGcontainer>
-        <CategoryList />
+    <BGcontainer>
+      <CategoryList />
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+        }}
+      >
         <ProductList products={data.data} />
-      </BGcontainer>
-      <Navigation
-        totalPage={data.pageInfo.totalPages}
-        currentPage={data.pageInfo.page}
-        callbackFunc={handlerSetOffset}
-      />
-    </main>
+        <Navigation
+          totalPage={data.pageInfo.totalPages}
+          currentPage={data.pageInfo.page}
+          callbackFunc={handlerSetOffset}
+        />
+      </div>
+    </BGcontainer>
   );
 };
 

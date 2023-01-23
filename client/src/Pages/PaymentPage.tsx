@@ -1,11 +1,12 @@
-import Address from 'Components/PaymentPage/Address';
+import Address from 'Components/PaymentPage/Adress';
 import Payment from 'Components/PaymentPage/Payment';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Totalpay from 'Components/PaymentPage/Totalpay';
-import { BGcontainer } from 'Components/Common/BGcontainer';
+import Basket4size from 'Components/PaymentPage/Basketfour';
+
 const Container = styled.div`
   width: 830px;
 `;
@@ -22,48 +23,47 @@ const PaymentPage: React.FC = () => {
   const [address, setAddress] = useState<boolean>(true); //배송지
   const [payment, setPayment] = useState<boolean>(true); //결제수단
   return (
-    <BGcontainer>
-      <div className="flex">
-        <Container>
-          <div className="font-semibold py-4 text-2xl mb-3"> 주문서</div>
-          <Title>
-            <div className=" font-semibold py-4 text-xl">
-              주문상품정보 / 총2개
-            </div>
-            <button onClick={() => setOrder(!order)}>
-              {order ? (
-                <FontAwesomeIcon icon={faArrowUp} />
-              ) : (
-                <FontAwesomeIcon icon={faArrowDown} />
-              )}
-            </button>
-          </Title>
-          <Title>
-            <div className=" font-semibold py-4 text-xl">배송지</div>
-            <button onClick={() => setAddress(!address)}>
-              {address ? (
-                <FontAwesomeIcon icon={faArrowUp} />
-              ) : (
-                <FontAwesomeIcon icon={faArrowDown} />
-              )}
-            </button>
-          </Title>
-          {address && <Address />}
-          <Title>
-            <div className=" font-semibold py-4 text-xl">결제수단</div>
-            <button onClick={() => setPayment(!payment)}>
-              {payment ? (
-                <FontAwesomeIcon icon={faArrowUp} />
-              ) : (
-                <FontAwesomeIcon icon={faArrowDown} />
-              )}
-            </button>
-          </Title>
-          {payment && <Payment />}
-        </Container>
-        <Totalpay />
-      </div>
-    </BGcontainer>
+    <div className="flex">
+      <Container>
+        <div className="font-semibold py-4 text-2xl mb-3"> 주문서</div>
+        <Title>
+          <div className=" font-semibold py-4 text-xl">
+            주문상품정보 / 총2개
+          </div>
+          <button onClick={() => setOrder(!order)}>
+            {order ? (
+              <FontAwesomeIcon icon={faArrowUp} />
+            ) : (
+              <FontAwesomeIcon icon={faArrowDown} />
+            )}
+          </button>
+        </Title>
+        {order && <Basket4size />}
+        <Title>
+          <div className=" font-semibold py-4 text-xl">배송지</div>
+          <button onClick={() => setAddress(!address)}>
+            {address ? (
+              <FontAwesomeIcon icon={faArrowUp} />
+            ) : (
+              <FontAwesomeIcon icon={faArrowDown} />
+            )}
+          </button>
+        </Title>
+        {address && <Address />}
+        <Title>
+          <div className=" font-semibold py-4 text-xl">결제수단</div>
+          <button onClick={() => setPayment(!payment)}>
+            {payment ? (
+              <FontAwesomeIcon icon={faArrowUp} />
+            ) : (
+              <FontAwesomeIcon icon={faArrowDown} />
+            )}
+          </button>
+        </Title>
+        {payment && <Payment />}
+      </Container>
+      <Totalpay />
+    </div>
   );
 };
 export default PaymentPage;

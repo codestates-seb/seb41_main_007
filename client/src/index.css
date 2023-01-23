@@ -1,10 +1,30 @@
-body {
+* {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
   @apply font-sans;
 }
+@layer base {
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--green-20);
+  border-radius: 10px;
+}
+*::-webkit-scrollbar-track {
+  /* background-color: var(--green-20); */
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+}
 
-/* EX: color: var(--green-60); */
+/* EX: color: var(--greenlogo); */
 :root {
   --green-10: #e9f5db;
   --green-20: #cfe1b9;
@@ -12,14 +32,15 @@ body {
   --green-40: #97a97c;
   --green-50: #87986a;
   --green-60: #718355;
-  --green-70:rgb(12, 86, 17);
-  --greenlogo:#16A34A
+  --green-70: rgb(12, 86, 17);
+  --greenlogo: #16a34a;
   --priceColor: #b41c11;
+  --maingreen: #15803d;
 
   --xxlarge: 32px;
   --xlarge: 24px;
   --large: 20px;
-  --slarge:18px;
+  --slarge: 18px;
   --medium: 16px;
   --small: 14px;
   --xsmall: 10px;
@@ -66,7 +87,6 @@ body {
   --red-00: #ff585b;
   --svg: #3e3e41;
   --logo: #040000;
- 
 }
 
 @tailwind base;

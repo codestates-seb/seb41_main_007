@@ -1,14 +1,17 @@
-import React, { useState, ElementType } from 'react';
+import React, { useState, ElementType, useCallback } from 'react';
 import RadiusButton from './RadiusButton';
 import styled from 'styled-components';
-
 const Textinput = styled.input`
-  width: 200px;
+  width: 384px;
+  margin: 10px 0;
+  height: 28px;
 `;
 
 const TextDiv = styled.div`
   border-bottom: 1px solid #ebebeb;
-  width: 200px;
+  width: 384px;
+  margin: 10px 0;
+  height: 28px;
 `;
 
 interface Props {
@@ -26,6 +29,9 @@ const ComponentsInput: React.FC<Props> = ({
 }) => {
   const [control, setcontrol] = useState<boolean>(true);
   const [data, setdata] = useState<string>('');
+  const [name, setName] = useState<string>('');
+  const [nameMessage, setNameMessage] = useState<string>('');
+  const [isName, setIsName] = useState<boolean>(false);
   const errorempty: string = `${namevalue}이 등록되지 않았습니다.
   입력해 주세요.`;
   const onClickForm = () => {
@@ -33,7 +39,6 @@ const ComponentsInput: React.FC<Props> = ({
   };
 
   const onData = (name: string, value: string) => {
-    console.log('안녕');
     onSave(name, value);
     setdata(value);
   };
@@ -46,15 +51,35 @@ const ComponentsInput: React.FC<Props> = ({
     setdata(value);
   };
 
+  const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('안녕');
+    setName(e.target.value);
+    if (e.target.value.length < 2 || e.target.value.length > 5) {
+      setNameMessage('2글자 이상 10글자 미만으로 입력해주세요.');
+      setIsName(false);
+      onSave(e.target.name, '');
+      setdata('');
+    } else {
+      setNameMessage('올바른 형식입니다 :)');
+      setIsName(true);
+      onChangeSave(e);
+    }
+  }, []);
+
   return (
-    <div className="mb-5 flex">
+    <div className="mb-5 flex ">
       {control ? (
-        <div className="flex">
-          <TextDiv>{data}</TextDiv>
-          <RadiusButton onClick={onClickForm}>수정</RadiusButton>
-        </div>
+        <>
+          <div className="flex items-center">
+            <TextDiv>{data ? data : '입력해주세요'}</TextDiv>
+            <RadiusButton onClick={onClickForm}>수정</RadiusButton>
+            {name.length > 0 && (
+              <div className="pl-2 text-center text-xs">{nameMessage}</div>
+            )}
+          </div>
+        </>
       ) : (
-        <div className="flex">
+        <div className="flex items-center">
           {Component ? (
             <Component onChangeSave={onChangeSave} onSave={onData} />
           ) : (
@@ -62,9 +87,10 @@ const ComponentsInput: React.FC<Props> = ({
               data-type="text"
               name={namevalue ? namevalue : 'text'}
               maxLength={10}
-              onChange={onChangeSave}
+              // onChange={onChangeSave}
+              onChange={onChangeName}
               type="text"
-              data-error-empty={errorempty}
+              data-error-empty="빈칸은 입력할 수 없습니다."
             ></Textinput>
           )}
           <RadiusButton onClick={onClickForm}>확인</RadiusButton>

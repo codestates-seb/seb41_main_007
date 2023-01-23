@@ -24,6 +24,7 @@ const Radio: React.FC<props> = ({
   return (
     <label>
       <input
+        className="px-8 "
         type="radio"
         value={value}
         name={name}
