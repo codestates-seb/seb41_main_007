@@ -16,7 +16,7 @@ import Search from 'Pages/Search';
 import NotFoundPage from 'Pages/NotFoundPage';
 
 import Footer from 'Components/Common/Footer';
-import Address from 'Components/PaymentPage/Address';
+import Address from 'Components/PaymentPage/Adress';
 
 import PaymentPage from 'Pages/PaymentPage';
 import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
@@ -52,7 +52,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <Login />,
+    element: withLayout(Login),
   },
   {
     path: '/product/:productid',

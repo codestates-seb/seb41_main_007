@@ -4,25 +4,25 @@ import useBooleanInput from 'CustomHook/useBooleaninput';
 //1번 로컬 스토리지에서 바당옴
 //2번 로컬스토리에서 지움
 
-const DeliveryAdress = () => {
+const Deliveryaddress = () => {
   const [control, oncontrolCilck] = useBooleanInput(true);
 
   const Delivery = [
     {
       productId: 1,
-      addresname: '우리집',
+      addressname: '우리집',
       name: '황낙준',
-      addres: '(331-726) 충남 천안시 서북구',
+      address: '(06035) 서울 강남구 가로수길 5 (지하철 1호선)',
 
-      phonenumber: '010-6693-2258',
+      phonenumber: '01066932258',
     },
     {
       productId: 2,
-      addresname: '선물 보낼 곳',
+      addressname: '선물보낼곳',
       name: '서형민',
-      addres: '(331-726) 인천 광역시 서북구',
+      address: '(30257) 서울 강남구 가로수길 5 (지하철 1호선)',
 
-      phonenumber: '010-6693-2258',
+      phonenumber: '01066732258',
     },
   ];
 
@@ -37,4 +37,4 @@ const DeliveryAdress = () => {
   );
 };
 
-export default DeliveryAdress;
+export default Deliveryaddress;
