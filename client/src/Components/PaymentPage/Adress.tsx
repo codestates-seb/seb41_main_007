@@ -39,7 +39,7 @@ const Address: React.FC<Props> = ({
   const numberAlram = () =>
     toast.warning('-를 제외하고 숫자만 입력해주세요', {
       position: 'top-right',
-      autoClose: 3000,
+
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -51,7 +51,7 @@ const Address: React.FC<Props> = ({
   const numberfullAlram = () =>
     toast.warning('11자리를 채워주세요', {
       position: 'top-right',
-      autoClose: 3000,
+
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -63,7 +63,7 @@ const Address: React.FC<Props> = ({
   const sucessAlram = () =>
     toast.success('저장되었습니다.', {
       position: 'top-right',
-      autoClose: 3000,
+
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -133,7 +133,7 @@ const Address: React.FC<Props> = ({
         </div>
         <Postcode onSave={onSave} data={data} />
       </div>
-      <ToastContainer />
+      <ToastContainer limit={4} hideProgressBar autoClose={1000} />
 
       <RadiusButton
         onClick={() => {
@@ -158,3 +158,4 @@ export default Address;
 //input number 문제
 //change 컨트롤
 //is loading 문제 해결
+//반응협 웹 css 디자인 만지기
