@@ -1,4 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 const StartDive = () => {
+  // const navigate = useNavigate();
+  // const navigateProduct = () => {
+  //   navigate('/')
+  //}
   return (
     <div className="bg-gray-50 mt-8 mb-4 ">
       <div className="mx-auto max-w-7xl py-12 px-6 lg:flex lg:items-center lg:justify-between lg:py-16 lg:px-8">
