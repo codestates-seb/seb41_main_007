@@ -1,10 +1,12 @@
-import Address from 'Components/PaymentPage/address';
+import Address from 'Components/PaymentPage/Adress';
 import Payment from 'Components/PaymentPage/Payment';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Totalpay from 'Components/PaymentPage/Totalpay';
+import Basket4size from 'Components/PaymentPage/Basketfour';
+
 const Container = styled.div`
   margin: 200px 0px 200px 300px;
   width: 830px;
@@ -37,6 +39,7 @@ const PaymentPage: React.FC = () => {
             )}
           </button>
         </Title>
+        {order && <Basket4size />}
         <Title>
           <div className=" font-semibold py-4 text-xl">배송지</div>
           <button onClick={() => setAddress(!address)}>

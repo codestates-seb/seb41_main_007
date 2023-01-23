@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Ratingstar from 'Components/Common/Ratingstar';
 
 const User = styled.div`
   display: flex;

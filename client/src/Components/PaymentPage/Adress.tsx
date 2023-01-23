@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RadiusButton from 'Components/Common/RadiusButton';
 import type { UserProfile } from 'Components/Mypage/DeliverySave';
 import TinyTitle from 'Components/Common/TinyTitle';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface FormValue {
   name: string;
@@ -32,11 +34,53 @@ const Address: React.FC<Props> = ({
   onSave,
   children,
 }) => {
-  const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
-    const { name, value } = e.target;
+  const numberoverAlram = () => toast.warning('11자리 이상은 불가합니다.');
 
-    onSave?.(name, value);
+  const numberAlram = () =>
+    toast.warning('-를 제외하고 숫자만 입력해주세요', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+
+  const numberfullAlram = () =>
+    toast.warning('11자리를 채워주세요', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+
+  const sucessAlram = () =>
+    toast.success('저장되었습니다.', {
+      position: 'top-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+
+  const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length < 12) {
+      const { name, value } = e.target;
+
+      onSave?.(name, value);
+    } else {
+      e.preventDefault();
+      numberoverAlram();
+    }
   };
 
   return (
@@ -89,11 +133,28 @@ const Address: React.FC<Props> = ({
         </div>
         <Postcode onSave={onSave} data={data} />
       </div>
+      <ToastContainer />
 
-      <RadiusButton onClick={oncontrolCilck}>저장</RadiusButton>
+      <RadiusButton
+        onClick={() => {
+          if (data?.phonenumber && data?.phonenumber.length > 10) {
+            sucessAlram();
+            oncontrolCilck?.();
+          } else if (data?.phonenumber && data?.phonenumber.length < 10)
+            numberfullAlram();
+          else {
+            numberAlram();
+          }
+        }}
+      >
+        저장
+      </RadiusButton>
     </>
   );
 };
 export default Address;
 
 //유효성검사 안햇음
+//input number 문제
+//change 컨트롤
+//is loading 문제 해결

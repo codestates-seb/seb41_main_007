@@ -14,7 +14,7 @@ const Deliveryaddress = () => {
       name: '황낙준',
       address: '(06035) 서울 강남구 가로수길 5 (지하철 1호선)',
 
-      phonenumber: '010-6693-2258',
+      phonenumber: '01066932258',
     },
     {
       productId: 2,
@@ -22,7 +22,7 @@ const Deliveryaddress = () => {
       name: '서형민',
       address: '(30257) 서울 강남구 가로수길 5 (지하철 1호선)',
 
-      phonenumber: '010-6673-2258',
+      phonenumber: '01066732258',
     },
   ];
 

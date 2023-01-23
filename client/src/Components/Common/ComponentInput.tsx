@@ -57,6 +57,8 @@ const ComponentsInput: React.FC<Props> = ({
     if (e.target.value.length < 2 || e.target.value.length > 5) {
       setNameMessage('2글자 이상 10글자 미만으로 입력해주세요.');
       setIsName(false);
+      onSave(e.target.name, '');
+      setdata('');
     } else {
       setNameMessage('올바른 형식입니다 :)');
       setIsName(true);
@@ -69,7 +71,7 @@ const ComponentsInput: React.FC<Props> = ({
       {control ? (
         <>
           <div className="flex items-center">
-            <TextDiv>{data ? data : '입력해'}</TextDiv>
+            <TextDiv>{data ? data : '입력해주세요'}</TextDiv>
             <RadiusButton onClick={onClickForm}>수정</RadiusButton>
             {name.length > 0 && (
               <div className="pl-2 text-center text-xs">{nameMessage}</div>

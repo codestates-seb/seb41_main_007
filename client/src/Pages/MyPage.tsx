@@ -9,6 +9,8 @@ import Deliveryaddress from 'Components/Mypage/Deliveryadress';
 import styled from 'styled-components';
 import useScrollTop from 'CustomHook/useScrollTop';
 import Address from 'Components/PaymentPage/Adress';
+import BasketThree from 'Components/PaymentPage/BasketThree';
+import Basketfour from 'Components/PaymentPage/Basketfour';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -80,7 +82,8 @@ export default function BasicTabs() {
             <AccordionTitle ATvalue="배송지추가" Component={Address} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            2
+            <BasketThree></BasketThree>
+            <Basketfour></Basketfour>
           </TabPanel>
         </Box>
       </ShortContainer>

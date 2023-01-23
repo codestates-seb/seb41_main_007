@@ -66,7 +66,6 @@ const TableContent = styled.div`
 
 const TablePrice = styled.div`
   font-size: var(--medium);
-  color: var(--priceColor);
 `;
 
 const Tablebody3 = styled.td`
@@ -90,7 +89,7 @@ const Tablebody4 = styled.td`
   border-bottom: 1px solid var(--gray-05);
   padding: 20px 0;
   font-size: var(--medium);
-  color: var(--priceColor);
+
   font-weight: 600;
   text-align: center;
 `;

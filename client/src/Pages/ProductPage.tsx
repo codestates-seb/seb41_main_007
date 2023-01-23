@@ -13,6 +13,8 @@ import BuyButton from 'Components/Common/BuyButton';
 import useScrollTop from 'CustomHook/useScrollTop';
 import { useAppDispatch } from 'Redux/app/hook';
 import { countset } from 'Redux/reducer/priceSlice';
+import Ratingstar from 'Components/Common/Ratingstar';
+import { BGcontainer } from 'Components/Common/BGcontainer';
 
 const ProductContainer = styled.div`
   margin-top: 120px;
@@ -46,13 +48,14 @@ const ProductBox = styled.div`
 
 const ProductPrice = styled.div<{ Mgtop: string }>`
   width: 350px;
-  height: 30px;
+  height: 27px;
   font-size: var(--large);
   font-weight: bold;
   margin-top: ${(props) => props.Mgtop};
 `;
 
 const ProductTitle = styled.h1`
+  margin-top: 25px;
   width: 350px;
   height: 38px;
   font-size: var(--xlarge);
@@ -60,14 +63,14 @@ const ProductTitle = styled.h1`
 `;
 const ProductContent = styled.p`
   width: 350px;
-  height: 37px;
+  height: 25px;
   font-size: var(--medium);
   font-weight: bold;
 `;
 const ProductTable = styled.div<{
-  Mgtop: string;
-  fontsize: string;
-  lhtop: string;
+  Mgtop?: string;
+  fontsize?: string;
+  lhtop?: string;
 }>`
   display: flex;
 
@@ -100,7 +103,7 @@ const Price = styled.p`
   transform: translateY(-50%);
   font-size: var(--large);
   font-weight: 600;
-  color: #b41c11;
+  color: var(--priceColor);
 `;
 
 export interface counterProps {
@@ -118,7 +121,7 @@ const ProductPage: React.FC = () => {
   const dispatch = useAppDispatch();
   useScrollTop();
   let param = useParams();
-  const { data, isLoading } = useCustomQuery(
+  const { data, isLoading, error } = useCustomQuery(
     `/products/${param.productid}`,
     `products${param.productid}`,
   );
@@ -238,7 +241,8 @@ const ProductPage: React.FC = () => {
   ];
 
   if (isLoading) return <Empty />;
-
+  if (error) return <></>;
+  console.log(data);
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);
   };
@@ -254,144 +258,157 @@ const ProductPage: React.FC = () => {
 
   //리턴 url , 로컬스토리지에 담기
   return (
-    <ProductContainer>
-      <ProductMenuTitle></ProductMenuTitle>
-      <ProductMain>
-        <CustomTitle title={`${data.name} 상품 - FARMPI`} />
-        <ImageBox src={data.photo}></ImageBox>
-        <ProductBox>
-          <ProductPrice Mgtop="0"></ProductPrice>
-          <ProductTitle className="font-serif">{data.name}</ProductTitle>
-          <ProductContent>국내산 최고의 제품</ProductContent>
-          <ProductPrice Mgtop="0">
-            {useNumberComma(data.price)}
-            <span>원</span>
-          </ProductPrice>
-          <ProductTable fontsize="14px" lhtop="14px" Mgtop="50px">
-            상품수량
-            <CounterButton
-              count={count}
-              onIncrease={onIncrease}
-              onDecrease={onDecrease}
-            />
-          </ProductTable>
-          <ProductTable fontsize="16px" lhtop="16px" Mgtop="0">
-            총 상품 금액
-            <Price>
-              {useNumberComma(data.price * count)}
+    <BGcontainer>
+      <ProductContainer>
+        <ProductMenuTitle></ProductMenuTitle>
+        <ProductMain>
+          <CustomTitle title={`${data.name} 상품 - FARMPI`} />
+          <ImageBox src={data.photo}></ImageBox>
+          <ProductBox>
+            <ProductTitle className="font-serif">{data.name}</ProductTitle>
+            <ProductContent>{data.description}</ProductContent>
+            <Ratingstar num={4}></Ratingstar>
+            <ProductPrice Mgtop="10px">
+              {useNumberComma(data.price)}
               <span>원</span>
-            </Price>
-          </ProductTable>
-          <BuyButton
-            background={'var( --white-02)'}
-            onClick={() => onClickBasket(data)}
-          >
-            장바구니담기
-          </BuyButton>
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-          {/* Same as */}
-          <ToastContainer />
-          <BuyButton background="var(--green-40)">결제하기</BuyButton>
-        </ProductBox>
-      </ProductMain>
-      <div className="bg-white">
-        <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-          <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-            Customers also purchased
-          </h2>
+            </ProductPrice>
 
-          <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            {products.map((product) => (
-              <div key={product.id} className="group relative">
-                <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
-                  <img
-                    src={product.imageSrc}
-                    alt={product.imageAlt}
-                    className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                  />
-                </div>
-                <div className="mt-4 flex justify-between">
-                  <div>
-                    <h3 className="text-sm text-gray-700">
-                      <a href={product.href}>
-                        <span aria-hidden="true" className="absolute inset-0" />
-                        {product.name}
-                      </a>
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-500"></p>
-                  </div>
-                  <p className="text-sm font-medium text-gray-900">
-                    {product.price}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="bg-white">
-        <div className="mx-auto grid max-w-2xl grid-cols-1 items-center gap-y-16 gap-x-8 py-24 px-4 sm:px-6 sm:py-32 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
-          <div>
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-              Technical Specifications
+            <ProductTable fontsize="14px" lhtop="14px" Mgtop="50px">
+              상품수량
+              <CounterButton
+                count={count}
+                onIncrease={onIncrease}
+                onDecrease={onDecrease}
+              />
+            </ProductTable>
+            <ProductTable fontsize="16px" lhtop="16px" Mgtop="0">
+              총 상품 금액
+              <Price>
+                {useNumberComma(data.price * count)}
+                <span>원</span>
+              </Price>
+            </ProductTable>
+            <BuyButton
+              background={'var( --white-02)'}
+              onClick={() => onClickBasket(data)}
+            >
+              장바구니담기
+            </BuyButton>
+            <ToastContainer
+              position="top-right"
+              autoClose={3000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
+            {/* Same as */}
+            <ToastContainer />
+            <BuyButton
+              background="var(--greenlogo);"
+              color="var(--bg-white-05)"
+            >
+              결제하기
+            </BuyButton>
+          </ProductBox>
+        </ProductMain>
+        <div className="bg-white">
+          <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900">
+              Customers also purchased
             </h2>
-            <p className="mt-4 text-gray-500">
-              The walnut wood card tray is precision milled to perfectly fit a
-              stack of Focus cards. The powder coated steel divider separates
-              active cards from new ones, or can be used to archive important
-              task lists.
-            </p>
 
-            <dl className="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:gap-x-8">
-              {features.map((feature) => (
-                <div
-                  key={feature.name}
-                  className="border-t border-gray-200 pt-4"
-                >
-                  <dt className="font-medium text-gray-900">{feature.name}</dt>
-                  <dd className="mt-2 text-sm text-gray-500">
-                    {feature.description}
-                  </dd>
+            <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+              {products.map((product) => (
+                <div key={product.id} className="group relative">
+                  <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
+                    <img
+                      src={product.imageSrc}
+                      alt={product.imageAlt}
+                      className="h-full w-full object-cover object-center lg:h-full lg:w-full"
+                    />
+                  </div>
+                  <div className="mt-4 flex justify-between">
+                    <div>
+                      <h3 className="text-sm text-gray-700">
+                        <a href={product.href}>
+                          <span
+                            aria-hidden="true"
+                            className="absolute inset-0"
+                          />
+                          {product.name}
+                        </a>
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-500"></p>
+                    </div>
+                    <p className="text-sm font-medium text-gray-900">
+                      {product.price}
+                    </p>
+                  </div>
                 </div>
               ))}
-            </dl>
-          </div>
-          <div className="grid grid-cols-2 grid-rows-2 gap-4 sm:gap-6 lg:gap-8">
-            <img
-              src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-01.jpg"
-              alt="Walnut card tray with white powder coated steel divider and 3 punchout holes."
-              className="rounded-lg bg-gray-100"
-            />
-            <img
-              src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-02.jpg"
-              alt="Top down view of walnut card tray with embedded magnets and card groove."
-              className="rounded-lg bg-gray-100"
-            />
-            <img
-              src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-03.jpg"
-              alt="Side of walnut card tray with card groove and recessed card area."
-              className="rounded-lg bg-gray-100"
-            />
-            <img
-              src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-04.jpg"
-              alt="Walnut card tray filled with cards and card angled in dedicated groove."
-              className="rounded-lg bg-gray-100"
-            />
+            </div>
           </div>
         </div>
-      </div>
-    </ProductContainer>
+        <div className="bg-white">
+          <div className="mx-auto grid max-w-2xl grid-cols-1 items-center gap-y-16 gap-x-8 py-24 px-4 sm:px-6 sm:py-32 lg:max-w-7xl lg:grid-cols-2 lg:px-8">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                Technical Specifications
+              </h2>
+              <p className="mt-4 text-gray-500">
+                The walnut wood card tray is precision milled to perfectly fit a
+                stack of Focus cards. The powder coated steel divider separates
+                active cards from new ones, or can be used to archive important
+                task lists.
+              </p>
+
+              <dl className="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:gap-x-8">
+                {features.map((feature) => (
+                  <div
+                    key={feature.name}
+                    className="border-t border-gray-200 pt-4"
+                  >
+                    <dt className="font-medium text-gray-900">
+                      {feature.name}
+                    </dt>
+                    <dd className="mt-2 text-sm text-gray-500">
+                      {feature.description}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <div className="grid grid-cols-2 grid-rows-2 gap-4 sm:gap-6 lg:gap-8">
+              <img
+                src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-01.jpg"
+                alt="Walnut card tray with white powder coated steel divider and 3 punchout holes."
+                className="rounded-lg bg-gray-100"
+              />
+              <img
+                src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-02.jpg"
+                alt="Top down view of walnut card tray with embedded magnets and card groove."
+                className="rounded-lg bg-gray-100"
+              />
+              <img
+                src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-03.jpg"
+                alt="Side of walnut card tray with card groove and recessed card area."
+                className="rounded-lg bg-gray-100"
+              />
+              <img
+                src="https://tailwindui.com/img/ecommerce-images/product-feature-03-detail-04.jpg"
+                alt="Walnut card tray filled with cards and card angled in dedicated groove."
+                className="rounded-lg bg-gray-100"
+              />
+            </div>
+          </div>
+        </div>
+      </ProductContainer>
+    </BGcontainer>
   );
 };
 
@@ -408,3 +425,5 @@ export default ProductPage;
 // const warning = () => toast.warning("Warnning!");
 // // 정보 알람
 // const info = () => toast.info("Info...");
+// toast
+// 도트깨짐

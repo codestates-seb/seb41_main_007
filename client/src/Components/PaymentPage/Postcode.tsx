@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import useBooleanInput from 'CustomHook/useBooleaninput';
-import useInput from 'CustomHook/useInput';
+
 import styled from '@emotion/styled';
 import type { UserProfile } from 'Components/Mypage/DeliverySave';
 

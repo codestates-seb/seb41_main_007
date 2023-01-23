@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import TinyTitle from 'Components/Common/TinyTitle';
 import RadiusButton from 'Components/Common/RadiusButton';
 import { useState } from 'react';
-import address from 'Components/PaymentPage/address';
+import Address from 'Components/PaymentPage/Adress';
 import useBooleanInput from 'CustomHook/useBooleaninput';
 import { TYPE_Product } from 'Types/common/product';
 
@@ -84,11 +84,11 @@ const DeliverySave: React.FC<dataprops> = ({ data }) => {
         </Deliverydl>
       ) : (
         <div>
-          <address
+          <Address
             oncontrolCilck={oncontrolCilck}
             onSave={onSave}
             data={dataput}
-          ></address>
+          ></Address>
         </div>
       )}
     </div>
