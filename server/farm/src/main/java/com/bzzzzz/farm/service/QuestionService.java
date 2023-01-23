@@ -1,10 +1,17 @@
 package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.model.entity.Question;
+import com.bzzzzz.farm.model.entity.Review;
 import com.bzzzzz.farm.repository.QuestionRepository;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Log4j2
 @Service
@@ -23,7 +30,21 @@ public class QuestionService {
 
     //특정 질문 글 불러오기
     @Transactional(readOnly = true)
-    public Question getQuestion(Long questionId){
-        return questionRepository.findById(questionId).orElseThrow(()-> new IllegalArgumentException("해당 질문글이 없습니다. questionId=" + questionId));
+    public Question getQuestion(Long questionId) {
+        return questionRepository.findById(questionId).orElseThrow(() -> new IllegalArgumentException("해당 질문글이 없습니다. questionId=" + questionId));
     }
+
+    //질문 글들 불러오기
+    @Transactional(readOnly = true)
+    public Page<Question> findQuestions(int page, int size) {
+        Pageable pageable = createPageable(page,size);
+
+        return questionRepository.findAll(pageable);
+    }
+
+    private Pageable createPageable(int page, int size) {
+        return PageRequest.of(page, size);
+    }
+
+
 }
