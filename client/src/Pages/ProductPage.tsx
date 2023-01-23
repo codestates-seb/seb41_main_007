@@ -63,7 +63,7 @@ const ProductTitle = styled.h1`
 `;
 const ProductContent = styled.p`
   width: 350px;
-  height: 25px;
+  height: 50px;
   font-size: var(--medium);
   font-weight: bold;
 `;
@@ -273,7 +273,7 @@ const ProductPage: React.FC = () => {
               <span>원</span>
             </ProductPrice>
 
-            <ProductTable fontsize="14px" lhtop="14px" Mgtop="50px">
+            <ProductTable fontsize="14px" lhtop="14px" Mgtop="28px">
               상품수량
               <CounterButton
                 count={count}
