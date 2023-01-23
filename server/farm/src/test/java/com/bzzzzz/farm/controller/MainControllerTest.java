@@ -86,7 +86,7 @@ public class MainControllerTest {
             );
         }
 
-        given(productService.findProducts(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString(), Mockito.anyLong(), Mockito.anyString())).willReturn(new PageImpl<>(List.of()));
+        given(productService.findProducts(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString(), Mockito.isNull(), Mockito.isNull())).willReturn(new PageImpl<>(List.of()));
         given(productMapper.productsToProductSimpleResponseDtos(Mockito.anyList())).willReturn(products);
         given(reviewService.findReviewsOrderByReviewId()).willReturn(List.of());
         given(reviewMapper.reviewsToReviewSimpleResponseDtos(Mockito.anyList())).willReturn(reviews);
