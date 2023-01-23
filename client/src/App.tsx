@@ -23,7 +23,6 @@ import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
 import OauthTest from 'Pages/OauthTest';
 import AllProductsPage from 'Pages/AllProductsPage';
 import Auth from 'Pages/Auth';
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -98,10 +97,6 @@ const router = createBrowserRouter([
   {
     path: '*',
     element: withLayout(NotFoundPage),
-  },
-  {
-    path: '/address',
-    element: <Address />,
   },
   {
     path: '/payment',
