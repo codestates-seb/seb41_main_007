@@ -16,9 +16,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.bzzzzz.farm.model.entity.QProduct.product;
+import static com.bzzzzz.farm.model.entity.QReview.review;
 
 @RequiredArgsConstructor
-public class ProductRepositoryImpl implements ProductRepositoryCustom {
+public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
@@ -68,9 +69,11 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom {
             case "brand":
                 return new OrderSpecifier(order, product.brand);
             case "likeCount":
-                return new OrderSpecifier(order, product.likeCount);
+                return new OrderSpecifier(order, product.likes.size());
             case "soldCount":
                 return new OrderSpecifier(order, product.soldCount);
+//            case "star":
+//                return new OrderSpecifier<>(order, review.rating.avg());
             default:
                 return new OrderSpecifier(order, product.productId);
         }

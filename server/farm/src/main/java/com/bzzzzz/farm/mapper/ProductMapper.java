@@ -73,7 +73,7 @@ public interface ProductMapper {
                 .brand(product.getBrand())
                 .productStatus(product.getProductStatus().getStatus())
                 .viewCount(product.getViewCount())
-                .likeCount(product.getLikeCount())
+                .likeCount(product.getLikes().size())
                 .soldCount(product.getSoldCount())
                 .isLiked(isLiked)
                 .productCategoryResponseDtos(product.getProductCategories().stream()
