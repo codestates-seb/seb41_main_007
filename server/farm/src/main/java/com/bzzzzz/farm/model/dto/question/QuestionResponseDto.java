@@ -19,11 +19,13 @@ public class QuestionResponseDto {
     private String createdAt;
     private String lastModifiedAt;
 
-    public QuestionResponseDto(Long questionId, String questionTitle, String questionContent, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public QuestionResponseDto(Long questionId, Long memberId, String questionTitle, String questionContent, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.questionId = questionId;
+        this.memberId = memberId;
         this.questionTitle = questionTitle;
         this.questionContent = questionContent;
         this.createdAt = createdAt.toString();
         this.lastModifiedAt = modifiedAt.toString();
     }
+
 }
