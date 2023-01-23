@@ -69,6 +69,7 @@ const DropDown: React.FC<DropDownProps> = ({
         </Link>
         <button
           onClick={logoutHandler}
+          onMouseDown={handleMouseDown}
           className={styles.Drop_Down_Button_Container}
           style={{ display: 'flex', gap: '6px' }}
         >
