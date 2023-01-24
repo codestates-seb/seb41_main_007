@@ -10,7 +10,36 @@ import styles from './Styles/Search.module.css';
 import NotFoundPage from './NotFoundPage';
 import { BGcontainer } from 'Components/Common/BGcontainer';
 import CategoryList from 'Components/Common/CategoryList';
-import { toast } from 'react-toastify';
+import ProductSlider from 'Components/Common/Slider';
+
+const NoKeywordSearch: FC = () => {
+  const size = 8;
+  const page = 1;
+  const sort = 'likeCount';
+  const order = 'descending';
+  const { data, isLoading, error } = useCustomQuery(
+    `/products?sort=${sort}&order=${order}&page=${page}&size=${size}`,
+    `product?sort=${sort}&order=${order}&page=${page}&size=${size}`,
+  );
+  if (isLoading) return <BGcontainer></BGcontainer>;
+  if (error)
+    return (
+      <>
+        <NotFoundPage />
+      </>
+    );
+
+  return (
+    <div className={styles.NoKeyword_Container}>
+      <div className={styles.Search_Result_Text_Container}>
+        <div className={styles.NoKeyword}>
+          검색어를 입력하지 않은 경우 추천 상품을 보여드립니다.
+        </div>
+      </div>
+      {data.data && <ProductSlider productList={data.data} isBest={true} />}
+    </div>
+  );
+};
 
 const Search: FC = () => {
   const location = useLocation();
@@ -22,6 +51,12 @@ const Search: FC = () => {
     `product${sch}`,
   );
 
+  if (!keyword)
+    return (
+      <BGcontainer>
+        <NoKeywordSearch />
+      </BGcontainer>
+    );
   if (isLoading)
     return (
       <BGcontainer>
@@ -39,21 +74,13 @@ const Search: FC = () => {
 
   return (
     <BGcontainer>
-      {!keyword ? (
-        <div className={styles.Search_Result_Text_Container}>
-          <div className={styles.NoKeyword}>
-            검색어를 입력하지 않은 경우 추천 상품을 보여드립니다.
-          </div>
-        </div>
-      ) : (
-        <>
-          <SearchResult
-            sch={sch}
-            searchList={data.data}
-            searchPageInfo={data.pageInfo}
-          />
-        </>
-      )}
+      <>
+        <SearchResult
+          sch={sch}
+          searchList={data.data}
+          searchPageInfo={data.pageInfo}
+        />
+      </>
     </BGcontainer>
   );
 };
