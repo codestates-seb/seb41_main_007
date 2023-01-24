@@ -39,7 +39,7 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
         Member member = saveOfUpdate(authAttributes);
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(member.getRoles().toString())),
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_"+authorityUtils.createAuthorities(member.getEmail()))),
                 authAttributes.getAttributes(),
                 authAttributes.getNameAttributeKey());
     }
