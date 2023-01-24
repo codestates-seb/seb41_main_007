@@ -50,7 +50,7 @@ public class ReviewController {
         Review review = reviewMapper.reviewPostDtoToReview(reviewPostDto);
 
         Member member = memberService.getLoginMember();
-        log.info("로그인한 유저 체크: "+member.getEmail());
+        log.info("로그인한 유저 체크: " + member.getEmail());
         review.setMember(member);
 
         Product product = productRepository.findById(reviewPostDto.getProductId()).orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
@@ -74,7 +74,8 @@ public class ReviewController {
 
         return new ResponseEntity(
                 new MultiResponseDto<>(reviewMapper.reviewToReviewsResponseDto(reviewPage.getContent()), reviewPage),
-                HttpStatus.OK);
+                HttpStatus.OK
+        );
     }
 
     //특정상품의 특정 리뷰 하나 가져오기
@@ -97,27 +98,25 @@ public class ReviewController {
 
         ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(updatedReview);
 
-        return new ResponseEntity(reviewResponseDto,HttpStatus.OK);
+        return new ResponseEntity(reviewResponseDto, HttpStatus.OK);
     }
 
     //리뷰 삭제하기
     @DeleteMapping
-    public ResponseEntity deleteReview(@RequestBody @Valid ReviewDeleteDto reviewDeleteDto){
+    public ResponseEntity deleteReview(@RequestBody @Valid ReviewDeleteDto reviewDeleteDto) {
 
 
         Member member = memberService.getLoginMember();
 
-        if(member.getRoles().contains("ROLE_ADMIN")) {
+        if (member.getRoles().contains("ROLE_ADMIN")) {
             reviewService.deleteReview(reviewDeleteDto.getReviewId());
-        }else{
+        } else {
             throw new IllegalArgumentException("관리자만 삭제가 가능합니다.");
         }
 
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
-
-    //TODO: 리뷰에 사진 업로드 가능하게 하기
 
 
 }
