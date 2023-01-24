@@ -11,12 +11,10 @@
 .dropdown {
   display: flex;
   flex-direction: column;
-  margin-top: 10px;
   margin-left: -70px;
   border: 1px solid rgb(197, 197, 197);
   background: #fff;
   border-radius: 0.5rem;
-  min-width: 140px;
 }
 
 .Drop_Down_Text {
@@ -27,7 +25,7 @@
 .Drop_Down_Button_Container {
   display: flex;
   justify-content: center;
-  width: 159px;
+  width: 158px;
   padding: 10px;
   border: 1px solid #767f42;
 }
@@ -36,10 +34,4 @@
   color: #fff;
   background-color: #767f42;
   box-shadow: 0 4px 6px 0 rgb(185, 187, 157);
-}
-
-@media (max-width: 500px) {
-  .Drop_Down_Button_Container {
-    width: 140px;
-  }
 }
