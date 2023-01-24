@@ -6,6 +6,7 @@ import com.bzzzzz.farm.model.dto.MultiResponseDto;
 import com.bzzzzz.farm.model.dto.SingleResponseDto;
 import com.bzzzzz.farm.model.dto.product.ProductPatchDto;
 import com.bzzzzz.farm.model.dto.product.ProductPostDto;
+import com.bzzzzz.farm.model.dto.product.ProductSimpleResponseDto;
 import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.service.LikeService;
 import com.bzzzzz.farm.service.ProductCategoryService;
@@ -77,9 +78,9 @@ public class ProductController {
          * keyword = 검색어 (제품명, 본문, 브랜드 안에서 검색)
          * */
 
-        Page<Product> productPage = productService.findProducts(page - 1, size, sort, order, categoryId, keyword);
+        Page<ProductSimpleResponseDto> productPage = productService.findProducts(page - 1, size, sort, order, categoryId, keyword);
 
-        return new ResponseEntity(new MultiResponseDto(productMapper.productsToProductSimpleResponseDtos(productPage.getContent()), productPage), HttpStatus.OK);
+        return new ResponseEntity(new MultiResponseDto(productPage.getContent(), productPage), HttpStatus.OK);
     }
 
     @PatchMapping

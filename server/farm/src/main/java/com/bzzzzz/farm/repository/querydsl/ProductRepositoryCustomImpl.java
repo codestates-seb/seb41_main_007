@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.repository.querydsl;
 
-import com.bzzzzz.farm.model.entity.Product;
+import com.bzzzzz.farm.model.dto.product.ProductSimpleResponseDto;
+import com.bzzzzz.farm.model.dto.product.QProductSimpleResponseDto;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -23,15 +24,21 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Page<Product> searchAll(Long categoryId, String keyword, Pageable pageable) {
-        JPAQuery<Product> query = queryFactory
-                .selectFrom(product)
+    public Page<ProductSimpleResponseDto> searchAll(Long categoryId, String keyword, Pageable pageable) {
+        JPAQuery<ProductSimpleResponseDto> query = queryFactory
+                .select(new QProductSimpleResponseDto(
+                        product.productId,
+                        product.name,
+                        product.price,
+                        product.photo,
+                        product.productStatus.stringValue()))
+                .from(product)
                 .where(
                         eqCategory(categoryId),
                         eqKeyword(keyword)
                 );
 
-        List<Product> result = query
+        List<ProductSimpleResponseDto> result = query
                 .orderBy(getOrderSpecifier(pageable))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -72,8 +79,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 return new OrderSpecifier(order, product.likes.size());
             case "soldCount":
                 return new OrderSpecifier(order, product.soldCount);
-//            case "star":
-//                return new OrderSpecifier<>(order, review.rating.avg());
+            case "star":
+                return new OrderSpecifier<>(order, review.rating.avg());
             default:
                 return new OrderSpecifier(order, product.productId);
         }

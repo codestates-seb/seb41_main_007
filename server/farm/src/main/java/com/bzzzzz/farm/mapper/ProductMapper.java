@@ -47,13 +47,12 @@ public interface ProductMapper {
             return null;
         }
 
-        return ProductSimpleResponseDto.builder()
-                .productId(product.getProductId())
-                .name(product.getName())
-                .price(product.getPrice())
-                .photo(product.getPhoto())
-                .productStatus(product.getProductStatus().getStatus())
-                .build();
+        return new ProductSimpleResponseDto(
+                product.getProductId(),
+                product.getName(),
+                product.getPrice(),
+                product.getPhoto(),
+                product.getProductStatus().getStatus());
     }
 
     default ProductDetailResponseDto productToProductDetailResponseDto(Product product, Boolean isLiked) {
