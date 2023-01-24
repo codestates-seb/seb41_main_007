@@ -2,12 +2,13 @@ import { FC } from 'react';
 import styled from 'styled-components';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { BGcontainer } from 'Components/Common/BGcontainer';
 const Container = styled.div`
-  margin-left: 220px;
-  margin-top: 40px;
+  margin: 40px auto 0 auto;
+  width: 1220px;
   display: flex;
   .main {
-    width: 1145px;
+    width: 100%;
   }
   .next {
     width: 75px;

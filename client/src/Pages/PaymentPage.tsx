@@ -8,7 +8,6 @@ import Totalpay from 'Components/PaymentPage/Totalpay';
 import Basket4size from 'Components/PaymentPage/Basketfour';
 
 const Container = styled.div`
-  margin: 200px 0px 200px 300px;
   width: 830px;
 `;
 const Title = styled.div`
