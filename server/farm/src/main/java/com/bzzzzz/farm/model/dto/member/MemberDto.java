@@ -9,7 +9,6 @@ public class MemberDto {
     @Getter
     @AllArgsConstructor
     public static class Post{
-        private String password;
 
         private String name;
 
@@ -54,6 +53,7 @@ public class MemberDto {
 
     @Getter
     @Setter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Response{
