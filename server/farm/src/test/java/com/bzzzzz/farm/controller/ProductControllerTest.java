@@ -335,7 +335,7 @@ public class ProductControllerTest {
                 .shippingPrice(50000)
                 .build();
 
-        doNothing().when(productService).updateProduct(Mockito.any(ProductPatchDto.class));
+        given(productService.updateProduct(Mockito.any(ProductPatchDto.class))).willReturn(new Product());
         String content = gson.toJson(request);
 
         // when

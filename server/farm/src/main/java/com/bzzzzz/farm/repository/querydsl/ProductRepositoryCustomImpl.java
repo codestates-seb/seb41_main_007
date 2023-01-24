@@ -79,8 +79,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 return new OrderSpecifier(order, product.likes.size());
             case "soldCount":
                 return new OrderSpecifier(order, product.soldCount);
-            case "star":
-                return new OrderSpecifier<>(order, review.rating.avg());
+//            case "star":
+//                return new OrderSpecifier<>(order, product.reviews.any().rating.avg());
             default:
                 return new OrderSpecifier(order, product.productId);
         }

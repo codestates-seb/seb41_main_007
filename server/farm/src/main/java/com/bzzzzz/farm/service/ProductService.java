@@ -45,7 +45,7 @@ public class ProductService {
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
-    public void updateProduct(ProductPatchDto productPatchDto) {
+    public Product updateProduct(ProductPatchDto productPatchDto) {
 
         Product findProduct = findVerifiedProduct(productPatchDto.getProductId());
 
@@ -58,6 +58,8 @@ public class ProductService {
         Optional.ofNullable(productPatchDto.getShippingCountry()).ifPresent(data -> findProduct.setShippingCountry(Product.ShippingCountry.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingMethod()).ifPresent(data -> findProduct.setShippingMethod(Product.ShippingMethod.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingPrice()).ifPresent(data -> findProduct.setShippingPrice(data));
+
+        return findProduct;
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
