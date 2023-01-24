@@ -10,6 +10,7 @@ import styles from './Styles/Search.module.css';
 import NotFoundPage from './NotFoundPage';
 import { BGcontainer } from 'Components/Common/BGcontainer';
 import CategoryList from 'Components/Common/CategoryList';
+import { toast } from 'react-toastify';
 
 const Search: FC = () => {
   const location = useLocation();
@@ -20,6 +21,7 @@ const Search: FC = () => {
     `/products${sch}`,
     `product${sch}`,
   );
+
   if (isLoading)
     return (
       <BGcontainer>

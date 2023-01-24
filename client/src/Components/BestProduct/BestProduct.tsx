@@ -1,12 +1,14 @@
 import { FC } from 'react';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
-import styled from 'styled-components';
-const Content = styled.div`
-  span {
-    display: block;
-  }
-`;
 import Product from 'Components/Common/Product';
+import { TYPE_Product } from 'Types/common/product';
+
+// import styled from 'styled-components';
+// const Content = styled.div`
+//   span {
+//     display: block;
+//   }
+// `;
 
 const BestProduct: FC = () => {
   const size = 8;
@@ -19,8 +21,7 @@ const BestProduct: FC = () => {
   );
 
   if (isLoading) return <></>;
-  if (error) return <>error낫음</>;
-  console.log(data.data);
+  if (error) return <></>;
 
   return (
     <div className="bg-white">
@@ -30,32 +31,10 @@ const BestProduct: FC = () => {
         </h2>
         <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {data.data &&
-            data.data.map((el: any) => (
-              <div key={el.productId} className="group relative">
-                <div className="min-h-80 aspect-w-1 aspect-h-1 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:aspect-none lg:h-80">
-                  <img
-                    src={el.photo}
-                    alt={el.photo}
-                    className="h-full w-full object-cover object-center lg:h-full lg:w-full"
-                  />
-                </div>
-                <Content>
-                  <div className="mt-4">
-                    <span className="text-sm font-medium text-gray-900"></span>
-                    <span className="text-red-600 text-xs mt-4">#신제품</span>
-                    <span className="font-semibold text-sm mt-2">
-                      {el.name}
-                    </span>
-                    <span className="text-gray-400 text-xs mt-1">
-                      주문시 10% 추가 할인쿠폰 사용 가능
-                    </span>
-                    <span className="text-red-700 font-semibold text-sm mt-2">
-                      {el.price}원
-                    </span>
-                  </div>
-                </Content>
-              </div>
-            ))}
+            data.data.map((product: TYPE_Product) => {
+              product['isBest'] = true;
+              return <Product key={product.productId} product={product} />;
+            })}
         </div>
       </div>
     </div>

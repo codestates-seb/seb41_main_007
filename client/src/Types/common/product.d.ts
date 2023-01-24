@@ -4,6 +4,8 @@ export interface TYPE_Product {
   price: number;
   photo: string;
   alt?: string;
+  isNew: boolean;
+  isBest: boolean;
 }
 
 export interface TYPE_PageInfo {
