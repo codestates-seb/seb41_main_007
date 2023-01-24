@@ -20,7 +20,6 @@
 .Header_Logo_Container {
   display: flex;
   align-items: center;
-  height: 100px;
   padding-top: 20px;
 }
 
@@ -86,54 +85,31 @@
   outline: none;
 }
 
-/* @media (max-width: 920px) {
-}
-
-@media (max-width: 800px) {
-  .Logo {
-    margin-left: 5px;
-  }
-}
-
-@media (max-width: 670px) {
-  .Logo {
-    margin-left: 5px;
-  }
-  .Header_Button_Container {
-    width: 161px;
-  }
-  .Header_SignUp_Button {
+@media (max-width: 1260px) {
+  .Header_Contents_Container {
     display: none;
   }
   .Header_Search_Input {
-    width: 80px;
+    margin-left: 40px;
+    margin-bottom: 15px;
   }
-  .Header_Input_Container {
-    width: 100px;
+}
+
+@media (max-width: 900px) {
+  .Header_Search_Input {
+    width: 170px;
+    margin-left: 20px;
   }
 }
 
 @media (max-width: 600px) {
-  .Logo {
-    margin-left: 4px;
-    width: 180px;
-    height: 180px;
+  .Header_Search_Input {
+    width: 230px;
+    margin-left: 0px;
+    height: 46px;
+    margin-bottom: 15px;
   }
-  .Header_SignUp_Button {
-    display: none;
+  .Header_Input_SearchIcon {
+    padding: 11px;
   }
 }
-
-@media (max-width: 500px) {
-  .Logo {
-    margin-left: 4px;
-    width: 130px;
-    height: 130px;
-  }
-  .Header_SignUp_Button {
-    display: none;
-  }
-  .Header_Contents_Container {
-    height: 80px;
-  }
-} */
