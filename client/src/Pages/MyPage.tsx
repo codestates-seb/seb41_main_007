@@ -9,10 +9,13 @@ import BasketThree from 'Components/PaymentPage/BasketThree';
 import Basketfour from 'Components/PaymentPage/Basketfour';
 import TabPanel from 'Components/Mypage/TabPanel';
 import AccordionGroup from 'Components/Mypage/AccordionGroup';
+import MainImage from 'Components/PaymentPage/MainImage';
+import CustomTitle from 'Components/Header/CustomTitle';
 
 const ShortContainer = styled.div`
   width: 750px;
   margin: 0 auto;
+  margin-top: 80px;
 `;
 
 export default function BasicTabs() {
@@ -24,7 +27,9 @@ export default function BasicTabs() {
   useScrollTop();
 
   return (
-    <BGcontainer>
+    <div>
+      <MainImage></MainImage>
+
       <ShortContainer>
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -46,6 +51,6 @@ export default function BasicTabs() {
           </TabPanel>
         </Box>
       </ShortContainer>
-    </BGcontainer>
+    </div>
   );
 }

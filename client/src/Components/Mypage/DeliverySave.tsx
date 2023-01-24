@@ -11,6 +11,7 @@ import { TYPE_Product } from 'Types/common/product';
 
 const Deliverydl = styled.dl`
   margin-top: 30px;
+  margin-bottom: 30px;
   position: relative;
 `;
 
@@ -25,15 +26,30 @@ const DeliverydtLeft = styled.div`
   right: 39%;
   top: 0;
 `;
+
+const Deliverydiv = styled.div`
+  font-size: var(--slarge);
+  font-weight: bold;
+  margin-top: 22px;
+  margin-bottom: 30px;
+`;
+
 const Deliverydd = styled.dd`
   margin-top: 10px;
   padding: 0 0 30px;
   font-size: 16px;
   line-height: 26px;
   position: relative;
-  border-bottom: 1px solid #ebebeb;
+  border-bottom: 1px solid var(--gray-02);
 `;
-const Deliveryp = styled.p``;
+const Deliveryp = styled.p`
+  max-width: 450px;
+  text-overflow: ellipsis;
+  white-space: nomal;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+`;
 
 interface dataprops {
   data: UserProfile;
@@ -64,14 +80,13 @@ const DeliverySave: React.FC<dataprops> = ({ data }) => {
     console.log(name, value);
     setdataput({ ...dataput, [name]: value });
   };
-  console.log('렌더링');
 
   return (
     <div>
       {control ? (
         <Deliverydl>
           <Deliverydt>
-            <TinyTitle>{dataput.addressname}</TinyTitle>
+            <Deliverydiv>{dataput.addressname}</Deliverydiv>
             <DeliverydtLeft>
               <RadiusButton onClick={oncontrolCilck}>수정</RadiusButton>
             </DeliverydtLeft>

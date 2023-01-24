@@ -103,6 +103,8 @@ export const AccountTransfer: FC = (): JSX.Element => {
   );
 };
 
+const onClickControl = () => {};
+
 const Payment: FC = (): JSX.Element => {
   const [deposit, setDeposit] = useState<boolean>(false);
   const [creditcard, setCreditCard] = useState<boolean>(false);
@@ -111,7 +113,7 @@ const Payment: FC = (): JSX.Element => {
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
       <nav aria-label="main mailbox folders">
-        <List onClick={() => setDeposit(!deposit)}>
+        <List onClick={() => onClickControl}>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>

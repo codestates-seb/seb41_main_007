@@ -34,8 +34,8 @@ const ProductMenuTitle = styled.h2`
 const TabButton = styled.button<{ isTrue?: boolean }>`
   ${(props) =>
     props.isTrue
-      ? 'background: var(--green-70); color:white'
-      : 'background: white; color:black'};
+      ? 'background: var(--greenlogo); color:white;'
+      : 'background: white; color:black;'}
   font-weight: 400;
   width: 150px;
   height: 50px;
@@ -57,9 +57,6 @@ export interface counterProps {
 const ProductPage: React.FC = () => {
   const [value, setValue] = useState<number>(0);
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
   useScrollTop();
   let param = useParams(); //공부
   const { data, isLoading, error } = useCustomQuery(

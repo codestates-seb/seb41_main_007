@@ -9,17 +9,16 @@ const Title = styled.div`
   display: flex;
   justify-content: space-between;
   padding-right: 30px;
-
-  margin-top: 20px;
 `;
 
 interface props {
   ATvalue?: string;
   Component?: any;
+  Open?: boolean;
 }
 
-const AccordionTitle: React.FC<props> = ({ ATvalue, Component }) => {
-  const [control, setcontrol] = useState<boolean>(true);
+const AccordionTitle: React.FC<props> = ({ ATvalue, Component, Open }) => {
+  const [control, setcontrol] = useState<boolean>(Open || false);
   return (
     <>
       <Title>
