@@ -1,4 +1,3 @@
-import { BGcontainer } from 'Components/Common/BGcontainer';
 import { useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';

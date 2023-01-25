@@ -157,7 +157,7 @@ const Address: React.FC<Props> = ({
                 data?.name &&
                 data?.phonenumber &&
                 data?.phonenumber.length > 10 &&
-                data?.name.length > 2
+                data?.name.length > 1
               ) {
                 sucessAlram();
                 setNameMessage('성공하였습니다');
@@ -170,11 +170,11 @@ const Address: React.FC<Props> = ({
                 setNameMessage('빈칸을 채워주세요');
               } else if (data?.name.length < 2) {
                 setNameMessage('받는 분 정보는 2글자이상 채워주세요');
-              } else if (data?.phonenumber && data?.phonenumber.length < 10) {
+              } else if (data?.phonenumber && data?.phonenumber.length < 11) {
                 setNameMessage('-없이 11자리 핸드폰 번호를 입력해주세요');
               } else if (data?.phonenumber && data?.phonenumber.length > 11) {
                 setNameMessage('-없이 11자리 핸드폰 번호를 입력해주세요');
-              } else if (data?.addressname) {
+              } else if (data?.address) {
                 setNameMessage('상세주소가 없다면 없음이라 적어주세요');
               }
             }}
