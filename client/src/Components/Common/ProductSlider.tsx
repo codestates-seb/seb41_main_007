@@ -53,10 +53,12 @@ const ProductSlider: FC<Props> = ({
   isNew = false,
   isBest = false,
 }) => {
+  let size = 4;
+
   const settings = {
     infinite: true,
     speed: 200,
-    slidesToShow: 4,
+    slidesToShow: size,
     slidesToScroll: 1,
     arrows: true,
   };

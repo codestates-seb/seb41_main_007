@@ -10,7 +10,7 @@ import styles from './Styles/Search.module.css';
 import NotFoundPage from './NotFoundPage';
 import { BGcontainer } from 'Components/Common/BGcontainer';
 import CategoryList from 'Components/Common/CategoryList';
-import ProductSlider from 'Components/Common/Slider';
+import ProductSlider from 'Components/Common/ProductSlider';
 
 const NoKeywordSearch: FC = () => {
   const size = 8;
