@@ -31,17 +31,17 @@ const Item = ({
       <Size>
         <Paper>
           <div className={back}>
-            <div className="object-none">
-              <div className="absolute lg:inset-y-28 lg:left-80 md:inset-y-14 md:left-20 inset-y-4">
+            <div className="object-none ">
+              <div className="absolute lg:inset-y-28 lg:left-96 md:inset-y-14 md:left-20 inset-y-4">
                 {short}
               </div>
-              <h1 className="absolute lg:inset-y-44 lg:left-80 lg:text-5xl md:inset-y-28 md:text-4xl md:left-20 font-semibold inset-y-16 text-3xl">
+              <h1 className="absolute lg:inset-y-44 lg:left-96 lg:text-5xl md:inset-y-28 md:text-4xl md:left-20 font-semibold inset-y-16 text-3xl">
                 {title}
               </h1>
-              <p className="absolute lg:inset-y-64 lg:left-80 lg:text-2xl md:inset-y-44 md: text-xl md:left-20 inset-y-32">
+              <p className="absolute lg:inset-y-64 lg:left-96 lg:text-2xl md:inset-y-44 md: text-xl md:left-20 inset-y-32">
                 {content}
               </p>
-              <p className="absolute lg:inset-y-72 lg:left-80 lg:text-2xl md:inset-y-52 md:left-20 md:text-xl inset-y-40 text-xl">
+              <p className="absolute lg:inset-y-72 lg:left-96 lg:text-2xl md:inset-y-52 md:left-20 md:text-xl inset-y-40 text-xl">
                 {content2}
               </p>
             </div>
@@ -131,7 +131,7 @@ export const Carousell = (props: any) => {
   ];
   return (
     <div className="mt-32">
-      <Carousel interval={900000000} animation={'slide'}>
+      <Carousel interval={5000} animation={'slide'}>
         {items.map((item, i) => (
           <Item key={i} {...item} />
         ))}
