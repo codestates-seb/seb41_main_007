@@ -22,6 +22,7 @@ import PaymentPage from 'Pages/PaymentPage';
 import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
 import AllProductsPage from 'Pages/AllProductsPage';
 import Auth from 'Pages/Auth';
+import Post from 'Pages/Test/Post';
 
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
@@ -91,6 +92,10 @@ const router = createBrowserRouter([
   {
     path: '/test/review',
     element: <ReviewQueryTest />,
+  },
+  {
+    path: '/post',
+    element: withLayout(Post),
   },
   { path: '/auth', element: <Auth /> },
 ]);

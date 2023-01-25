@@ -1,0 +1,47 @@
+.editor {
+  position: relative;
+  border: 1px solid var(--gray-12);
+  border-radius: 4px;
+}
+.editor:focus-within {
+  border-color: var(--gray-45);
+}
+.doc {
+  min-height: 140px !important;
+  margin: 0 10px;
+  margin-bottom: 0.9em;
+  z-index: 0;
+  word-break: break-word;
+}
+.button {
+  display: inline-block;
+  border-radius: 5px;
+  padding: 2px;
+}
+.button:hover {
+  background-color: rgb(0, 0, 0, 0.04);
+}
+.wall {
+  border-left: 1px solid var(--gray-05);
+  margin: auto 4px;
+  height: 24px;
+}
+.wall_disabled {
+  opacity: 0.1;
+}
+.doc strong,
+.doc s,
+.doc blockquote,
+.doc h1,
+.doc ul,
+.doc ol,
+.doc li {
+  color: var(--black-10);
+}
+.doc blockquote span {
+  color: #aaa;
+}
+.doc h1 {
+  margin: 0;
+  margin-top: 0.45em;
+}

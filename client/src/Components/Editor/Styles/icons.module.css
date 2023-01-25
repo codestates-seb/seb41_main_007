@@ -1,0 +1,12 @@
+.svg {
+  fill: var(--gray-15);
+}
+.svg_active {
+  fill: var(--black-10);
+}
+.svg_stroke {
+  stroke: var(--black-10);
+}
+.svg_disabled {
+  opacity: 0.1;
+}
