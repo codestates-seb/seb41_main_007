@@ -1,5 +1,6 @@
 package com.bzzzzz.farm.controller;
 
+import com.bzzzzz.farm.config.ParcelTrackingConfig;
 import com.bzzzzz.farm.mapper.OrderMapper;
 import com.bzzzzz.farm.model.dto.SingleResponseDto;
 import com.bzzzzz.farm.model.dto.order.OrderPostDto;
@@ -10,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -25,6 +23,7 @@ public class OrderController {
     private final OrderMapper orderMapper;
     private final OrderService orderService;
     private final ProductOptionService productOptionService;
+    private final ParcelTrackingConfig parcelTrackingConfig;
 
     @PostMapping
     public ResponseEntity postOrder(@Valid @RequestBody OrderPostDto orderPostDto) {
@@ -43,4 +42,8 @@ public class OrderController {
         return new ResponseEntity(new SingleResponseDto(order.getOrderId()), HttpStatus.CREATED);
     }
 
+    @GetMapping("/parcels/{waybill-number}")
+    public ResponseEntity getParcelLocation(@PathVariable("waybill-number") Long waybillNumber) {
+        return new ResponseEntity<>(parcelTrackingConfig.traceAParcel(waybillNumber), HttpStatus.OK);
+    }
 }
