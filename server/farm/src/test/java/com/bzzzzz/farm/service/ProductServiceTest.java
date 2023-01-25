@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.exception.BusinessLogicException;
+import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.model.dto.product.ProductPatchDto;
 import com.bzzzzz.farm.model.dto.product.ProductSimpleResponseDto;
 import com.bzzzzz.farm.model.entity.Product;
@@ -174,7 +175,7 @@ public class ProductServiceTest {
 
     @Test
     @DisplayName("제품존재여부-있으면 가져오기")
-    void findVerifiedProduct() {
+    void findVerifiedProduct1() {
         // given
         given(productRepository.findById(Mockito.anyLong())).willReturn(Optional.of(new Product()));
 
@@ -187,11 +188,13 @@ public class ProductServiceTest {
 
     @Test
     @DisplayName("제품존재여부-없으면 예외발생")
-    void findVerifiedProductThrow() {
+    void findVerifiedProduct2() {
         // given
         given(productRepository.findById(Mockito.anyLong())).willReturn(Optional.ofNullable(null));
 
-        // when/then
-        assertThrows(BusinessLogicException.class, () -> productService.findVerifiedProduct(1L));
+        // when
+        // then
+        BusinessLogicException exception = assertThrows(BusinessLogicException.class, () -> productService.findVerifiedProduct(1L));
+        assertEquals(ExceptionCode.PRODUCT_NOT_FOUND, exception.getExceptionCode());
     }
 }
