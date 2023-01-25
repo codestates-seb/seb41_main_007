@@ -64,6 +64,9 @@ dependencies {
     // Querydsl
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+    // 크롤링
+    implementation 'org.jsoup:jsoup:1.15.3'
 }
 
 tasks.named('test') {
