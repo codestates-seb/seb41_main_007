@@ -135,7 +135,6 @@ export default function RichText({ value, setValue }: IProps) {
           <NumberedListButton />
           <Wall />
           <FileButton />
-          <AudioButton />
           <YoutubeButton open={openYotubeToolTip} />
         </Toolbar>
         <Editable
@@ -742,9 +741,11 @@ function BulletedListButton() {
     </button>
   );
 }
+
 function NumberedListButton() {
   const editor = useSlate();
   const disabled = isVoidActive(editor);
+
   return (
     <button
       className={styles.button}
@@ -763,6 +764,7 @@ function NumberedListButton() {
     </button>
   );
 }
+
 function FileButton() {
   const editor = useSlate();
   const disabled = isVoidActive(editor);
@@ -840,82 +842,7 @@ function FileButton() {
     </label>
   );
 }
-function AudioButton() {
-  const editor = useSlate();
-  const disabled = isVoidActive(editor);
-  const disabled2 = isListActive(editor);
-  return (
-    <label className={styles.button}>
-      <Tooltip arrow content="オーディオ" delay={370}>
-        <Audio disabled={disabled || disabled2} />
-      </Tooltip>
-      <input
-        disabled={disabled || disabled2}
-        type="file"
-        accept="audio/mp3"
-        multiple
-        style={{ display: 'none' }}
-        onMouseDown={(e) => {
-          e.preventDefault();
-        }}
-        onChange={(e) => {
-          const files = e.target.files;
-          if (files && files.length > 0 && files.length < 11) {
-            for (const file of files as any) {
-              const fileType = file.type.split('/');
-              if (FILETYPE.includes(fileType[1])) {
-                if (fileType[0] === 'image') {
-                  if (file.size <= 10000000) {
-                    handlerCompresstion(editor, file);
-                  } else {
-                    toast.error('画像サイズは10MB未満にする必要がおります');
-                  }
-                } else if (fileType[0] === 'video') {
-                  if (file.size <= 20000000) {
-                    handlerMakeThumbnail(file).then((value) => {
-                      if (value) {
-                        const reader = new FileReader();
-                        reader.onload = async function (e: any) {
-                          const url = e.target.result;
-                          insertVideo(editor, url, value as string);
-                        };
-                        reader.readAsDataURL(file);
-                      } else {
-                        toast.error('この動画ファイルはアップロードできません');
-                      }
-                    });
-                  } else {
-                    toast.error('動画サイズは20MB未満にする必要がおります');
-                  }
-                } else if (file.type.split('/')[0] === 'audio') {
-                  if (file.size <= 10000000) {
-                    const reader = new FileReader();
-                    reader.onload = function (e: any) {
-                      const url = e.target.result;
-                      insertAudio(editor, url);
-                    };
-                    reader.readAsDataURL(file);
-                  } else {
-                    toast.error('オーディオは20MB未満にする必要がおります');
-                  }
-                }
-              } else {
-                toast.error(
-                  '申し訳ありませんが、以下のファイルのみ受け付けます 画像(.png, .jpeg, .gif, .svg), 動画(.mp4, .mov), オーディオ(.mp3)',
-                );
-              }
-            }
-          } else if (files && files.length > 10) {
-            toast.error(
-              '一度に11個以上のファイルをアップロードすることはできません',
-            );
-          }
-          e.target.value = '';
-        }}
-      />
-    </label>
-  );
-}
+
 function YoutubeButton({ open }: { open: () => void }) {
   const editor = useSlate();
   const disabled = isVoidActive(editor);
@@ -935,6 +862,7 @@ function YoutubeButton({ open }: { open: () => void }) {
     </button>
   );
 }
+
 function Wall() {
   const editor = useSlate();
   const disabled = isVoidActive(editor);

@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 import produce from 'immer';
 import { Node } from 'slate';
 
-import { Down_Arrow, Plus, Checked, Group, Small_Group, Search } from './svg';
+import { Plus, Checked } from './svg';
 
 const INITIALVALUE: Descendant[] = [
   {
@@ -67,42 +67,32 @@ export default function Page() {
     },
     [],
   );
+
   async function handlerSubmit() {
-    if (
-      !(
-        error.audioLimit ||
-        error.emptyText ||
-        error.emptyTitle ||
-        error.imageLimit ||
-        error.textLimit ||
-        error.tooLongTitle
-      )
-    ) {
-      if (session) {
-        const data = {
-          value: value,
-          serializedValue: serialize(value),
-          // userId: session.user.id,
-          // folderName: session.user.name + Date.now().toString(),
-          title: title,
-          //   tag: { spoiler: spoiler, notice: notice },
-        };
-        const res = await fetch(`${process.env.HOST}/backend/api/upload/post`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        });
-        const result = await res.json();
-        if (result === false) {
-          return handlerError('failToSend', true);
-        }
-      }
+    if (session) {
+      console.log(value);
+      // const data = {
+      //   value: value,
+      //   serializedValue: serialize(value),
+      // userId: session.user.id,
+      // folderName: session.user.name + Date.now().toString(),
+      //   title: title,
+      //   tag: { spoiler: spoiler, notice: notice },
+      // };
+      // const res = await fetch(`${process.env.HOST}/backend/api/upload/post`, {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: JSON.stringify(data),
+      // });
+      // const result = await res.json();
+      return value;
     } else {
       return toast.error('ログインが必要です');
     }
   }
+
   function handlerTilteChange(value: string) {
     setTitle(value);
   }

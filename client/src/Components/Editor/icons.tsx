@@ -1,6 +1,5 @@
 import styles from './Styles/icons.module.css';
 import classNames from 'classnames/bind';
-import React from 'react';
 
 const cx = classNames.bind(styles);
 
