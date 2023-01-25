@@ -10,6 +10,9 @@ import TabPanel from 'Components/Mypage/TabPanel';
 import AccordionGroup from 'Components/Mypage/AccordionGroup';
 import MainImage from 'Components/PaymentPage/MainImage';
 import CustomTitle from 'Components/Header/CustomTitle';
+import { useSession } from 'CustomHook/useSession';
+import { useNavigate } from 'react-router-dom';
+import Empty from 'Components/Common/Empty';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -19,11 +22,17 @@ const ShortContainer = styled.div`
 
 export default function BasicTabs() {
   const [value, setValue] = useState<number>(0);
+  const { session, loading } = useSession();
+  const navigate = useNavigate();
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
   useScrollTop();
+  if (loading) return <Empty />;
+  if (!session) {
+    navigate('/');
+  }
 
   return (
     <div>

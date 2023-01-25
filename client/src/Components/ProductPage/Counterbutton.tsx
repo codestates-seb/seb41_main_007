@@ -58,7 +58,7 @@ const CounterInput = styled.input`
   display: flex;
   align-items: center;
   height: 24px;
-  padding: 0 23px 0 24px;
+  padding: 0 25px 0 24px;
   text-align: center;
   font-size: 12px;
   background: var(--bg-white-05);

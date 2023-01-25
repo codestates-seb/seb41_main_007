@@ -28,12 +28,21 @@ const BigContainer = styled.div`
   // }
 `;
 
+const Back = styled.div`
+  width: 480px;
+  height: 480px;
+`;
+
 const Login: React.FC = () => {
   useScrollTop();
   return (
     <BGcontainer>
       <BigContainer>
-        <LazyImage></LazyImage>
+        <Back></Back>
+        <div className="absolute left-0">
+          <LazyImage />
+        </div>
+
         <LoginForm></LoginForm>
       </BigContainer>
     </BGcontainer>
@@ -46,3 +55,4 @@ export default Login;
 //두개를 같이 불러오는 방법으로결정함
 // 통신이 없어서 안됨
 // 통신을 넣어서 억지로 시간벌고 보여주는 방법이 있긴함
+// 용량을 줄이는거를 실패해서 백업 데이터를 깔아둠
