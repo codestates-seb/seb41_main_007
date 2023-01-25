@@ -1,0 +1,73 @@
+package com.bzzzzz.farm.service;
+
+import com.bzzzzz.farm.model.dto.payment.KakaoApproveResponse;
+import com.bzzzzz.farm.model.dto.payment.KakaoReadyResponse;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class PaymentService {
+    private static final String cid = "TC0ONETIME";  //가맹점 임시 코드
+
+    @Value("${payment.admin_key}")
+    private String admin_key;  //카카오 어플리케이션 어드민 키
+    private final String host = "https://kapi.kakao.com"; // host url
+    private KakaoReadyResponse kakaoReady;
+
+    /**
+     결제요청
+     **/
+    public KakaoReadyResponse kakaoPayReady(){
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("cid", cid);
+        parameters.add("partner_order_id", "가맹점 주문 번호");
+        parameters.add("partner_user_id", "가맹점 회원 ID");
+        parameters.add("item_name", "상품명");
+        parameters.add("quantity", 4);
+        parameters.add("total_amount", 3600);
+        parameters.add("vat_amount", 400);
+        parameters.add("tax_free_amount", 0);
+        parameters.add("approval_url", "http://localhost:8080/payment/success"); // 성공 시 redirect url
+        parameters.add("cancel_url", "http://localhost:8080/payment/cancel"); // 취소 시 redirect url
+        parameters.add("fail_url", "http://localhost:8080/payment/fail"); // 실패 시 redirect url
+
+        // 파라미터, 헤더
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
+
+        // 외부에 보낼 url
+        RestTemplate restTemplate = new RestTemplate();
+
+        kakaoReady = restTemplate.postForObject(
+                host+"/v1/payment/ready", //post 요청 url
+                requestEntity,
+                KakaoReadyResponse.class);
+
+        return kakaoReady;
+    }
+
+
+
+    /**
+     카카오에서 요구하는 헤더값 생성 메소드
+    **/
+    private HttpHeaders getHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+
+        String auth = "KakaoAK " + admin_key;
+
+        headers.set("Authorization", auth);
+        headers.set("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+
+        return headers;
+    }
+}

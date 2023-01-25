@@ -29,7 +29,9 @@ public enum ExceptionCode {
     CART_NOT_FOUND(404, "Cart not found"),
 
     QUESTION_NOT_FOUND(404,"Question not found"),
-    QUESTION_ANSWER_NOT_FOUND(404,"Question answer not found");
+    QUESTION_ANSWER_NOT_FOUND(404,"Question answer not found"),
+    PAY_CANCEL(404,"결제취소"),
+    PAY_FAILED(404,"결제실패");
     @Getter
     private int status;
 
