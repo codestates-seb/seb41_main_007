@@ -3,6 +3,7 @@ import styles from './Styles/TopColRight.module.css';
 import { Link } from 'react-router-dom';
 import BasketIcon from './Icon/BaskectIcon';
 import ShopingCartIcon from './Icon/ShopingCartIcon';
+import { useSession } from 'CustomHook/useSession';
 
 const Logined = () => {
   const logoutHandler = (
@@ -39,10 +40,11 @@ const LoginRequired = () => {
 };
 
 const TopColRight: FC = () => {
-  let isUser = true;
+  const { session, loading } = useSession();
+  if (loading) return <></>;
   return (
     <div className={styles.Nav_All_Container}>
-      {isUser ? <Logined /> : <LoginRequired />}
+      {session ? <Logined /> : <LoginRequired />}
       <ul className={styles.Nav_Container2}>
         <Link
           to="/products/all?sort=likeCount&order=ascending&page=1&size=20"
