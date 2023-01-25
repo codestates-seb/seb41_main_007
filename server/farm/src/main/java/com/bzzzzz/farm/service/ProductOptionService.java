@@ -46,7 +46,7 @@ public class ProductOptionService {
      * 서브 메서드
      */
     @Transactional(readOnly = true)
-    private ProductOption findVerifiedProductOption(long productOptionId) {
+    public ProductOption findVerifiedProductOption(long productOptionId) {
         Optional<ProductOption> optionalProductOption = productOptionRepository.findById(productOptionId);
         return optionalProductOption.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_OPTION_NOT_FOUND));
     }

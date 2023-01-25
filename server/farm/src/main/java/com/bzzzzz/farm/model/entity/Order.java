@@ -1,9 +1,6 @@
 package com.bzzzzz.farm.model.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,8 +9,7 @@ import java.util.List;
 @Entity(name = "ORDERS")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 public class Order extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,21 +25,26 @@ public class Order extends Auditable {
     @Column(nullable = false)
     private String name; // 수령자
 
-    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<OrderProduct> orderProducts = new ArrayList<>();
-
+    @Column(nullable = false)
     private String phone; // 수령자 핸드폰 번호
 
+    @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @Builder.Default
+    private List<OrderProduct> orderProducts = new ArrayList<>();
+
     @Column(nullable = false)
-    private Integer price;
+    @Builder.Default
+    private Integer price = 0;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private PaymentMethod paymentMethod = PaymentMethod.DEFAULT;
+    @Builder.Default
+    private PaymentMethod paymentMethod = PaymentMethod.UNDETERMINED;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private PaymentStatus paymentStatus = PaymentStatus.DEFAULT;
+    @Builder.Default
+    private PaymentStatus paymentStatus = PaymentStatus.NOT_PAYMENT;
 
     // 연관 관계 매핑 관련 메서드 및 이넘
     public void addOrderProduct(OrderProduct orderProduct) {
@@ -56,7 +57,7 @@ public class Order extends Auditable {
     @Getter
     @AllArgsConstructor
     public enum PaymentMethod {
-        DEFAULT(1, "결제 전"),
+        UNDETERMINED(1, "미정"),
         BANK_BOOK(2, "무통장입금"),
         KAKAO_PAY(3, "카카오페이"),
         CREDIT_CARD(4, "신용카드"),
@@ -68,11 +69,15 @@ public class Order extends Auditable {
     @Getter
     @AllArgsConstructor
     public enum PaymentStatus {
-        DEFAULT(1, "결제 전"),
+        NOT_PAYMENT(1, "결제 전"),
         COMPLETED(2, "결제 완료"),
         CANCEL(3, "결제 취소"),
         ;
         private Integer code;
         private String status;
+    }
+
+    public void calculatePrice(int price) {
+        this.price += price;
     }
 }
