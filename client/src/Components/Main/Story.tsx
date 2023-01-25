@@ -2,7 +2,7 @@ import { FC } from 'react';
 import styled from 'styled-components';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { BGcontainer } from 'Components/Common/BGcontainer';
+import { useNavigate } from 'react-router-dom';
 const Container = styled.div`
   margin: 40px auto 0 auto;
   width: 1220px;
@@ -21,6 +21,7 @@ const Container = styled.div`
   }
 `;
 const Story: FC = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Container>
@@ -38,7 +39,13 @@ const Story: FC = () => {
           </div>
         </div>
         <div className="bg-green-700 next">
-          <FontAwesomeIcon icon={faArrowRight} />
+          <button
+            onClick={() => {
+              navigate('/basket');
+            }}
+          >
+            <FontAwesomeIcon icon={faArrowRight} />
+          </button>
         </div>
       </Container>
     </>
