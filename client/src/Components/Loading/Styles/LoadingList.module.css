@@ -1,8 +1,9 @@
 .Loading_Container {
-  @apply mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8;
+  /* @apply mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8; */
 }
+
 .Loading_List_Container {
-  @apply grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8;
+  /* @apply grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8; */
 }
 
 .Loading_Img_Contanier {
@@ -12,6 +13,6 @@
 }
 
 .Loading_Content_Img {
-  height: 220px;
+  height: 200px;
   @apply w-full object-cover object-center group-hover:opacity-75;
 }
