@@ -1,5 +1,5 @@
 import React from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Header from './Components/Header/index';
 import Main from './Pages/Main';
@@ -23,15 +23,6 @@ import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
 import OauthTest from 'Pages/OauthTest';
 import AllProductsPage from 'Pages/AllProductsPage';
 import Auth from 'Pages/Auth';
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: false,
-      refetchOnMount: false,
-    },
-  },
-});
 
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
@@ -110,13 +101,7 @@ const router = createBrowserRouter([
 ]);
 
 const App: React.FC = () => {
-  return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
-    </>
-  );
+  return <RouterProvider router={router} />;
 };
 
 export default App;
