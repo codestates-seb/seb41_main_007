@@ -32,9 +32,6 @@ public class LikeService {
         // 이미 좋아요를 눌렀는가 ?
         verifyExistsLike(member, product);
 
-        // Product 의 좋아요 수 1개 증가
-        product.calculateLikeCount(1);
-
         //좋아요 생성 및 저장
         likeRepository.save(new Like(null, member, product));
     }
@@ -50,9 +47,6 @@ public class LikeService {
 
         // 좋아요를 누른적이 있는가 ?
         Like findLike = findVerifiedLike(member, product);
-
-        // Product 의 좋아요 수 1개 감소
-        product.calculateLikeCount(-1);
 
         //좋아요 삭제
         likeRepository.delete(findLike);

@@ -1,10 +1,11 @@
 package com.bzzzzz.farm.model.dto.product;
 
-import lombok.Builder;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
+@NoArgsConstructor
 public class ProductSimpleResponseDto {
 
     private Long productId;
@@ -16,4 +17,13 @@ public class ProductSimpleResponseDto {
     private String photo;
 
     private String productStatus;
+
+    @QueryProjection
+    public ProductSimpleResponseDto(Long productId, String name, int price, String photo, String productStatus) {
+        this.productId = productId;
+        this.name = name;
+        this.price = price;
+        this.photo = photo;
+        this.productStatus = productStatus;
+    }
 }
