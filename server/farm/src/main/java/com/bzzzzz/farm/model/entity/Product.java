@@ -50,9 +50,6 @@ public class Product extends Auditable {
     private Integer viewCount = 0;
 
     @Column(nullable = false)
-    private Integer likeCount = 0;
-
-    @Column(nullable = false)
     private Integer soldCount = 0;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
@@ -60,6 +57,9 @@ public class Product extends Auditable {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
     private List<ProductCategory> productCategories = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.REMOVE)
+    private List<Like> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Review> reviews = new ArrayList<>();
@@ -128,9 +128,5 @@ public class Product extends Auditable {
 
     public void addViewCount() {
         this.viewCount += 1;
-    }
-
-    public void calculateLikeCount(int likeCount) {
-        this.likeCount += likeCount;
     }
 }

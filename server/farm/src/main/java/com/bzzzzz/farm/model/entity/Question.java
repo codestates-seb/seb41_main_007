@@ -25,6 +25,10 @@ public class Question extends Auditable {
     @JoinColumn(name = "memberId", nullable = false)
     private Member member;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "questionAnswerId")
+    private QuestionAnswer questionAnswer;
+
     public Question(String questionTitle, String questionContent) {
         this.questionTitle = questionTitle;
         this.questionContent = questionContent;

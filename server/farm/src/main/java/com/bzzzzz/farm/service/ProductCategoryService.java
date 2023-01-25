@@ -29,6 +29,7 @@ public class ProductCategoryService {
     public ProductCategory updateProductCategory(ProductCategoryPatchDto productCategoryPatchDto) {
 
         ProductCategory findProductCategory = findVerifiedProductCategory(productCategoryPatchDto.getProductCategoryId());
+        verifyExistsProductCategory(findProductCategory.getProduct(), new Category(productCategoryPatchDto.getCategoryId()));
 
         Optional.ofNullable(productCategoryPatchDto.getCategoryId()).ifPresent(data -> findProductCategory.setCategory(new Category(data)));
 

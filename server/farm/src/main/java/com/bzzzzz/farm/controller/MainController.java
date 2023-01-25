@@ -1,10 +1,9 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.model.dto.product.ProductSimpleResponseDto;
-import com.bzzzzz.farm.mapper.ProductMapper;
-import com.bzzzzz.farm.service.ProductService;
-import com.bzzzzz.farm.model.dto.review.ReviewSimpleResponseDto;
 import com.bzzzzz.farm.mapper.ReviewMapper;
+import com.bzzzzz.farm.model.dto.product.ProductSimpleResponseDto;
+import com.bzzzzz.farm.model.dto.review.ReviewSimpleResponseDto;
+import com.bzzzzz.farm.service.ProductService;
 import com.bzzzzz.farm.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,7 +22,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MainController {
     private final ProductService productService;
-    private final ProductMapper productMapper;
     private final ReviewService reviewService;
     private final ReviewMapper reviewMapper;
 
@@ -38,9 +36,9 @@ public class MainController {
          * */
         Map<String, Object> response = new HashMap<>();
 
-        List<ProductSimpleResponseDto> orderByLikeCount = productMapper.productsToProductSimpleResponseDtos(productService.findProducts(0, 10, "likeCount", "descending", 0, "").getContent());
-        List<ProductSimpleResponseDto> orderByProductId = productMapper.productsToProductSimpleResponseDtos(productService.findProducts(0, 7, "productId", "descending", 0, "").getContent());
-        List<ProductSimpleResponseDto> orderBySoldCount = productMapper.productsToProductSimpleResponseDtos(productService.findProducts(0, 20, "soldCount", "descending", 0, "").getContent());
+        List<ProductSimpleResponseDto> orderByLikeCount = productService.findProducts(0, 10, "likeCount", "descending", null, null).getContent();
+        List<ProductSimpleResponseDto> orderByProductId = productService.findProducts(0, 7, "productId", "descending", null, null).getContent();
+        List<ProductSimpleResponseDto> orderBySoldCount = productService.findProducts(0, 20, "soldCount", "descending", null, null).getContent();
         List<ReviewSimpleResponseDto> reviews = reviewMapper.reviewsToReviewSimpleResponseDtos(reviewService.findReviewsOrderByReviewId());
 
         response.put("orderByLikeCount", orderByLikeCount);

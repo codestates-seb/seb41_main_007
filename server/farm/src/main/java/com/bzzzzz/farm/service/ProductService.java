@@ -1,10 +1,11 @@
 package com.bzzzzz.farm.service;
 
-import com.bzzzzz.farm.repository.ProductRepository;
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.model.dto.product.ProductPatchDto;
+import com.bzzzzz.farm.model.dto.product.ProductSimpleResponseDto;
 import com.bzzzzz.farm.model.entity.Product;
+import com.bzzzzz.farm.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
@@ -34,29 +35,17 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> findProducts(int page, int size, String sort, String order, long categoryId, String keyword) {
+    public Page<ProductSimpleResponseDto> findProducts(int page, int size, String sort, String order, Long categoryId, String keyword) {
         // 허용 값 이외의 값은 모두 디폴트 값으로 만들어 Pageable 객체를 생성
-        Pageable pageable = createPageable(page, size, verifySort(sort), order);
+        Pageable pageable = order.equals("ascending")
+                ? PageRequest.of(page, size, Sort.by(sort).ascending())
+                : PageRequest.of(page, size, Sort.by(sort).descending());
 
-        if (categoryId > 0) {
-            return keyword.length() != 0
-                    // 카테고리: O, 키워드: O
-                    ? productRepository.findAllByProductCategories_Category_CategoryIdAndNameContainsOrProductCategories_Category_CategoryIdAndBrandContains(categoryId, keyword, categoryId, keyword, pageable)
-                    // 카테고리: O, 키워드: X
-                    : productRepository.findAllByProductCategories_Category_CategoryId(categoryId, pageable);
-        } else {
-            return keyword.length() != 0
-                    // 카테고리: X, 키워드: O
-                    ? productRepository.findAllByNameContainsOrBrandContains(keyword, keyword, pageable)
-                    // 카테고리: X, 키워드: X
-                    : productRepository.findAll(pageable);
-        }
-
-        // 키워드가 없을 경우;
+        return productRepository.searchAll(categoryId, keyword, pageable);
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
-    public void updateProduct(ProductPatchDto productPatchDto) {
+    public Product updateProduct(ProductPatchDto productPatchDto) {
 
         Product findProduct = findVerifiedProduct(productPatchDto.getProductId());
 
@@ -69,6 +58,8 @@ public class ProductService {
         Optional.ofNullable(productPatchDto.getShippingCountry()).ifPresent(data -> findProduct.setShippingCountry(Product.ShippingCountry.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingMethod()).ifPresent(data -> findProduct.setShippingMethod(Product.ShippingMethod.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingPrice()).ifPresent(data -> findProduct.setShippingPrice(data));
+
+        return findProduct;
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
@@ -83,33 +74,6 @@ public class ProductService {
     public Product findVerifiedProduct(long productId) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
         return optionalProduct.orElseThrow(() -> new BusinessLogicException(ExceptionCode.PRODUCT_NOT_FOUND));
-    }
-
-    private String verifySort(String sort) {
-        // 허용 파라미터 외의 값이 들어올 경우 모두 productId로 간주
-        switch (sort) {
-            case "name":
-                break;
-            case "price":
-                break;
-            case "brand":
-                break;
-            case "likeCount":
-                break;
-            case "soldCount":
-                break;
-            default:
-                sort = "productId";
-        }
-
-        return sort;
-    }
-
-    private Pageable createPageable(int page, int size, String sort, String order) {
-        if (order.equals("ascending")) {
-            return PageRequest.of(page, size, Sort.by(sort).ascending());
-        }
-        return PageRequest.of(page, size, Sort.by(sort).descending());
     }
 
 }

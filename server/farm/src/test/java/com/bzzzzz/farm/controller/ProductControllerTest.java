@@ -1,16 +1,15 @@
 package com.bzzzzz.farm.controller;
 
+import com.bzzzzz.farm.mapper.ProductMapper;
+import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.product.*;
-import com.bzzzzz.farm.service.LikeService;
-import com.bzzzzz.farm.controller.ProductController;
 import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.model.entity.ProductCategory;
 import com.bzzzzz.farm.model.entity.ProductOption;
-import com.bzzzzz.farm.mapper.ProductMapper;
+import com.bzzzzz.farm.service.LikeService;
 import com.bzzzzz.farm.service.ProductCategoryService;
 import com.bzzzzz.farm.service.ProductOptionService;
 import com.bzzzzz.farm.service.ProductService;
-import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -252,28 +251,19 @@ public class ProductControllerTest {
     @DisplayName("제품 전체목록 조회(검색)")
     void getProducts() throws Exception {
         // given
-
-        // Page<Product> 생성
-        List<Product> products = new ArrayList<>();
-        for (int i = 100; i >= 1; i--) {
-            products.add(new Product());
-        }
-        Page<Product> productPage = new PageImpl<>(
-                products, PageRequest.of(0, 40, Sort.by("productId").descending()), 3
-        );
-
-        // 응답 데이터 생성
         List<ProductSimpleResponseDto> response = new ArrayList<>();
         for (long i = 40; i >= 1; i--) {
-            response.add(ProductSimpleResponseDto
-                    .builder()
-                    .productId(i)
-                    .name("테스트 제품" + i)
-                    .price(30000)
-                    .photo("http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg")
-                    .productStatus("판매 중")
-                    .build());
+            response.add(new ProductSimpleResponseDto(
+                    i,
+                    "테스트 제품" + i,
+                    30000,
+                    "http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg",
+                    "판매 중"));
         }
+
+        Page<ProductSimpleResponseDto> productPage = new PageImpl<>(
+                response, PageRequest.of(0, 40, Sort.by("productId").descending()), 1
+        );
 
         given(productService.findProducts(
                 Mockito.anyInt(),
@@ -283,7 +273,6 @@ public class ProductControllerTest {
                 Mockito.anyLong(),
                 Mockito.anyString()
         )).willReturn(productPage);
-        given(productMapper.productsToProductSimpleResponseDtos(Mockito.anyList())).willReturn(response);
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -306,9 +295,9 @@ public class ProductControllerTest {
                                 parameterWithName("page").description("요청할 페이지 (기본값 = 1) * 이하 미입력시 기본값 혹은 값을 주지 않습니다 *"),
                                 parameterWithName("size").description("한 페이지당 표시할 게시물 수 (기본값 = 40)"),
                                 parameterWithName("categoryId").description("특정 카테고리에 속한 제품들을 보고 싶은 경우 카테고리의 식별자를 입력"),
-                                parameterWithName("sort").description("정렬 기준 = productId(최신순, 기본값), name(상품이름순), price(가격순), brand(제조사순), likeCount(인기순)"),
+                                parameterWithName("sort").description("정렬 기준 = productId(최신순, 기본값), name(상품이름순), price(가격순), brand(제조사순), likeCount(인기순), soldCount(판매량순)"),
                                 parameterWithName("order").description("정렬 방법 = descending(내림차순, 기본값), ascending(오름차순)"),
-                                parameterWithName("keyword").description("검색어 = 제품명, 브랜드안에서 검색")
+                                parameterWithName("keyword").description("검색어 = 제품명, 본문, 브랜드안에서 검색")
                         ),
                         responseFields(
                                 List.of(
@@ -346,7 +335,7 @@ public class ProductControllerTest {
                 .shippingPrice(50000)
                 .build();
 
-        doNothing().when(productService).updateProduct(Mockito.any(ProductPatchDto.class));
+        given(productService.updateProduct(Mockito.any(ProductPatchDto.class))).willReturn(new Product());
         String content = gson.toJson(request);
 
         // when
@@ -422,8 +411,6 @@ public class ProductControllerTest {
                         "deleteProduct",
                         preprocessRequest(prettyPrint()),
                         requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 제품 식별자"))
-
-                ))
-                .andReturn();
+                ));
     }
 }
