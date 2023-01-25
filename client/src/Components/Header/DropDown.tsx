@@ -6,6 +6,7 @@ import styles from './Styles/DropDown.module.css';
 import BasketIcon from './Icon/BaskectIcon';
 import ShopingCartIcon from './Icon/ShopingCartIcon';
 import LogoutIcon from './Icon/LogoutIcon';
+import { useSession } from 'CustomHook/useSession';
 
 type DropDownProps = {
   showDropDown: boolean;
@@ -15,7 +16,9 @@ type DropDownProps = {
 const DropDown: React.FC<DropDownProps> = ({
   toggleDropDown,
 }: DropDownProps): JSX.Element => {
-  let isUser = true;
+  const { session, loading } = useSession();
+  if (loading) return <></>;
+
   const [showDropDown, setShowDropDown] = useState<boolean>(false);
 
   useEffect(() => {
@@ -58,7 +61,7 @@ const DropDown: React.FC<DropDownProps> = ({
           <BasketIcon />
           <p className={styles.Drop_Down_Text}>장바구니</p>
         </Link>
-        {isUser ? (
+        {session ? (
           <>
             <Link
               to="/mypage"
