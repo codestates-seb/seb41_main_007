@@ -27,8 +27,8 @@ export const SkeletonContent = (num: number) => {
         <div className={styles.Loading_Img_Contanier}>
           <Skeleton className={styles.Loading_Content_Img} />
         </div>
-        <Skeleton width={'80px'} style={{ marginTop: '10px' }} />
-        <Skeleton width={'130px'} style={{ marginTop: '5px' }} />
+        <Skeleton width={'100px'} style={{ marginTop: '10px' }} />
+        <Skeleton width={'130px'} />
       </li>,
     );
   }
