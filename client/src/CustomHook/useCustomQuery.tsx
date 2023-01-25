@@ -7,16 +7,30 @@ interface OutPut {
   refetch: () => void;
 }
 
-export const useCustomQuery = (url: string, queryKey: any): OutPut => {
+export const useCustomQuery = (
+  url: string,
+  queryKey: any,
+  token?: any,
+): OutPut => {
   const { data, isLoading, error, status, refetch } = useQuery(
     queryKey,
-    () =>
-      fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      }).then((res: Response) => {
-        return res.json();
-      }),
+    () => {
+      if (token) {
+        return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json', Authorazation: token },
+        }).then((res: Response) => {
+          return res.json();
+        });
+      } else {
+        return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' },
+        }).then((res: Response) => {
+          return res.json();
+        });
+      }
+    },
     { keepPreviousData: true },
   );
 

@@ -39,7 +39,7 @@ export const SessionProvider = ({ children }: { children: JSX.Element }) => {
   useEffect(() => {
     const token = localStorage.getItem('access_token');
     if (token) {
-      setSession(true);
+      setSession(token);
       setLoading(false);
       //   fetcher(token)
       //     .then((data) => {
@@ -51,7 +51,7 @@ export const SessionProvider = ({ children }: { children: JSX.Element }) => {
       //       setLoading(false);
       //     });
     } else {
-      setSession(false);
+      setSession(null);
       setLoading(false);
     }
   }, []);
