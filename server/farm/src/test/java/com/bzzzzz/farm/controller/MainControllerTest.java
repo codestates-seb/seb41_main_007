@@ -1,6 +1,5 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.mapper.ProductMapper;
 import com.bzzzzz.farm.mapper.ReviewMapper;
 import com.bzzzzz.farm.model.dto.product.ProductSimpleResponseDto;
 import com.bzzzzz.farm.model.dto.review.ReviewSimpleResponseDto;
@@ -45,8 +44,6 @@ public class MainControllerTest {
     @MockBean
     private ProductService productService;
     @MockBean
-    private ProductMapper productMapper;
-    @MockBean
     private ReviewService reviewService;
     @MockBean
     private ReviewMapper reviewMapper;
@@ -57,16 +54,12 @@ public class MainControllerTest {
         // given
         List<ProductSimpleResponseDto> products = new ArrayList<>();
         for (long i = 5; i >= 1; i--) {
-            products.add(
-                    ProductSimpleResponseDto
-                            .builder()
-                            .productId(i)
-                            .name("테스트" + i)
-                            .price(5000)
-                            .photo("http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg")
-                            .productStatus("판매 준비 중")
-                            .build()
-            );
+            products.add(new ProductSimpleResponseDto(
+                    i,
+                    "테스트" + i,
+                    5000,
+                    "http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg",
+                    "판매 준비 중"));
         }
 
         List<ReviewSimpleResponseDto> reviews = new ArrayList<>();
@@ -86,8 +79,7 @@ public class MainControllerTest {
             );
         }
 
-        given(productService.findProducts(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString(), Mockito.isNull(), Mockito.isNull())).willReturn(new PageImpl<>(List.of()));
-        given(productMapper.productsToProductSimpleResponseDtos(Mockito.anyList())).willReturn(products);
+        given(productService.findProducts(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyString(), Mockito.anyString(), Mockito.isNull(), Mockito.isNull())).willReturn(new PageImpl<>(products));
         given(reviewService.findReviewsOrderByReviewId()).willReturn(List.of());
         given(reviewMapper.reviewsToReviewSimpleResponseDtos(Mockito.anyList())).willReturn(reviews);
 

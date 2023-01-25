@@ -251,28 +251,19 @@ public class ProductControllerTest {
     @DisplayName("제품 전체목록 조회(검색)")
     void getProducts() throws Exception {
         // given
-
-        // Page<Product> 생성
-        List<Product> products = new ArrayList<>();
-        for (int i = 100; i >= 1; i--) {
-            products.add(new Product());
-        }
-        Page<Product> productPage = new PageImpl<>(
-                products, PageRequest.of(0, 40, Sort.by("productId").descending()), 3
-        );
-
-        // 응답 데이터 생성
         List<ProductSimpleResponseDto> response = new ArrayList<>();
         for (long i = 40; i >= 1; i--) {
-            response.add(ProductSimpleResponseDto
-                    .builder()
-                    .productId(i)
-                    .name("테스트 제품" + i)
-                    .price(30000)
-                    .photo("http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg")
-                    .productStatus("판매 중")
-                    .build());
+            response.add(new ProductSimpleResponseDto(
+                    i,
+                    "테스트 제품" + i,
+                    30000,
+                    "http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg",
+                    "판매 중"));
         }
+
+        Page<ProductSimpleResponseDto> productPage = new PageImpl<>(
+                response, PageRequest.of(0, 40, Sort.by("productId").descending()), 1
+        );
 
         given(productService.findProducts(
                 Mockito.anyInt(),
@@ -282,7 +273,6 @@ public class ProductControllerTest {
                 Mockito.anyLong(),
                 Mockito.anyString()
         )).willReturn(productPage);
-        given(productMapper.productsToProductSimpleResponseDtos(Mockito.anyList())).willReturn(response);
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -345,7 +335,7 @@ public class ProductControllerTest {
                 .shippingPrice(50000)
                 .build();
 
-        doNothing().when(productService).updateProduct(Mockito.any(ProductPatchDto.class));
+        given(productService.updateProduct(Mockito.any(ProductPatchDto.class))).willReturn(new Product());
         String content = gson.toJson(request);
 
         // when

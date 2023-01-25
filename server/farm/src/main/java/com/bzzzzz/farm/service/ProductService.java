@@ -3,6 +3,7 @@ package com.bzzzzz.farm.service;
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
 import com.bzzzzz.farm.model.dto.product.ProductPatchDto;
+import com.bzzzzz.farm.model.dto.product.ProductSimpleResponseDto;
 import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +35,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
-    public Page<Product> findProducts(int page, int size, String sort, String order, Long categoryId, String keyword) {
+    public Page<ProductSimpleResponseDto> findProducts(int page, int size, String sort, String order, Long categoryId, String keyword) {
         // 허용 값 이외의 값은 모두 디폴트 값으로 만들어 Pageable 객체를 생성
         Pageable pageable = order.equals("ascending")
                 ? PageRequest.of(page, size, Sort.by(sort).ascending())
@@ -44,7 +45,7 @@ public class ProductService {
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
-    public void updateProduct(ProductPatchDto productPatchDto) {
+    public Product updateProduct(ProductPatchDto productPatchDto) {
 
         Product findProduct = findVerifiedProduct(productPatchDto.getProductId());
 
@@ -57,6 +58,8 @@ public class ProductService {
         Optional.ofNullable(productPatchDto.getShippingCountry()).ifPresent(data -> findProduct.setShippingCountry(Product.ShippingCountry.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingMethod()).ifPresent(data -> findProduct.setShippingMethod(Product.ShippingMethod.valueOf(data)));
         Optional.ofNullable(productPatchDto.getShippingPrice()).ifPresent(data -> findProduct.setShippingPrice(data));
+
+        return findProduct;
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
