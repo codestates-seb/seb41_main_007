@@ -1,15 +1,16 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { BGcontainer } from 'Components/Common/BGcontainer';
 import LazyImage from 'Components/login/LazyImage';
 import LoginForm from 'Components/login/LoginForm';
+import useScrollTop from 'CustomHook/useScrollTop';
 
 const BigContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   width: 970px;
-  background: #7cd3eb;
+  background: var(--blue-000);
   margin-left: 120px;
   margin-top: 200px;
   border-radius: 10px;
@@ -28,6 +29,7 @@ const BigContainer = styled.div`
 `;
 
 const Login: React.FC = () => {
+  useScrollTop();
   return (
     <BGcontainer>
       <BigContainer>

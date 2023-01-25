@@ -45,7 +45,7 @@ const LoginForm = () => {
     <LoginDiv>
       <div className="mt-24">
         <LoginP weight="bold" fontsize="30px">
-          로그인
+          로그인 🙋🏻‍♀️
         </LoginP>
         <LoginP weight="bold" fontsize="17px">
           방문해주셔서 감사합니다. <br></br>

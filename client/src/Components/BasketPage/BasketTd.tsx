@@ -5,6 +5,7 @@ import CounterButton2 from './CounterButton2';
 import { useAppDispatch } from 'Redux/app/hook';
 import { countset, countput } from 'Redux/reducer/priceSlice';
 import { Link } from 'react-router-dom';
+import Product from 'Components/Common/Product';
 
 const Tablebody1 = styled.th`
   background: white;
@@ -56,6 +57,7 @@ const TableProduct = styled.div`
 
 const TableTitle = styled.div`
   font-size: var(--medium);
+  font-weight: bold;
 `;
 
 const TableContent = styled.div`
@@ -66,6 +68,7 @@ const TableContent = styled.div`
 
 const TablePrice = styled.div`
   font-size: var(--medium);
+  color: var(--priceColor);
 `;
 
 const Tablebody3 = styled.td`

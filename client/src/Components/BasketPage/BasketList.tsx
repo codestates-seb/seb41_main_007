@@ -93,6 +93,7 @@ const Tableheader5 = styled.th`
   border-bottom: 1px solid var(--gray-05);
   padding: 20px 0;
 `;
+
 const TableBottom = styled.div`
   border-top: 2px solid #000;
   position: relative;
@@ -105,16 +106,18 @@ const TableBottom = styled.div`
   flex-direction: column;
   align-items: flex-end;
 `;
+
 const TotalPrice = styled.div`
-  // position: absolute;
-  // top: 60px;
-  // right: 28px;
-  // margin: 0;
-  // padding: 0;
-  // border: 0;
-  // outline: 0;
-  // font-size: 100%;
-  // vertical-align: baseline;
+  font-weight: bold;
+  font-size: var(--large);
+`;
+
+const PointPrice = styled.span`
+  color: var(--priceColor);
+`;
+
+const Smallfont = styled.span`
+  font-size: var(--small);
 `;
 
 const ButtonContainer = styled.div`
@@ -183,7 +186,7 @@ const BasketList: FC = () => {
     <>
       <BasketForm>
         <Baskethead>
-          <BasketLefthead>일반반찬세트</BasketLefthead>
+          <BasketLefthead>장바구니</BasketLefthead>
           <BasketRighthead onClick={deleteAllCheck}>선택삭제</BasketRighthead>
         </Baskethead>
         <table>
@@ -214,18 +217,18 @@ const BasketList: FC = () => {
         </table>
         <TableBottom>
           <TotalPrice>
-            {' '}
             <span>주문 개수 </span>
-            {resultCount}
-            <span> 개</span>
+            <PointPrice>{resultCount} </PointPrice>
+            <Smallfont>개</Smallfont>
           </TotalPrice>
           <TotalPrice>
             <span>예상 주문금액 </span>
-            {useNumberComma(result)}
-            <span> 원</span>
+            <PointPrice>{useNumberComma(result)} </PointPrice>
+            <Smallfont>원</Smallfont>
           </TotalPrice>
         </TableBottom>
       </BasketForm>
+
       <ButtonContainer>
         <BuyButton background={'var( --white-02)'} margin={'0 12px 0 12px'}>
           계속 쇼핑하기
