@@ -21,13 +21,15 @@ public class ProductOptionService {
         productOptionRepository.save(productOption);
     }
 
-    public void updateProductOption(ProductOptionPatchDto productOptionPatchDto) {
+    public ProductOption updateProductOption(ProductOptionPatchDto productOptionPatchDto) {
 
         ProductOption findProductOption = findVerifiedProductOption(productOptionPatchDto.getProductOptionId());
 
         Optional.ofNullable(productOptionPatchDto.getProductOptionName()).ifPresent(data -> findProductOption.setProductOptionName(data));
         Optional.ofNullable(productOptionPatchDto.getPrice()).ifPresent(data -> findProductOption.setPrice(data));
         Optional.ofNullable(productOptionPatchDto.getStock()).ifPresent(data -> findProductOption.setStock(data));
+
+        return findProductOption;
     }
 
     public void deleteProductOption(long productOptionId) {

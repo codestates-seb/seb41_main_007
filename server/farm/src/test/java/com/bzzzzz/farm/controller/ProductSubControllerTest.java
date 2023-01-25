@@ -241,7 +241,7 @@ public class ProductSubControllerTest {
         // given
         ProductOptionPatchDto request = new ProductOptionPatchDto(1L, "수정할 옵션명", 10000, 200);
 
-        doNothing().when(productOptionService).updateProductOption(Mockito.any(ProductOptionPatchDto.class));
+        given(productOptionService.updateProductOption(Mockito.any(ProductOptionPatchDto.class))).willReturn(new ProductOption());
 
         String content = gson.toJson(request);
 

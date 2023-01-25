@@ -69,7 +69,7 @@ public class ProductServiceTest {
         Product product = new Product();
         product.setProductId(1L);
 
-        given(productRepository.findById(Mockito.anyLong())).willReturn(Optional.of(product));
+        given(productRepository.findById(Mockito.anyLong())).willReturn(Optional.ofNullable(product));
 
         // when
         Product result = productService.findProduct(1L);
@@ -136,7 +136,7 @@ public class ProductServiceTest {
                 .shippingPrice(5000)
                 .build();
 
-        given(productRepository.findById(Mockito.anyLong())).willReturn(Optional.of(product));
+        given(productRepository.findById(Mockito.anyLong())).willReturn(Optional.ofNullable(product));
 
         // when
         Product result = productService.updateProduct(patchDto);
@@ -162,7 +162,7 @@ public class ProductServiceTest {
         Product product = new Product();
         product.setProductId(productId);
 
-        given(productRepository.findById(Mockito.anyLong())).willReturn(Optional.of(product));
+        given(productRepository.findById(Mockito.anyLong())).willReturn(Optional.ofNullable(product));
         doNothing().when(productRepository).delete(Mockito.any(Product.class));
 
         // when
@@ -177,7 +177,7 @@ public class ProductServiceTest {
     @DisplayName("제품존재여부-있으면 가져오기")
     void findVerifiedProduct1() {
         // given
-        given(productRepository.findById(Mockito.anyLong())).willReturn(Optional.of(new Product()));
+        given(productRepository.findById(Mockito.anyLong())).willReturn(Optional.ofNullable(new Product()));
 
         // when
         Product product = productService.findVerifiedProduct(1L);
