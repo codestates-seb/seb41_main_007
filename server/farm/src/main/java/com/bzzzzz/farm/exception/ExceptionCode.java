@@ -13,7 +13,9 @@ public enum ExceptionCode {
     REVIEW_ANSWER_NOT_FOUND(404,"Review not found"),
 
     CAN_NOT_ORDER_PRODUCT(400, "주문할 수 없는 제품입니다."),
+    CAN_NOT_CANCEL_ORDER(400,"주문을 취소할 수 없습니다."),
     NOT_ENOUGH_STOCK(400, "재고가 충분하지 않습니다."),
+    ORDER_NOT_FOUND(404, "주문을 찾을 수 없습니다"),
 
     PRODUCT_NOT_FOUND(404, "Product not found"),
     PRODUCT_OPTION_NOT_FOUND(404, "ProductOption not found"),

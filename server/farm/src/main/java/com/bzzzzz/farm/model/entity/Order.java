@@ -1,6 +1,9 @@
 package com.bzzzzz.farm.model.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -9,7 +12,6 @@ import java.util.List;
 @Entity(name = "ORDERS")
 @Getter
 @Setter
-@Builder
 public class Order extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,21 +31,17 @@ public class Order extends Auditable {
     private String phone; // 수령자 핸드폰 번호
 
     @OneToMany(mappedBy = "order", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @Builder.Default
     private List<OrderProduct> orderProducts = new ArrayList<>();
 
     @Column(nullable = false)
-    @Builder.Default
     private Integer price = 0;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @Builder.Default
     private PaymentMethod paymentMethod = PaymentMethod.UNDETERMINED;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @Builder.Default
     private PaymentStatus paymentStatus = PaymentStatus.NOT_PAYMENT;
 
     // 연관 관계 매핑 관련 메서드 및 이넘
@@ -79,5 +77,16 @@ public class Order extends Auditable {
 
     public void calculatePrice(int price) {
         this.price += price;
+    }
+
+    public Order() {
+    }
+
+    @Builder
+    public Order(Member member, String address, String name, String phone) {
+        this.member = member;
+        this.address = address;
+        this.name = name;
+        this.phone = phone;
     }
 }
