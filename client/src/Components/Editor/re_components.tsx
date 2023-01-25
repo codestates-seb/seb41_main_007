@@ -1,7 +1,5 @@
-import styles from './styles/components.module.css';
+import styles from './Styles/components.module.css';
 import classNames from 'classnames/bind';
-
-import React from 'react';
 
 import { Transforms, Element as CustomElement, Text } from 'slate';
 import {

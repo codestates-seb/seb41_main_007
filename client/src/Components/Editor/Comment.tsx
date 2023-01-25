@@ -1,4 +1,4 @@
-import styles from './styles/Comment.module.css';
+import styles from './Styles/Comment.module.css';
 import classNames from 'classnames/bind';
 
 import { useCallback, useMemo, forwardRef, useImperativeHandle } from 'react';
@@ -8,7 +8,7 @@ import { createEditor, Text, Transforms, Editor } from 'slate';
 import { withHistory } from 'slate-history';
 
 import { Leaf, Element } from './comment_components';
-import { Descendant } from 'Types/slate';
+import { Descendant } from '../../Types/slate';
 
 const cx = classNames.bind(styles);
 
@@ -17,6 +17,7 @@ interface IProps {
   setValue: (value: Descendant[]) => void;
   session?: boolean;
 }
+
 interface Ref {
   reset: () => void;
 }

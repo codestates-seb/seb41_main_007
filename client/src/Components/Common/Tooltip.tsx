@@ -1,7 +1,7 @@
 import styles from './Styles/Tooltip.module.css';
 import classNames from 'classnames/bind';
 
-import React, { CSSProperties, useState, useEffect } from 'react';
+import { CSSProperties, useState, useEffect } from 'react';
 
 const cx = classNames.bind(styles);
 interface IProps {
@@ -12,6 +12,7 @@ interface IProps {
   arrow?: boolean;
   children: JSX.Element;
 }
+
 const Tooltip = ({
   delay = 400,
   content,
