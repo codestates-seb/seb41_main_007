@@ -13,6 +13,7 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import { Fragment, FC, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { faL } from '@fortawesome/free-solid-svg-icons';
 
 const classNames: FC = (...classes: any) => {
   return classes.filter(Boolean).join(' ');
@@ -108,10 +109,38 @@ const Payment: FC = (): JSX.Element => {
   const [creditcard, setCreditCard] = useState<boolean>(false);
   const [virtualAccout, setVirtualAccount] = useState<boolean>(false);
   const [accountTransfer, setAccountTransfer] = useState<boolean>(false);
+
+  const transferFalseDeposit = () => {
+    setDeposit(!deposit);
+    setCreditCard(false);
+    setVirtualAccount(false);
+    setAccountTransfer(false);
+  };
+
+  const transferFalseCredit = () => {
+    setDeposit(false);
+    setCreditCard(!creditcard);
+    setVirtualAccount(false);
+    setAccountTransfer(false);
+  };
+
+  const transferFalseVirtual = () => {
+    setDeposit(false);
+    setCreditCard(false);
+    setVirtualAccount(!virtualAccout);
+    setAccountTransfer(false);
+  };
+  const transferFalseAcoount = () => {
+    setDeposit(false);
+    setCreditCard(false);
+    setVirtualAccount(false);
+    setAccountTransfer(!accountTransfer);
+  };
+
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
       <nav aria-label="main mailbox folders">
-        <List onClick={() => setDeposit(!deposit)}>
+        <List onClick={transferFalseDeposit}>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -124,7 +153,7 @@ const Payment: FC = (): JSX.Element => {
       </nav>
       <Divider />
       <nav aria-label="secondary mailbox folders">
-        <List onClick={() => setCreditCard(!creditcard)}>
+        <List onClick={transferFalseCredit}>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -137,7 +166,7 @@ const Payment: FC = (): JSX.Element => {
       </nav>
       <Divider />
       <nav aria-label="third mailbox folders">
-        <List onClick={() => setVirtualAccount(!virtualAccout)}>
+        <List onClick={transferFalseVirtual}>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -150,7 +179,7 @@ const Payment: FC = (): JSX.Element => {
       </nav>
       <Divider />
       <nav aria-label="fourth mailbox folders">
-        <List onClick={() => setAccountTransfer(!accountTransfer)}>
+        <List onClick={transferFalseAcoount}>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemIcon>
