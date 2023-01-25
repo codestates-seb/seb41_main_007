@@ -27,10 +27,6 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity postOrder(@Valid @RequestBody OrderPostDto orderPostDto) {
-
-        // Todo: 제품 주문이 가능한가 ?
-        // Todo: 재고 계산해주기
-
         orderPostDto.getOrderProductPostDtos().stream()
                 .forEach(orderProductPostDto -> orderProductPostDto
                         .setProductOption(
