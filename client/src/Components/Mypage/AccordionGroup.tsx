@@ -16,7 +16,7 @@ export default function AccordionGroup() {
         ATvalue="배송지관리"
         Component={Deliveryaddress}
       />
-      <AccordionTitle Open={true} ATvalue="배송지추가" Component={Address} />
+      <AccordionTitle Open={false} ATvalue="배송지추가" Component={Address} />
     </div>
   );
 }
