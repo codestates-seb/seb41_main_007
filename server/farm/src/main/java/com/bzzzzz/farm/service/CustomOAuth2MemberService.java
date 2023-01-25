@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +39,7 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
         Member member = saveOfUpdate(authAttributes);
 
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_" +member.getRoles().toString())),
+                Collections.singleton(new SimpleGrantedAuthority(member.getRoles().toString())),
                 authAttributes.getAttributes(),
                 authAttributes.getNameAttributeKey());
     }
@@ -50,6 +51,8 @@ public class CustomOAuth2MemberService implements OAuth2UserService<OAuth2UserRe
                     entry.setName(authAttributes.getName());
                     return entry;
                 }).orElse(authAttributes.toEntity());  //없다면 새로운 멤버 생성
+        List<String> roles = authorityUtils.createRoles(member.getEmail());
+        member.setRoles(roles);
         return memberRepository.save(member);
     }
 }
