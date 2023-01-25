@@ -9,7 +9,7 @@ const BigContainer = styled.div`
   align-items: center;
   justify-content: center;
   width: 970px;
-  background: #f7d8b0;
+  background: #7cd3eb;
   margin-left: 120px;
   margin-top: 200px;
   border-radius: 10px;

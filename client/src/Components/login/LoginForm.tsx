@@ -1,13 +1,13 @@
 import styled from 'styled-components';
 
-const Loginform = styled.form`
+const LoginDiv = styled.div`
   opacity: 0.9;
   z-index: 5500;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
   width: 490px;
   height: 500px;
-  background: #ededed;
+  background: #fff;
 `;
 const LoginP = styled.div<{ fontsize: string; weight: string }>`
   padding: 20px 0 20px 0;
@@ -38,8 +38,11 @@ const BtnText = styled.span`
   font-weight: 700;
 `;
 const LoginForm = () => {
+  const OauthHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    window.location.href = `${process.env.REACT_APP_BACKEND_URL}/oauth2/authorization/google`;
+  };
   return (
-    <Loginform>
+    <LoginDiv>
       <div className="mt-24">
         <LoginP weight="bold" fontsize="30px">
           로그인
@@ -48,7 +51,7 @@ const LoginForm = () => {
           방문해주셔서 감사합니다. <br></br>
           아래 버튼을 눌러 회원가입을 해주세요.
         </LoginP>
-        <GoogleBtn>
+        <GoogleBtn onClick={OauthHandler}>
           <div className="mt-1">
             <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18">
               <path
@@ -72,7 +75,7 @@ const LoginForm = () => {
           <BtnText>Log in with Google</BtnText>
         </GoogleBtn>
       </div>
-    </Loginform>
+    </LoginDiv>
   );
 };
 
