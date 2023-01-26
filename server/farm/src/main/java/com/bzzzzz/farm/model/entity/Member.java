@@ -39,20 +39,13 @@ public class Member extends Auditable {
     @Column(unique = true)
     private String phone;
 
-    @OneToOne(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private Cart cart;
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Cart> carts;
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
     public Member(String email) {
         this.email = email;
-    }
-
-    public void setCart(Cart cart) {
-        this.cart = cart;
-        if (cart.getMember() != this) {
-            cart.setMember(this);
-        }
     }
 }

@@ -269,76 +269,67 @@ include::{snippets}/deleteLike/http-response.adoc[]
 
 === 내 장바구니 보기
 
-getCart()
+getCarts()
 
 .curl-request
-include::{snippets}/getCart/curl-request.adoc[]
+include::{snippets}/getCarts/curl-request.adoc[]
 
 .http-request
-include::{snippets}/getCart/http-request.adoc[]
-
-.path-parameters
-include::{snippets}/getCart/path-parameters.adoc[]
+include::{snippets}/getCarts/http-request.adoc[]
 
 .http-response
-include::{snippets}/getCart/http-response.adoc[]
+include::{snippets}/getCarts/http-response.adoc[]
 
 .response-fields
-include::{snippets}/getCart/response-fields.adoc[]
+include::{snippets}/getCarts/response-fields.adoc[]
 
 === 장바구니에 제품 담기
 
-postCartProduct()
+postCart()
 
 .curl-request
-include::{snippets}/postCartProduct/curl-request.adoc[]
+include::{snippets}/postCart/curl-request.adoc[]
 
 .http-request
-include::{snippets}/postCartProduct/http-request.adoc[]
+include::{snippets}/postCart/http-request.adoc[]
 
 .request-fields
-include::{snippets}/postCartProduct/request-fields.adoc[]
+include::{snippets}/postCart/request-fields.adoc[]
 
 .http-response
-include::{snippets}/postCartProduct/http-response.adoc[]
-
-.response-fields
-include::{snippets}/postCartProduct/response-fields.adoc[]
+include::{snippets}/postCart/http-response.adoc[]
 
 === 장바구니에 담긴 제품 수량 수정
 
 patchCartProduct()
 
 .curl-request
-include::{snippets}/patchCartProduct/curl-request.adoc[]
+include::{snippets}/patchCart/curl-request.adoc[]
 
 .http-request
-include::{snippets}/patchCartProduct/http-request.adoc[]
+include::{snippets}/patchCart/http-request.adoc[]
 
 .request-fields
-include::{snippets}/patchCartProduct/request-fields.adoc[]
+include::{snippets}/patchCart/request-fields.adoc[]
 
 .http-response
-include::{snippets}/patchCartProduct/http-response.adoc[]
-
-.response-fields
-include::{snippets}/patchCartProduct/response-fields.adoc[]
+include::{snippets}/patchCart/http-response.adoc[]
 
 === 장바구니에서 제품을 삭제
 
 deleteCartProduct()
 
 .curl-request
-include::{snippets}/deleteCartProduct/curl-request.adoc[]
+include::{snippets}/deleteCart/curl-request.adoc[]
 
 .http-request
-include::{snippets}/deleteCartProduct/http-request.adoc[]
+include::{snippets}/deleteCart/http-request.adoc[]
 
-.request-fields
-include::{snippets}/deleteCartProduct/request-fields.adoc[]
+.path-parameters
+include::{snippets}/deleteCart/path-parameters.adoc[]
 
 .http-response
-include::{snippets}/deleteCartProduct/http-response.adoc[]
+include::{snippets}/deleteCart/http-response.adoc[]
 
 == CategoryController
 
