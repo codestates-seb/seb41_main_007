@@ -46,7 +46,7 @@ const TinyMobileHeader: FC = () => {
           style={{
             display: isOpen ? 'block' : 'none',
             marginLeft: '20px',
-            padding: '10px',
+            padding: '9px',
             backgroundColor: 'var(--green-30)',
           }}
         >
