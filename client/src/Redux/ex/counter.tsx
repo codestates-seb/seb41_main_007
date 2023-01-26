@@ -15,7 +15,7 @@ const ProductDetailPage: React.FC = () => {
   const incrementValue = Number(incrementAmount) || 0;
 
   return (
-    <div>
+    <div className="mt-32">
       <div>
         <button
           aria-label="Decrement value"

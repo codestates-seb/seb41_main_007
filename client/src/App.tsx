@@ -62,7 +62,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/Counter',
-    element: <Counter />,
+    element: withLayout(Counter),
   },
   {
     path: '/test/counter',

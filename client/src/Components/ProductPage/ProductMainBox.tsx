@@ -168,6 +168,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
     baskets.push(data);
 
     emptyBasketAlram();
+
     localStorage.setItem('baskets', JSON.stringify(baskets));
   };
 
