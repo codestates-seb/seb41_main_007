@@ -27,13 +27,13 @@ public class OrderService {
     }
 
     public void cancelOrder(long orderId) { // 사용자가 주문을 취소
-        Order order = findVerifiedOrder(orderId);
+        Order order = findOrder(orderId);
         order.getOrderProducts().stream()
                 .forEach(orderProduct -> verifyCancelOrder(orderProduct));
     }
 
     public Order updateOrder(OrderPatchDto orderPatchDto) { // 어드민이 주문상태를 변경
-        Order order = findVerifiedOrder(orderPatchDto.getOrderId());
+        Order order = findOrder(orderPatchDto.getOrderId());
 
         Optional.ofNullable(orderPatchDto.getPaymentMethod()).ifPresent(data -> order.setPaymentMethod(data));
         Optional.ofNullable(orderPatchDto.getPaymentStatus()).ifPresent(data -> {
@@ -52,8 +52,10 @@ public class OrderService {
         return order;
     }
 
+    @Transactional(readOnly = true)
     public Order findOrder(long orderId) {
-        return findVerifiedOrder(orderId);
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        return optionalOrder.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
     }
 
     /**
@@ -73,12 +75,6 @@ public class OrderService {
                 });
     }
 
-    @Transactional(readOnly = true)
-    private Order findVerifiedOrder(long orderId) {
-        Optional<Order> optionalOrder = orderRepository.findById(orderId);
-        return optionalOrder.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
-    }
-
     private void verifyCancelOrder(OrderProduct orderProduct) {
         if (orderProduct.getOrderStatus().getStep() > 3) {
             throw new BusinessLogicException(ExceptionCode.CAN_NOT_CANCEL_ORDER);
@@ -86,5 +82,13 @@ public class OrderService {
         orderProduct.setOrderStatus(OrderProduct.OrderStatus.CANCEL);
 
         orderProduct.getProductOption().calculateStock(orderProduct.getQuantity());
+    }
+
+    @Transactional(readOnly = true)
+    public void verifyAuthority(long orderId, long memberId) {
+        Order order = findOrder(orderId);
+        if (order.getMember().getMemberId() != memberId) {
+            throw new BusinessLogicException(ExceptionCode.REQUEST_FORBIDDEN);
+        }
     }
 }
