@@ -21,25 +21,28 @@ public class PaymentService {
 
     @Value("${payment.admin_key}")
     private String admin_key;  //카카오 어플리케이션 어드민 키
-    private final String host = "https://kapi.kakao.com"; // host url
+    private final String host = "https://kapi.kakao.com/v1/payment"; // host url
+
+    @Value("${payment.url}")
+    private String redirectUrl;
     private KakaoReadyResponse kakaoReady;
 
     /**
      결제요청
      **/
-    public KakaoReadyResponse kakaoPayReady(int price){
+    public KakaoReadyResponse kakaoPayReady(long orderId, int price){
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
-        parameters.add("partner_order_id", "가맹점 주문 번호");
+        parameters.add("partner_order_id", orderId);
         parameters.add("partner_user_id", "가맹점 회원 ID");
         parameters.add("item_name", "상품명");
         parameters.add("quantity", 1);
         parameters.add("total_amount", price);
         parameters.add("vat_amount", 0);
         parameters.add("tax_free_amount", 0);
-        parameters.add("approval_url", "http://localhost:8080/payment/success"); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://localhost:8080/payment/cancel"); // 취소 시 redirect url
-        parameters.add("fail_url", "http://localhost:8080/payment/fail"); // 실패 시 redirect url
+        parameters.add("approval_url", redirectUrl+"/payment/success?order_id="+orderId); // 성공 시 redirect url
+        parameters.add("cancel_url", redirectUrl+"/payment/cancel"); // 취소 시 redirect url
+        parameters.add("fail_url", redirectUrl+"/payment/fail"); // 실패 시 redirect url
 
         // 파라미터, 헤더
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
@@ -48,7 +51,7 @@ public class PaymentService {
         RestTemplate restTemplate = new RestTemplate();
 
         kakaoReady = restTemplate.postForObject(
-                host+"/v1/payment/ready", //post 요청 url
+                host+"/ready", //post 요청 url
                 requestEntity,
                 KakaoReadyResponse.class);
 
@@ -58,27 +61,22 @@ public class PaymentService {
     /**
      * 결제 완료 승인
      */
-    public KakaoApproveResponse approveResponse(String pgToken) {
-
+    public KakaoApproveResponse approveResponse(String pgToken,long orderId) {
         // 카카오 요청
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
         parameters.add("tid", kakaoReady.getTid());
-        parameters.add("partner_order_id", "가맹점 주문 번호");
+        parameters.add("partner_order_id", orderId);
         parameters.add("partner_user_id", "가맹점 회원 ID");
         parameters.add("pg_token", pgToken);
-
         // 파라미터, 헤더
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
-
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
         // 외부에 보낼 url
         RestTemplate restTemplate = new RestTemplate();
-
         KakaoApproveResponse approveResponse = restTemplate.postForObject(
-                "https://kapi.kakao.com/v1/payment/approve",
+                host+"/approve",
                 requestEntity,
                 KakaoApproveResponse.class);
-
         return approveResponse;
     }
 
