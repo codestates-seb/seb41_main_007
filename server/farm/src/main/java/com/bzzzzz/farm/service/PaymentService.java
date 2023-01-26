@@ -27,14 +27,14 @@ public class PaymentService {
     /**
      결제요청
      **/
-    public KakaoReadyResponse kakaoPayReady(){
+    public KakaoReadyResponse kakaoPayReady(int price){
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
         parameters.add("partner_order_id", "가맹점 주문 번호");
         parameters.add("partner_user_id", "가맹점 회원 ID");
         parameters.add("item_name", "상품명");
         parameters.add("quantity", 1);
-        parameters.add("total_amount", 3600);
+        parameters.add("total_amount", price);
         parameters.add("vat_amount", 0);
         parameters.add("tax_free_amount", 0);
         parameters.add("approval_url", "http://localhost:8080/payment/success"); // 성공 시 redirect url
