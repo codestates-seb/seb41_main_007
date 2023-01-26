@@ -33,7 +33,7 @@ public class PaymentController {
     public ResponseEntity afterPayRequest(@RequestParam("pg_token") String pgToken,
                                           @RequestParam("order_id") long orderId) {
 
-        KakaoApproveResponse kakaoApprove = paymentService.approveResponse(pgToken);
+        KakaoApproveResponse kakaoApprove = paymentService.approveResponse(pgToken,orderId);
         OrderPatchDto orderPatchDto = new OrderPatchDto();
         orderPatchDto.setOrderId(orderId);
         orderPatchDto.setPaymentStatus(Order.PaymentStatus.COMPLETED);
