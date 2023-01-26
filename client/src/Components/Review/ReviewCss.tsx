@@ -82,7 +82,7 @@ const products = [
       'Hand holding black machined steel mechanical pencil with brass tip and top.',
   },
   {
-    id: 5,
+    id: 6,
     title: '이거 좋아요',
     href: '#',
     product: 'a물품이름',

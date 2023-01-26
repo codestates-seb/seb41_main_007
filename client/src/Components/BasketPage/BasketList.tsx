@@ -6,6 +6,9 @@ import { selectprice, Pricestate } from 'Redux/reducer/priceSlice';
 import useScrollTop from 'CustomHook/useScrollTop';
 import { useNumberComma } from 'Utils/commonFunction';
 import BuyButton from 'Components/Common/BuyButton';
+import BestProductSlider from 'Components/BestProductSlider';
+import { useNavigate } from 'react-router-dom';
+import { useSession } from 'CustomHook/useSession';
 
 const BasketForm = styled.div`
   width: 1180px;
@@ -130,9 +133,10 @@ const ButtonContainer = styled.div`
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
-
+  const navigate = useNavigate();
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]');
+  const { session } = useSession(); // 로딩시간만큼 내리는데 시간이 들어서 생략
   useScrollTop();
 
   let result: number = resultarr.reduce((acc, cur) => {
@@ -143,7 +147,7 @@ const BasketList: FC = () => {
     acc = acc + cur.count;
     return acc;
   }, 0);
-
+  console.log(session);
   // 체크박스 단일 선택
   const handleSingleCheck = (checked?: boolean, id?: number) => {
     if (checked && id) {
@@ -180,6 +184,14 @@ const BasketList: FC = () => {
     localStorage.setItem('baskets', JSON.stringify(deleteSave));
     setCheckItems([]);
     // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
+  };
+
+  const LoginOrGo = () => {
+    if (session) {
+      navigate('/payment');
+    } else {
+      navigate('/login');
+    }
   };
 
   return (
@@ -228,12 +240,20 @@ const BasketList: FC = () => {
           </TotalPrice>
         </TableBottom>
       </BasketForm>
-
+      <BestProductSlider></BestProductSlider>
       <ButtonContainer>
-        <BuyButton background={'var( --white-02)'} margin={'0 12px 0 12px'}>
+        <BuyButton
+          onClick={() => navigate('/')}
+          background={'var( --white-02)'}
+          margin={'0 12px 0 12px'}
+        >
           계속 쇼핑하기
         </BuyButton>
-        <BuyButton background="var(--green-40)" margin={'0 12px 0 12px'}>
+        <BuyButton
+          onClick={() => LoginOrGo()}
+          background="var(--green-40)"
+          margin={'0 12px 0 12px'}
+        >
           주문하기
         </BuyButton>
       </ButtonContainer>

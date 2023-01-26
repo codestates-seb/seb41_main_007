@@ -4,6 +4,8 @@ import { BGcontainer } from 'Components/Common/BGcontainer';
 import LazyImage from 'Components/login/LazyImage';
 import LoginForm from 'Components/login/LoginForm';
 import useScrollTop from 'CustomHook/useScrollTop';
+import { useSession } from 'CustomHook/useSession';
+import { useNavigate } from 'react-router-dom';
 
 const BigContainer = styled.div`
   display: flex;
@@ -35,6 +37,13 @@ const Back = styled.div`
 
 const Login: React.FC = () => {
   useScrollTop();
+  const { session, loading } = useSession(); //의논하기
+  const navigate = useNavigate();
+
+  if (loading) return <></>;
+  if (session) {
+    navigate(-1);
+  }
   return (
     <BGcontainer>
       <BigContainer>

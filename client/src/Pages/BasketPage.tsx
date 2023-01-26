@@ -2,8 +2,8 @@ import { FC } from 'react';
 import styled from 'styled-components';
 import BasketList from 'Components/BasketPage/BasketList';
 import { BGcontainer } from 'Components/Common/BGcontainer';
-import BestProductSlider from 'Components/BestProductSlider';
 
+import useScrollTop from 'CustomHook/useScrollTop';
 const Cart = styled.div`
   margin-top: 120px;
 `;
@@ -19,10 +19,10 @@ const BasketTitle = styled.h2`
 `;
 
 const basketsPage: FC = () => {
+  useScrollTop();
   return (
     <BGcontainer>
       <Cart>
-        <BestProductSlider></BestProductSlider>
         <BasketForm>
           <BasketTitle>장바구니</BasketTitle>
           <BasketList />
