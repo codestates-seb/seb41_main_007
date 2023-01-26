@@ -11,7 +11,7 @@ import {
 
 import Tooltip from '../Common/Tooltip';
 import { Delete, EnterArrow } from './icons';
-import { VideoPlayer, AudioPlayer, YoutubePlayer } from './reactPlayer';
+import { YoutubePlayer } from './reactPlayer';
 
 const cx = classNames.bind(styles);
 
@@ -46,10 +46,6 @@ export function Element({ attributes, children, element }: ElementProps) {
       return <li {...attributes}>{children}</li>;
     case 'image':
       return <ImageElement {...props} />;
-    case 'video':
-      return <VideoElement {...props} />;
-    case 'audio':
-      return <AudioElement {...props} />;
     case 'link':
       return <LinkElement {...props} />;
     case 'youtube':
@@ -127,7 +123,7 @@ export function ImageElement({ attributes, children, element }: any) {
               button_true: selected && focused,
             })}
           >
-            <Tooltip content="消去" delay={100}>
+            <Tooltip content="삭제" delay={100}>
               <Delete />
             </Tooltip>
           </button>
@@ -148,7 +144,7 @@ export function ImageElement({ attributes, children, element }: any) {
               );
             }}
           >
-            <Tooltip content="上の行を追加" delay={100}>
+            <Tooltip content="위에 행 추가" delay={100}>
               <EnterArrow />
             </Tooltip>
           </button>
@@ -177,191 +173,12 @@ export function ImageElement({ attributes, children, element }: any) {
               setTimeout(() => Transforms.select(editor, [path[0] + 1]));
             }}
           >
-            <Tooltip content="下に行を追加" delay={100}>
+            <Tooltip content="아래에 행 추가" delay={100}>
               <EnterArrow />
             </Tooltip>
           </button>
         </div>
       </figure>
-    </div>
-  );
-}
-
-export function VideoElement({ attributes, children, element }: any) {
-  const editor = useSlateStatic();
-  const selected = useSelected();
-  const focused = useFocused();
-  return (
-    <div
-      {...attributes}
-      draggable={true}
-      contentEditable={false}
-      className={cx('video_container', { video_true: selected && focused })}
-    >
-      {children}
-      <VideoPlayer url={element.url} />
-      <div className={styles.button_container}>
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            const path = ReactEditor.findPath(editor, element);
-            if (path[0]) {
-              Transforms.removeNodes(editor, { at: path });
-            } else {
-              Transforms.removeNodes(editor, { at: path });
-              Transforms.insertNodes(editor, {
-                type: 'paragraph',
-                children: [{ text: '' }],
-              });
-            }
-          }}
-          className={cx('delete_button', {
-            button_true: selected && focused,
-          })}
-        >
-          <Tooltip content="消去" delay={100}>
-            <Delete />
-          </Tooltip>
-        </button>
-        <button
-          className={cx('line_button', 'upper_line_button', {
-            button_true: selected && focused,
-          })}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            const path = ReactEditor.findPath(editor, element);
-            Transforms.insertNodes(
-              editor,
-              {
-                type: 'paragraph',
-                children: [{ text: '' }],
-              },
-              { at: path, select: true },
-            );
-          }}
-        >
-          <Tooltip content="上の行を追加" delay={100}>
-            <EnterArrow />
-          </Tooltip>
-        </button>
-        <button
-          className={cx('line_button', 'lower_line_button', {
-            button_true: selected && focused,
-          })}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            const path = ReactEditor.findPath(editor, element);
-            Transforms.insertNodes(
-              editor,
-              {
-                type: 'paragraph',
-                children: [{ text: '' }],
-              },
-              {
-                at: [path[0] + 1],
-                select: true,
-              },
-            );
-          }}
-          onMouseUp={(e) => {
-            e.preventDefault();
-            const path = ReactEditor.findPath(editor, element);
-            ReactEditor.focus(editor);
-            Transforms.select(editor, [path[0] + 1]);
-          }}
-        >
-          <Tooltip content="下に行を追加" delay={100}>
-            <EnterArrow />
-          </Tooltip>
-        </button>
-      </div>
-    </div>
-  );
-}
-
-export function AudioElement({ attributes, children, element }: any) {
-  const editor = useSlateStatic();
-  const selected = useSelected();
-  const focused = useFocused();
-  return (
-    <div
-      {...attributes}
-      contentEditable={false}
-      draggable={true}
-      className={cx('video_container', { video_true: selected && focused })}
-    >
-      {children}
-      <AudioPlayer url={element.url} />
-      <div className={styles.button_container}>
-        <button
-          onMouseDown={(e) => {
-            e.preventDefault();
-            const path = ReactEditor.findPath(editor, element);
-            if (path[0]) {
-              Transforms.removeNodes(editor, { at: path });
-            } else {
-              Transforms.removeNodes(editor, { at: path });
-              Transforms.insertNodes(editor, {
-                type: 'paragraph',
-                children: [{ text: '' }],
-              });
-            }
-          }}
-          className={cx('delete_button', {
-            button_true: selected && focused,
-          })}
-        >
-          <Tooltip content="消去" delay={100}>
-            <Delete />
-          </Tooltip>
-        </button>
-        <button
-          className={cx('line_button', 'upper_line_button', {
-            button_true: selected && focused,
-          })}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            const path = ReactEditor.findPath(editor, element);
-            Transforms.insertNodes(
-              editor,
-              {
-                type: 'paragraph',
-                children: [{ text: '' }],
-              },
-              { at: path, select: true },
-            );
-          }}
-        >
-          <Tooltip content="上の行を追加" delay={100}>
-            <EnterArrow />
-          </Tooltip>
-        </button>
-        <button
-          className={cx('line_button', 'lower_line_button', {
-            button_true: selected && focused,
-          })}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            const path = ReactEditor.findPath(editor, element);
-            Transforms.insertNodes(
-              editor,
-              {
-                type: 'paragraph',
-                children: [{ text: '' }],
-              },
-              {
-                at: [path[0] + 1],
-                select: true,
-              },
-            );
-          }}
-          onMouseUp={(e) => e.preventDefault()}
-        >
-          <Tooltip content="下に行を追加" delay={100}>
-            <EnterArrow />
-          </Tooltip>
-        </button>
-      </div>
     </div>
   );
 }
@@ -398,7 +215,7 @@ export function YoutubeElement({ attributes, children, element }: any) {
             button_true: selected && focused,
           })}
         >
-          <Tooltip content="消去" delay={100}>
+          <Tooltip content="삭제" delay={100}>
             <Delete />
           </Tooltip>
         </button>
@@ -419,7 +236,7 @@ export function YoutubeElement({ attributes, children, element }: any) {
             );
           }}
         >
-          <Tooltip content="上の行を追加" delay={100}>
+          <Tooltip content="위에 행 추가" delay={100}>
             <EnterArrow />
           </Tooltip>
         </button>
@@ -449,7 +266,7 @@ export function YoutubeElement({ attributes, children, element }: any) {
             Transforms.select(editor, [path[0] + 1]);
           }}
         >
-          <Tooltip content="下に行を追加" delay={100}>
+          <Tooltip content="아래에 행 추가" delay={100}>
             <EnterArrow />
           </Tooltip>
         </button>

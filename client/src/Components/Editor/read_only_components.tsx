@@ -1,7 +1,7 @@
 import styles from './Styles/components.module.css';
 import classNames from 'classnames/bind';
 
-import { VideoPlayer, AudioPlayer, YoutubePlayer } from './reactPlayer';
+import { YoutubePlayer } from './reactPlayer';
 
 import { Element as CustomElement, Text } from 'slate';
 
@@ -38,10 +38,6 @@ export function ReadOnlyElement({
       return <li {...attributes}>{children}</li>;
     case 'image':
       return <ReadOnlyImageElement {...props} />;
-    case 'video':
-      return <ReadOnlyVideoElement {...props} />;
-    case 'audio':
-      return <ReadOnlyAudioElement {...props} />;
     case 'link':
       return <ReadOnlyLinkElement {...props} />;
     case 'youtube':
@@ -79,33 +75,6 @@ export function ReadOnlyImageElement({ attributes, children, element }: any) {
           />
         </div>
       </figure>
-    </div>
-  );
-}
-
-export function ReadOnlyVideoElement({ attributes, children, element }: any) {
-  return (
-    <div
-      {...attributes}
-      contentEditable={false}
-      className={cx('video_container_readonly')}
-    >
-      {children}
-      <VideoPlayer url={element.url} />
-    </div>
-  );
-}
-
-export function ReadOnlyAudioElement({ attributes, children, element }: any) {
-  return (
-    <div
-      {...attributes}
-      contentEditable={false}
-      draggable={true}
-      className={cx('video_container_readonly')}
-    >
-      {children}
-      <AudioPlayer url={element.url} />
     </div>
   );
 }
