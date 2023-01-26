@@ -17,8 +17,9 @@ public class PaymentController {
      결제요청
      **/
     @PostMapping("/ready")
-    public ResponseEntity readyToKakaoPay(@RequestParam("total_price")int price){
-        return ResponseEntity.ok(paymentService.kakaoPayReady(price));
+    public ResponseEntity readyToKakaoPay(@RequestParam("order_id")int orderId,
+                                          @RequestParam("total_price")int price){
+        return ResponseEntity.ok(paymentService.kakaoPayReady(orderId, price));
     }
 
     /**
