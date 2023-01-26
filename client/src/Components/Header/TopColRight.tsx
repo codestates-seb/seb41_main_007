@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styles from './Styles/TopColRight.module.css';
 import { Link } from 'react-router-dom';
 import BasketIcon from './Icon/BaskectIcon';
@@ -47,8 +47,15 @@ const LoginRequired = () => {
 };
 
 const TopColRight: FC = () => {
+  const jsondata: string | null = localStorage.getItem('baskets');
+  const basketresult = JSON.parse(jsondata || '[]');
+  const [basketbox, setbasetbox] = useState(basketresult);
   const { session, loading } = useSession();
   if (loading) return <></>;
+  useEffect(() => {
+    setbasetbox(basketresult);
+  }, [basketresult]);
+
   return (
     <div className={styles.Nav_All_Container}>
       {session ? <Logined /> : <LoginRequired />}
@@ -63,6 +70,11 @@ const TopColRight: FC = () => {
         <Link to="/basket" style={{ display: 'flex', gap: '6px' }}>
           <BasketIcon />
           <li className={styles.Nav_Menu2}>장바구니</li>
+          {basketbox.length > 0 ? (
+            <span className={styles.Nav_Basket}>{basketbox.length} </span>
+          ) : (
+            ''
+          )}
         </Link>
       </ul>
     </div>
@@ -70,3 +82,4 @@ const TopColRight: FC = () => {
 };
 
 export default TopColRight;
+//바로 값이 반영되고자 usestate 값을사용

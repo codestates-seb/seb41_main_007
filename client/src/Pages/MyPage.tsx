@@ -9,7 +9,7 @@ import Basketfour from 'Components/PaymentPage/Basketfour';
 import TabPanel from 'Components/Mypage/TabPanel';
 import AccordionGroup from 'Components/Mypage/AccordionGroup';
 import MainImage from 'Components/PaymentPage/MainImage';
-
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import SessionChecking from 'CustomHook/SessionChecking';
 
 const ShortContainer = styled.div`
@@ -20,7 +20,6 @@ const ShortContainer = styled.div`
 
 export default function BasicTabs() {
   const [value, setValue] = useState<number>(0);
-
   SessionChecking();
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -41,6 +40,7 @@ export default function BasicTabs() {
             >
               <Tab label="내 프로필" />
               <Tab label="주문 조회" />
+              <Tab label="회원 탈퇴" />
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
@@ -50,6 +50,7 @@ export default function BasicTabs() {
             <BasketThree></BasketThree>
             <Basketfour></Basketfour>
           </TabPanel>
+          <TabPanel value={value} index={2}></TabPanel>
         </Box>
       </ShortContainer>
     </div>

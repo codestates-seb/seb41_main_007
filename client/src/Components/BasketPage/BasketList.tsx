@@ -1,8 +1,8 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Basket from './Basket';
-import { useAppSelector } from 'Redux/app/hook';
-import { selectprice, Pricestate } from 'Redux/reducer/priceSlice';
+import { useAppSelector, useAppDispatch } from 'Redux/app/hook';
+import { selectprice, Pricestate, countDelete } from 'Redux/reducer/priceSlice';
 import useScrollTop from 'CustomHook/useScrollTop';
 import { useNumberComma } from 'Utils/commonFunction';
 import BuyButton from 'Components/Common/BuyButton';
@@ -133,11 +133,14 @@ const ButtonContainer = styled.div`
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
+  console.log(resultarr);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]');
-  const { session } = useSession(); // 로딩시간만큼 내리는데 시간이 들어서 생략
+  const { session, loading } = useSession(); // 로딩시간만큼 내리는데 시간이 들어서 생략
   useScrollTop();
+  if (loading) return <></>;
 
   let result: number = resultarr.reduce((acc, cur) => {
     acc = acc + cur.price * cur.count;
@@ -147,7 +150,7 @@ const BasketList: FC = () => {
     acc = acc + cur.count;
     return acc;
   }, 0);
-  console.log(session);
+
   // 체크박스 단일 선택
   const handleSingleCheck = (checked?: boolean, id?: number) => {
     if (checked && id) {
@@ -179,6 +182,10 @@ const BasketList: FC = () => {
     }
     const deleteSave = baskets.filter((el: any) => {
       return !checkItems.includes(el.productId);
+    });
+
+    checkItems.forEach((el) => {
+      dispatch(countDelete({ id: el }));
     });
 
     localStorage.setItem('baskets', JSON.stringify(deleteSave));

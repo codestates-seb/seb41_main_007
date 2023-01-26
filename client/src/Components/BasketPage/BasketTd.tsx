@@ -3,9 +3,8 @@ import styled from 'styled-components';
 import { useNumberComma } from 'Utils/commonFunction';
 import CounterButton2 from './CounterButton2';
 import { useAppDispatch } from 'Redux/app/hook';
-import { countset, countput } from 'Redux/reducer/priceSlice';
+import { countset, countput, countDelete } from 'Redux/reducer/priceSlice';
 import { Link } from 'react-router-dom';
-import Product from 'Components/Common/Product';
 
 const Tablebody1 = styled.th`
   background: white;
@@ -152,7 +151,8 @@ const BasketTd: FC<checkBoxtype> = ({
       return el.productId !== data.productId;
     });
 
-    dispatch(countput({ id: el.productId, count: 0 })); //딜리트만들기 확인하기
+    dispatch(countDelete({ id: el.productId }));
+
     localStorage.setItem('baskets', JSON.stringify(save));
     // setnumber(0); 스택오버플로우에 올리기
   };
@@ -206,3 +206,5 @@ const BasketTd: FC<checkBoxtype> = ({
 };
 
 export default BasketTd;
+
+//성능 생각해서 더 우선시 되는걸 if 앞에 넣음
