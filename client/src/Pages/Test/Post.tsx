@@ -32,10 +32,6 @@ interface ERROR {
   failToSend: boolean;
 }
 
-const serialize = (value: any) => {
-  return value.map((n: any) => Node.string(n)).join('\n');
-};
-
 const cx = classNames.bind(styles);
 export default function Page() {
   let session = true;
@@ -63,28 +59,24 @@ export default function Page() {
   );
 
   async function handlerSubmit() {
-    if (session) {
-      console.log(value);
-      // const data = {
-      //   value: value,
-      //   serializedValue: serialize(value),
-      // userId: session.user.id,
-      // folderName: session.user.name + Date.now().toString(),
-      //   title: title,
-      //   tag: { spoiler: spoiler, notice: notice },
-      // };
-      // const res = await fetch(`${process.env.HOST}/backend/api/upload/post`, {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(data),
-      // });
-      // const result = await res.json();
-      return value;
-    } else {
-      return toast.error('ログインが必要です');
-    }
+    console.log(value);
+    // const data = {
+    //   value: value,
+    //   serializedValue: serialize(value),
+    // userId: session.user.id,
+    // folderName: session.user.name + Date.now().toString(),
+    //   title: title,
+    //   tag: { spoiler: spoiler, notice: notice },
+    // };
+    // const res = await fetch(`${process.env.HOST}/backend/api/upload/post`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(data),
+    // });
+    // const result = await res.json();
+    return value;
   }
 
   function handlerTilteChange(value: string) {
@@ -108,7 +100,6 @@ export default function Page() {
           '',
         ) ||
       type.includes('image') ||
-      type.includes('video') ||
       type.includes('youtube');
     handlerError('emptyText', !emptyText);
   }, [title, value, handlerError]);
@@ -118,7 +109,7 @@ export default function Page() {
   }, [checkError]);
 
   return (
-    <div className={styles.container} style={{ paddingTop: '100px' }}>
+    <div className={styles.container}>
       <div className={styles.main_container}>
         <div className="heading">새로운글 작성</div>
         <div className={styles.line} />

@@ -1,10 +1,12 @@
 .container {
   position: relative;
   display: flex;
-  margin: 6px 0 0 6px;
+  justify-content: center;
+  margin: 120px auto 0 auto;
   color: var(--black-10);
 }
 .main_container {
+  max-width: 1220px;
   background-color: var(--bg-white-00);
   padding: 20px;
   border-radius: 6px;

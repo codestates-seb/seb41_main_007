@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 
 import { useCallback, useMemo, useState, useRef, ChangeEvent } from 'react';
 
-import { Editable, withReact, useSlate, Slate, ReactEditor } from 'slate-react';
+import { Editable, withReact, useSlate, Slate } from 'slate-react';
 import {
   Editor,
   Transforms,
@@ -71,14 +71,6 @@ export default function RichText({ value, setValue }: IProps) {
     [],
   );
   const editorRef = useRef<HTMLDivElement>(null);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const openToolTip = () => {
-    Editor.addMark(editor, 'select', true);
-    setIsOpen(true);
-  };
-  const closeToolTip = () => {
-    setIsOpen(false);
-  };
   const [isOpenYoutube, setIsOpenYoutube] = useState<boolean>(false);
   const openYotubeToolTip = () => {
     Editor.addMark(editor, 'select', true);
@@ -268,10 +260,10 @@ const withFile = (editor: Editor) => {
         const fileType = file.type.split('/');
         if (FILETYPE.includes(fileType[1])) {
           if (fileType[0] === 'image') {
-            if (file.size <= 10000000) {
+            if (file.size <= 50000000) {
               handlerCompresstion(editor, file);
             } else {
-              toast.error('画像サイズは10MB未満にする必要がおります');
+              toast.error('사진사이즈는 50MB 이하로 등록해주시길바랍니다');
             }
           } else if (fileType[0] === 'video') {
             toast.error('비디오는 불가능합니다');
@@ -279,13 +271,11 @@ const withFile = (editor: Editor) => {
             toast.error('오디오는 불가합니다');
           }
         } else {
-          toast.error(
-            '申し訳ありませんが、以下のファイルのみ受け付けます 画像(.png, .jpeg, .gif, .svg), 動画(.mp4, .mov), オーディオ(.mp3)',
-          );
+          toast.error('지원하는 파일 형식에 맞지않습니다');
         }
       }
     } else if (files && files.length > 10) {
-      toast.error('一度に11個以上のファイルをアップロードすることはできません');
+      toast.error('한번에 11개 이상에 파일은 등록하지 못합니다');
     } else {
       insertData(data);
     }
@@ -294,7 +284,7 @@ const withFile = (editor: Editor) => {
 };
 
 const withLink = (editor: Editor) => {
-  const { insertData, insertText, isInline, isVoid } = editor;
+  const { insertData, insertText, isVoid } = editor;
   editor.isVoid = (element) => element.type === 'youtube' || isVoid(element);
   editor.insertData = (data) => {
     const text = data.getData('text/plain');
@@ -349,17 +339,6 @@ function isMarkActive(editor: Editor, format: MARK) {
   return marks ? marks[format] === true : false;
 }
 
-function isBlockActive(editor: Editor, format: BLOCK) {
-  const { selection } = editor;
-  if (!selection) return false;
-  const [match]: any = Editor.nodes(editor, {
-    at: Editor.unhangRange(editor, selection),
-    match: (n) =>
-      !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === format,
-  });
-  return !!match;
-}
-
 function isVoidActive(editor: Editor) {
   const { selection } = editor;
   if (!selection) return false;
@@ -394,7 +373,7 @@ function BoldButton() {
         toggleMark(editor, 'bold');
       }}
     >
-      <Tooltip arrow content="bold" delay={370}>
+      <Tooltip arrow content="굵게" delay={370}>
         <Bold disabled={disabled} active={isMarkActive(editor, 'bold')} />
       </Tooltip>
     </button>
@@ -413,7 +392,7 @@ function StrikethroughButton() {
         toggleMark(editor, 'strikethrough');
       }}
     >
-      <Tooltip arrow content="取り消し線" delay={370}>
+      <Tooltip arrow content="취소선" delay={370}>
         <Strikethrough
           disabled={disabled}
           active={isMarkActive(editor, 'strikethrough')}
@@ -435,104 +414,8 @@ function SpoilerButton() {
         toggleMark(editor, 'spoiler');
       }}
     >
-      <Tooltip arrow content="카테고리" delay={370}>
+      <Tooltip arrow content="스포일러" delay={370}>
         <Spoiler disabled={disabled} active={isMarkActive(editor, 'spoiler')} />
-      </Tooltip>
-    </button>
-  );
-}
-function LinkButton({ open }: { open: () => void }) {
-  const editor = useSlate();
-  const disabled = isVoidActive(editor);
-  const disabledHeading = isBlockActive(editor, 'heading');
-  const disabledBlockQuote = isBlockActive(editor, 'block-quote');
-  function beforeOpen() {
-    if (editor.selection && Range.isCollapsed(editor.selection)) {
-      const [match]: any = Editor.nodes(editor, {
-        match: (n) =>
-          !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'link',
-      });
-      const [linkMatch]: any = Editor.nodes(editor, {
-        at: {
-          anchor: Editor.before(editor, editor.selection)
-            ? (Editor.before(editor, editor.selection) as Point)
-            : editor.selection.anchor,
-          focus: Editor.after(editor, editor.selection)
-            ? (Editor.after(editor, editor.selection) as Point)
-            : editor.selection.focus,
-        },
-        match: (n) =>
-          !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'link',
-      });
-      if (!!match) {
-        ReactEditor.focus(editor);
-        Transforms.select(editor, {
-          anchor: Editor.start(editor, match[1]),
-          focus: Editor.end(editor, match[1]),
-        });
-        Editor.addMark(editor, 'select', true);
-      } else if (!!linkMatch) {
-        const beforeNode: any = Editor.node(
-          editor,
-          Editor.before(editor, editor.selection)
-            ? (Editor.before(editor, editor.selection) as Point)
-            : editor.selection,
-          { depth: 2 },
-        );
-        const afterNode: any = Editor.node(
-          editor,
-          Editor.after(editor, editor.selection)
-            ? (Editor.after(editor, editor.selection) as Point)
-            : editor.selection,
-          { depth: 2 },
-        );
-        if (beforeNode && !!beforeNode[0].url) {
-          ReactEditor.focus(editor);
-          Transforms.select(editor, {
-            anchor: Editor.start(editor, beforeNode[1]),
-            focus: Editor.end(editor, beforeNode[1]),
-          });
-          Editor.addMark(editor, 'select', true);
-        }
-        if (afterNode && !!afterNode[0].url) {
-          ReactEditor.focus(editor);
-          Transforms.select(editor, {
-            anchor: Editor.start(editor, afterNode[1]),
-            focus: Editor.end(editor, afterNode[1]),
-          });
-          Editor.addMark(editor, 'select', true);
-        }
-      }
-    } else {
-      Editor.addMark(editor, 'select', true);
-    }
-  }
-  function multiLine() {
-    if (editor.selection && !Range.isCollapsed(editor.selection)) {
-      if (editor.selection.anchor.path[0] !== editor.selection.focus.path[0]) {
-        return true;
-      }
-    }
-    return false;
-  }
-  return (
-    <button
-      className={styles.button}
-      disabled={
-        disabled || multiLine() || disabledBlockQuote || disabledHeading
-      }
-      onClick={(e) => {
-        e.preventDefault();
-        beforeOpen();
-        open();
-      }}
-    >
-      <Tooltip arrow content="リンク" delay={370}>
-        <Link
-          disabled={
-            disabled || multiLine() || disabledBlockQuote || disabledHeading
-          }
-        />
       </Tooltip>
     </button>
   );
@@ -549,10 +432,10 @@ function FileButton() {
         const fileType = file.type.split('/');
         if (FILETYPE.includes(fileType[1])) {
           if (fileType[0] === 'image') {
-            if (file.size <= 10000000) {
+            if (file.size <= 50000000) {
               handlerCompresstion(editor, file);
             } else {
-              toast.error('画像サイズは10MB未満にする必要がおります');
+              toast.error('사진사이즈는 50MB 이하로 등록해주시길바랍니다');
             }
           } else if (fileType[0] === 'video') {
             toast.error('비디오는 불가합니다');
@@ -560,21 +443,17 @@ function FileButton() {
             toast.error('오디오는 불가합니다');
           }
         } else {
-          toast.error(
-            '申し訳ありませんが、以下のファイルのみ受け付けます 画像(.png, .jpeg, .gif, .svg), 動画(.mp4, .mov), オーディオ(.mp3)',
-          );
+          toast.error('지원하는 파일 형식에 맞지않습니다');
         }
       }
     } else if (files && files.length > 10) {
-      toast.error(
-        '一度に11個以上のファイルをアップロードすることはできません ',
-      );
+      toast.error('한번에 11개 이상에 파일은 등록하지 못합니다');
     }
     e.target.value = '';
   };
   return (
     <label className={styles.button}>
-      <Tooltip arrow content="写真/動画" delay={370}>
+      <Tooltip arrow content="사진" delay={370}>
         <ImageIcon disabled={disabled || disabled2} />
       </Tooltip>
       <input
@@ -605,7 +484,7 @@ function YoutubeButton({ open }: { open: () => void }) {
         open();
       }}
     >
-      <Tooltip arrow content="youtube" delay={370}>
+      <Tooltip arrow content="유튜브" delay={370}>
         <Youtube disabled={disabled || disabled2} />
       </Tooltip>
     </button>
