@@ -22,8 +22,6 @@ const INITIAL_ERROR = {
   emptyText: false,
   tooLongTitle: false,
   imageLimit: false,
-  audioLimit: false,
-  textLimit: false,
   failToSend: false,
 };
 interface ERROR {
@@ -31,8 +29,6 @@ interface ERROR {
   emptyText: boolean;
   tooLongTitle: boolean;
   imageLimit: boolean;
-  audioLimit: boolean;
-  textLimit: boolean;
   failToSend: boolean;
 }
 
@@ -54,8 +50,6 @@ export default function Page() {
         | 'emptyText'
         | 'tooLongTitle'
         | 'imageLimit'
-        | 'audioLimit'
-        | 'textLimit'
         | 'failToSend',
       boolean: boolean,
     ) => {
@@ -114,22 +108,15 @@ export default function Page() {
           '',
         ) ||
       type.includes('image') ||
-      type.includes('audio') ||
       type.includes('video') ||
       type.includes('youtube');
     handlerError('emptyText', !emptyText);
-    const imageLimit = type.filter((n) => n === 'image').length < 6;
-    handlerError('imageLimit', !imageLimit);
-    const audioLimit = type.filter((n) => n === 'audio').length < 4;
-    handlerError('audioLimit', !audioLimit);
-    const textLimit =
-      new Blob([value.map((n: any) => Node.string(n)).join('\n')]).size <
-      50000000;
-    handlerError('textLimit', !textLimit);
   }, [title, value, handlerError]);
+
   useEffect(() => {
     checkError();
   }, [checkError]);
+
   return (
     <div className={styles.container} style={{ paddingTop: '100px' }}>
       <div className={styles.main_container}>
@@ -177,29 +164,23 @@ export default function Page() {
         <div className={styles.wrapper}>
           <Editor value={value} setValue={(value) => setValue(value)} />
         </div>
-        {(error.audioLimit ||
-          error.emptyText ||
+        {(error.emptyText ||
           error.emptyTitle ||
           error.imageLimit ||
-          error.textLimit ||
           error.tooLongTitle) && <ErrorMessage error={error} />}
         <div className={styles.submit_wrapper}>
           <button
             disabled={
-              error.audioLimit ||
               error.emptyText ||
               error.emptyTitle ||
               error.imageLimit ||
-              error.textLimit ||
               error.tooLongTitle
             }
             className={cx('submit', {
               submit_disabled:
-                error.audioLimit ||
                 error.emptyText ||
                 error.emptyTitle ||
                 error.imageLimit ||
-                error.textLimit ||
                 error.tooLongTitle,
             })}
             onClick={handlerSubmit}
@@ -208,27 +189,6 @@ export default function Page() {
           </button>
         </div>
       </div>
-      <div>
-        <BeforePost />
-      </div>
-    </div>
-  );
-}
-
-function BeforePost() {
-  return (
-    <div className={styles.rule_container}>
-      <div className={styles.rule_title}>
-        投稿を作成する前に確認してください
-      </div>
-      <div className={styles.rule_text}>
-        みな人間であるということを忘れないでください
-      </div>
-      <div className={styles.rule_text}>権力を乱用しないでください</div>
-      <div className={styles.rule_text}>尊重する言語を使用してください</div>
-      <div className={styles.rule_text} style={{ border: 'none' }}>
-        憎悪、差別、犯罪を助長する投稿は作ることはできません
-      </div>
     </div>
   );
 }
@@ -236,38 +196,21 @@ function BeforePost() {
 function ErrorMessage({ error }: { error: ERROR }) {
   return (
     <div className={styles.error_container}>
-      <div className={styles.error_title}>投稿する前に確認してください</div>
+      <div className={styles.error_title}>
+        상품 등록을 하기전에 확인하여주세요
+      </div>
       <div className={styles.error_text_container}>
         {error.emptyTitle && (
-          <div className={styles.error_text}>タイトルが空いています</div>
+          <div className={styles.error_text}>제목이 비어있습니다</div>
         )}
         {error.emptyText && (
-          <div className={styles.error_text}>本文が空いています</div>
+          <div className={styles.error_text}>본문이 비어있습니다</div>
         )}
         {error.tooLongTitle && (
-          <div className={styles.error_text}>
-            タイトルは30文字以下で書いてください
-          </div>
-        )}
-        {error.imageLimit && (
-          <div className={styles.error_text}>
-            投稿には5枚を超える写真を含めることはできません
-          </div>
-        )}
-        {error.audioLimit && (
-          <div className={styles.error_text}>
-            <div className={styles.error_in_text}>
-              投稿には3個を超えるオーディオを含めることはできません
-            </div>
-          </div>
-        )}
-        {error.textLimit && (
-          <div className={styles.error_text}>本文のテキストが多すぎます</div>
+          <div className={styles.error_text}>제목은 30자를 넘지말아주세요.</div>
         )}
         {error.failToSend && (
-          <div className={styles.error_text}>
-            後でもう一度やり直してください
-          </div>
+          <div className={styles.error_text}>글 작성 실패</div>
         )}
       </div>
     </div>
