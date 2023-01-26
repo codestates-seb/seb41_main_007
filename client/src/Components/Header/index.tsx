@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
-import Logo from './Logo';
 import Input from './Input';
 import styles from './Styles/Header.module.css';
 import TopColRight from './TopColRight';
@@ -17,7 +16,12 @@ const Header: FC = () => {
           <Input />
           <div className={styles.Header_Logo_Container}>
             <Link to="/">
-              <Logo width={230} height={230} />
+              <img
+                width={230}
+                height={100}
+                src={'/image/FarmPi.svg'}
+                alt="LOGO"
+              />
             </Link>
           </div>
           <TopColRight />
