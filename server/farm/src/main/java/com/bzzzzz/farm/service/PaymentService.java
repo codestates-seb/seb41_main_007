@@ -21,7 +21,7 @@ public class PaymentService {
 
     @Value("${payment.admin_key}")
     private String admin_key;  //카카오 어플리케이션 어드민 키
-    private final String host = "https://kapi.kakao.com"; // host url
+    private final String host = "https://kapi.kakao.com/v1/payment"; // host url
     private KakaoReadyResponse kakaoReady;
 
     /**
@@ -48,7 +48,7 @@ public class PaymentService {
         RestTemplate restTemplate = new RestTemplate();
 
         kakaoReady = restTemplate.postForObject(
-                host+"/v1/payment/ready", //post 요청 url
+                host+"/ready", //post 요청 url
                 requestEntity,
                 KakaoReadyResponse.class);
 
@@ -75,7 +75,7 @@ public class PaymentService {
         RestTemplate restTemplate = new RestTemplate();
 
         KakaoApproveResponse approveResponse = restTemplate.postForObject(
-                "https://kapi.kakao.com/v1/payment/approve",
+                host+"/approve",
                 requestEntity,
                 KakaoApproveResponse.class);
 
