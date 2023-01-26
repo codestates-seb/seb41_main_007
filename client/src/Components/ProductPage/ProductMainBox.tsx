@@ -101,6 +101,11 @@ interface props {
   data: any;
 }
 
+interface counttype {
+  id: number;
+  price: number;
+  count: number;
+}
 const ProductMainBox: React.FC<props> = ({ data }) => {
   const [count, setCount] = useState<number>(1);
   const dispatch = useAppDispatch();
@@ -150,9 +155,11 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
 
   const onClickBasket = (data: any) => {
     const jsondata: string | null = localStorage.getItem('baskets');
-
     const baskets = JSON.parse(jsondata || '[]') || [];
 
+    const jsondataCounter: string | null =
+      localStorage.getItem('basketsCounter');
+    const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
     let IsSame: boolean = false;
 
     baskets.forEach((el: any) => {
@@ -164,11 +171,20 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
 
       return;
     }
-    dispatch(countset({ id: data.productId, price: data.price, count: 1 }));
+    const datacount: counttype = {
+      id: data.productId,
+      price: data.price,
+      count: count,
+    };
+    console.log(basketsCounter);
+    console.log(datacount);
+    dispatch(countset(datacount));
+    //바로 반영하기위해 사용
     baskets.push(data);
-
+    basketsCounter.push(datacount);
     emptyBasketAlram();
-
+    localStorage.setItem('basketsCounter', JSON.stringify(basketsCounter));
+    //백업용
     localStorage.setItem('baskets', JSON.stringify(baskets));
   };
 
@@ -235,3 +251,4 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
 };
 
 export default ProductMainBox;
+//객체 배열관리

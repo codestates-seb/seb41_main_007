@@ -47,9 +47,6 @@ const Postcode: React.FC<Props> = ({ onSave, data }) => {
     onSave?.('address', addressdata);
   };
 
-  console.log(first, second, third);
-  console.log('김치');
-
   const handleComplete = (data: any) => {
     let fullAddress = data.address;
     let extraAddress = data.zonecode;
@@ -104,9 +101,7 @@ export default Postcode;
 // useEffect(() => {
 //   const value = `(${String(number)}) ${address} (${user})`;
 //   onSave?.('address', value);
-//   console.log('바뀜');
 
-//   console.log('빠이');
 // }, []);
 //데이터가 동시에바뀌면 안됨
 

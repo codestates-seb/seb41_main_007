@@ -123,14 +123,18 @@ interface checkBoxtype {
   el: any;
   handleSingleCheck: (checked: boolean, id: number) => void;
   checkItems: number[];
+  countNumber: number;
 }
 
 const BasketTd: FC<checkBoxtype> = ({
   el,
   handleSingleCheck,
   checkItems,
+  countNumber,
 }): JSX.Element => {
-  const [number, setnumber] = useState<number>(1);
+  const [number, setnumber] = useState<number>(countNumber);
+  console.log(countNumber);
+  console.log(number);
   // const [deleteb, setdeleteb] = useState<any[] | []>([]);
   const dispatch = useAppDispatch();
 
@@ -145,14 +149,20 @@ const BasketTd: FC<checkBoxtype> = ({
   const deleteBasket = (data: any) => {
     const jsondata: string | null = localStorage.getItem('baskets');
     const baskets = JSON.parse(jsondata || '[]') || [];
+    const jsondataCounter: string | null =
+      localStorage.getItem('basketsCounter');
+    const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
     handleSingleCheck(false, data.productId);
 
     const save = baskets.filter((el: any) => {
       return el.productId !== data.productId;
     });
+    const saveCounter = basketsCounter.filter((el: any) => {
+      return el.id !== data.productId;
+    });
 
     dispatch(countDelete({ id: el.productId }));
-
+    localStorage.setItem('basketsCounter', JSON.stringify(saveCounter));
     localStorage.setItem('baskets', JSON.stringify(save));
     // setnumber(0); 스택오버플로우에 올리기
   };
@@ -186,7 +196,7 @@ const BasketTd: FC<checkBoxtype> = ({
       </Tablebody2>
 
       <Tablebody3>
-        <CounterButton2 setnumber={setnumber} />
+        <CounterButton2 setnumber={setnumber} countNumber={countNumber} />
       </Tablebody3>
       <Tablebody4>
         {useNumberComma(el.price * number)}
@@ -208,3 +218,4 @@ const BasketTd: FC<checkBoxtype> = ({
 export default BasketTd;
 
 //성능 생각해서 더 우선시 되는걸 if 앞에 넣음
+//카운트버튼숫자 후버 업데이트 오류났었음

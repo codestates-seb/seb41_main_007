@@ -67,7 +67,6 @@ const ProductPage: React.FC = () => {
 
   if (isLoading) return <Empty />;
   if (error) return <></>;
-  console.log(data);
 
   //리턴 url , 로컬스토리지에 담기
   return (
@@ -122,3 +121,4 @@ export default ProductPage;
 // toast
 // 도트깨짐
 //styled 컴퍼넌트 마지막  두개넣으려면; 차이
+//로컬스토리지에서 카운터관리

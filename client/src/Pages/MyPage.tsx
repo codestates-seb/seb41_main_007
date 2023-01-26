@@ -9,7 +9,7 @@ import Basketfour from 'Components/PaymentPage/Basketfour';
 import TabPanel from 'Components/Mypage/TabPanel';
 import AccordionGroup from 'Components/Mypage/AccordionGroup';
 import MainImage from 'Components/PaymentPage/MainImage';
-import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import DeliveryResult from 'Components/Mypage/DeliveryResult';
 import SessionChecking from 'CustomHook/SessionChecking';
 
 const ShortContainer = styled.div`
@@ -47,8 +47,7 @@ export default function BasicTabs() {
             <AccordionGroup />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <BasketThree></BasketThree>
-            <Basketfour></Basketfour>
+            <DeliveryResult></DeliveryResult>
           </TabPanel>
           <TabPanel value={value} index={2}></TabPanel>
         </Box>

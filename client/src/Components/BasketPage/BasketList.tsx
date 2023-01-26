@@ -130,10 +130,14 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `;
 
+const ControlContainer = styled.div`
+  margin: 0 -200px 0 -170px;
+`;
+
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
-  console.log(resultarr);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const jsondata: string | null = localStorage.getItem('baskets');
@@ -175,6 +179,9 @@ const BasketList: FC = () => {
   };
 
   const deleteAllCheck = () => {
+    const jsondataCounter: string | null =
+      localStorage.getItem('basketsCounter');
+    const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
     // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
     if (checkItems.length === baskets.length) {
       setCheckItems([]);
@@ -183,11 +190,15 @@ const BasketList: FC = () => {
     const deleteSave = baskets.filter((el: any) => {
       return !checkItems.includes(el.productId);
     });
+    const deleteSaveCounter = basketsCounter.filter((el: any) => {
+      return !checkItems.includes(el.id);
+    });
 
     checkItems.forEach((el) => {
       dispatch(countDelete({ id: el }));
     });
 
+    localStorage.setItem('basketsCounter', JSON.stringify(deleteSaveCounter));
     localStorage.setItem('baskets', JSON.stringify(deleteSave));
     setCheckItems([]);
     // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
@@ -247,7 +258,9 @@ const BasketList: FC = () => {
           </TotalPrice>
         </TableBottom>
       </BasketForm>
-      <BestProductSlider></BestProductSlider>
+      <ControlContainer>
+        <BestProductSlider></BestProductSlider>
+      </ControlContainer>
       <ButtonContainer>
         <BuyButton
           onClick={() => navigate('/')}
