@@ -1,20 +1,22 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.model.dto.cart.CartProductPatchDto;
-import com.bzzzzz.farm.model.dto.cart.CartProductPostDto;
-import com.bzzzzz.farm.model.entity.Cart;
 import com.bzzzzz.farm.mapper.CartMapper;
+import com.bzzzzz.farm.model.dto.cart.CartPatchDto;
+import com.bzzzzz.farm.model.dto.cart.CartPostDto;
+import com.bzzzzz.farm.model.entity.Cart;
+import com.bzzzzz.farm.model.entity.Member;
+import com.bzzzzz.farm.model.entity.ProductOption;
 import com.bzzzzz.farm.service.CartService;
-import com.bzzzzz.farm.model.dto.IdRequestDto;
-import com.bzzzzz.farm.model.dto.SingleResponseDto;
+import com.bzzzzz.farm.service.MemberService;
+import com.bzzzzz.farm.service.ProductOptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 @RestController
 @Validated
@@ -23,39 +25,40 @@ import javax.validation.constraints.Positive;
 public class CartController {
     private final CartService cartService;
     private final CartMapper cartMapper;
+    private final MemberService memberService;
+    private final ProductOptionService productOptionService;
 
-    @GetMapping("/{cart-id}")
-    public ResponseEntity getCart(@Positive @PathVariable("cart-id") long cartId) {
-        //Todo: 로그인 관련 기능 들어오면 로그인했는지 확인하는 로직 필요 -> 멤버에서 카트를 가져온다 ?
+    @GetMapping
+    public ResponseEntity getCarts() {
+        List<Cart> carts = cartService.findCartsByMemberId(memberService.getLoginMember().getMemberId());
 
-        Cart cart = cartService.findCart(cartId);
-
-        return new ResponseEntity(cartMapper.cartToCartResponseDto(cart), HttpStatus.OK);
+        return new ResponseEntity(cartMapper.cartsToCartResponseDtos(carts), HttpStatus.OK);
     }
 
-    @PostMapping("/products")
-    public ResponseEntity postCartProduct(@Valid @RequestBody CartProductPostDto cartProductPostDto) {
-        //Todo: 로그인 관련 기능 들어오면 로그인했는지 확인하는 로직 필요
+    @PostMapping
+    public ResponseEntity postCart(@RequestBody CartPostDto cartPostDto) {
+        Member member = memberService.getLoginMember();
+        ProductOption productOption = productOptionService.findVerifiedProductOption(cartPostDto.getProductOptionId());
 
-        cartService.createCartProduct(cartMapper.cartProductPostDtoToCartProduct(cartProductPostDto));
+        cartService.createCartProduct(member, productOption, cartPostDto.getQuantity());
 
-        return new ResponseEntity<>(new SingleResponseDto(cartProductPostDto.getCartId()), HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PatchMapping("/products")
-    public ResponseEntity patchCartProduct(@Valid @RequestBody CartProductPatchDto cartProductPatchDto) {
-        //Todo: 로그인 관련 기능 들어오면 로그인했는지 확인하는 로직 필요
+    @PatchMapping
+    public ResponseEntity patchCartProduct(@RequestBody CartPatchDto cartPatchDto) {
+        cartService.verifyAuthority(cartPatchDto.getCartId(), memberService.getLoginMember().getMemberId());
 
-        cartService.updateCartProduct(cartProductPatchDto.getCartProductId(), cartProductPatchDto.getQuantity());
+        cartService.updateCart(cartPatchDto.getCartId(), cartPatchDto.getQuantity());
 
-        return new ResponseEntity<>(new SingleResponseDto(cartProductPatchDto.getCartId()), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/products")
-    public ResponseEntity deleteCartProduct(@Valid @RequestBody IdRequestDto idRequestDto) {
-        //Todo: 로그인 관련 기능 들어오면 로그인했는지 확인하는 로직 필요
+    @DeleteMapping("/{cart-id}")
+    public ResponseEntity deleteCartProduct(@Positive @PathVariable("cart-id") long cartId) {
+        cartService.verifyAuthority(cartId, memberService.getLoginMember().getMemberId());
 
-        cartService.deleteCartProduct(idRequestDto.getId());
+        cartService.deleteCart(cartId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

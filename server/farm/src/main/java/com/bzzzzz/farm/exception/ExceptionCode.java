@@ -3,6 +3,7 @@ package com.bzzzzz.farm.exception;
 import lombok.Getter;
 
 public enum ExceptionCode {
+    REQUEST_FORBIDDEN(403, "요청에 대한 권한이 없습니다"),
     MEMBER_NOT_FOUND(404, "Member not found"),
     MEMBER_EXISTS(409, "Member exists"),
     NOT_LOGIN(400, "login, please"),

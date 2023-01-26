@@ -9,10 +9,7 @@ import javax.validation.constraints.Positive;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CartProductPatchDto {
-    @Positive
-    private Long cartProductId;
-
+public class CartPatchDto {
     @Positive
     private Long cartId;
 
