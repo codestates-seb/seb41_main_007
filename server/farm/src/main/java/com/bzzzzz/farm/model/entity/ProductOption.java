@@ -22,4 +22,9 @@ public class ProductOption extends Auditable {
     @ManyToOne
     @JoinColumn(name = "PRODUCT_ID")
     private Product product;
+
+    // 편의 메서드
+    public void calculateStock(int quantity) {
+        this.stock += quantity;
+    }
 }

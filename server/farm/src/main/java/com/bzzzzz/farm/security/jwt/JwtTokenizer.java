@@ -45,14 +45,13 @@ public class JwtTokenizer {
         Map<String, String> claims = new HashMap<>();
         claims.put("auth", authorities);
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-        claims.put("email",(String) oAuth2User.getAttributes().get("email"));
         claims.put("name",(String) oAuth2User.getAttributes().get("name"));
         long now = (new Date()).getTime();
 
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         return Jwts.builder()
                 .setClaims(claims)  // JWT에 담는 body
-                .setSubject(authentication.getName())    // JWT 제목 payload "sub": "email"
+                .setSubject((String) oAuth2User.getAttributes().get("email"))    // JWT 제목 payload "sub": "email"
                 .setIssuedAt(Calendar.getInstance().getTime())  // JWT 발행일자 payload "iat": "발행일자"
                 .setExpiration(accessTokenExpiresIn)  // 만료일자 payload "exp": "발행시간 + 1시간"
                 .signWith(getKey(base64EncodedSecretKey))

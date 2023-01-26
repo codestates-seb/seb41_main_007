@@ -85,8 +85,8 @@ public class Product extends Auditable {
 
     public enum ProductStatus {
         PREPARING_FOR_SALE(1, "판매 준비 중"),
-        FOR_SALE(2, "판매 중"),
-        SUSPENSION_OF_SALE(3, "판매 중지");
+        SUSPENSION_OF_SALE(2, "판매 중지"),
+        FOR_SALE(3, "판매 중");
         @Getter
         private Integer code;
         @Getter

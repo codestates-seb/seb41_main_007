@@ -11,7 +11,6 @@ import javax.validation.constraints.Min;
 @Entity
 @Getter
 @Setter
-@Builder
 public class OrderProduct extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -51,7 +50,6 @@ public class OrderProduct extends Auditable {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @Builder.Default
     private OrderStatus orderStatus = OrderStatus.ORDER_RECEIVED;
 
     private String waybillNumber;
@@ -72,5 +70,20 @@ public class OrderProduct extends Auditable {
         ;
         private Integer step;
         private String status;
+    }
+
+    public OrderProduct() {
+    }
+
+    @Builder
+    public OrderProduct(Product product, ProductOption productOption, Integer quantity, Integer productPrice, Integer productOptionPrice, Product.ShippingCountry shippingCountry, Product.ShippingMethod shippingMethod, Integer shippingPrice) {
+        this.product = product;
+        this.productOption = productOption;
+        this.quantity = quantity;
+        this.productPrice = productPrice;
+        this.productOptionPrice = productOptionPrice;
+        this.shippingCountry = shippingCountry;
+        this.shippingMethod = shippingMethod;
+        this.shippingPrice = shippingPrice;
     }
 }

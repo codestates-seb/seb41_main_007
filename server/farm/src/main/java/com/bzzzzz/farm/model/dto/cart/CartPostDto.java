@@ -1,6 +1,5 @@
 package com.bzzzzz.farm.model.dto.cart;
 
-import com.bzzzzz.farm.model.entity.Cart;
 import com.bzzzzz.farm.model.entity.ProductOption;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,9 +10,10 @@ import javax.validation.constraints.Positive;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartProductPostDto {
-    @Positive
-    private Long cartId;
+public class CartPostDto {
+//    @Positive
+//    @Setter
+//    private Long memberId;
 
     @Positive
     private Long productOptionId;
@@ -22,11 +22,11 @@ public class CartProductPostDto {
     private int quantity;
 
     // 편의 메서드
-    public Cart getCart() {
-        Cart cart = new Cart();
-        cart.setCartId(cartId);
-        return cart;
-    }
+//    public Member getMember() {
+//        Member member = new Member();
+//        member.setMemberId(memberId);
+//        return member;
+//    }
 
     public ProductOption getProductOption() {
         ProductOption productOption = new ProductOption();

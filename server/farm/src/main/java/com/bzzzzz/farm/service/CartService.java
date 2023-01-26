@@ -1,15 +1,16 @@
 package com.bzzzzz.farm.service;
 
-import com.bzzzzz.farm.model.entity.Cart;
-import com.bzzzzz.farm.model.entity.CartProduct;
-import com.bzzzzz.farm.repository.CartProductRepository;
-import com.bzzzzz.farm.repository.CartRepository;
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
+import com.bzzzzz.farm.model.entity.Cart;
+import com.bzzzzz.farm.model.entity.Member;
+import com.bzzzzz.farm.model.entity.ProductOption;
+import com.bzzzzz.farm.repository.CartRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,52 +18,56 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CartService {
     private final CartRepository cartRepository;
-    private final CartProductRepository cartProductRepository;
+
+    public Cart createCartProduct(Member member, ProductOption productOption, int quantity) {
+        Optional<Cart> optionalCart = cartRepository.findByMemberAndProductOption(member, productOption);
+
+        return optionalCart.isPresent()
+                ? updateCart(optionalCart.get().getCartId(), quantity)
+                : cartRepository.save(Cart
+                .builder()
+                .member(member)
+                .productOption(productOption)
+                .quantity(quantity)
+                .build());
+    }
+
+    public Cart updateCart(long cartId, Integer quantity) {
+        Cart findCart = findVerifiedCart(cartId);
+
+        findCart.calculateQuantity(quantity); // 장바구니 수정항목이 추가 되면 옵셔널로 변경하시오
+
+        if (findCart.getQuantity() <= 0) {
+            deleteCart(findCart.getCartId());
+            return null;
+        }
+        return findCart;
+    }
 
     @Transactional(readOnly = true)
-    public Cart findCart(long cartId) {
-        return findVerifiedCart(cartId);
+    public List<Cart> findCartsByMemberId(long memberId) {
+        return cartRepository.findAllByMember_MemberId(memberId);
     }
 
-    public void createCartProduct(CartProduct cartProduct) {
-        Optional<CartProduct> optionalCartProduct = cartProductRepository.findByCartAndProductOption(cartProduct.getCart(), cartProduct.getProductOption());
-
-        if (optionalCartProduct.isPresent()) {
-            updateCartProduct(optionalCartProduct.get().getCartProductId(), cartProduct.getQuantity());
-        } else {
-            cartProductRepository.save(cartProduct);
-        }
-    }
-
-    public void updateCartProduct(long cartProductId, Integer quantity) {
-        CartProduct findCartProduct = findVerifiedCartProduct(cartProductId);
-
-        // Optional.ofNullable(quantity).ifPresent(data -> findCartProduct.calculateQuantity(data));
-        findCartProduct.calculateQuantity(quantity); // 장바구니 수정항목이 추가 되면 옵셔널로 변경하시오
-
-        if (findCartProduct.getQuantity() <= 0) {
-            deleteCartProduct(findCartProduct.getCartProductId());
-        }
-    }
-
-    public void deleteCartProduct(long cartProductId) {
-        CartProduct cartProduct = findVerifiedCartProduct(cartProductId);
-
-        cartProductRepository.delete(cartProduct);
+    public void deleteCart(long cartId) {
+        Cart cart = findVerifiedCart(cartId);
+        cartRepository.delete(cart);
     }
 
     /**
      * 서브 메서드
      */
     @Transactional(readOnly = true)
-    private Cart findVerifiedCart(long cartId) {
-        Optional<Cart> optionalCart = cartRepository.findById(cartId);
-        return optionalCart.orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
+    private Cart findVerifiedCart(long cartProductId) {
+        Optional<Cart> optionalCartProduct = cartRepository.findById(cartProductId);
+        return optionalCartProduct.orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
-    private CartProduct findVerifiedCartProduct(long cartProductId) {
-        Optional<CartProduct> optionalCartProduct = cartProductRepository.findById(cartProductId);
-        return optionalCartProduct.orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_PRODUCT_NOT_FOUND));
+    public void verifyAuthority(long cartId, long memberId) {
+        Cart cart = findVerifiedCart(cartId);
+        if (cart.getMember().getMemberId() != memberId) {
+            throw new BusinessLogicException(ExceptionCode.REQUEST_FORBIDDEN);
+        }
     }
 }
