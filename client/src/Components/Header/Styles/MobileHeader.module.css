@@ -12,7 +12,11 @@
 }
 
 .Mobile_Header_Logo_Container {
-  padding-right: 10px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .MobileHeader_Input_SearchIcon {

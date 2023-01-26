@@ -18,9 +18,11 @@
 }
 
 .Header_Logo_Container {
+  height: 100px;
   display: flex;
   align-items: center;
-  padding-top: 20px;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .Header_Button_Container {
