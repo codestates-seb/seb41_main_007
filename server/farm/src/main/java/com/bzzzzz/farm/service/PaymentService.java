@@ -27,10 +27,10 @@ public class PaymentService {
     /**
      결제요청
      **/
-    public KakaoReadyResponse kakaoPayReady(int price){
+    public KakaoReadyResponse kakaoPayReady(int orderId, int price){
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
-        parameters.add("partner_order_id", "가맹점 주문 번호");
+        parameters.add("partner_order_id", orderId);
         parameters.add("partner_user_id", "가맹점 회원 ID");
         parameters.add("item_name", "상품명");
         parameters.add("quantity", 1);
