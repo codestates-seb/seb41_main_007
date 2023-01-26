@@ -102,12 +102,6 @@ export default function RichText({ value, setValue }: IProps) {
         value={value}
         onChange={(value) => setValue(value)}
       >
-        <LinkToolTip
-          isOpen={isOpen}
-          open={openToolTip}
-          close={closeToolTip}
-          editorPosition={editorPosition}
-        />
         <YoutubeToolTip
           close={closeYotubeToolTip}
           isOpen={isOpenYoutube}
@@ -302,7 +296,6 @@ const withFile = (editor: Editor) => {
 const withLink = (editor: Editor) => {
   const { insertData, insertText, isInline, isVoid } = editor;
   editor.isVoid = (element) => element.type === 'youtube' || isVoid(element);
-  editor.isInline = (element) => element.type === 'link' || isInline(element);
   editor.insertData = (data) => {
     const text = data.getData('text/plain');
     if (text && isUrl(text)) {
@@ -314,29 +307,13 @@ const withLink = (editor: Editor) => {
           children: [{ text: '' }],
         };
         Transforms.insertNodes(editor, youtubeElement);
-      } else {
-        const linkElement: LinkElement = {
-          type: 'link',
-          url: text,
-          children: [{ text: text }],
-        };
-        Transforms.insertNodes(editor, linkElement);
       }
     } else {
       insertData(data);
     }
   };
   editor.insertText = (text) => {
-    if (text && isUrl(text)) {
-      const linkElement: LinkElement = {
-        type: 'link',
-        url: text,
-        children: [{ text: text }],
-      };
-      Transforms.insertNodes(editor, linkElement);
-    } else {
-      insertText(text);
-    }
+    insertText(text);
   };
   return editor;
 };
