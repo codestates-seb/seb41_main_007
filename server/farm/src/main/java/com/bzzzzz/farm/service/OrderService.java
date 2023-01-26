@@ -52,6 +52,10 @@ public class OrderService {
         return order;
     }
 
+    public Order findOrder(long orderId) {
+        return findVerifiedOrder(orderId);
+    }
+
     /**
      * 서브 메서드
      */

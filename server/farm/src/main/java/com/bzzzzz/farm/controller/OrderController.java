@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @RestController
 @Validated
@@ -31,7 +32,9 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity postOrder(@Valid @RequestBody OrderPostDto orderPostDto) {
-//        orderPostDto.setMemberId(memberService.getLoginMember().getMemberId());
+        // 로그인 정보 받아오는 부분
+        orderPostDto.setMemberId(memberService.getLoginMember().getMemberId());
+
         orderPostDto.getOrderProductPostDtos().stream()
                 .forEach(orderProductPostDto -> orderProductPostDto
                         .setProductOption(
@@ -60,6 +63,14 @@ public class OrderController {
         orderService.updateOrder(orderPatchDto);
 
         return new ResponseEntity(new SingleResponseDto(orderPatchDto.getOrderId()), HttpStatus.OK);
+    }
+
+    @GetMapping("/{order-id}")
+    public ResponseEntity getOrder(@Positive @PathVariable("order-id") long orderId) {
+
+        Order order = orderService.findOrder(orderId);
+
+        return new ResponseEntity(orderMapper.orderToOrderResponseDto(order), HttpStatus.OK);
     }
 
     @GetMapping("/parcels/{waybill-number}")
