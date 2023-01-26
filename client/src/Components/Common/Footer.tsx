@@ -144,7 +144,11 @@ const Footer = () => {
             </div>
 
             <button className=" hover:bg-gray-600">
-              <a href="https://www.cjlogistics.com/ko/tool/parcel/tracking">
+              <a
+                href="https://www.cjlogistics.com/ko/tool/parcel/tracking"
+                target="_blank"
+                rel="noreferrer"
+              >
                 배송조회 하기(CJ 대한통운 1588-1255)
               </a>
             </button>

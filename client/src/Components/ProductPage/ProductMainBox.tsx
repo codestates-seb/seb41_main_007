@@ -9,6 +9,7 @@ import BuyButton from 'Components/Common/BuyButton';
 import { useState } from 'react';
 import { useAppDispatch } from 'Redux/app/hook';
 import { countset } from 'Redux/reducer/priceSlice';
+import { useNavigate } from 'react-router-dom';
 
 const ProductMain = styled.div`
   margin: 0 auto 50px auto;
@@ -103,6 +104,7 @@ interface props {
 const ProductMainBox: React.FC<props> = ({ data }) => {
   const [count, setCount] = useState<number>(1);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);
@@ -218,7 +220,11 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
           />
           {/* Same as */}
           <ToastContainer />
-          <BuyButton background="var(--greenlogo);" color="var(--bg-white-05)">
+          <BuyButton
+            background="var(--greenlogo);"
+            color="var(--bg-white-05)"
+            onClick={() => navigate('/basket')}
+          >
             결제하기
           </BuyButton>
         </ProductBox>

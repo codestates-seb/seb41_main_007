@@ -32,9 +32,16 @@ const LoginRequired = () => {
         <li className={styles.Nav_Menu1}>로그인</li>
       </Link>
       <li className={styles.Nav_Menu1}> |</li>
-      <Link to="/signup">
-        <li className={styles.Nav_Menu1}>회원가입</li>
-      </Link>
+
+      <li className={styles.Nav_Menu1}>
+        <a
+          href="https://github.com/codestates-seb/seb41_main_007"
+          target="_blank"
+          rel="noreferrer"
+        >
+          회사소개
+        </a>
+      </li>
     </ul>
   );
 };

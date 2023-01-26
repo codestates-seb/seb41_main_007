@@ -1,4 +1,3 @@
-import { BGcontainer } from 'Components/Common/BGcontainer';
 import { useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -10,7 +9,8 @@ import Basketfour from 'Components/PaymentPage/Basketfour';
 import TabPanel from 'Components/Mypage/TabPanel';
 import AccordionGroup from 'Components/Mypage/AccordionGroup';
 import MainImage from 'Components/PaymentPage/MainImage';
-import CustomTitle from 'Components/Header/CustomTitle';
+
+import SessionChecking from 'CustomHook/SessionChecking';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -21,6 +21,7 @@ const ShortContainer = styled.div`
 export default function BasicTabs() {
   const [value, setValue] = useState<number>(0);
 
+  SessionChecking();
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -54,3 +55,4 @@ export default function BasicTabs() {
     </div>
   );
 }
+//네비게이션 오류 -> href

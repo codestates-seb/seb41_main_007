@@ -10,6 +10,7 @@ import ProductMainBox from 'Components/ProductPage/ProductMainBox';
 import ProductDetailBox from 'Components/ProductPage/productDetailBox';
 import CategoryList from 'Components/Common/CategoryList';
 import TabPanel from 'Components/Mypage/TabPanel';
+import BestProductSlider from 'Components/BestProductSlider';
 
 const ProductContainer = styled.div`
   margin: 120px auto 120px auto;
@@ -75,6 +76,7 @@ const ProductPage: React.FC = () => {
       <ProductContainer>
         <ProductMenuTitle />
         <ProductMainBox data={data}></ProductMainBox>
+
         <div className="mt-24  ">
           <div className="relative select border-solid border-b-2">
             <div className="absolute left-0 top-0">
