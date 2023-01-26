@@ -27,7 +27,7 @@ public class PaymentService {
     /**
      결제요청
      **/
-    public KakaoReadyResponse kakaoPayReady(int orderId, int price){
+    public KakaoReadyResponse kakaoPayReady(long orderId, int price){
         MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
         parameters.add("cid", cid);
         parameters.add("partner_order_id", orderId);
@@ -37,7 +37,7 @@ public class PaymentService {
         parameters.add("total_amount", price);
         parameters.add("vat_amount", 0);
         parameters.add("tax_free_amount", 0);
-        parameters.add("approval_url", "http://localhost:8080/payment/success"); // 성공 시 redirect url
+        parameters.add("approval_url", "http://localhost:8080/payment/success?order_id="+orderId); // 성공 시 redirect url
         parameters.add("cancel_url", "http://localhost:8080/payment/cancel"); // 취소 시 redirect url
         parameters.add("fail_url", "http://localhost:8080/payment/fail"); // 실패 시 redirect url
 
