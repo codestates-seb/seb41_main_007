@@ -2,6 +2,7 @@ package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.exception.BusinessLogicException;
 import com.bzzzzz.farm.exception.ExceptionCode;
+import com.bzzzzz.farm.model.dto.order.OrderPatchDto;
 import com.bzzzzz.farm.model.entity.Order;
 import com.bzzzzz.farm.model.entity.OrderProduct;
 import com.bzzzzz.farm.repository.OrderRepository;
@@ -25,18 +26,30 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-    public void cancelOrder(long orderId) {
+    public void cancelOrder(long orderId) { // 사용자가 주문을 취소
         Order order = findVerifiedOrder(orderId);
         order.getOrderProducts().stream()
-                .forEach(orderProduct -> {
-                    if (orderProduct.getOrderStatus().getStep() > 3) {
-                        throw new BusinessLogicException(ExceptionCode.CAN_NOT_CANCEL_ORDER);
-                    }
-                    orderProduct.setOrderStatus(OrderProduct.OrderStatus.CANCEL);
+                .forEach(orderProduct -> verifyCancelOrder(orderProduct));
+    }
 
-                    orderProduct.getProductOption().calculateStock(orderProduct.getQuantity());
-                });
+    public Order updateOrder(OrderPatchDto orderPatchDto) { // 어드민이 주문상태를 변경
+        Order order = findVerifiedOrder(orderPatchDto.getOrderId());
 
+        Optional.ofNullable(orderPatchDto.getPaymentMethod()).ifPresent(data -> order.setPaymentMethod(data));
+        Optional.ofNullable(orderPatchDto.getPaymentStatus()).ifPresent(data -> {
+            order.setPaymentStatus(data);
+
+            if (data == Order.PaymentStatus.COMPLETED) {
+                order.getOrderProducts().stream()
+                        .forEach(orderProduct -> orderProduct.setOrderStatus(OrderProduct.OrderStatus.PAYMENT_COMPLETED));
+            }
+            if (data == Order.PaymentStatus.CANCEL) {
+                order.getOrderProducts().stream()
+                        .forEach(orderProduct -> verifyCancelOrder(orderProduct));
+            }
+        });
+
+        return order;
     }
 
     /**
@@ -60,5 +73,14 @@ public class OrderService {
     private Order findVerifiedOrder(long orderId) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         return optionalOrder.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
+    }
+
+    private void verifyCancelOrder(OrderProduct orderProduct) {
+        if (orderProduct.getOrderStatus().getStep() > 3) {
+            throw new BusinessLogicException(ExceptionCode.CAN_NOT_CANCEL_ORDER);
+        }
+        orderProduct.setOrderStatus(OrderProduct.OrderStatus.CANCEL);
+
+        orderProduct.getProductOption().calculateStock(orderProduct.getQuantity());
     }
 }

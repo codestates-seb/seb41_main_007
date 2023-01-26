@@ -4,6 +4,7 @@ import com.bzzzzz.farm.config.ParcelTrackingConfig;
 import com.bzzzzz.farm.mapper.OrderMapper;
 import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.SingleResponseDto;
+import com.bzzzzz.farm.model.dto.order.OrderPatchDto;
 import com.bzzzzz.farm.model.dto.order.OrderPostDto;
 import com.bzzzzz.farm.model.entity.Order;
 import com.bzzzzz.farm.service.MemberService;
@@ -42,13 +43,23 @@ public class OrderController {
         return new ResponseEntity(new SingleResponseDto(order.getOrderId()), HttpStatus.CREATED);
     }
 
-    @PatchMapping
+    @DeleteMapping
     public ResponseEntity cancelOrder(@Valid @RequestBody IdRequestDto idRequestDto) {
+        // 사용자가 주문을 취소
 //        orderPostDto.setMemberId(memberService.getLoginMember().getMemberId());
 
         orderService.cancelOrder(idRequestDto.getId());
 
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @PatchMapping
+    public ResponseEntity patchOrder(@Valid @RequestBody OrderPatchDto orderPatchDto) {
+        // 어드민이 주문상태를 취소 및 변경
+
+        orderService.updateOrder(orderPatchDto);
+
+        return new ResponseEntity(new SingleResponseDto(orderPatchDto.getOrderId()), HttpStatus.OK);
     }
 
     @GetMapping("/parcels/{waybill-number}")
