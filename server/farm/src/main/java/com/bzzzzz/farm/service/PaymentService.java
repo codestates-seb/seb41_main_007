@@ -22,6 +22,9 @@ public class PaymentService {
     @Value("${payment.admin_key}")
     private String admin_key;  //카카오 어플리케이션 어드민 키
     private final String host = "https://kapi.kakao.com/v1/payment"; // host url
+
+    @Value("${payment.url}")
+    private String redirectUrl;
     private KakaoReadyResponse kakaoReady;
 
     /**
@@ -37,9 +40,9 @@ public class PaymentService {
         parameters.add("total_amount", price);
         parameters.add("vat_amount", 0);
         parameters.add("tax_free_amount", 0);
-        parameters.add("approval_url", "http://localhost:8080/payment/success?order_id="+orderId); // 성공 시 redirect url
-        parameters.add("cancel_url", "http://localhost:8080/payment/cancel"); // 취소 시 redirect url
-        parameters.add("fail_url", "http://localhost:8080/payment/fail"); // 실패 시 redirect url
+        parameters.add("approval_url", redirectUrl+"/payment/success?order_id="+orderId); // 성공 시 redirect url
+        parameters.add("cancel_url", redirectUrl+"/payment/cancel"); // 취소 시 redirect url
+        parameters.add("fail_url", redirectUrl+"/payment/fail"); // 실패 시 redirect url
 
         // 파라미터, 헤더
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
