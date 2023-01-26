@@ -49,12 +49,11 @@ const LoginRequired = () => {
 const TopColRight: FC = () => {
   const jsondata: string | null = localStorage.getItem('baskets');
   const basketresult = JSON.parse(jsondata || '[]');
-  const [basketbox, setbasetbox] = useState(basketresult);
+  const [basketbox, setbasketbox] = useState('');
+  useEffect(() => {}, [basketresult]);
   const { session, loading } = useSession();
+
   if (loading) return <></>;
-  useEffect(() => {
-    setbasetbox(basketresult);
-  }, [basketresult]);
 
   return (
     <div className={styles.Nav_All_Container}>
