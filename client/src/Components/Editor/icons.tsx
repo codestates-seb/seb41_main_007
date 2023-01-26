@@ -133,58 +133,7 @@ export function Quote({
     </svg>
   );
 }
-export function NumberedList({
-  active,
-  disabled,
-}: {
-  active: boolean;
-  disabled: boolean;
-}) {
-  return (
-    <svg
-      width="30"
-      height="30"
-      viewBox="0 0 30 30"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        className={cx(
-          'svg',
-          { svg_active: active },
-          { svg_disabled: disabled },
-        )}
-        d="M2.5 21.25H5V21.875H3.75V23.125H5V23.75H2.5V25H6.25V20H2.5V21.25ZM3.75 10H5V5H2.5V6.25H3.75V10ZM2.5 13.75H4.75L2.5 16.375V17.5H6.25V16.25H4L6.25 13.625V12.5H2.5V13.75ZM8.75 6.25V8.75H26.25V6.25H8.75ZM8.75 23.75H26.25V21.25H8.75V23.75ZM8.75 16.25H26.25V13.75H8.75V16.25Z"
-      />
-    </svg>
-  );
-}
-export function BulletedList({
-  active,
-  disabled,
-}: {
-  active: boolean;
-  disabled: boolean;
-}) {
-  return (
-    <svg
-      width="30"
-      height="30"
-      viewBox="0 0 30 30"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        className={cx(
-          'svg',
-          { svg_active: active },
-          { svg_disabled: disabled },
-        )}
-        d="M5 13.125C3.9625 13.125 3.125 13.9625 3.125 15C3.125 16.0375 3.9625 16.875 5 16.875C6.0375 16.875 6.875 16.0375 6.875 15C6.875 13.9625 6.0375 13.125 5 13.125ZM5 5.625C3.9625 5.625 3.125 6.4625 3.125 7.5C3.125 8.5375 3.9625 9.375 5 9.375C6.0375 9.375 6.875 8.5375 6.875 7.5C6.875 6.4625 6.0375 5.625 5 5.625ZM5 20.625C3.9625 20.625 3.125 21.475 3.125 22.5C3.125 23.525 3.975 24.375 5 24.375C6.025 24.375 6.875 23.525 6.875 22.5C6.875 21.475 6.0375 20.625 5 20.625ZM8.75 23.75H26.25V21.25H8.75V23.75ZM8.75 16.25H26.25V13.75H8.75V16.25ZM8.75 6.25V8.75H26.25V6.25H8.75Z"
-      />
-    </svg>
-  );
-}
+
 export function Link({ disabled }: { disabled: boolean }) {
   return (
     <svg
@@ -237,22 +186,7 @@ export function Youtube({ disabled }: { disabled: boolean }) {
     </svg>
   );
 }
-export function Audio({ disabled }: { disabled: boolean }) {
-  return (
-    <svg
-      width="30"
-      height="30"
-      viewBox="0 0 30 30"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        className={cx('svg', { svg_disabled: disabled })}
-        d="M22.5 5H7.5C6.125 5 5 6.125 5 7.5V22.5C5 23.875 6.125 25 7.5 25H22.5C23.875 25 25 23.875 25 22.5V7.5C25 6.125 23.875 5 22.5 5ZM20 13L16.25 11.25V18.125C16.25 19.85 14.85 21.25 13.125 21.25C11.4 21.25 10 19.85 10 18.125C10 16.4 11.4 15 13.125 15C13.8375 15 13.975 15.1 14.5 15.5V8.5L20 11.25V13Z"
-      />
-    </svg>
-  );
-}
+
 export function Delete() {
   return (
     <svg

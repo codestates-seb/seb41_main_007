@@ -23,12 +23,9 @@ import {
   Spoiler,
   Heading,
   Quote,
-  BulletedList,
-  NumberedList,
   Link,
   Image as ImageIcon,
   Youtube,
-  Audio,
 } from './icons';
 import LinkToolTip from './LinkToolTip';
 import YoutubeToolTip from './YoutubeToolTip';
@@ -36,20 +33,14 @@ import Tooltip from '../Common/Tooltip';
 
 import {
   ImageElement,
-  VideoElement,
-  AudioElement,
   LinkElement,
   YoutubeElement,
   Descendant,
 } from '../../Types/slate';
 
 type MARK = 'bold' | 'strikethrough' | 'spoiler' | 'select';
-type BLOCK =
-  | 'paragraph'
-  | 'heading'
-  | 'numbered-list'
-  | 'block-quote'
-  | 'bulleted-list';
+type BLOCK = 'paragraph' | 'heading' | 'block-quote';
+
 const LIST = ['bulleted-list', 'numbered-list'];
 const BLOCK = ['heading', 'numbered-list', 'block-quote', 'bulleted-list'];
 const VOIDELEMENT = ['image', 'video', 'audio'];
@@ -72,6 +63,7 @@ interface IProps {
   value: Descendant[];
   setValue: (value: Descendant[]) => void;
 }
+
 export default function RichText({ value, setValue }: IProps) {
   const [isFocused, setIsFocused] = useState<boolean>(true);
   const renderElement = useCallback((props: any) => <Element {...props} />, []);
@@ -128,11 +120,6 @@ export default function RichText({ value, setValue }: IProps) {
           <StrikethroughButton />
           <SpoilerButton />
           <LinkButton open={openToolTip} />
-          <Wall />
-          <HeadingButton />
-          <BlockQuoteButton />
-          <BulletedListButton />
-          <NumberedListButton />
           <Wall />
           <FileButton />
           <YoutubeButton open={openYotubeToolTip} />
@@ -278,44 +265,10 @@ async function handlerCompresstion(editor: Editor, file: File) {
   }
 }
 
-async function handlerMakeThumbnail(file: File) {
-  const generateVideoThumbnail = async (file: File) => {
-    return new Promise(async (resolve) => {
-      const canvas = document.createElement('canvas');
-      const video = document.createElement('video');
-      video.autoplay = true;
-      video.muted = true;
-      video.src = URL.createObjectURL(file);
-      video.onloadeddata = async () => {
-        let ctx = canvas.getContext('2d');
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        ctx?.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
-        video.pause();
-        canvas.toBlob(
-          async function (data: any) {
-            // 여기서 이미지 보냈다가 받아옴
-            // const res = await videoImage(data);
-            // return resolve(res);
-          },
-          'image/webp',
-          0.95,
-        );
-      };
-    });
-  };
-  const data = await generateVideoThumbnail(file);
-  return data === 'data:,' ? null : data;
-}
-
 const withFile = (editor: Editor) => {
   const { insertData, isVoid } = editor;
   editor.isVoid = (element) => {
-    return element.type === 'video' ||
-      element.type === 'image' ||
-      element.type === 'audio'
-      ? true
-      : isVoid(element);
+    return element.type === 'image' ? true : isVoid(element);
   };
   editor.insertData = (data) => {
     const { files } = data;
@@ -330,33 +283,9 @@ const withFile = (editor: Editor) => {
               toast.error('画像サイズは10MB未満にする必要がおります');
             }
           } else if (fileType[0] === 'video') {
-            if (file.size <= 20000000) {
-              handlerMakeThumbnail(file).then((value) => {
-                if (value) {
-                  const reader = new FileReader();
-                  reader.onload = async function (e: any) {
-                    const url = e.target.result;
-                    insertVideo(editor, url, value as string);
-                  };
-                  reader.readAsDataURL(file);
-                } else {
-                  toast.error('この動画ファイルはアップロードできません');
-                }
-              });
-            } else {
-              toast.error('動画サイズは20MB未満にする必要がおります');
-            }
+            toast.error('비디오는 불가능합니다');
           } else if (file.type.split('/')[0] === 'audio') {
-            if (file.size <= 10000000) {
-              const reader = new FileReader();
-              reader.onload = function (e: any) {
-                const url = e.target.result;
-                insertAudio(editor, url);
-              };
-              reader.readAsDataURL(file);
-            } else {
-              toast.error('オーディオは10MB未満にする必要がおります');
-            }
+            toast.error('오디오는 불가합니다');
           }
         } else {
           toast.error(
@@ -432,23 +361,6 @@ const insertImage = (
   Transforms.insertNodes(editor, image, { mode: 'highest' });
 };
 
-const insertVideo = (editor: Editor, url: string, thumnail: string) => {
-  const text = { text: '' };
-  const video: VideoElement = {
-    type: 'video',
-    url,
-    thumnail: thumnail,
-    children: [text],
-  };
-  Transforms.insertNodes(editor, video, { mode: 'highest' });
-};
-
-const insertAudio = (editor: Editor, url: string) => {
-  const text = { text: '' };
-  const audio: AudioElement = { type: 'audio', url, children: [text] };
-  Transforms.insertNodes(editor, audio, { mode: 'highest' });
-};
-
 function toggleMark(editor: Editor, format: MARK) {
   const isActive = isMarkActive(editor, format);
   if (isActive) {
@@ -503,6 +415,7 @@ function isVoidActive(editor: Editor) {
   });
   return !!match;
 }
+
 function isListActive(editor: Editor) {
   const { selection } = editor;
   if (!selection) return false;
@@ -564,7 +477,7 @@ function SpoilerButton() {
         toggleMark(editor, 'spoiler');
       }}
     >
-      <Tooltip arrow content="ネタバレ" delay={370}>
+      <Tooltip arrow content="카테고리" delay={370}>
         <Spoiler disabled={disabled} active={isMarkActive(editor, 'spoiler')} />
       </Tooltip>
     </button>
@@ -574,8 +487,6 @@ function LinkButton({ open }: { open: () => void }) {
   const editor = useSlate();
   const disabled = isVoidActive(editor);
   const disabledHeading = isBlockActive(editor, 'heading');
-  const disabledNumberedList = isBlockActive(editor, 'numbered-list');
-  const disabledBulletedList = isBlockActive(editor, 'bulleted-list');
   const disabledBlockQuote = isBlockActive(editor, 'block-quote');
   function beforeOpen() {
     if (editor.selection && Range.isCollapsed(editor.selection)) {
@@ -650,12 +561,7 @@ function LinkButton({ open }: { open: () => void }) {
     <button
       className={styles.button}
       disabled={
-        disabled ||
-        multiLine() ||
-        disabledBlockQuote ||
-        disabledBulletedList ||
-        disabledNumberedList ||
-        disabledHeading
+        disabled || multiLine() || disabledBlockQuote || disabledHeading
       }
       onClick={(e) => {
         e.preventDefault();
@@ -666,12 +572,7 @@ function LinkButton({ open }: { open: () => void }) {
       <Tooltip arrow content="リンク" delay={370}>
         <Link
           disabled={
-            disabled ||
-            multiLine() ||
-            disabledBlockQuote ||
-            disabledBulletedList ||
-            disabledNumberedList ||
-            disabledHeading
+            disabled || multiLine() || disabledBlockQuote || disabledHeading
           }
         />
       </Tooltip>
@@ -720,50 +621,6 @@ function BlockQuoteButton() {
     </button>
   );
 }
-function BulletedListButton() {
-  const editor = useSlate();
-  const disabled = isVoidActive(editor);
-  return (
-    <button
-      className={styles.button}
-      disabled={disabled}
-      onMouseDown={(e) => {
-        e.preventDefault();
-        toggleBlock(editor, 'bulleted-list');
-      }}
-    >
-      <Tooltip arrow content="箇条書きリスト" delay={370}>
-        <BulletedList
-          disabled={disabled}
-          active={isBlockActive(editor, 'bulleted-list')}
-        />
-      </Tooltip>
-    </button>
-  );
-}
-
-function NumberedListButton() {
-  const editor = useSlate();
-  const disabled = isVoidActive(editor);
-
-  return (
-    <button
-      className={styles.button}
-      disabled={disabled}
-      onMouseDown={(e) => {
-        e.preventDefault();
-        toggleBlock(editor, 'numbered-list');
-      }}
-    >
-      <Tooltip arrow content="番号付きリスト" delay={370}>
-        <NumberedList
-          disabled={disabled}
-          active={isBlockActive(editor, 'numbered-list')}
-        />
-      </Tooltip>
-    </button>
-  );
-}
 
 function FileButton() {
   const editor = useSlate();
@@ -782,33 +639,9 @@ function FileButton() {
               toast.error('画像サイズは10MB未満にする必要がおります');
             }
           } else if (fileType[0] === 'video') {
-            if (file.size <= 20000000) {
-              handlerMakeThumbnail(file).then((value) => {
-                if (value) {
-                  const reader = new FileReader();
-                  reader.onload = async function (e: any) {
-                    const url = e.target.result;
-                    insertVideo(editor, url, value as string);
-                  };
-                  reader.readAsDataURL(file);
-                } else {
-                  toast.error('この動画ファイルはアップロードできません');
-                }
-              });
-            } else {
-              toast.error('動画サイズは20MB未満にする必要がおります');
-            }
+            toast.error('비디오는 불가합니다');
           } else if (file.type.split('/')[0] === 'audio') {
-            if (file.size <= 10000000) {
-              const reader = new FileReader();
-              reader.onload = function (e: any) {
-                const url = e.target.result;
-                insertAudio(editor, url);
-              };
-              reader.readAsDataURL(file);
-            } else {
-              toast.error('オーディオサイズは10MB未満にする必要がおります');
-            }
+            toast.error('오디오는 불가합니다');
           }
         } else {
           toast.error(

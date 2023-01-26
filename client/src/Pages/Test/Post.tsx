@@ -146,12 +146,12 @@ export default function Page() {
               {spoiler ? (
                 <>
                   <Checked />
-                  <span style={{ marginLeft: 12 }}>ネタバレ</span>
+                  <span style={{ marginLeft: 12 }}>카테고리</span>
                 </>
               ) : (
                 <>
                   <Plus />
-                  <span style={{ marginLeft: 12 }}>ネタバレ</span>
+                  <span style={{ marginLeft: 12 }}>카테고리</span>
                 </>
               )}
             </button>
