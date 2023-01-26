@@ -6,6 +6,7 @@ import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,9 +51,11 @@ public class MemberService {
     //로그인한 회원정보 가져오기
     public Member getLoginMember(){
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();  //SecurityContextHolder에서 회원정보 가져오기
-        Optional<Member> optionalMember = memberRepository.findByEmail(principal.toString());
+        UserDetails userDetails = (UserDetails)principal;
+        Optional<Member> optionalMember = memberRepository.findByEmail(userDetails.getUsername());
+
         if (optionalMember.isPresent()) return optionalMember.get();
-        else return null;
+        else throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
     }
 
     @Transactional(readOnly = true)
