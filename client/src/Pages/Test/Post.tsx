@@ -4,7 +4,6 @@ import { Descendant } from 'Types/slate';
 import styles from './Styles/index.module.css';
 import classNames from 'classnames/bind';
 import { useState, useCallback, useEffect } from 'react';
-import { toast } from 'react-toastify';
 
 import produce from 'immer';
 import { Node } from 'slate';

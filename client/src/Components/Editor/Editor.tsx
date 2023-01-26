@@ -10,7 +10,6 @@ import {
   createEditor,
   Range,
   Element as SlateElement,
-  Point,
 } from 'slate';
 import { withHistory } from 'slate-history';
 import isUrl from 'is-url';
@@ -21,37 +20,21 @@ import {
   Bold,
   Strikethrough,
   Spoiler,
-  Link,
   Image as ImageIcon,
   Youtube,
 } from './icons';
-import LinkToolTip from './LinkToolTip';
 import YoutubeToolTip from './YoutubeToolTip';
 import Tooltip from '../Common/Tooltip';
 
-import {
-  ImageElement,
-  LinkElement,
-  YoutubeElement,
-  Descendant,
-} from '../../Types/slate';
+import { ImageElement, YoutubeElement, Descendant } from '../../Types/slate';
 
 type MARK = 'bold' | 'strikethrough' | 'spoiler' | 'select';
 type BLOCK = 'paragraph' | 'heading' | 'block-quote';
 
 const LIST = ['bulleted-list', 'numbered-list'];
 const BLOCK = ['heading', 'numbered-list', 'block-quote', 'bulleted-list'];
-const VOIDELEMENT = ['image', 'video', 'audio'];
-const FILETYPE = [
-  'jpeg',
-  'gif',
-  'svg+xml',
-  'png',
-  'quicktime',
-  'mp4',
-  'mpeg',
-  'webp',
-];
+const VOIDELEMENT = ['image'];
+const FILETYPE = ['jpeg', 'gif', 'svg+xml', 'png', 'quicktime', 'webp'];
 
 const YOUTUBEREG =
   /^(?:(?:https?:)?\/\/)?(?:www\.)?(?:m\.)?(?:youtu(?:be)?\.com\/(?:v\/|embed\/|watch(?:\/|\?v=))|youtu\.be\/)((?:\w|-){11})(?:\S+)?$/;
@@ -454,10 +437,10 @@ function FileButton() {
   return (
     <label className={styles.button}>
       <Tooltip arrow content="사진" delay={370}>
-        <ImageIcon disabled={disabled || disabled2} />
+        <ImageIcon disabled={disabled} />
       </Tooltip>
       <input
-        disabled={disabled || disabled2}
+        disabled={disabled}
         type="file"
         accept="image/svg+xml, image/jpeg, image/png, image/gif, video/quicktime, video/mp4,capture=carmera"
         multiple
@@ -474,18 +457,17 @@ function FileButton() {
 function YoutubeButton({ open }: { open: () => void }) {
   const editor = useSlate();
   const disabled = isVoidActive(editor);
-  const disabled2 = isListActive(editor);
   return (
     <button
       className={styles.button}
-      disabled={disabled || disabled2}
+      disabled={disabled}
       onClick={(e) => {
         e.preventDefault();
         open();
       }}
     >
       <Tooltip arrow content="유튜브" delay={370}>
-        <Youtube disabled={disabled || disabled2} />
+        <Youtube disabled={disabled} />
       </Tooltip>
     </button>
   );

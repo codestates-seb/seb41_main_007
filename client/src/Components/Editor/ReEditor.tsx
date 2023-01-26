@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 
 import { useCallback, useMemo, useState, useRef, ChangeEvent } from 'react';
 
-import { Editable, withReact, useSlate, Slate, ReactEditor } from 'slate-react';
+import { Editable, withReact, useSlate, Slate } from 'slate-react';
 import {
   Editor,
   Transforms,
@@ -21,20 +21,15 @@ import {
   Bold,
   Strikethrough,
   Spoiler,
-  Heading,
-  Quote,
-  Link,
   Image as ImageIcon,
   Youtube,
 } from './icons';
-import LinkToolTip from './LinkToolTip';
+
 import YoutubeToolTip from './YoutubeToolTip';
 import Tooltip from '../Common/Tooltip';
 
 import {
   ImageElement,
-  VideoElement,
-  AudioElement,
   LinkElement,
   YoutubeElement,
   Descendant,
@@ -79,13 +74,7 @@ export default function RichText({ value, setValue }: IProps) {
   );
   const editorRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const openToolTip = () => {
-    Editor.addMark(editor, 'select', true);
-    setIsOpen(true);
-  };
-  const closeToolTip = () => {
-    setIsOpen(false);
-  };
+
   const [isOpenYoutube, setIsOpenYoutube] = useState<boolean>(false);
   const openYotubeToolTip = () => {
     Editor.addMark(editor, 'select', true);
@@ -109,12 +98,6 @@ export default function RichText({ value, setValue }: IProps) {
         value={value}
         onChange={(value) => setValue(value)}
       >
-        <LinkToolTip
-          isOpen={isOpen}
-          open={openToolTip}
-          close={closeToolTip}
-          editorPosition={editorPosition}
-        />
         <YoutubeToolTip
           close={closeYotubeToolTip}
           isOpen={isOpenYoutube}
@@ -124,10 +107,6 @@ export default function RichText({ value, setValue }: IProps) {
           <BoldButton />
           <StrikethroughButton />
           <SpoilerButton />
-          <LinkButton open={openToolTip} />
-          <Wall />
-          <HeadingButton />
-          <BlockQuoteButton />
           <Wall />
           <FileButton />
           <YoutubeButton open={openYotubeToolTip} />
@@ -316,34 +295,8 @@ const withFile = (editor: Editor) => {
             } else {
               toast.error('画像サイズは10MB未満にする必要がおります');
             }
-          } else if (fileType[0] === 'video') {
-            if (file.size <= 20000000) {
-              handlerMakeThumbnail(file).then((value) => {
-                if (value) {
-                  const reader = new FileReader();
-                  reader.onload = async function (e: any) {
-                    const url = e.target.result;
-                    insertVideo(editor, url, value as string);
-                  };
-                  reader.readAsDataURL(file);
-                } else {
-                  toast.error('この動画ファイルはアップロードできません');
-                }
-              });
-            } else {
-              toast.error('動画サイズは20MB未満にする必要がおります');
-            }
-          } else if (file.type.split('/')[0] === 'audio') {
-            if (file.size <= 10000000) {
-              const reader = new FileReader();
-              reader.onload = function (e: any) {
-                const url = e.target.result;
-                insertAudio(editor, url);
-              };
-              reader.readAsDataURL(file);
-            } else {
-              toast.error('オーディオは10MB未満にする必要がおります');
-            }
+          } else {
+            toast.error('');
           }
         } else {
           toast.error(
@@ -419,23 +372,6 @@ const insertImage = (
   Transforms.insertNodes(editor, image);
 };
 
-const insertVideo = (editor: Editor, url: string, thumnail: string) => {
-  const text = { text: '' };
-  const video: VideoElement = {
-    type: 'video',
-    url,
-    thumnail: thumnail,
-    children: [text],
-  };
-  Transforms.insertNodes(editor, video);
-};
-
-const insertAudio = (editor: Editor, url: string) => {
-  const text = { text: '' };
-  const audio: AudioElement = { type: 'audio', url, children: [text] };
-  Transforms.insertNodes(editor, audio);
-};
-
 function toggleMark(editor: Editor, format: MARK) {
   const isActive = isMarkActive(editor, format);
   if (isActive) {
@@ -448,35 +384,6 @@ function toggleMark(editor: Editor, format: MARK) {
 function isMarkActive(editor: Editor, format: MARK) {
   const marks = Editor.marks(editor);
   return marks ? marks[format] === true : false;
-}
-
-function toggleBlock(editor: Editor, format: BLOCK) {
-  const isActive = isBlockActive(editor, format);
-  const isList = LIST.includes(format);
-  Transforms.unwrapNodes(editor, {
-    match: (n) =>
-      !Editor.isEditor(n) && SlateElement.isElement(n) && LIST.includes(n.type),
-    split: true,
-  });
-  const newProperties: Partial<SlateElement> = {
-    type: isActive ? 'paragraph' : isList ? 'list-item' : format,
-  };
-  Transforms.setNodes<SlateElement>(editor, newProperties);
-  if (!isActive && isList) {
-    const block = { type: format, children: [] };
-    Transforms.wrapNodes(editor, block);
-  }
-}
-
-function isBlockActive(editor: Editor, format: BLOCK) {
-  const { selection } = editor;
-  if (!selection) return false;
-  const [match]: any = Editor.nodes(editor, {
-    at: Editor.unhangRange(editor, selection),
-    match: (n) =>
-      !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === format,
-  });
-  return !!match;
 }
 
 function isVoidActive(editor: Editor) {
@@ -548,156 +455,6 @@ function SpoilerButton() {
     </button>
   );
 }
-function LinkButton({ open }: { open: () => void }) {
-  const editor = useSlate();
-  const disabled = isVoidActive(editor);
-  const disabledHeading = isBlockActive(editor, 'heading');
-  const disabledNumberedList = isBlockActive(editor, 'numbered-list');
-  const disabledBulletedList = isBlockActive(editor, 'bulleted-list');
-  const disabledBlockQuote = isBlockActive(editor, 'block-quote');
-  function beforeOpen() {
-    if (editor.selection && Range.isCollapsed(editor.selection)) {
-      const [match]: any = Editor.nodes(editor, {
-        match: (n) =>
-          !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'link',
-      });
-      const [linkMatch]: any = Editor.nodes(editor, {
-        at: {
-          anchor: Editor.before(editor, editor.selection)
-            ? (Editor.before(editor, editor.selection) as Point)
-            : editor.selection.anchor,
-          focus: Editor.after(editor, editor.selection)
-            ? (Editor.after(editor, editor.selection) as Point)
-            : editor.selection.focus,
-        },
-        match: (n) =>
-          !Editor.isEditor(n) && SlateElement.isElement(n) && n.type === 'link',
-      });
-      if (!!match) {
-        ReactEditor.focus(editor);
-        Transforms.select(editor, {
-          anchor: Editor.start(editor, match[1]),
-          focus: Editor.end(editor, match[1]),
-        });
-        Editor.addMark(editor, 'select', true);
-      } else if (!!linkMatch) {
-        const beforeNode: any = Editor.node(
-          editor,
-          Editor.before(editor, editor.selection)
-            ? (Editor.before(editor, editor.selection) as Point)
-            : editor.selection,
-          { depth: 2 },
-        );
-        const afterNode: any = Editor.node(
-          editor,
-          Editor.after(editor, editor.selection)
-            ? (Editor.after(editor, editor.selection) as Point)
-            : editor.selection,
-          { depth: 2 },
-        );
-        if (beforeNode && !!beforeNode[0].url) {
-          ReactEditor.focus(editor);
-          Transforms.select(editor, {
-            anchor: Editor.start(editor, beforeNode[1]),
-            focus: Editor.end(editor, beforeNode[1]),
-          });
-          Editor.addMark(editor, 'select', true);
-        }
-        if (afterNode && !!afterNode[0].url) {
-          ReactEditor.focus(editor);
-          Transforms.select(editor, {
-            anchor: Editor.start(editor, afterNode[1]),
-            focus: Editor.end(editor, afterNode[1]),
-          });
-          Editor.addMark(editor, 'select', true);
-        }
-      }
-    } else {
-      Editor.addMark(editor, 'select', true);
-    }
-  }
-  function multiLine() {
-    if (editor.selection && !Range.isCollapsed(editor.selection)) {
-      if (editor.selection.anchor.path[0] !== editor.selection.focus.path[0]) {
-        return true;
-      }
-    }
-    return false;
-  }
-  return (
-    <button
-      className={styles.button}
-      disabled={
-        disabled ||
-        multiLine() ||
-        disabledBlockQuote ||
-        disabledBulletedList ||
-        disabledNumberedList ||
-        disabledHeading
-      }
-      onClick={(e) => {
-        e.preventDefault();
-        beforeOpen();
-        open();
-      }}
-    >
-      <Tooltip arrow content="リンク" delay={370}>
-        <Link
-          disabled={
-            disabled ||
-            multiLine() ||
-            disabledBlockQuote ||
-            disabledBulletedList ||
-            disabledNumberedList ||
-            disabledHeading
-          }
-        />
-      </Tooltip>
-    </button>
-  );
-}
-function HeadingButton() {
-  const editor = useSlate();
-  const disabled = isVoidActive(editor);
-  return (
-    <button
-      className={styles.button}
-      disabled={disabled}
-      onMouseDown={(e) => {
-        e.preventDefault();
-        toggleBlock(editor, 'heading');
-      }}
-    >
-      <Tooltip arrow content="見出し" delay={370}>
-        <Heading
-          disabled={disabled}
-          active={isBlockActive(editor, 'heading')}
-        />
-      </Tooltip>
-    </button>
-  );
-}
-function BlockQuoteButton() {
-  const editor = useSlate();
-  const disabled = isVoidActive(editor);
-  return (
-    <button
-      className={styles.button}
-      disabled={disabled}
-      onMouseDown={(e) => {
-        e.preventDefault();
-        toggleBlock(editor, 'block-quote');
-      }}
-    >
-      <Tooltip arrow content="引用" delay={370}>
-        <Quote
-          disabled={disabled}
-          active={isBlockActive(editor, 'block-quote')}
-        />
-      </Tooltip>
-    </button>
-  );
-}
 
 function FileButton() {
   const editor = useSlate();
@@ -714,34 +471,8 @@ function FileButton() {
             } else {
               toast.error('画像サイズは10MB未満にする必要がおります');
             }
-          } else if (fileType[0] === 'video') {
-            if (file.size <= 20000000) {
-              handlerMakeThumbnail(file).then((value) => {
-                if (value) {
-                  const reader = new FileReader();
-                  reader.onload = async function (e: any) {
-                    const url = e.target.result;
-                    insertVideo(editor, url, value as string);
-                  };
-                  reader.readAsDataURL(file);
-                } else {
-                  toast.error('この動画ファイルはアップロードできません');
-                }
-              });
-            } else {
-              toast.error('動画サイズは20MB未満にする必要がおります');
-            }
-          } else if (file.type.split('/')[0] === 'audio') {
-            if (file.size <= 10000000) {
-              const reader = new FileReader();
-              reader.onload = function (e: any) {
-                const url = e.target.result;
-                insertAudio(editor, url);
-              };
-              reader.readAsDataURL(file);
-            } else {
-              toast.error('オーディオは10MB未満にする必要がおります');
-            }
+          } else {
+            toast.error('');
           }
         } else {
           toast.error(
