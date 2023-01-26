@@ -6,6 +6,9 @@ import { selectprice, Pricestate } from 'Redux/reducer/priceSlice';
 import useScrollTop from 'CustomHook/useScrollTop';
 import { useNumberComma } from 'Utils/commonFunction';
 import BuyButton from 'Components/Common/BuyButton';
+import BestProductSlider from 'Components/BestProductSlider';
+import { useNavigate } from 'react-router-dom';
+import { useSession } from 'CustomHook/useSession';
 
 const BasketForm = styled.div`
   width: 1180px;
@@ -93,6 +96,7 @@ const Tableheader5 = styled.th`
   border-bottom: 1px solid var(--gray-05);
   padding: 20px 0;
 `;
+
 const TableBottom = styled.div`
   border-top: 2px solid #000;
   position: relative;
@@ -105,16 +109,18 @@ const TableBottom = styled.div`
   flex-direction: column;
   align-items: flex-end;
 `;
+
 const TotalPrice = styled.div`
-  // position: absolute;
-  // top: 60px;
-  // right: 28px;
-  // margin: 0;
-  // padding: 0;
-  // border: 0;
-  // outline: 0;
-  // font-size: 100%;
-  // vertical-align: baseline;
+  font-weight: bold;
+  font-size: var(--large);
+`;
+
+const PointPrice = styled.span`
+  color: var(--priceColor);
+`;
+
+const Smallfont = styled.span`
+  font-size: var(--small);
 `;
 
 const ButtonContainer = styled.div`
@@ -127,9 +133,10 @@ const ButtonContainer = styled.div`
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
-
+  const navigate = useNavigate();
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]');
+  const { session } = useSession(); // 로딩시간만큼 내리는데 시간이 들어서 생략
   useScrollTop();
 
   let result: number = resultarr.reduce((acc, cur) => {
@@ -140,7 +147,7 @@ const BasketList: FC = () => {
     acc = acc + cur.count;
     return acc;
   }, 0);
-
+  console.log(session);
   // 체크박스 단일 선택
   const handleSingleCheck = (checked?: boolean, id?: number) => {
     if (checked && id) {
@@ -179,11 +186,19 @@ const BasketList: FC = () => {
     // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
   };
 
+  const LoginOrGo = () => {
+    if (session) {
+      navigate('/payment');
+    } else {
+      navigate('/login');
+    }
+  };
+
   return (
     <>
       <BasketForm>
         <Baskethead>
-          <BasketLefthead>일반반찬세트</BasketLefthead>
+          <BasketLefthead>장바구니</BasketLefthead>
           <BasketRighthead onClick={deleteAllCheck}>선택삭제</BasketRighthead>
         </Baskethead>
         <table>
@@ -214,23 +229,31 @@ const BasketList: FC = () => {
         </table>
         <TableBottom>
           <TotalPrice>
-            {' '}
             <span>주문 개수 </span>
-            {resultCount}
-            <span> 개</span>
+            <PointPrice>{resultCount} </PointPrice>
+            <Smallfont>개</Smallfont>
           </TotalPrice>
           <TotalPrice>
             <span>예상 주문금액 </span>
-            {useNumberComma(result)}
-            <span> 원</span>
+            <PointPrice>{useNumberComma(result)} </PointPrice>
+            <Smallfont>원</Smallfont>
           </TotalPrice>
         </TableBottom>
       </BasketForm>
+      <BestProductSlider></BestProductSlider>
       <ButtonContainer>
-        <BuyButton background={'var( --white-02)'} margin={'0 12px 0 12px'}>
+        <BuyButton
+          onClick={() => navigate('/')}
+          background={'var( --white-02)'}
+          margin={'0 12px 0 12px'}
+        >
           계속 쇼핑하기
         </BuyButton>
-        <BuyButton background="var(--green-40)" margin={'0 12px 0 12px'}>
+        <BuyButton
+          onClick={() => LoginOrGo()}
+          background="var(--green-40)"
+          margin={'0 12px 0 12px'}
+        >
           주문하기
         </BuyButton>
       </ButtonContainer>
@@ -240,7 +263,7 @@ const BasketList: FC = () => {
 
 export default BasketList;
 
-//새로고침 했을때 총값 업데이트 되기
+//새로고침 했을때 총값 업데이트 되기 쿼리 데이터로 처리하기
 //총값 계산 업데이트 안되는 문제 해결
 // 페이지 이동시 리덕스값이 사라짐
 //새로고침시 리덕스 초기화 되는 문제

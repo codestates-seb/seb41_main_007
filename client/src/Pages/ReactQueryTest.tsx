@@ -13,6 +13,15 @@ interface Review {
   rating: number;
 }
 
+interface Review {
+  productId: number;
+  reviewId: number;
+  memberId: number;
+  reviewTitle: string;
+  reviewContent: string;
+  rating: number;
+}
+
 const ReactQueryTest: FC = () => {
   const [text, setText] = useState<string>('');
   const productId = 1;
@@ -27,7 +36,7 @@ const ReactQueryTest: FC = () => {
   const { mutate } = useCustomMutation('/reviews', 'reviews', 'POST');
   // 아직 api post reviews 미완성
   if (isLoading) return <Empty />;
-  if (error) return <NotFoundPage />;
+  if (error) return <></>;
   console.log(data);
   return (
     <div>

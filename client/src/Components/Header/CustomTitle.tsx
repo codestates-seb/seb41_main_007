@@ -25,6 +25,7 @@ const CustomTitle: FC<Props> = ({
   };
 
   useEffect(updateTitle, [mountTitle, title]);
+
   return (
     <header>
       <meta name="description" content={description || defaultDescription} />

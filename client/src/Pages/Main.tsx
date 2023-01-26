@@ -1,22 +1,23 @@
-import ExampleBest from 'Components/BestProduct/BestCss';
+import { FC } from 'react';
 import { Carousell } from 'Components/Common/Carousel';
-import NewCarousel from 'Components/NewProduct/NewCss';
 import Example from 'Components/Review/ReviewCss';
 import StartDive from 'Components/NewProduct/StartDive';
-import Index from 'Components/Main/Nav/Index';
-import { FC } from 'react';
-import styles from './Styles/Main.module.css';
 import CustomTitle from 'Components/Header/CustomTitle';
+import Story from 'Components/Main/Story';
+import NewProduct from 'Components/NewProduct/NewProduct';
+import BestProduct from 'Components/BestProduct/BestProduct';
+import useScrollTop from 'CustomHook/useScrollTop';
 
 const Main: FC = (): JSX.Element => {
+  useScrollTop();
   return (
-    <main className={styles.Main_Container}>
+    <main>
       <CustomTitle title="FarmPi" description={'팜피에 오신걸 환영합니다!'} />
-      <Index />
       <Carousell />
-      <ExampleBest />
-      <NewCarousel />
+      <Story />
+      <NewProduct />
       <StartDive />
+      <BestProduct />
       <Example />
     </main>
   );

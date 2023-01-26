@@ -1,33 +1,58 @@
-const Mypage = () => {
+import { useState } from 'react';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import styled from 'styled-components';
+import useScrollTop from 'CustomHook/useScrollTop';
+import BasketThree from 'Components/PaymentPage/BasketThree';
+import Basketfour from 'Components/PaymentPage/Basketfour';
+import TabPanel from 'Components/Mypage/TabPanel';
+import AccordionGroup from 'Components/Mypage/AccordionGroup';
+import MainImage from 'Components/PaymentPage/MainImage';
+
+import SessionChecking from 'CustomHook/SessionChecking';
+
+const ShortContainer = styled.div`
+  width: 750px;
+  margin: 0 auto;
+  margin-top: 80px;
+`;
+
+export default function BasicTabs() {
+  const [value, setValue] = useState<number>(0);
+
+  SessionChecking();
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
+  useScrollTop();
+
   return (
-    <div className="bg-gray-50 my-16 ">
-      <div className="mx-auto max-w-7xl py-12 px-6 lg:flex lg:items-center lg:justify-between lg:py-16 lg:px-8">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          <span className="block ">Ready to FarmPI in?</span>
-          <span className="block mt-4 text-green-600">
-            회원가입을 통해 특별한 혜택을 누리세요
-          </span>
-        </h2>
-        <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-          <div className="inline-flex rounded-md shadow">
-            <a
-              href="#!"
-              className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 px-5 py-3 text-base font-medium text-white hover:bg-green-700"
+    <div>
+      <MainImage></MainImage>
+
+      <ShortContainer>
+        <Box sx={{ width: '100%' }}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
             >
-              Get started
-            </a>
-          </div>
-          <div className="ml-3 inline-flex rounded-md shadow">
-            <a
-              href="#!"
-              className="inline-flex items-center justify-center rounded-md border border-transparent bg-white px-5 py-3 text-base font-medium text-green-600 hover:bg-green-50"
-            >
-              Learn more
-            </a>
-          </div>
-        </div>
-      </div>
+              <Tab label="내 프로필" />
+              <Tab label="주문 조회" />
+            </Tabs>
+          </Box>
+          <TabPanel value={value} index={0}>
+            <AccordionGroup />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <BasketThree></BasketThree>
+            <Basketfour></Basketfour>
+          </TabPanel>
+        </Box>
+      </ShortContainer>
     </div>
   );
-};
-export default Mypage;
+}
+//네비게이션 오류 -> href

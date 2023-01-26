@@ -1,0 +1,50 @@
+.MobileHeader_Container {
+  display: none;
+  width: 100%;
+}
+
+.MobileHeader_Contents_Container {
+  height: 80px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Mobile_Header_Logo_Container {
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.MobileHeader_Input_SearchIcon {
+  padding: 15px;
+  opacity: 0.7;
+  background-color: var(--green-50);
+  display: none;
+}
+
+.Small_MobileHeader_Contents_Container {
+  height: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  display: none;
+}
+
+@media (max-width: 1260px) {
+  .MobileHeader_Container {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .MobileHeader_Input_SearchIcon {
+    display: block;
+  }
+  .MobileHeader_Container {
+    display: none;
+  }
+}

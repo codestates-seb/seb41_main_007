@@ -26,6 +26,7 @@ const CounterImg = styled.img`
   margin: 0;
 `;
 const Counterinput = styled.input`
+  outline: none;
   box-sizing: border-box;
   width: 100%;
   height: 40px;
@@ -41,7 +42,6 @@ const CounterButton2: FC<props> = ({ setnumber }) => {
   const [count, setCount] = useState<number>(1);
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);
-    console.log(count);
   };
 
   const onDecrease = () => {
@@ -67,8 +67,9 @@ const CounterButton2: FC<props> = ({ setnumber }) => {
       </Counterbutton>
       <Counterinput
         type="text"
-        defaultValue={count}
+        value={count}
         data-idx="0"
+        readOnly
       ></Counterinput>
       <Counterbutton onClick={onDecrease} isTrue={false}>
         <CounterImg

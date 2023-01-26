@@ -6,9 +6,40 @@ import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import CustomTitle from 'Components/Header/CustomTitle';
 import SearchResult from 'Components/Search/SearchResult';
 
-import styles from './Styles/Main.module.css';
-import Empty from 'Components/Common/Empty';
+import styles from './Styles/Search.module.css';
 import NotFoundPage from './NotFoundPage';
+import { BGcontainer } from 'Components/Common/BGcontainer';
+import CategoryList from 'Components/Common/CategoryList';
+import ProductSlider from 'Components/Common/ProductSlider';
+
+const NoKeywordSearch: FC = () => {
+  const size = 8;
+  const page = 1;
+  const sort = 'likeCount';
+  const order = 'descending';
+  const { data, isLoading, error } = useCustomQuery(
+    `/products?sort=${sort}&order=${order}&page=${page}&size=${size}`,
+    `product?sort=${sort}&order=${order}&page=${page}&size=${size}`,
+  );
+  if (isLoading) return <BGcontainer></BGcontainer>;
+  if (error)
+    return (
+      <>
+        <NotFoundPage />
+      </>
+    );
+
+  return (
+    <div className={styles.NoKeyword_Container}>
+      <div className={styles.Search_Result_Text_Container}>
+        <div className={styles.NoKeyword}>
+          검색어를 입력하지 않은 경우 추천 상품을 보여드립니다.
+        </div>
+      </div>
+      {data.data && <ProductSlider productList={data.data} isBest={true} />}
+    </div>
+  );
+};
 
 const Search: FC = () => {
   const location = useLocation();
@@ -19,12 +50,19 @@ const Search: FC = () => {
     `/products${sch}`,
     `product${sch}`,
   );
+
+  if (!keyword)
+    return (
+      <BGcontainer>
+        <NoKeywordSearch />
+      </BGcontainer>
+    );
   if (isLoading)
     return (
-      <>
+      <BGcontainer>
         <CustomTitle title={`${keyword} 에 대한 검색결과 - FARMPI`} />
-        <Empty />
-      </>
+        <CategoryList />
+      </BGcontainer>
     );
   if (error)
     return (
@@ -35,31 +73,15 @@ const Search: FC = () => {
     );
 
   return (
-    <main className={styles.Main_Container}>
-      {!keyword ? (
-        <div className={styles.Search_Result_Text_Container}>
-          <div className={styles.NoKeyword}>
-            검색어를 입력하지 않은 경우 추천 상품을 보여드립니다.
-          </div>
-        </div>
-      ) : (
-        <>
-          <CustomTitle title={`${keyword} 에 대한 검색결과 - FARMPI`} />
-          <div className={styles.Search_Result_Text_Container}>
-            <p className={styles.Search_Result_Text}>
-              &quot;{keyword}&quot; 에 대한 검색결과 ({data.data.length})
-            </p>
-          </div>
-          {data.data.length > 0 && (
-            <SearchResult
-              sch={sch}
-              searchList={data.data}
-              searchPageInfo={data.pageInfo}
-            />
-          )}
-        </>
-      )}
-    </main>
+    <BGcontainer>
+      <>
+        <SearchResult
+          sch={sch}
+          searchList={data.data}
+          searchPageInfo={data.pageInfo}
+        />
+      </>
+    </BGcontainer>
   );
 };
 

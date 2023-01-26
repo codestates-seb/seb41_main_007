@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Ratingstar from 'Components/Common/Ratingstar';
 
 const User = styled.div`
   display: flex;
@@ -80,24 +81,37 @@ const products = [
     imageAlt:
       'Hand holding black machined steel mechanical pencil with brass tip and top.',
   },
+  {
+    id: 6,
+    title: '이거 좋아요',
+    href: '#',
+    product: 'a물품이름',
+    user: '서형민',
+    rating: '⭐⭐⭐⭐',
+    date: '2023.01.11',
+    imageSrc:
+      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
+    imageAlt:
+      'Hand holding black machined steel mechanical pencil with brass tip and top.',
+  },
   // More products...
 ];
 
 export default function ReviewCss() {
   return (
     <div className="bg-white">
-      <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <h2 className="pb-7 text-2xl font-bold tracking-tight text-gray-900">
-          Review
+      <div className="mx-auto max-w-2xl px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
+        <h2 className="text-4xl font-bold font-serif tracking-tight text-gray-900 mb-10">
+          고객만족후기
         </h2>
-        <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3  xl:gap-x-8">
+        <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-2  xl:gap-x-8">
           {products.map((product) => (
             <a
               key={product.id}
               href={product.href}
               className="group flex gap-x-4"
             >
-              <div className="aspect-w-28 aspect-h-28  overflow-hidden rounded-lg">
+              <div className="aspect-w-28 aspect-h-28  overflow-hidden ">
                 <img
                   src={product.imageSrc}
                   alt={product.imageAlt}

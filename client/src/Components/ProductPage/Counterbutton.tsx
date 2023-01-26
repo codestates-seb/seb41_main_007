@@ -50,6 +50,7 @@ const Counterbutton = styled.button<{ isTrue: boolean }>`
 `;
 
 const CounterInput = styled.input`
+  outline: none;
   border: 1px solid var(--bg-white-05);
   border-radius: 0;
   box-sizing: border-box;
@@ -57,7 +58,7 @@ const CounterInput = styled.input`
   display: flex;
   align-items: center;
   height: 24px;
-  padding: 0 10px 0 24px;
+  padding: 0 25px 0 24px;
   text-align: center;
   font-size: 12px;
   background: var(--bg-white-05);
