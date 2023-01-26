@@ -21,8 +21,6 @@ import {
   Bold,
   Strikethrough,
   Spoiler,
-  Heading,
-  Quote,
   Link,
   Image as ImageIcon,
   Youtube,
@@ -119,7 +117,6 @@ export default function RichText({ value, setValue }: IProps) {
           <BoldButton />
           <StrikethroughButton />
           <SpoilerButton />
-          <LinkButton open={openToolTip} />
           <Wall />
           <FileButton />
           <YoutubeButton open={openYotubeToolTip} />
@@ -375,24 +372,6 @@ function isMarkActive(editor: Editor, format: MARK) {
   return marks ? marks[format] === true : false;
 }
 
-function toggleBlock(editor: Editor, format: BLOCK) {
-  const isActive = isBlockActive(editor, format);
-  const isList = LIST.includes(format);
-  Transforms.unwrapNodes(editor, {
-    match: (n) =>
-      !Editor.isEditor(n) && SlateElement.isElement(n) && LIST.includes(n.type),
-    split: true,
-  });
-  const newProperties: Partial<SlateElement> = {
-    type: isActive ? 'paragraph' : isList ? 'list-item' : format,
-  };
-  Transforms.setNodes<SlateElement>(editor, newProperties);
-  if (!isActive && isList) {
-    const block = { type: format, children: [] };
-    Transforms.wrapNodes(editor, block);
-  }
-}
-
 function isBlockActive(editor: Editor, format: BLOCK) {
   const { selection } = editor;
   if (!selection) return false;
@@ -438,12 +417,13 @@ function BoldButton() {
         toggleMark(editor, 'bold');
       }}
     >
-      <Tooltip arrow content="太字" delay={370}>
+      <Tooltip arrow content="bold" delay={370}>
         <Bold disabled={disabled} active={isMarkActive(editor, 'bold')} />
       </Tooltip>
     </button>
   );
 }
+
 function StrikethroughButton() {
   const editor = useSlate();
   const disabled = isVoidActive(editor);
@@ -465,6 +445,7 @@ function StrikethroughButton() {
     </button>
   );
 }
+
 function SpoilerButton() {
   const editor = useSlate();
   const disabled = isVoidActive(editor);
@@ -574,48 +555,6 @@ function LinkButton({ open }: { open: () => void }) {
           disabled={
             disabled || multiLine() || disabledBlockQuote || disabledHeading
           }
-        />
-      </Tooltip>
-    </button>
-  );
-}
-function HeadingButton() {
-  const editor = useSlate();
-  const disabled = isVoidActive(editor);
-  return (
-    <button
-      className={styles.button}
-      disabled={disabled}
-      onMouseDown={(e) => {
-        e.preventDefault();
-        toggleBlock(editor, 'heading');
-      }}
-    >
-      <Tooltip arrow content="見出し" delay={370}>
-        <Heading
-          disabled={disabled}
-          active={isBlockActive(editor, 'heading')}
-        />
-      </Tooltip>
-    </button>
-  );
-}
-function BlockQuoteButton() {
-  const editor = useSlate();
-  const disabled = isVoidActive(editor);
-  return (
-    <button
-      className={styles.button}
-      disabled={disabled}
-      onMouseDown={(e) => {
-        e.preventDefault();
-        toggleBlock(editor, 'block-quote');
-      }}
-    >
-      <Tooltip arrow content="引用" delay={370}>
-        <Quote
-          disabled={disabled}
-          active={isBlockActive(editor, 'block-quote')}
         />
       </Tooltip>
     </button>
