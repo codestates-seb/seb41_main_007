@@ -6,20 +6,20 @@ import com.bzzzzz.farm.model.dto.SingleResponseDto;
 import com.bzzzzz.farm.model.dto.order.OrderPatchDto;
 import com.bzzzzz.farm.model.dto.order.OrderPostDto;
 import com.bzzzzz.farm.model.entity.Order;
-import com.bzzzzz.farm.service.MemberService;
 import com.bzzzzz.farm.service.OrderService;
 import com.bzzzzz.farm.service.ProductOptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+
+import static com.bzzzzz.farm.common.Safety.toLong;
 
 @RestController
 @Validated
@@ -29,12 +29,11 @@ public class OrderController {
     private final OrderService orderService;
     private final ProductOptionService productOptionService;
     private final ParcelTrackingConfig parcelTrackingConfig;
-    private final MemberService memberService;
 
     @PostMapping("/orders")
     public ResponseEntity postOrder(@Valid @RequestBody OrderPostDto orderPostDto,
                                     @AuthenticationPrincipal UserDetails userDetails) {
-        orderPostDto.setMemberId(Long.valueOf(userDetails.getUsername()));
+        orderPostDto.setMemberId(toLong(userDetails.getUsername()));
 
         orderPostDto.getOrderProductPostDtos().stream()
                 .forEach(orderProductPostDto -> orderProductPostDto
@@ -48,9 +47,10 @@ public class OrderController {
     }
 
     @DeleteMapping("/orders/{order-id}")
-    public ResponseEntity cancelOrder(@Positive @PathVariable("order-id") long orderId) {
+    public ResponseEntity cancelOrder(@Positive @PathVariable("order-id") long orderId,
+                                      @AuthenticationPrincipal UserDetails userDetails) {
         // 사용자가 주문을 취소
-        orderService.verifyAuthority(orderId, memberService.getLoginMember().getMemberId());
+        orderService.verifyAuthority(orderId, toLong(userDetails.getUsername()));
 
         orderService.cancelOrder(orderId);
 
@@ -67,8 +67,9 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{order-id}")
-    public ResponseEntity getOrder(@Positive @PathVariable("order-id") long orderId) {
-        orderService.verifyAuthority(orderId, memberService.getLoginMember().getMemberId());
+    public ResponseEntity getOrder(@Positive @PathVariable("order-id") long orderId,
+                                   @AuthenticationPrincipal UserDetails userDetails) {
+        orderService.verifyAuthority(orderId, toLong(userDetails.getUsername()));
 
         Order order = orderService.findOrder(orderId);
 
