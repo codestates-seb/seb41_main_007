@@ -23,20 +23,19 @@ import static com.bzzzzz.farm.common.Safety.toLong;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/carts")
 public class CartController {
     private final CartService cartService;
     private final CartMapper cartMapper;
     private final ProductOptionService productOptionService;
 
-    @GetMapping
+    @GetMapping("/carts")
     public ResponseEntity getCarts(@AuthenticationPrincipal UserDetails userDetails) {
         List<Cart> carts = cartService.findCartsByMemberId(toLong(userDetails.getUsername()));
 
         return new ResponseEntity(cartMapper.cartsToCartResponseDtos(carts), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/carts")
     public ResponseEntity postCart(@RequestBody CartPostDto cartPostDto,
                                    @AuthenticationPrincipal UserDetails userDetails) {
         ProductOption productOption = productOptionService.findVerifiedProductOption(cartPostDto.getProductOptionId());
@@ -46,7 +45,7 @@ public class CartController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PatchMapping
+    @PatchMapping("/carts")
     public ResponseEntity patchCartProduct(@RequestBody CartPatchDto cartPatchDto,
                                            @AuthenticationPrincipal UserDetails userDetails) {
         cartService.verifyAuthority(cartPatchDto.getCartId(), toLong(userDetails.getUsername()));
@@ -56,7 +55,7 @@ public class CartController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/{cart-id}")
+    @DeleteMapping("/carts/{cart-id}")
     public ResponseEntity deleteCartProduct(@Positive @PathVariable("cart-id") long cartId,
                                             @AuthenticationPrincipal UserDetails userDetails) {
         cartService.verifyAuthority(cartId, toLong(userDetails.getUsername()));
