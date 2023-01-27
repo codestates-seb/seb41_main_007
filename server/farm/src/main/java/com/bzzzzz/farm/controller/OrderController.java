@@ -12,6 +12,9 @@ import com.bzzzzz.farm.service.ProductOptionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +32,9 @@ public class OrderController {
     private final MemberService memberService;
 
     @PostMapping("/orders")
-    public ResponseEntity postOrder(@Valid @RequestBody OrderPostDto orderPostDto) {
-        // 로그인 정보 받아오는 부분
-        orderPostDto.setMemberId(memberService.getLoginMember().getMemberId());
+    public ResponseEntity postOrder(@Valid @RequestBody OrderPostDto orderPostDto,
+                                    @AuthenticationPrincipal UserDetails userDetails) {
+        orderPostDto.setMemberId(Long.valueOf(userDetails.getUsername()));
 
         orderPostDto.getOrderProductPostDtos().stream()
                 .forEach(orderProductPostDto -> orderProductPostDto

@@ -1,10 +1,12 @@
 package com.bzzzzz.farm.security.jwt;
 
+import com.bzzzzz.farm.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JwtTokenizer {
     @Getter
     @Value("${jwt.key}")
@@ -30,7 +33,7 @@ public class JwtTokenizer {
 
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60;    // 액세스 토큰 만료 시간 : 1시간
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7; // 리프레쉬 토큰 만료 시간 : 7일
-
+    private final MemberRepository memberRepository;
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
@@ -47,11 +50,12 @@ public class JwtTokenizer {
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         claims.put("name",(String) oAuth2User.getAttributes().get("name"));
         long now = (new Date()).getTime();
+        Long memberId = memberRepository.findByEmail((String) oAuth2User.getAttributes().get("email")).get().getMemberId();
 
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
         return Jwts.builder()
                 .setClaims(claims)  // JWT에 담는 body
-                .setSubject((String) oAuth2User.getAttributes().get("email"))    // JWT 제목 payload "sub": "email"
+                .setSubject(String.valueOf(memberId))// JWT 제목 payload "sub": "memberId"
                 .setIssuedAt(Calendar.getInstance().getTime())  // JWT 발행일자 payload "iat": "발행일자"
                 .setExpiration(accessTokenExpiresIn)  // 만료일자 payload "exp": "발행시간 + 1시간"
                 .signWith(getKey(base64EncodedSecretKey))
