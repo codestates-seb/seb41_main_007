@@ -2,11 +2,12 @@ package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.model.dto.order.OrderPatchDto;
 import com.bzzzzz.farm.model.dto.payment.KakaoApproveResponse;
+import com.bzzzzz.farm.model.dto.payment.KakaoCancelResponse;
 import com.bzzzzz.farm.model.entity.Order;
 import com.bzzzzz.farm.service.OrderService;
 import com.bzzzzz.farm.service.PaymentService;
-import com.bzzzzz.farm.exception.BusinessLogicException;
-import com.bzzzzz.farm.exception.ExceptionCode;
+import com.bzzzzz.farm.common.exception.BusinessLogicException;
+import com.bzzzzz.farm.common.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class PaymentController {
      **/
     @PostMapping("/ready")
     public ResponseEntity readyToKakaoPay(@RequestParam("order_id")long orderId){
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.verifyPaymentStatus(orderId);
         return ResponseEntity.ok(paymentService.kakaoPayReady(orderId,order.getPrice()));
     }
 
@@ -40,6 +41,17 @@ public class PaymentController {
         orderPatchDto.setPaymentMethod(Order.PaymentMethod.KAKAO_PAY);
         orderService.updateOrder(orderPatchDto);
         return ResponseEntity.ok(kakaoApprove);
+    }
+
+    /**
+     환불
+     */
+    @PostMapping("/refund")
+    public ResponseEntity refund(@RequestParam("order_id")long orderId) {
+        Order order = orderService.findOrder(orderId);
+        KakaoCancelResponse kakaoCancelResponse = paymentService.kakaoCancel(orderId, order.getPrice());
+
+        return ResponseEntity.ok(kakaoCancelResponse);
     }
 
 

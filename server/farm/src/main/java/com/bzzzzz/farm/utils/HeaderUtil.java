@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.security.utils;
+package com.bzzzzz.farm.utils;
 import javax.servlet.http.HttpServletRequest;
 
 public class HeaderUtil {

@@ -44,6 +44,9 @@ public class Order extends Auditable {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus = PaymentStatus.NOT_PAYMENT;
 
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
+    private Payment payment;
+
     // 연관 관계 매핑 관련 메서드 및 이넘
     public void addOrderProduct(OrderProduct orderProduct) {
         this.orderProducts.add(orderProduct);

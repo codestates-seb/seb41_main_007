@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.exception;
+package com.bzzzzz.farm.common.exception;
 
 import lombok.Getter;
 

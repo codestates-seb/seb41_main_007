@@ -1,8 +1,8 @@
-package com.bzzzzz.farm.security.handler;
+package com.bzzzzz.farm.common.security.handler;
 
 import com.bzzzzz.farm.model.entity.RefreshToken;
 import com.bzzzzz.farm.repository.RefreshTokenRepository;
-import com.bzzzzz.farm.security.jwt.JwtTokenizer;
+import com.bzzzzz.farm.common.security.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -23,7 +23,6 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        System.out.println("# Redirect to Frontend");
         var oAuth2User = (OAuth2User)authentication.getPrincipal();
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
 

@@ -1,7 +1,7 @@
 package com.bzzzzz.farm.service;
 
-import com.bzzzzz.farm.exception.BusinessLogicException;
-import com.bzzzzz.farm.exception.ExceptionCode;
+import com.bzzzzz.farm.common.exception.BusinessLogicException;
+import com.bzzzzz.farm.common.exception.ExceptionCode;
 import com.bzzzzz.farm.model.entity.QuestionAnswer;
 import com.bzzzzz.farm.repository.QuestionAnswerRepository;
 import org.springframework.stereotype.Service;

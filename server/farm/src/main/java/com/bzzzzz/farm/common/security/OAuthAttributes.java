@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.security;
+package com.bzzzzz.farm.common.security;
 
 import com.bzzzzz.farm.model.entity.Member;
 import lombok.Builder;

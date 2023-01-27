@@ -1,7 +1,7 @@
-package com.bzzzzz.farm.security.filter;
+package com.bzzzzz.farm.common.security.filter;
 
-import com.bzzzzz.farm.security.jwt.JwtTokenizer;
-import com.bzzzzz.farm.security.utils.HeaderUtil;
+import com.bzzzzz.farm.utils.HeaderUtil;
+import com.bzzzzz.farm.common.security.jwt.JwtTokenizer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

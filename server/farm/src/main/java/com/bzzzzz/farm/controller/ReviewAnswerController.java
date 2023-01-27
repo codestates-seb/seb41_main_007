@@ -21,7 +21,6 @@ import javax.validation.Valid;
 
 @Log4j2
 @RestController
-@RequestMapping({"/reviews/answers"})
 @Transactional
 @Validated
 public class ReviewAnswerController {
@@ -37,7 +36,7 @@ public class ReviewAnswerController {
         this.memberService = memberService;
     }
 
-    @PostMapping({""})
+    @PostMapping("/reviews/answers")
     public ResponseEntity insertReviewAnswer(@RequestBody @Valid ReviewAnswerPostDto reviewAnswerPostDto) {
 
         Member member = memberService.getLoginMember();
@@ -53,7 +52,7 @@ public class ReviewAnswerController {
 
     }
 
-    @PatchMapping
+    @PatchMapping("/reviews/answers")
     public ResponseEntity updateReviewAnswer(@RequestBody @Valid ReviewAnswerPatchDto reviewAnswerPatchDto) {
 
         Member member = memberService.getLoginMember();
@@ -68,15 +67,9 @@ public class ReviewAnswerController {
         return new ResponseEntity<>(reviewAnswerResponseDto,HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity deleteReviewAnswer(@RequestBody @Valid ReviewAnswerDeleteDto reviewAnswerDeleteDto) {
-        Member member = memberService.getLoginMember();
-        if(member.getRoles().equals("ROLE_ADMIN")) {
-            reviewAnswerService.deleteReviewAnswer(reviewAnswerDeleteDto.getReviewAnswerId());
-            return new ResponseEntity<>(HttpStatus.OK);
-        }else{
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
+    @DeleteMapping("/reviews/answers/{reviewAnswerId}")
+    public ResponseEntity deleteReviewAnswer(@PathVariable String reviewAnswerId) {
+        reviewAnswerService.deleteReviewAnswer(Long.parseLong(reviewAnswerId));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -7,6 +7,8 @@ import com.bzzzzz.farm.mapper.MemberMapper;
 import com.bzzzzz.farm.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,33 +25,33 @@ public class MemberController {
 
 
     //회원 정보 수정
-    @PatchMapping("/{member-id}")
-    public ResponseEntity patchMember(@PathVariable("member-id") @Positive long memberId,
-                                      @Valid @RequestBody MemberDto.Patch requestBody){
-        requestBody.setMemberId(memberId);
+    @PatchMapping
+    public ResponseEntity patchMember(@Valid @RequestBody MemberDto.Patch requestBody,
+                                      @AuthenticationPrincipal UserDetails userDetails){
+        requestBody.setMemberId(Long.valueOf(userDetails.getUsername()));
         Member member = memberService.updateMember(mapper.memberPatchToMember(requestBody));
 
         return ResponseEntity.ok(mapper.memberToMemberResponse(member));
     }
 
     //본인 프로필 보기
-    @GetMapping("/{member-id}")
-    public ResponseEntity getMember(@PathVariable("member-id") @Positive long memberId){
-        return ResponseEntity.ok(mapper.memberToMemberResponse(memberService.findMember(memberId)));
+    @GetMapping
+    public ResponseEntity getMember(){
+        return ResponseEntity.ok(mapper.memberToMemberResponse
+                (memberService.findMember(memberService.getLoginMember().getMemberId())));
     }
 
     //전체 회원 조회(관리자 전용)
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity getMembers(){
         return ResponseEntity.ok(mapper.membersToMemberResponses(memberService.findMembers()));
     }
 
     //회원 탈퇴
-    @DeleteMapping("/{member-id}")
-    public ResponseEntity deleteMember(@PathVariable("member-id") @Positive long memberId){
-        memberService.deleteMember(memberId);
+    @DeleteMapping
+    public ResponseEntity deleteMember(){
+        memberService.deleteMember(memberService.getLoginMember().getMemberId());
 
         return ResponseEntity.ok().build();
     }
-
 }

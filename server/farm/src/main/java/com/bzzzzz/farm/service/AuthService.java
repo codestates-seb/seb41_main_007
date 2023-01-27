@@ -1,9 +1,9 @@
 package com.bzzzzz.farm.service;
 
-import com.bzzzzz.farm.security.jwt.JwtTokenizer;
-import com.bzzzzz.farm.security.utils.CustomAuthorityUtils;
-import com.bzzzzz.farm.exception.BusinessLogicException;
-import com.bzzzzz.farm.exception.ExceptionCode;
+import com.bzzzzz.farm.common.security.jwt.JwtTokenizer;
+import com.bzzzzz.farm.utils.CustomAuthorityUtils;
+import com.bzzzzz.farm.common.exception.BusinessLogicException;
+import com.bzzzzz.farm.common.exception.ExceptionCode;
 import com.bzzzzz.farm.model.dto.member.LoginDto;
 import com.bzzzzz.farm.model.dto.member.TokenDto;
 import com.bzzzzz.farm.model.dto.member.TokenRequestDto;

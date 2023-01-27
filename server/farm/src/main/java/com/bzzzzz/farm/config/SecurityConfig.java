@@ -2,10 +2,10 @@ package com.bzzzzz.farm.config;
 
 
 import com.bzzzzz.farm.repository.RefreshTokenRepository;
-import com.bzzzzz.farm.security.handler.MemberAccessDeniedHandler;
-import com.bzzzzz.farm.security.handler.MemberAuthenticationEntryPoint;
-import com.bzzzzz.farm.security.handler.OAuth2MemberSuccessHandler;
-import com.bzzzzz.farm.security.jwt.JwtTokenizer;
+import com.bzzzzz.farm.common.security.handler.MemberAccessDeniedHandler;
+import com.bzzzzz.farm.common.security.handler.MemberAuthenticationEntryPoint;
+import com.bzzzzz.farm.common.security.handler.OAuth2MemberSuccessHandler;
+import com.bzzzzz.farm.common.security.jwt.JwtTokenizer;
 import com.bzzzzz.farm.service.CustomOAuth2MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
