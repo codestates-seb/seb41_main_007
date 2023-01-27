@@ -83,8 +83,8 @@ include::{snippets}/deleteProduct/curl-request.adoc[]
 .http-request
 include::{snippets}/deleteProduct/http-request.adoc[]
 
-.request-fields
-include::{snippets}/deleteProduct/request-fields.adoc[]
+.path-parameters
+include::{snippets}/deleteProduct/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/deleteProduct/http-response.adoc[]
