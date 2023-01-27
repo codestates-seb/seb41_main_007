@@ -91,4 +91,13 @@ public class OrderService {
             throw new BusinessLogicException(ExceptionCode.REQUEST_FORBIDDEN);
         }
     }
+
+    @Transactional(readOnly = true)
+    public Order verifyPaymentStatus(long orderId) {
+        Order order = findOrder(orderId);
+        if (findOrder(orderId).getPaymentStatus().getCode() > 1) {
+            throw new BusinessLogicException(ExceptionCode.CAN_NOT_PAY);
+        }
+        return order;
+    }
 }

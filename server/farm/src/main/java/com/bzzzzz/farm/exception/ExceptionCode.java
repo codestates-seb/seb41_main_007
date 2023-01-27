@@ -37,7 +37,8 @@ public enum ExceptionCode {
     QUESTION_NOT_FOUND(404,"Question not found"),
     QUESTION_ANSWER_NOT_FOUND(404,"Question answer not found"),
     PAY_CANCEL(404,"결제취소"),
-    PAY_FAILED(404,"결제실패");
+    PAY_FAILED(404,"결제실패"),
+    CAN_NOT_PAY(400,"결제할 수 없는 상태입니다");
     @Getter
     private int status;
 
