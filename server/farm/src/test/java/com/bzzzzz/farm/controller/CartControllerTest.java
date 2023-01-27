@@ -1,8 +1,7 @@
 package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.mapper.CartMapper;
-import com.bzzzzz.farm.model.dto.cart.CartPatchDto;
-import com.bzzzzz.farm.model.dto.cart.CartPostDto;
+import com.bzzzzz.farm.model.dto.cart.CartRequestDto;
 import com.bzzzzz.farm.model.dto.cart.CartResponseDto;
 import com.bzzzzz.farm.model.entity.Cart;
 import com.bzzzzz.farm.model.entity.ProductOption;
@@ -168,7 +167,7 @@ public class CartControllerTest {
     @DisplayName("장바구니에 제품 담기")
     void postCart() throws Exception {
 //         given
-        CartPostDto request = new CartPostDto(1L, 1);
+        CartRequestDto request = new CartRequestDto(1L, 1);
 
         given(productOptionService.findVerifiedProductOption(Mockito.anyLong())).willReturn(new ProductOption());
         given(cartService.createCartProduct(Mockito.anyLong(), Mockito.any(ProductOption.class), Mockito.anyInt())).willReturn(new Cart());
@@ -200,10 +199,9 @@ public class CartControllerTest {
     @DisplayName("장바구니에 담긴 제품 수량 수정")
     void patchCart() throws Exception {
         // given
-        CartPatchDto request = new CartPatchDto(1L, -1);
+        CartRequestDto request = new CartRequestDto(1L, -1);
 
-        doNothing().when(cartService).verifyAuthority(Mockito.anyLong(), Mockito.anyLong());
-        given(cartService.updateCart(Mockito.anyLong(), Mockito.anyInt())).willReturn(new Cart());
+        given(cartService.updateCart(Mockito.anyLong(), Mockito.anyLong(), Mockito.anyInt())).willReturn(new Cart());
 
         String content = gson.toJson(request);
 
@@ -222,7 +220,7 @@ public class CartControllerTest {
                         "patchCart",
                         preprocessRequest(prettyPrint()),
                         requestFields(List.of(
-                                fieldWithPath("cartId").type(JsonFieldType.NUMBER).description("장바구니의 식별자"),
+                                fieldWithPath("productOptionId").type(JsonFieldType.NUMBER).description("옵션 식별자"),
                                 fieldWithPath("quantity").type(JsonFieldType.NUMBER).description("변경할 수량 (기존 + quantity 방식, 음수가능, 계산시 대상의 수량이 0이하일시 삭제됨)")
                         ))
                 ));
@@ -232,14 +230,11 @@ public class CartControllerTest {
     @DisplayName("장바구니에서 제품을 삭제")
     void deleteCart() throws Exception {
         // given
-        long cartId = 1L;
-
-        doNothing().when(cartService).verifyAuthority(Mockito.anyLong(), Mockito.anyLong());
-        doNothing().when(cartService).deleteCart(Mockito.anyLong());
+        doNothing().when(cartService).deleteCart(Mockito.anyLong(), Mockito.anyLong());
 
         // when
         ResultActions actions = mockMvc.perform(
-                delete("/carts/{cart-id}", cartId)
+                delete("/carts/{product-option-id}", 1L)
                         .with(csrf())
         );
 
@@ -248,7 +243,7 @@ public class CartControllerTest {
                 .andExpect(status().isNoContent())
                 .andDo(document(
                         "deleteCart",
-                        pathParameters(parameterWithName("cart-id").description("삭제할 대상의 식별자"))
+                        pathParameters(parameterWithName("product-option-id").description("삭제할 대상의 식별자"))
                 ));
     }
 }
