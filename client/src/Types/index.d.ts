@@ -1,3 +1,1 @@
-export interface test {
-  name: string;
-}
+declare module '*.module.css';

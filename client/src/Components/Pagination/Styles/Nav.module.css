@@ -1,0 +1,64 @@
+.Nav_Container {
+  display: flex;
+  justify-content: center;
+}
+
+.Nav_Button {
+  border: none;
+  display: inline-block;
+  padding: 20px 20px;
+  border-radius: 15px;
+  font-family: 'paybooc-Light';
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  transition: 0.25s;
+  color: var(--green-40);
+}
+
+.Nav_Button:hover {
+  transform: scale(1.15);
+  background-color: var(--green-10);
+  cursor: pointer;
+}
+
+.Nav_Button_Disabled {
+  display: none;
+}
+
+.Nav_Item {
+  margin: 0 4px;
+  border: none;
+  display: inline-block;
+  padding: 10px 15px;
+  border-radius: 15px;
+  font-family: 'paybooc-Light';
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+  text-decoration: none;
+  transition: 0.25s;
+  color: var(--green-40);
+}
+
+.Nav_Item:hover {
+  transform: scale(1.15);
+  background-color: var(--green-20);
+  cursor: pointer;
+}
+
+.Nav_Item_Disabled {
+  display: none;
+}
+
+.Nav_Item_Selected {
+  transform: scale(1.15);
+  background-color: var(--green-20);
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .Nav_Button {
+    padding: 10px 10px;
+  }
+  .Nav_Item {
+    padding: 5px 9px;
+  }
+}

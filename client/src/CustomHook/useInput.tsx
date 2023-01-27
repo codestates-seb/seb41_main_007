@@ -10,6 +10,7 @@ const useInput = (initialValue: string | number): OutputProps => {
     initialValue,
   );
   const onChangeForm = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     setUserFormInput(e.target.value);
   }, []);
 

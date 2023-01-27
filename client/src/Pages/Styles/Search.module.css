@@ -1,0 +1,16 @@
+.Search_Result_Text_Container {
+}
+
+.NoKeyword {
+  display: flex;
+  justify-content: center;
+  font-size: var(--xlarge);
+}
+
+.NoKeyword_Container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 700px;
+  gap: 10em;
+}

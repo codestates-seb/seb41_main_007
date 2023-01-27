@@ -1,0 +1,151 @@
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import styled from 'styled-components';
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import 'react-toastify/dist/ReactToastify.css';
+import Empty from 'Components/Common/Empty';
+import useScrollTop from 'CustomHook/useScrollTop';
+import { BGcontainer } from 'Components/Common/BGcontainer';
+import ProductMainBox from 'Components/ProductPage/ProductMainBox';
+import ProductDetailBox from 'Components/ProductPage/productDetailBox';
+import CategoryList from 'Components/Common/CategoryList';
+import TabPanel from 'Components/Mypage/TabPanel';
+
+const ProductContainer = styled.div`
+  margin: 120px auto 120px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .select {
+    min-width: 875px;
+    width: 875px;
+    margin-left: 42px;
+    height: 50px;
+    border-bottom: 1px solid var(--black-09);
+  }
+`;
+const ProductMenuTitle = styled.h2`
+  font-size: var(--xlarge);
+  font-weight: bold;
+  padding: 30px;
+  margin-top: -50px;
+`;
+
+const TabButton = styled.button<{ isTrue?: boolean }>`
+  ${(props) =>
+    props.isTrue
+      ? 'background: var(--greenlogo); color:white;'
+      : 'background: white; color:black;'}
+  font-weight: 400;
+  width: 150px;
+  height: 50px;
+  line-height: 48px;
+  font-size: var(--small);
+  border-bottom: 1px solid var(--black-09);
+`;
+
+export interface counterProps {
+  count: number;
+  onIncrease: () => void;
+  onDecrease: () => void;
+}
+
+//1번 현재주소를 받아와야함
+//2번 ?reurl= 현재주소 넣어줘야함
+//3번 읽고 돌아와야함
+
+const ProductPage: React.FC = () => {
+  const [value, setValue] = useState<number>(0);
+
+  useScrollTop();
+  let param = useParams(); //공부
+  const { data, isLoading, error } = useCustomQuery(
+    `/products/${param.productid}`,
+    `products${param.productid}`,
+  );
+
+  if (isLoading) return <Empty />;
+  if (error) return <></>;
+  if (data.length === 0) return <Empty />;
+  //   const data ={
+  //     "name":"아테네",
+  //     "price":20000000,
+  //     "photo":"http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg",
+  //     "brand":"순양자동차",
+  //     "description":"진양철이 직원들을 쥐잡듯이 잡아가며 개발한 차량입니다.",
+  //     "shippingCountry":"KOREA",
+  //     "shippingMethod":"PARCEL_SERVICE",
+  //     "shippingPrice":3000,
+  //     "productCategoryPostDtos":[
+  //         {
+  //             "categoryId":1
+  //         }
+  //     ],
+  //     "productOptionPostDtos":[
+  //         {
+  //             "productOptionName":"자폭",
+  //             "price":1000000,
+  //             "stock":10
+  //         },
+  //                 {
+  //             "productOptionName":"본네트를 없애서 경량화",
+  //             "price":1000000,
+  //             "stock":10
+  //         }
+  //     ]
+  // }
+  //리턴 url , 로컬스토리지에 담기
+  return (
+    <BGcontainer>
+      <CategoryList />
+      <ProductContainer>
+        <ProductMenuTitle />
+        <ProductMainBox data={data}></ProductMainBox>
+
+        <div className="mt-44  ">
+          <div className="relative select border-solid border-b-2">
+            <div className="absolute left-0 top-0">
+              <TabButton isTrue={value === 0} onClick={() => setValue(0)}>
+                1십십십십싯
+              </TabButton>
+              <TabButton isTrue={value === 1} onClick={() => setValue(1)}>
+                1십십십십싯
+              </TabButton>
+              <TabButton isTrue={value === 2} onClick={() => setValue(2)}>
+                1십십십십싯
+              </TabButton>
+            </div>
+          </div>
+          <TabPanel value={value} index={0}>
+            <ProductDetailBox />
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <ProductDetailBox />
+          </TabPanel>
+          <TabPanel value={value} index={2}>
+            <ProductDetailBox />
+          </TabPanel>
+        </div>
+      </ProductContainer>
+    </BGcontainer>
+  );
+};
+
+export default ProductPage;
+
+//버튼 후버기능 제거하기
+//카운터 버튼 오류 안보이게 하기
+// const notify = () => toast.info("toastify test!");
+// // 성공 알람 ( 초록색 창 )
+// const success = () => toast.success("Success!");
+// // 실패 알람 ( 빨간색 창 )
+// const error = () => toast.error("Error!");
+// // 경고 알람 ( 노란색 창 )
+// const warning = () => toast.warning("Warnning!");
+// // 정보 알람
+// const info = () => toast.info("Info...");
+// toast
+// 도트깨짐
+//styled 컴퍼넌트 마지막  두개넣으려면; 차이
+//로컬스토리지에서 카운터관리

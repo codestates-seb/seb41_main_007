@@ -1,10 +1,92 @@
-body {
+* {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Noto Sans KR', 'Segoe UI',
-    'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
-    'Helvetica Neue', sans-serif;
-  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  @apply font-sans;
+}
+@layer base {
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--green-20);
+  border-radius: 10px;
+}
+*::-webkit-scrollbar-track {
+  /* background-color: var(--green-20); */
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
+}
+
+/* EX: color: var(--greenlogo); */
+:root {
+  --green-10: #e9f5db;
+  --green-20: #cfe1b9;
+  --green-30: #b5c99a;
+  --green-40: #97a97c;
+  --green-50: #87986a;
+  --green-60: #718355;
+  --green-70: rgb(12, 86, 17);
+  --greenlogo: #16a34a;
+  --priceColor: #b41c11;
+  --maingreen: #15803d;
+
+  --xxlarge: 32px;
+  --xlarge: 24px;
+  --large: 20px;
+  --slarge: 18px;
+  --medium: 16px;
+  --small: 14px;
+  --xsmall: 10px;
+  --bg-white-05: #fcfcfc;
+  --bg-white-10: #f1f1f1;
+  --a-gray-10: #eee;
+  --a-gray-40: #777;
+  --white-00: #fff;
+  --white-02: #fdfdff;
+  --white-03: #f4f4f4;
+  --black-00: #000;
+  --black-02: #313131;
+  --black-09: #3e3e31;
+  --black-10: #3e3e41;
+  --black-20: #9b9ea1;
+  --gray-00: #f1f1f1;
+  --gray-01: #efefef;
+  --gray-02: #ededed;
+  --gray-03: #fbfbf3;
+  --gray-05: #d1d1d1;
+  --gray-10: #eee;
+  --gray-12: #e2e2e2;
+  --gray-14: #ddd;
+  --gray-15: #ccc;
+  --gray-15-a: #ccc;
+  --gray-15-b: #ccc;
+  --gray-20: #bbb;
+  --gray-25: #aaa;
+  --gray-25-a: #aaa;
+  --gray-40: #777;
+  --gray-41: #777776;
+  --gray-43: #6c6c6c;
+  --gray-45: #666;
+  --gray-50: #555;
+  --yellow-10: #F3CF20;
+  --yellow-20: #f7913b;
+  --blue-000: #7cd3eb;
+  --blue-00: rgb(12, 124, 221);
+  --blue-05: rgb(0, 124, 240);
+  --blue-05-a: rgb(0, 124, 240);
+  --blue-10: hsl(209, 100%, 50%);
+  --blue-12: #007cf2;
+  --blue-13: #0069cc;
+  --red-00: #ff585b;
+  --svg: #3e3e41;
+  --logo: #040000;
 }
 
 @tailwind base;

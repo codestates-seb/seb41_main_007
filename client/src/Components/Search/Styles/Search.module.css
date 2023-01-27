@@ -1,0 +1,20 @@
+.Search_Result_Text_Container {
+  display: flex;
+  justify-content: center;
+  padding: 30px 0 0 0;
+}
+
+.Search_Result_Text {
+  font-size: var(--xlarge);
+  color: black;
+}
+
+.Search_Text_Container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  font-size: var(--xlarge);
+  color: var(--green-60);
+  padding-top: 300px;
+  border-top: 1px solid black;
+}

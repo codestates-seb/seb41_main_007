@@ -1,0 +1,3 @@
+.Product_List_Container {
+  @apply grid  gap-y-10 gap-x-6  grid-cols-4 py-16 px-4;
+}
