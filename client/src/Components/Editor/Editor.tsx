@@ -209,14 +209,16 @@ export default function RichText({ value, setValue }: IProps) {
 
 export async function handlerCompresstion(editor: Editor, file: File) {
   if (file) {
+    console.log(file);
     const formData = new FormData();
     formData.append('file', file);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
       method: 'POST',
       cache: 'no-cache',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'multipart/form-data',
       },
+      body: formData,
     })
       .then((response) => response.json())
       .then((data) => {

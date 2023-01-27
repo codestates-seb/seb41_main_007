@@ -50,15 +50,16 @@
   background-color: var(--bg-white-10);
 }
 .tag_button_checked {
-  background-color: var(--black-09);
-  border-color: #3e3e41;
-  color: #dedede;
+  background-color: var(--green-50);
+  border-color: white;
+  color: white;
 }
 .tag_button_checked:hover {
-  background-color: var(--black-02);
-  border-color: var(--black-02);
-  color: #dedede;
+  background-color: var(--green-50);
+  border-color: white;
+  color: white;
 }
+
 .tag_button_disabled {
   opacity: 0.3;
   cursor: default;
@@ -101,9 +102,11 @@
   right: -5px;
   top: -20px;
 }
+
 .title_length_error {
   color: #c73331;
 }
+
 .wrapper {
   flex: 1;
   margin-top: 6px;
@@ -121,7 +124,7 @@
   width: 130px;
   height: 34px;
   border-radius: 999px;
-  background-color: var(--blue-10);
+  background-color: var(--green-50);
   color: #fff;
   display: flex;
   line-height: 14px;
