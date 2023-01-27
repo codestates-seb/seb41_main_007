@@ -50,10 +50,6 @@ public class PaymentController {
     public ResponseEntity refund(@RequestParam("order_id")long orderId) {
         Order order = orderService.findOrder(orderId);
         KakaoCancelResponse kakaoCancelResponse = paymentService.kakaoCancel(orderId, order.getPrice());
-        OrderPatchDto orderPatchDto = new OrderPatchDto();
-        orderPatchDto.setOrderId(orderId);
-        orderPatchDto.setPaymentStatus(Order.PaymentStatus.CANCEL);
-        orderService.updateOrder(orderPatchDto);
 
         return ResponseEntity.ok(kakaoCancelResponse);
     }
