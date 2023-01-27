@@ -10,6 +10,8 @@ import { Node } from 'slate';
 
 import { Plus, Checked } from './svg';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import { useNumberComma } from 'Utils/commonFunction';
+import Empty from 'Components/Common/Empty';
 
 const INITIALVALUE: Descendant[] = [
   {
@@ -20,7 +22,7 @@ const INITIALVALUE: Descendant[] = [
 const INITIAL_ERROR = {
   emptyTitle: false,
   emptyText: false,
-  tooLongTitle: false,
+  tooLongDesc: false,
   imageLimit: false,
   failToSend: false,
   categorySelector: false,
@@ -28,7 +30,7 @@ const INITIAL_ERROR = {
 interface ERROR {
   emptyTitle: boolean;
   emptyText: boolean;
-  tooLongTitle: boolean;
+  tooLongDesc: boolean;
   imageLimit: boolean;
   failToSend: boolean;
   categorySelector: boolean;
@@ -39,7 +41,13 @@ export default function Page() {
   const { data, isLoading } = useCustomQuery('/categories', 'categories');
   const [value, setValue] = useState<Descendant[]>(INITIALVALUE);
   const [error, setError] = useState<ERROR>(INITIAL_ERROR);
+  const [price, setPrice] = useState<any>(0);
+  const [brand, setBrand] = useState<string>('');
   const [title, setTitle] = useState<string>('');
+  const [desc, setDesc] = useState<string>('');
+  const [option, setOption] = useState([]);
+  const [optionPrice, setOptionPrice] = useState<any>(0);
+  const [optionName, setOptionName] = useState<any>('');
   const [categoryNum, setCategoryNum] = useState<number>(9999);
 
   const handlerError = useCallback(
@@ -47,7 +55,7 @@ export default function Page() {
       type:
         | 'emptyTitle'
         | 'emptyText'
-        | 'tooLongTitle'
+        | 'tooLongDesc'
         | 'imageLimit'
         | 'failToSend'
         | 'categorySelector',
@@ -63,8 +71,21 @@ export default function Page() {
   );
 
   async function handlerSubmit() {
-    console.log(value);
-    console.log(categoryNum);
+    const submitValue = {
+      name: title,
+      price: price,
+      brand: brand,
+      description: desc,
+      body: value,
+      shippingCountry: 'KOREA',
+      shippingPrice: 3000,
+      productCategoryPostDtos: [
+        {
+          categoryId: categoryNum,
+        },
+      ],
+    };
+    console.log(submitValue);
     // const data = {
     //   value: value,
     //   serializedValue: serialize(value),
@@ -89,6 +110,11 @@ export default function Page() {
   }
 
   const checkError = useCallback(() => {
+    if (price) {
+      if (price > 1000000) {
+        setPrice(Math.floor(price / 10));
+      }
+    }
     const type = value.map((n: any) => n.type);
     const emptyTitle = title.replace(
       /[\u0020\u00A0\u1680\u180E\u2000-\u200B\u202F\u205F\u3000\u3164\uFEFF]/g,
@@ -96,7 +122,7 @@ export default function Page() {
     );
     handlerError('categorySelector', categoryNum === 9999);
     handlerError('emptyTitle', !emptyTitle);
-    handlerError('tooLongTitle', title.length > 50);
+    handlerError('tooLongDesc', desc.length > 100);
     const emptyText =
       !!value
         .map((n: any) => Node.string(n))
@@ -108,17 +134,66 @@ export default function Page() {
       type.includes('image') ||
       type.includes('youtube');
     handlerError('emptyText', !emptyText);
-  }, [title, value, handlerError, categoryNum]);
+  }, [desc, value, handlerError, categoryNum, price]);
 
   useEffect(() => {
     checkError();
   }, [checkError]);
 
-  if (isLoading) return <></>;
+  if (isLoading) return <Empty />;
   return (
     <div className={styles.container}>
       <div className={styles.main_container}>
-        <h2 className={styles.heading}>새로운글 작성</h2>
+        <h2 className={styles.heading}>새로운 상품글 작성</h2>
+        <div className={styles.line} />
+        <div className={styles.contentContainer}>
+          <h2 className={styles.heading}> 상품 정보</h2>
+          <div className={styles.content}>
+            상품가격:
+            <input
+              type="number"
+              value={price}
+              placeholder="가격을 입력해주세요"
+              className={styles.inputContents}
+              onChange={(e) => setPrice(e.target.value)}
+            />
+          </div>
+          <div className={styles.content}>
+            브랜드:
+            <input
+              type="text"
+              placeholder="브랜드를 입력해주세요"
+              value={brand}
+              className={styles.inputContents}
+              onChange={(e) => setBrand(e.target.value)}
+            />
+          </div>
+        </div>
+        <div className={styles.contentContainer}>
+          <div className={styles.line} />
+          <h2 className={styles.heading}> 선택 상품 만들기</h2>
+          <div className={styles.content}>
+            상품가격:
+            <input
+              type="number"
+              value={optionPrice}
+              placeholder="가격을 입력해주세요"
+              className={styles.inputContents}
+              onChange={(e) => setOptionPrice(e.target.value)}
+            />
+          </div>
+          <div className={styles.content}>
+            상품이름:
+            <input
+              type="text"
+              placeholder="상품이름을 입력해주세요"
+              value={optionName}
+              className={styles.inputContents}
+              onChange={(e) => setOptionName(e.target.value)}
+            />
+          </div>
+          <button> 옵션 만들기</button>
+        </div>
         <div className={styles.line} />
         <div className={styles.header}>
           <div className={styles.button_container}>
@@ -153,16 +228,25 @@ export default function Page() {
           <input
             className={styles.title_input}
             value={title}
-            placeholder="제목"
+            placeholder="상품명"
             onChange={(e) => handlerTilteChange(e.target.value)}
           />
-          {title.length > 50 && (
+        </div>
+
+        <div className={styles.title}>
+          <input
+            className={styles.title_input}
+            value={desc}
+            placeholder="상품 간단한 설명을 적어주세요"
+            onChange={(e) => setDesc(e.target.value)}
+          />
+          {desc.length > 100 && (
             <div
               className={cx('title_length', {
-                title_length_error: title.length > 50,
+                title_length_error: desc.length > 100,
               })}
             >
-              {title.length} / 50
+              {desc.length} / 100
             </div>
           )}
         </div>
@@ -172,7 +256,7 @@ export default function Page() {
         {(error.emptyText ||
           error.emptyTitle ||
           error.imageLimit ||
-          error.tooLongTitle ||
+          error.tooLongDesc ||
           error.categorySelector) && <ErrorMessage error={error} />}
         <div className={styles.submit_wrapper}>
           <button
@@ -180,7 +264,7 @@ export default function Page() {
               error.emptyText ||
               error.emptyTitle ||
               error.imageLimit ||
-              error.tooLongTitle ||
+              error.tooLongDesc ||
               error.categorySelector
             }
             className={cx('submit', {
@@ -188,7 +272,7 @@ export default function Page() {
                 error.emptyText ||
                 error.emptyTitle ||
                 error.imageLimit ||
-                error.tooLongTitle ||
+                error.tooLongDesc ||
                 error.categorySelector,
             })}
             onClick={handlerSubmit}
@@ -201,7 +285,7 @@ export default function Page() {
   );
 }
 
-function ErrorMessage({ error }: { error: ERROR }) {
+const ErrorMessage = ({ error }: { error: ERROR }) => {
   return (
     <div className={styles.error_container}>
       <div className={styles.error_title}>
@@ -214,9 +298,9 @@ function ErrorMessage({ error }: { error: ERROR }) {
         {error.emptyText && (
           <div className={styles.error_text}>본문이 비어있습니다</div>
         )}
-        {error.tooLongTitle && (
+        {error.tooLongDesc && (
           <div className={styles.error_text}>
-            제목은 50자를 넘지 말아주세요.
+            간단한 설명은 100자를 넘지 말아주세요.
           </div>
         )}
         {error.failToSend && (
@@ -228,4 +312,4 @@ function ErrorMessage({ error }: { error: ERROR }) {
       </div>
     </div>
   );
-}
+};

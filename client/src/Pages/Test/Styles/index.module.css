@@ -11,6 +11,11 @@
   flex: 1;
 }
 
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+}
+
 .line {
   width: 100%;
   border-bottom: 1px solid var(--gray-12);
@@ -19,6 +24,8 @@
 
 .heading {
   font-size: var(--large);
+  color: var(--green-70);
+  padding-bottom: 15px;
 }
 
 .header {
@@ -147,6 +154,7 @@
   margin-top: 6px;
   border-radius: 4px;
 }
+
 .error_title {
   font-size: 15px;
   line-height: 15px;
@@ -155,17 +163,19 @@
   padding: 10px;
   background-color: var(--tool-bar);
 }
+
 .error_text_container {
   display: flex;
   flex-wrap: wrap;
   padding-bottom: 5px;
 }
+
 .error_text {
   font-size: 14px;
   line-height: 14px;
   display: -webkit-box;
-  background-color: #ccc;
-  color: #3e3e41;
+  background-color: var(--green-40);
+  color: var(--white-03);
   border-radius: 999px;
   padding: 8px 12px;
   margin-top: 5px;
@@ -175,6 +185,7 @@
   -webkit-line-clamp: 1;
   max-width: 100%;
 }
+
 .error_in_text {
   overflow: hidden;
   text-overflow: ellipsis;

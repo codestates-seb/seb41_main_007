@@ -209,22 +209,25 @@ export default function RichText({ value, setValue }: IProps) {
 
 export async function handlerCompresstion(editor: Editor, file: File) {
   if (file) {
-    console.log(file);
     const formData = new FormData();
     formData.append('file', file);
+    console.log(formData);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
       method: 'POST',
       cache: 'no-cache',
       headers: {
-        'Content-Type': 'multipart/form-data',
+        // 'Content-Type': 'multipart/form-data',
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
       body: formData,
     })
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
+      })
+      .catch((e) => {
+        console.log(e);
       });
-
     const reader = new FileReader();
     reader.onload = function (e: any) {
       const url = e.target.result;
