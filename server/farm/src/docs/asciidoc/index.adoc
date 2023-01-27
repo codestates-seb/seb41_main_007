@@ -243,8 +243,8 @@ include::{snippets}/postLike/curl-request.adoc[]
 .http-request
 include::{snippets}/postLike/http-request.adoc[]
 
-.request-fields
-include::{snippets}/postLike/request-fields.adoc[]
+.path-parameters
+include::{snippets}/postLike/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/postLike/http-response.adoc[]
@@ -259,8 +259,8 @@ include::{snippets}/deleteLike/curl-request.adoc[]
 .http-request
 include::{snippets}/deleteLike/http-request.adoc[]
 
-.request-fields
-include::{snippets}/deleteLike/request-fields.adoc[]
+.path-parameters
+include::{snippets}/deleteLike/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/deleteLike/http-response.adoc[]
