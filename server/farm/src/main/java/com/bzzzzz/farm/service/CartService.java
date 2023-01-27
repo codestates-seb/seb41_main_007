@@ -20,12 +20,11 @@ public class CartService {
     private final CartRepository cartRepository;
 
     public Cart createCartProduct(long memberId, ProductOption productOption, int quantity) {
-        Optional<Cart> optionalCart = cartRepository.findByMember_MemberIdAndProductOption(memberId, productOption);
-
+        Optional<Cart> optionalCart = cartRepository.findByMember_MemberIdAndProductOption_ProductOptionId(memberId, productOption.getProductOptionId());
         Member member = new Member();
         member.setMemberId(memberId);
         return optionalCart.isPresent()
-                ? updateCart(optionalCart.get().getCartId(), quantity)
+                ? updateCart(memberId, productOption.getProductOptionId(), quantity)
                 : cartRepository.save(Cart
                 .builder()
                 .member(member)
@@ -34,13 +33,13 @@ public class CartService {
                 .build());
     }
 
-    public Cart updateCart(long cartId, Integer quantity) {
-        Cart findCart = findVerifiedCart(cartId);
+    public Cart updateCart(long memberId, long productOptionId, Integer quantity) {
+        Cart findCart = findVerifiedCart(memberId, productOptionId);
 
         findCart.calculateQuantity(quantity); // 장바구니 수정항목이 추가 되면 옵셔널로 변경하시오
 
         if (findCart.getQuantity() <= 0) {
-            deleteCart(findCart.getCartId());
+            deleteCart(memberId, productOptionId);
             return null;
         }
         return findCart;
@@ -51,25 +50,17 @@ public class CartService {
         return cartRepository.findAllByMember_MemberId(memberId);
     }
 
-    public void deleteCart(long cartId) {
-        Cart cart = findVerifiedCart(cartId);
-        cartRepository.delete(cart);
+    public void deleteCart(long memberId, long productOptionId) {
+        Cart findCart = findVerifiedCart(memberId, productOptionId);
+        cartRepository.delete(findCart);
     }
 
     /**
      * 서브 메서드
      */
     @Transactional(readOnly = true)
-    private Cart findVerifiedCart(long cartProductId) {
-        Optional<Cart> optionalCartProduct = cartRepository.findById(cartProductId);
-        return optionalCartProduct.orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
-    }
-
-    @Transactional(readOnly = true)
-    public void verifyAuthority(long cartId, long memberId) {
-        Cart cart = findVerifiedCart(cartId);
-        if (cart.getMember().getMemberId() != memberId) {
-            throw new BusinessLogicException(ExceptionCode.REQUEST_FORBIDDEN);
-        }
+    private Cart findVerifiedCart(long memberId, long productOptionId) {
+        Optional<Cart> optionalCart = cartRepository.findByMember_MemberIdAndProductOption_ProductOptionId(memberId, productOptionId);
+        return optionalCart.orElseThrow(() -> new BusinessLogicException(ExceptionCode.CART_NOT_FOUND));
     }
 }

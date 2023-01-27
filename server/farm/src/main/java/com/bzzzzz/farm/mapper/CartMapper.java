@@ -1,6 +1,6 @@
 package com.bzzzzz.farm.mapper;
 
-import com.bzzzzz.farm.model.dto.cart.CartPostDto;
+import com.bzzzzz.farm.model.dto.cart.CartRequestDto;
 import com.bzzzzz.farm.model.dto.cart.CartResponseDto;
 import com.bzzzzz.farm.model.entity.Cart;
 import com.bzzzzz.farm.model.entity.Product;
@@ -11,8 +11,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CartMapper {
-    Cart cartPostDtoToCart(CartPostDto cartPostDto);
-
     List<CartResponseDto> cartsToCartResponseDtos(List<Cart> carts);
 
     default CartResponseDto cartToCartResponseDto(Cart cart) {
