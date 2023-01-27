@@ -1,7 +1,12 @@
 package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.model.dto.payment.KakaoApproveResponse;
+import com.bzzzzz.farm.model.dto.payment.KakaoCancelResponse;
 import com.bzzzzz.farm.model.dto.payment.KakaoReadyResponse;
+import com.bzzzzz.farm.model.entity.Order;
+import com.bzzzzz.farm.model.entity.Payment;
+import com.bzzzzz.farm.repository.OrderRepository;
+import com.bzzzzz.farm.repository.PaymentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -17,15 +22,23 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 @Transactional
 public class PaymentService {
-    private static final String cid = "TC0ONETIME";  //가맹점 임시 코드
+    @Value("${payment.cid}")
+    private String cid;
 
     @Value("${payment.admin_key}")
-    private String admin_key;  //카카오 어플리케이션 어드민 키
-    private final String host = "https://kapi.kakao.com/v1/payment"; // host url
+    private String admin_key;
+
+    @Value("${payment.host}")
+    private String host;
 
     @Value("${payment.url}")
     private String redirectUrl;
+
     private KakaoReadyResponse kakaoReady;
+
+    private final PaymentRepository paymentRepository;
+
+    private final OrderRepository orderRepository;
 
     /**
      결제요청
@@ -69,6 +82,7 @@ public class PaymentService {
         parameters.add("partner_order_id", orderId);
         parameters.add("partner_user_id", "가맹점 회원 ID");
         parameters.add("pg_token", pgToken);
+
         // 파라미터, 헤더
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
         // 외부에 보낼 url
@@ -77,7 +91,46 @@ public class PaymentService {
                 host+"/approve",
                 requestEntity,
                 KakaoApproveResponse.class);
+
+        //결제 테이블 저장
+        Payment payment = new Payment();
+        payment.setOrder(orderRepository.findById(orderId).get());
+        payment.setTid(kakaoReady.getTid());
+        paymentRepository.save(payment);
+
         return approveResponse;
+    }
+
+    /**
+     * 결제 환불
+     */
+    public KakaoCancelResponse kakaoCancel(long orderId, int price) {
+        Payment payment = paymentRepository.findByOrder(orderRepository.findById(orderId).get()).get();
+
+        // 카카오페이 요청
+        MultiValueMap<String, Object> parameters = new LinkedMultiValueMap<>();
+        parameters.add("cid", cid);
+        parameters.add("tid", payment.getTid());
+        parameters.add("cancel_amount", price);
+        parameters.add("cancel_tax_free_amount", 0);
+        parameters.add("cancel_vat_amount", 0);
+
+        // 파라미터, 헤더
+        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
+
+        // 외부에 보낼 url
+        RestTemplate restTemplate = new RestTemplate();
+
+        KakaoCancelResponse cancelResponse = restTemplate.postForObject(
+                host+"/cancel",
+                requestEntity,
+                KakaoCancelResponse.class);
+
+        //결제 취소로 상태 변경
+        payment.setPaymentStatus(Order.PaymentStatus.CANCEL);
+        paymentRepository.save(payment);
+
+        return cancelResponse;
     }
 
     /**
