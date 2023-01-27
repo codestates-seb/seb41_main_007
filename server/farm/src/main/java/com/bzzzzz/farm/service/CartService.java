@@ -19,9 +19,11 @@ import java.util.Optional;
 public class CartService {
     private final CartRepository cartRepository;
 
-    public Cart createCartProduct(Member member, ProductOption productOption, int quantity) {
-        Optional<Cart> optionalCart = cartRepository.findByMemberAndProductOption(member, productOption);
+    public Cart createCartProduct(long memberId, ProductOption productOption, int quantity) {
+        Optional<Cart> optionalCart = cartRepository.findByMember_MemberIdAndProductOption(memberId, productOption);
 
+        Member member = new Member();
+        member.setMemberId(memberId);
         return optionalCart.isPresent()
                 ? updateCart(optionalCart.get().getCartId(), quantity)
                 : cartRepository.save(Cart
