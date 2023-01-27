@@ -46,7 +46,7 @@ public class CartController {
     }
 
     @PatchMapping("/carts")
-    public ResponseEntity patchCartProduct(@RequestBody CartPatchDto cartPatchDto,
+    public ResponseEntity patchCart(@RequestBody CartPatchDto cartPatchDto,
                                            @AuthenticationPrincipal UserDetails userDetails) {
         cartService.verifyAuthority(cartPatchDto.getCartId(), toLong(userDetails.getUsername()));
 
@@ -56,7 +56,7 @@ public class CartController {
     }
 
     @DeleteMapping("/carts/{cart-id}")
-    public ResponseEntity deleteCartProduct(@Positive @PathVariable("cart-id") long cartId,
+    public ResponseEntity deleteCart(@Positive @PathVariable("cart-id") long cartId,
                                             @AuthenticationPrincipal UserDetails userDetails) {
         cartService.verifyAuthority(cartId, toLong(userDetails.getUsername()));
 
