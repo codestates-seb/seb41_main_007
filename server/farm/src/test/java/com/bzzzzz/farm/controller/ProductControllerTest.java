@@ -75,7 +75,8 @@ public class ProductControllerTest {
                 .price(30000)
                 .photo("http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg")
                 .brand("테스트브랜드")
-                .description("테스트 제품 설명")
+                .body("상세 설명이 들어갑니다")
+                .description("간략한 설명이 들어갑니다")
                 .shippingCountry("KOREA")
                 .shippingMethod("PARCEL_SERVICE")
                 .shippingPrice(3000)
@@ -113,7 +114,8 @@ public class ProductControllerTest {
                                         fieldWithPath("price").type(JsonFieldType.NUMBER).description("제품 가격"),
                                         fieldWithPath("photo").type(JsonFieldType.STRING).description("제품 썸네일 사진 URL"),
                                         fieldWithPath("brand").type(JsonFieldType.STRING).description("제조사"),
-                                        fieldWithPath("description").type(JsonFieldType.STRING).description("제품 설명"),
+                                        fieldWithPath("body").type(JsonFieldType.STRING).description("제품 상세 설명"),
+                                        fieldWithPath("description").type(JsonFieldType.STRING).description("제품 간단 설명"),
                                         fieldWithPath("shippingCountry").type(JsonFieldType.STRING).description(
                                                 "국내/해외 배송 여부\n" +
                                                         "ENUM 타입으로 지정된 값만 입력 가능합니다.\n" +
@@ -153,7 +155,8 @@ public class ProductControllerTest {
                 .shippingCountry("국내 배송")
                 .shippingMethod("택배")
                 .shippingPrice(3000)
-                .description("테스트 제품에 대한 설명입니다.")
+                .body("제품에 대한 상세 설명입니다.")
+                .description("제품에 대한 간단한 설명입니다.")
                 .brand("테스트브랜드")
                 .productStatus("판매 중")
                 .viewCount(200)
@@ -198,6 +201,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.shippingCountry").value(response.getShippingCountry()))
                 .andExpect(jsonPath("$.shippingMethod").value(response.getShippingMethod()))
                 .andExpect(jsonPath("$.shippingPrice").value(response.getShippingPrice()))
+                .andExpect(jsonPath("$.body").value(response.getBody()))
                 .andExpect(jsonPath("$.description").value(response.getDescription()))
                 .andExpect(jsonPath("$.brand").value(response.getBrand()))
                 .andExpect(jsonPath("$.productStatus").value(response.getProductStatus()))
@@ -226,7 +230,8 @@ public class ProductControllerTest {
                                 fieldWithPath("shippingCountry").type(JsonFieldType.STRING).description("국내/해외 배송 여부"),
                                 fieldWithPath("shippingMethod").type(JsonFieldType.STRING).description("배송 방법"),
                                 fieldWithPath("shippingPrice").type(JsonFieldType.NUMBER).description("배송비"),
-                                fieldWithPath("description").type(JsonFieldType.STRING).description("제품 설명"),
+                                fieldWithPath("body").type(JsonFieldType.STRING).description("제품 상세 설명"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).description("제품 간단 설명"),
                                 fieldWithPath("brand").type(JsonFieldType.STRING).description("제조사"),
                                 fieldWithPath("productStatus").type(JsonFieldType.STRING).description("제품 상태"),
                                 fieldWithPath("viewCount").type(JsonFieldType.NUMBER).description("조회수"),

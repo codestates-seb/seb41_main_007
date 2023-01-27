@@ -23,7 +23,10 @@ public class Product extends Auditable {
     private Integer price;
 
     @Column(nullable = false)
-    private String description; // 상품 메인 글
+    private String body; // 상품 메인 글
+
+    @Column(nullable = false)
+    private String description; // 간단 설명 글
 
     @Column(nullable = false)
     private String photo; // 썸네일

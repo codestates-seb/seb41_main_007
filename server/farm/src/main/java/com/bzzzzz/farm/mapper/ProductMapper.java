@@ -20,6 +20,7 @@ public interface ProductMapper {
 
         product.setName(productPostDto.getName());
         product.setPrice(productPostDto.getPrice());
+        product.setBody(productPostDto.getBody());
         product.setDescription(productPostDto.getDescription());
         product.setPhoto(productPostDto.getPhoto());
         product.setBrand(productPostDto.getBrand());
@@ -68,6 +69,7 @@ public interface ProductMapper {
                 .shippingCountry(product.getShippingCountry().getShippingType())
                 .shippingMethod(product.getShippingMethod().getShippingMethod())
                 .shippingPrice(product.getShippingPrice())
+                .body(product.getBody())
                 .description(product.getDescription())
                 .brand(product.getBrand())
                 .productStatus(product.getProductStatus().getStatus())
