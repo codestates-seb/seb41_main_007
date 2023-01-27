@@ -1,7 +1,6 @@
 package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.mapper.ProductMapper;
-import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.MultiResponseDto;
 import com.bzzzzz.farm.model.dto.SingleResponseDto;
 import com.bzzzzz.farm.model.dto.product.ProductPatchDto;
@@ -26,7 +25,6 @@ import javax.validation.constraints.Positive;
 @RestController
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/products")
 public class ProductController {
     private final ProductService productService;
     private final LikeService likeService;
@@ -34,7 +32,7 @@ public class ProductController {
     private final ProductCategoryService productCategoryService;
     private final ProductOptionService productOptionService;
 
-    @PostMapping
+    @PostMapping("/products")
     @Transactional
     public ResponseEntity postProduct(@Valid @RequestBody ProductPostDto productPostDto) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
@@ -49,7 +47,7 @@ public class ProductController {
         return new ResponseEntity(new SingleResponseDto(product.getProductId()), HttpStatus.CREATED);
     }
 
-    @GetMapping("/{product-id}")
+    @GetMapping("/products/{product-id}")
     public ResponseEntity getProduct(@Positive @PathVariable("product-id") long productId) {
 
         Product product = productService.findProduct(productId);
@@ -61,7 +59,7 @@ public class ProductController {
         return new ResponseEntity(productMapper.productToProductDetailResponseDto(product, false), HttpStatus.OK);
     }
 
-    @GetMapping
+    @GetMapping("/products")
     public ResponseEntity getProducts(@Positive @RequestParam(required = false, defaultValue = "1") int page,
                                       @Positive @RequestParam(required = false, defaultValue = "40") int size,
                                       @RequestParam(required = false) Long categoryId,
@@ -83,7 +81,7 @@ public class ProductController {
         return new ResponseEntity(new MultiResponseDto(productPage.getContent(), productPage), HttpStatus.OK);
     }
 
-    @PatchMapping
+    @PatchMapping("/products")
     public ResponseEntity patchProduct(@Valid @RequestBody ProductPatchDto productPatchDto) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
 
@@ -92,11 +90,11 @@ public class ProductController {
         return new ResponseEntity(new SingleResponseDto(productPatchDto.getProductId()), HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity deleteProduct(@Valid @RequestBody IdRequestDto idRequestDto) {
+    @DeleteMapping("/products/{product-id}")
+    public ResponseEntity deleteProduct(@Positive @PathVariable("product-id") long productId) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
 
-        productService.deleteProduct(idRequestDto.getId());
+        productService.deleteProduct(productId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

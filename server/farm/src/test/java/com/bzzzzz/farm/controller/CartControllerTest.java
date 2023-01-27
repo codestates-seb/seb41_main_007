@@ -5,10 +5,8 @@ import com.bzzzzz.farm.model.dto.cart.CartPatchDto;
 import com.bzzzzz.farm.model.dto.cart.CartPostDto;
 import com.bzzzzz.farm.model.dto.cart.CartResponseDto;
 import com.bzzzzz.farm.model.entity.Cart;
-import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.model.entity.ProductOption;
 import com.bzzzzz.farm.service.CartService;
-import com.bzzzzz.farm.service.MemberService;
 import com.bzzzzz.farm.service.ProductOptionService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
@@ -54,10 +52,8 @@ public class CartControllerTest {
     @MockBean
     private CartMapper cartMapper;
     @MockBean
-    private MemberService memberService;
-    @MockBean
     private ProductOptionService productOptionService;
-/*
+
     @Test
     @DisplayName("내 장바구니 보기")
     void getCarts() throws Exception {
@@ -102,9 +98,6 @@ public class CartControllerTest {
 
         List<CartResponseDto> response = List.of(cartResponseDto1, cartResponseDto2);
 
-        Member member = new Member();
-        member.setMemberId(1L);
-
         given(cartService.findCartsByMemberId(Mockito.anyLong())).willReturn(List.of());
         given(cartMapper.cartsToCartResponseDtos(Mockito.anyList())).willReturn(response);
 
@@ -112,9 +105,7 @@ public class CartControllerTest {
         ResultActions actions = mockMvc.perform(
                 get("/carts")
                         .accept(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmb29AZW1haWwuY29tIiwiZXhwIjoxNjM4ODU1MzA1LCJpYXQiOjE2Mzg4MTkzMDV9.q4FWV7yVDAs_DREiF524VZ-udnqwV81GEOgdCj6QQAs")
         );
-
         // then
         actions
                 .andExpect(status().isOk())
@@ -171,7 +162,7 @@ public class CartControllerTest {
                                 fieldWithPath("[*].modifiedAt").type(JsonFieldType.STRING).description("수정 일자")
                         ))
                 ));
-    }*/
+    }
 
     @Test
     @DisplayName("장바구니에 제품 담기")
@@ -179,12 +170,8 @@ public class CartControllerTest {
 //         given
         CartPostDto request = new CartPostDto(1L, 1);
 
-        Member member = new Member();
-        member.setMemberId(1L);
-
-        given(memberService.getLoginMember()).willReturn(member);
         given(productOptionService.findVerifiedProductOption(Mockito.anyLong())).willReturn(new ProductOption());
-        given(cartService.createCartProduct(Mockito.any(Member.class), Mockito.any(ProductOption.class), Mockito.anyInt())).willReturn(new Cart());
+        given(cartService.createCartProduct(Mockito.anyLong(), Mockito.any(ProductOption.class), Mockito.anyInt())).willReturn(new Cart());
 
         String content = gson.toJson(request);
 
@@ -215,10 +202,6 @@ public class CartControllerTest {
         // given
         CartPatchDto request = new CartPatchDto(1L, -1);
 
-        Member member = new Member();
-        member.setMemberId(1L);
-
-        given(memberService.getLoginMember()).willReturn(member);
         doNothing().when(cartService).verifyAuthority(Mockito.anyLong(), Mockito.anyLong());
         given(cartService.updateCart(Mockito.anyLong(), Mockito.anyInt())).willReturn(new Cart());
 
@@ -250,10 +233,7 @@ public class CartControllerTest {
     void deleteCart() throws Exception {
         // given
         long cartId = 1L;
-        Member member = new Member();
-        member.setMemberId(1L);
 
-        given(memberService.getLoginMember()).willReturn(member);
         doNothing().when(cartService).verifyAuthority(Mockito.anyLong(), Mockito.anyLong());
         doNothing().when(cartService).deleteCart(Mockito.anyLong());
 

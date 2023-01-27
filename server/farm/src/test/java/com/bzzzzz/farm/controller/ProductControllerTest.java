@@ -395,18 +395,12 @@ public class ProductControllerTest {
     @DisplayName("제품 삭제")
     void deleteProduct() throws Exception {
         // given
-        IdRequestDto request = new IdRequestDto();
-        request.setId(1L);
-
-        doNothing().when(productService).deleteProduct(request.getId());
-        String content = gson.toJson(request);
+        doNothing().when(productService).deleteProduct(Mockito.anyLong());
 
         // when
         ResultActions actions = mockMvc.perform(
-                delete("/products")
-                        .contentType(MediaType.APPLICATION_JSON)
+                delete("/products/{product-id}", 1L)
                         .with(csrf())
-                        .content(content)
         );
 
         // then
@@ -415,7 +409,7 @@ public class ProductControllerTest {
                 .andDo(document(
                         "deleteProduct",
                         preprocessRequest(prettyPrint()),
-                        requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 제품 식별자"))
+                        pathParameters(parameterWithName("product-id").description("제품 식별자"))
                 ));
     }
 }
