@@ -65,10 +65,11 @@ public class OrderService {
     private void verifyCanOrder(Order order) {
         order.getOrderProducts().stream()
                 .forEach(orderProduct -> {
+                    // 1=판매준비중, 2=판매중지, 3=판매중 -> 1,2는 주문할 수 없는 상태
                     if (orderProduct.getProduct().getProductStatus().getCode() < 3) {
                         throw new BusinessLogicException(ExceptionCode.CAN_NOT_ORDER_PRODUCT);
                     }
-
+                    // 재고 - 주문수량 < 0 재고가 부족하므로 주문 불가
                     if (orderProduct.getProductOption().getStock() - orderProduct.getQuantity() < 0) {
                         throw new BusinessLogicException(ExceptionCode.NOT_ENOUGH_STOCK);
                     }
@@ -76,7 +77,7 @@ public class OrderService {
     }
 
     private void verifyCancelOrder(OrderProduct orderProduct) {
-        if (orderProduct.getOrderStatus().getStep() > 3) {
+        if (orderProduct.getOrderStatus().getStep() > 3) { // 3이하는 주문을 변경할 수 있는 상태: 상품출고전
             throw new BusinessLogicException(ExceptionCode.CAN_NOT_CANCEL_ORDER);
         }
         orderProduct.setOrderStatus(OrderProduct.OrderStatus.CANCEL);
@@ -95,7 +96,7 @@ public class OrderService {
     @Transactional(readOnly = true)
     public Order verifyPaymentStatus(long orderId) {
         Order order = findOrder(orderId);
-        if (findOrder(orderId).getPaymentStatus().getCode() > 1) {
+        if (findOrder(orderId).getPaymentStatus().getCode() > 1) { // 1=결제전, 2=결제완료, 3=결제취소
             throw new BusinessLogicException(ExceptionCode.CAN_NOT_PAY);
         }
         return order;
