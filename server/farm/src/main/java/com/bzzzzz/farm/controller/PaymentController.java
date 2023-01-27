@@ -2,6 +2,7 @@ package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.model.dto.order.OrderPatchDto;
 import com.bzzzzz.farm.model.dto.payment.KakaoApproveResponse;
+import com.bzzzzz.farm.model.dto.payment.KakaoCancelResponse;
 import com.bzzzzz.farm.model.entity.Order;
 import com.bzzzzz.farm.service.OrderService;
 import com.bzzzzz.farm.service.PaymentService;
@@ -40,6 +41,21 @@ public class PaymentController {
         orderPatchDto.setPaymentMethod(Order.PaymentMethod.KAKAO_PAY);
         orderService.updateOrder(orderPatchDto);
         return ResponseEntity.ok(kakaoApprove);
+    }
+
+    /**
+     환불
+     */
+    @PostMapping("/refund")
+    public ResponseEntity refund(@RequestParam("order_id")long orderId) {
+        Order order = orderService.findOrder(orderId);
+        KakaoCancelResponse kakaoCancelResponse = paymentService.kakaoCancel(orderId, order.getPrice());
+        OrderPatchDto orderPatchDto = new OrderPatchDto();
+        orderPatchDto.setOrderId(orderId);
+        orderPatchDto.setPaymentStatus(Order.PaymentStatus.CANCEL);
+        orderService.updateOrder(orderPatchDto);
+
+        return ResponseEntity.ok(kakaoCancelResponse);
     }
 
 
