@@ -375,8 +375,8 @@ include::{snippets}/deleteCategory/curl-request.adoc[]
 .http-request
 include::{snippets}/deleteCategory/http-request.adoc[]
 
-.request-fields
-include::{snippets}/deleteCategory/request-fields.adoc[]
+.path-parameters
+include::{snippets}/deleteCategory/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/deleteCategory/http-response.adoc[]

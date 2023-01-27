@@ -1,7 +1,6 @@
 package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.mapper.CategoryMapper;
-import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.category.CategoryPatchDto;
 import com.bzzzzz.farm.model.dto.category.CategoryPostDto;
 import com.bzzzzz.farm.model.entity.Category;
@@ -13,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 @RestController
@@ -48,11 +48,11 @@ public class CategoryController {
         return new ResponseEntity(categoryMapper.categoriesToCategoryResponseDtos(categories), HttpStatus.OK);
     }
 
-    @DeleteMapping("/categories")
-    public ResponseEntity deleteCategory(@Valid @RequestBody IdRequestDto idRequestDto) {
+    @DeleteMapping("/categories/{category-id}")
+    public ResponseEntity deleteCategory(@Positive @PathVariable("category-id") long categoryId) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
 
-        categoryService.deleteCategory(idRequestDto.getId());
+        categoryService.deleteCategory(categoryId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
