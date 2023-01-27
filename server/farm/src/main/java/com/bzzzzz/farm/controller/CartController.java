@@ -1,8 +1,7 @@
 package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.mapper.CartMapper;
-import com.bzzzzz.farm.model.dto.cart.CartPatchDto;
-import com.bzzzzz.farm.model.dto.cart.CartPostDto;
+import com.bzzzzz.farm.model.dto.cart.CartRequestDto;
 import com.bzzzzz.farm.model.entity.Cart;
 import com.bzzzzz.farm.model.entity.ProductOption;
 import com.bzzzzz.farm.service.CartService;
@@ -36,28 +35,26 @@ public class CartController {
     }
 
     @PostMapping("/carts")
-    public ResponseEntity postCart(@RequestBody CartPostDto cartPostDto,
+    public ResponseEntity postCart(@RequestBody CartRequestDto cartRequestDto,
                                    @AuthenticationPrincipal UserDetails userDetails) {
-        ProductOption productOption = productOptionService.findVerifiedProductOption(cartPostDto.getProductOptionId());
+        ProductOption productOption = productOptionService.findVerifiedProductOption(cartRequestDto.getProductOptionId());
 
-        cartService.createCartProduct(toLong(userDetails.getUsername()), productOption, cartPostDto.getQuantity());
+        cartService.createCartProduct(toLong(userDetails.getUsername()), productOption, cartRequestDto.getQuantity());
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PatchMapping("/carts")
-    public ResponseEntity patchCart(@RequestBody CartPatchDto cartPatchDto,
-                                           @AuthenticationPrincipal UserDetails userDetails) {
-        cartService.verifyAuthority(cartPatchDto.getCartId(), toLong(userDetails.getUsername()));
-
-        cartService.updateCart(cartPatchDto.getCartId(), cartPatchDto.getQuantity());
+    public ResponseEntity patchCart(@RequestBody CartRequestDto cartRequestDto,
+                                    @AuthenticationPrincipal UserDetails userDetails) {
+        cartService.updateCart(toLong(userDetails.getUsername()), cartRequestDto.getProductOptionId(), cartRequestDto.getQuantity());
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/carts/{product-option-id}")
     public ResponseEntity deleteCart(@Positive @PathVariable("product-option-id") long productOptionId,
-                                            @AuthenticationPrincipal UserDetails userDetails) {
+                                     @AuthenticationPrincipal UserDetails userDetails) {
         cartService.deleteCart(toLong(userDetails.getUsername()), productOptionId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
