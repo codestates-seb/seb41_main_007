@@ -1,7 +1,6 @@
 package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.mapper.ProductMapper;
-import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.product.*;
 import com.bzzzzz.farm.model.entity.Category;
 import com.bzzzzz.farm.model.entity.Product;
@@ -34,6 +33,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -171,19 +172,12 @@ public class ProductSubControllerTest {
     @DisplayName("카테고리에서 제품을 제외")
     void deleteProductCategory() throws Exception {
         // given
-        IdRequestDto request = new IdRequestDto();
-        request.setId(1L);
-
         doNothing().when(productCategoryService).deleteProductCategory(Mockito.anyLong());
-
-        String content = gson.toJson(request);
 
         // when
         ResultActions actions = mockMvc.perform(
-                delete("/products/categories")
-                        .contentType(MediaType.APPLICATION_JSON)
+                delete("/products/categories/{product-category-id}", 1L)
                         .with(csrf())
-                        .content(content)
         );
 
         // then
@@ -192,7 +186,7 @@ public class ProductSubControllerTest {
                 .andDo(document(
                         "deleteProductCategory",
                         preprocessRequest(prettyPrint()),
-                        requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 대상의 식별자"))
+                        pathParameters(parameterWithName("product-category-id").description("삭제할 대상의 식별자"))
 
                 ))
                 .andReturn();
@@ -275,19 +269,12 @@ public class ProductSubControllerTest {
     @DisplayName("옵션 삭제")
     void deleteProductOption() throws Exception {
         // given
-        IdRequestDto request = new IdRequestDto();
-        request.setId(1L);
-
         doNothing().when(productOptionService).deleteProductOption(Mockito.anyLong());
-
-        String content = gson.toJson(request);
 
         // when
         ResultActions actions = mockMvc.perform(
-                delete("/products/options")
-                        .contentType(MediaType.APPLICATION_JSON)
+                delete("/products/options/{product-option-id}", 1L)
                         .with(csrf())
-                        .content(content)
         );
 
         // then
@@ -296,7 +283,7 @@ public class ProductSubControllerTest {
                 .andDo(document(
                         "deleteProductOption",
                         preprocessRequest(prettyPrint()),
-                        requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 대상의 식별자"))
+                        pathParameters(parameterWithName("product-option-id").description("삭제할 대상의 식별자"))
 
                 ))
                 .andReturn();
