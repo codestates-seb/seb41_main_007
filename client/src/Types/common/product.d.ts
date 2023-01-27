@@ -14,3 +14,22 @@ export interface TYPE_PageInfo {
   totalElements: number;
   totalPages: number;
 }
+// productOptionId: number;
+// productOptionName: string;
+// price: number;
+// stock: number;
+
+export interface TYPE_ProductOption {
+  productOptionId: number;
+  productOptionName: string;
+  price: number;
+  stock: number;
+}
+
+export interface TYPE_LocalOption {
+  id: number;
+  price: number;
+  optionprice: number;
+  optionname: string;
+  count: number;
+}

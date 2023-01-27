@@ -1,7 +1,5 @@
 import { FC } from 'react';
 import BasketTd from './BasketTd';
-import { useAppSelector } from 'Redux/app/hook';
-import { selectprice, Pricestate } from 'Redux/reducer/priceSlice';
 
 interface checkBoxtype {
   el: any;
@@ -17,21 +15,24 @@ const PathCounter: FC<checkBoxtype> = ({
   const jsondata: string | null = localStorage.getItem('basketsCounter');
   const resultarr = JSON.parse(jsondata || '[]') || [];
   console.log(resultarr);
-  let countnumber = 1;
+
   //   const itemDetail = resultarr.filter((item: any) => {
   //     return item.id === el.productId;
   //   });
-  if (resultarr.length > 0) {
-    resultarr.forEach((data: any) => {
-      console.log(el.productId);
-      if (data.id === el.productId) {
-        countnumber = data.count;
-        console.log(data.count);
-        console.log('바뀜');
-      }
-    });
-  }
-  console.log(countnumber);
+  const OptionData = resultarr.filter((data: any) => {
+    return data.id === el.productId;
+  });
+
+  console.log(OptionData);
+  console.log('안녕');
+  // resultarr.forEach((data: any) => {
+  //   console.log(el.productId);
+  //   if (data.id === el.productId) {
+  //     countnumber = data.count;
+  //   }
+  // });
+
+  // console.log(countnumber);
 
   return (
     <>
@@ -39,10 +40,12 @@ const PathCounter: FC<checkBoxtype> = ({
         el={el}
         handleSingleCheck={handleSingleCheck}
         checkItems={checkItems}
-        countNumber={countnumber}
+        // countNumber={countnumber}
+        OptionData={OptionData[0]}
       ></BasketTd>
     </>
   );
 };
 
 export default PathCounter;
+//배열 객체 혼동했음

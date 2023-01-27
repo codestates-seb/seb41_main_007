@@ -137,7 +137,8 @@ const ControlContainer = styled.div`
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
-
+  console.log('이거임');
+  console.log(resultarr);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const jsondata: string | null = localStorage.getItem('baskets');
@@ -287,3 +288,6 @@ export default BasketList;
 //총값 계산 업데이트 안되는 문제 해결
 // 페이지 이동시 리덕스값이 사라짐
 //새로고침시 리덕스 초기화 되는 문제
+// 코드를 너무 복잡하게짬.. sementic 아이디 통일 못함
+
+//백엔드와 db관리하는데에 있어서 오류가 있었따.
