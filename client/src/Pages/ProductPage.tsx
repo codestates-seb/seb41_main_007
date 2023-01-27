@@ -10,7 +10,6 @@ import ProductMainBox from 'Components/ProductPage/ProductMainBox';
 import ProductDetailBox from 'Components/ProductPage/productDetailBox';
 import CategoryList from 'Components/Common/CategoryList';
 import TabPanel from 'Components/Mypage/TabPanel';
-import BestProductSlider from 'Components/BestProductSlider';
 
 const ProductContainer = styled.div`
   margin: 120px auto 120px auto;
@@ -30,6 +29,7 @@ const ProductMenuTitle = styled.h2`
   font-size: var(--xlarge);
   font-weight: bold;
   padding: 30px;
+  margin-top: -50px;
 `;
 
 const TabButton = styled.button<{ isTrue?: boolean }>`
@@ -67,8 +67,34 @@ const ProductPage: React.FC = () => {
 
   if (isLoading) return <Empty />;
   if (error) return <></>;
-  console.log(data);
-
+  if (data.length === 0) return <Empty />;
+  //   const data ={
+  //     "name":"아테네",
+  //     "price":20000000,
+  //     "photo":"http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg",
+  //     "brand":"순양자동차",
+  //     "description":"진양철이 직원들을 쥐잡듯이 잡아가며 개발한 차량입니다.",
+  //     "shippingCountry":"KOREA",
+  //     "shippingMethod":"PARCEL_SERVICE",
+  //     "shippingPrice":3000,
+  //     "productCategoryPostDtos":[
+  //         {
+  //             "categoryId":1
+  //         }
+  //     ],
+  //     "productOptionPostDtos":[
+  //         {
+  //             "productOptionName":"자폭",
+  //             "price":1000000,
+  //             "stock":10
+  //         },
+  //                 {
+  //             "productOptionName":"본네트를 없애서 경량화",
+  //             "price":1000000,
+  //             "stock":10
+  //         }
+  //     ]
+  // }
   //리턴 url , 로컬스토리지에 담기
   return (
     <BGcontainer>
@@ -77,7 +103,7 @@ const ProductPage: React.FC = () => {
         <ProductMenuTitle />
         <ProductMainBox data={data}></ProductMainBox>
 
-        <div className="mt-24  ">
+        <div className="mt-44  ">
           <div className="relative select border-solid border-b-2">
             <div className="absolute left-0 top-0">
               <TabButton isTrue={value === 0} onClick={() => setValue(0)}>
@@ -122,3 +148,4 @@ export default ProductPage;
 // toast
 // 도트깨짐
 //styled 컴퍼넌트 마지막  두개넣으려면; 차이
+//로컬스토리지에서 카운터관리

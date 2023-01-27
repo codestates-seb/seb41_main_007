@@ -1,8 +1,8 @@
-import { FC, useState } from 'react';
+import { FC, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Basket from './Basket';
-import { useAppSelector } from 'Redux/app/hook';
-import { selectprice, Pricestate } from 'Redux/reducer/priceSlice';
+import { useAppSelector, useAppDispatch } from 'Redux/app/hook';
+import { selectprice, Pricestate, countDelete } from 'Redux/reducer/priceSlice';
 import useScrollTop from 'CustomHook/useScrollTop';
 import { useNumberComma } from 'Utils/commonFunction';
 import BuyButton from 'Components/Common/BuyButton';
@@ -130,14 +130,22 @@ const ButtonContainer = styled.div`
   justify-content: center;
 `;
 
+const ControlContainer = styled.div`
+  margin: 0 -200px 0 -170px;
+`;
+
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
+  console.log('이거임');
+  console.log(resultarr);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]');
-  const { session } = useSession(); // 로딩시간만큼 내리는데 시간이 들어서 생략
+  const { session, loading } = useSession(); // 로딩시간만큼 내리는데 시간이 들어서 생략
   useScrollTop();
+  if (loading) return <></>;
 
   let result: number = resultarr.reduce((acc, cur) => {
     acc = acc + cur.price * cur.count;
@@ -147,7 +155,7 @@ const BasketList: FC = () => {
     acc = acc + cur.count;
     return acc;
   }, 0);
-  console.log(session);
+
   // 체크박스 단일 선택
   const handleSingleCheck = (checked?: boolean, id?: number) => {
     if (checked && id) {
@@ -172,6 +180,9 @@ const BasketList: FC = () => {
   };
 
   const deleteAllCheck = () => {
+    const jsondataCounter: string | null =
+      localStorage.getItem('basketsCounter');
+    const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
     // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
     if (checkItems.length === baskets.length) {
       setCheckItems([]);
@@ -180,7 +191,15 @@ const BasketList: FC = () => {
     const deleteSave = baskets.filter((el: any) => {
       return !checkItems.includes(el.productId);
     });
+    const deleteSaveCounter = basketsCounter.filter((el: any) => {
+      return !checkItems.includes(el.id);
+    });
 
+    checkItems.forEach((el) => {
+      dispatch(countDelete({ id: el }));
+    });
+
+    localStorage.setItem('basketsCounter', JSON.stringify(deleteSaveCounter));
     localStorage.setItem('baskets', JSON.stringify(deleteSave));
     setCheckItems([]);
     // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
@@ -240,7 +259,9 @@ const BasketList: FC = () => {
           </TotalPrice>
         </TableBottom>
       </BasketForm>
-      <BestProductSlider></BestProductSlider>
+      <ControlContainer>
+        <BestProductSlider></BestProductSlider>
+      </ControlContainer>
       <ButtonContainer>
         <BuyButton
           onClick={() => navigate('/')}
@@ -267,3 +288,6 @@ export default BasketList;
 //총값 계산 업데이트 안되는 문제 해결
 // 페이지 이동시 리덕스값이 사라짐
 //새로고침시 리덕스 초기화 되는 문제
+// 코드를 너무 복잡하게짬.. sementic 아이디 통일 못함
+
+//백엔드와 db관리하는데에 있어서 오류가 있었따.

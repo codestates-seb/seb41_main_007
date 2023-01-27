@@ -1,9 +1,11 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import styles from './Styles/TopColRight.module.css';
 import { Link } from 'react-router-dom';
 import BasketIcon from './Icon/BaskectIcon';
 import ShopingCartIcon from './Icon/ShopingCartIcon';
 import { useSession } from 'CustomHook/useSession';
+import { selectprice, Pricestate } from 'Redux/reducer/priceSlice';
+import { useAppSelector } from 'Redux/app/hook';
 
 const Logined = () => {
   const logoutHandler = (
@@ -48,7 +50,9 @@ const LoginRequired = () => {
 
 const TopColRight: FC = () => {
   const { session, loading } = useSession();
+  const resultarr: Pricestate[] = useAppSelector(selectprice);
   if (loading) return <></>;
+
   return (
     <div className={styles.Nav_All_Container}>
       {session ? <Logined /> : <LoginRequired />}
@@ -62,7 +66,13 @@ const TopColRight: FC = () => {
         </Link>
         <Link to="/basket" style={{ display: 'flex', gap: '6px' }}>
           <BasketIcon />
+
           <li className={styles.Nav_Menu2}>장바구니</li>
+          {resultarr.length > 0 ? (
+            <span className={styles.Nav_Basket}>{resultarr.length} </span>
+          ) : (
+            ''
+          )}
         </Link>
       </ul>
     </div>
@@ -70,3 +80,5 @@ const TopColRight: FC = () => {
 };
 
 export default TopColRight;
+//바로 값이 반영되고자 usestate 값을사용
+//use state effect 사용했으나 실패

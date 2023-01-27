@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { useNumberComma } from 'Utils/commonFunction';
 import CounterButton2 from './CounterButton2';
 import { useAppDispatch } from 'Redux/app/hook';
-import { countset, countput } from 'Redux/reducer/priceSlice';
+import { countset, countput, countDelete } from 'Redux/reducer/priceSlice';
 import { Link } from 'react-router-dom';
-import Product from 'Components/Common/Product';
+import { TYPE_LocalOption } from 'Types/common/product';
 
 const Tablebody1 = styled.th`
   background: white;
@@ -56,7 +56,7 @@ const TableProduct = styled.div`
 `;
 
 const TableTitle = styled.div`
-  font-size: var(--medium);
+  font-size: var(--large);
   font-weight: bold;
 `;
 
@@ -124,35 +124,62 @@ interface checkBoxtype {
   el: any;
   handleSingleCheck: (checked: boolean, id: number) => void;
   checkItems: number[];
+  // countNumber: number;
+  OptionData: TYPE_LocalOption;
 }
 
 const BasketTd: FC<checkBoxtype> = ({
   el,
   handleSingleCheck,
   checkItems,
+  // countNumber,
+  OptionData,
 }): JSX.Element => {
-  const [number, setnumber] = useState<number>(1);
+  const jsondata: string | null = localStorage.getItem('baskets');
+  const baskets = JSON.parse(jsondata || '[]') || [];
+  const jsondataCounter: string | null = localStorage.getItem('basketsCounter');
+  const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
+  const [number, setnumber] = useState<number>(OptionData.count);
+  console.log(OptionData);
+  console.log(OptionData.count);
   // const [deleteb, setdeleteb] = useState<any[] | []>([]);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(countset({ id: el.productId, price: el.price, count: number }));
+    console.log(el.price + OptionData.optionprice);
+    console.log('안녕');
+    dispatch(
+      countset({
+        id: el.productId,
+        price: el.price + OptionData.optionprice,
+        count: OptionData.count,
+      }),
+    );
   }, []);
 
   useEffect(() => {
+    basketsCounter.forEach((data: any) => {
+      console.log(number);
+      if (data.id === el.productId) data.count = number;
+    });
+    console.log(basketsCounter);
+    console.log('이지');
+    localStorage.setItem('basketsCounter', JSON.stringify(basketsCounter));
     dispatch(countput({ id: el.productId, count: number }));
   }, [number]);
 
   const deleteBasket = (data: any) => {
-    const jsondata: string | null = localStorage.getItem('baskets');
-    const baskets = JSON.parse(jsondata || '[]') || [];
     handleSingleCheck(false, data.productId);
 
     const save = baskets.filter((el: any) => {
       return el.productId !== data.productId;
     });
+    const saveCounter = basketsCounter.filter((el: any) => {
+      return el.id !== data.productId;
+    });
 
-    dispatch(countput({ id: el.productId, count: 0 })); //딜리트만들기 확인하기
+    dispatch(countDelete({ id: el.productId }));
+    localStorage.setItem('basketsCounter', JSON.stringify(saveCounter));
     localStorage.setItem('baskets', JSON.stringify(save));
     // setnumber(0); 스택오버플로우에 올리기
   };
@@ -174,10 +201,16 @@ const BasketTd: FC<checkBoxtype> = ({
           <TB2Container>
             <TableimgDiv url={el.photo}></TableimgDiv>
             <TableProduct>
-              <TableTitle>{el.name}</TableTitle>
+              <TableTitle>{`${el.name}`}</TableTitle>
               <TableContent>{el.description}</TableContent>
+              <div>
+                {' '}
+                {`${useNumberComma(el.price)}원 + ${useNumberComma(
+                  OptionData.optionprice,
+                )}원(Option ${OptionData.optionname})`}
+              </div>
               <TablePrice>
-                {useNumberComma(el.price)}
+                <div></div>={useNumberComma(el.price + OptionData.optionprice)}
                 <span>원</span>
               </TablePrice>
             </TableProduct>
@@ -186,10 +219,10 @@ const BasketTd: FC<checkBoxtype> = ({
       </Tablebody2>
 
       <Tablebody3>
-        <CounterButton2 setnumber={setnumber} />
+        <CounterButton2 setnumber={setnumber} countNumber={OptionData.count} />
       </Tablebody3>
       <Tablebody4>
-        {useNumberComma(el.price * number)}
+        {useNumberComma((el.price + OptionData.optionprice) * number)}
         <span>원</span>
       </Tablebody4>
 
@@ -206,3 +239,6 @@ const BasketTd: FC<checkBoxtype> = ({
 };
 
 export default BasketTd;
+
+//성능 생각해서 더 우선시 되는걸 if 앞에 넣음
+//카운트버튼숫자 후버 업데이트 오류났었음

@@ -14,6 +14,23 @@
   width: 250px;
   gap: 20px;
   padding-top: 20px;
+
+  position: relative;
+}
+
+.Nav_Basket {
+  background: var(--priceColor);
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  right: -8%;
+  top: 30%;
 }
 
 .Nav_Menu1 {

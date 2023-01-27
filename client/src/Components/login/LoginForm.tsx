@@ -30,6 +30,11 @@ const GoogleBtn = styled.button`
   border-radius: 5px;
   border: 1px solid hsl(210, 8%, 85%);
   position: relative;
+  &:hover {
+    font-weight: 400;
+    transform: scale(1.03);
+    transition-duration: 500ms;
+  }
 `;
 
 const BtnText = styled.span`

@@ -36,10 +36,11 @@ const Counterinput = styled.input`
 `;
 interface props {
   setnumber: Dispatch<SetStateAction<number>>;
+  countNumber: number;
 }
 
-const CounterButton2: FC<props> = ({ setnumber }) => {
-  const [count, setCount] = useState<number>(1);
+const CounterButton2: FC<props> = ({ setnumber, countNumber }) => {
+  const [count, setCount] = useState<number>(countNumber);
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);
   };

@@ -13,9 +13,10 @@ const BasketForm = styled.div`
   margin: -50px auto 0 auto;
 `;
 const BasketTitle = styled.h2`
-  font-size: var(--xlarge);
+  font-size: var(--xxlarge);
   font-weight: bold;
   padding-bottom: 40px;
+  text-align: center;
 `;
 
 const basketsPage: FC = () => {
