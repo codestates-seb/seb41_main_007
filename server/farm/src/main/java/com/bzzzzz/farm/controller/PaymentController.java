@@ -23,7 +23,7 @@ public class PaymentController {
      **/
     @PostMapping("/ready")
     public ResponseEntity readyToKakaoPay(@RequestParam("order_id")long orderId){
-        Order order = orderService.findOrder(orderId);
+        Order order = orderService.verifyPaymentStatus(orderId);
         return ResponseEntity.ok(paymentService.kakaoPayReady(orderId,order.getPrice()));
     }
 
