@@ -110,7 +110,7 @@ export default function Page() {
   return (
     <div className={styles.container}>
       <div className={styles.main_container}>
-        <div className="heading">새로운글 작성</div>
+        <h2 className={styles.heading}>새로운글 작성</h2>
         <div className={styles.line} />
         <div className={styles.header}>
           <div className={styles.button_container}>
@@ -151,9 +151,9 @@ export default function Page() {
             </div>
           )}
         </div>
-        <div className={styles.wrapper}>
+        <body className={styles.wrapper}>
           <Editor value={value} setValue={(value) => setValue(value)} />
-        </div>
+        </body>
         {(error.emptyText ||
           error.emptyTitle ||
           error.imageLimit ||
@@ -187,7 +187,7 @@ function ErrorMessage({ error }: { error: ERROR }) {
   return (
     <div className={styles.error_container}>
       <div className={styles.error_title}>
-        상품 등록을 하기전에 확인하여주세요
+        상품 등록을 하기전에 확인하여 주세요.
       </div>
       <div className={styles.error_text_container}>
         {error.emptyTitle && (
