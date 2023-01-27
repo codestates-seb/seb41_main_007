@@ -55,13 +55,22 @@ public class CartController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/carts/{cart-id}")
-    public ResponseEntity deleteCart(@Positive @PathVariable("cart-id") long cartId,
+    @DeleteMapping("/carts/{product-option-id}")
+    public ResponseEntity deleteCart(@Positive @PathVariable("product-option-id") long productOptionId,
                                             @AuthenticationPrincipal UserDetails userDetails) {
-        cartService.verifyAuthority(cartId, toLong(userDetails.getUsername()));
-
-        cartService.deleteCart(cartId);
+        cartService.deleteCart(toLong(userDetails.getUsername()), productOptionId);
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/carts")
+    public ResponseEntity deleteCarts(@RequestParam List<Long> list,
+                                      @AuthenticationPrincipal UserDetails userDetails) {
+
+//        for (long cartId : list) {
+//            cartService.verifyAuthority();
+//        }
+
+        return new ResponseEntity<>(list, HttpStatus.OK);
     }
 }
