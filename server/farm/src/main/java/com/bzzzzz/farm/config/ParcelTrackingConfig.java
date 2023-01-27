@@ -32,7 +32,7 @@ public class ParcelTrackingConfig {
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
 
         return result;

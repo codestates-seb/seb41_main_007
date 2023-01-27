@@ -1,6 +1,6 @@
-package com.bzzzzz.farm.security.handler;
+package com.bzzzzz.farm.common.security.handler;
 
-import com.bzzzzz.farm.security.utils.ErrorResponder;
+import com.bzzzzz.farm.utils.ErrorResponder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;

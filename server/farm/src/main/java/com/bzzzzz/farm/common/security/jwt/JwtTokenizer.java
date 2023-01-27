@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.security.jwt;
+package com.bzzzzz.farm.common.security.jwt;
 
 import com.bzzzzz.farm.repository.MemberRepository;
 import io.jsonwebtoken.*;

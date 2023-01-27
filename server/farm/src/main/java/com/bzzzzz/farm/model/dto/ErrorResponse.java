@@ -1,6 +1,6 @@
 package com.bzzzzz.farm.model.dto;
 
-import com.bzzzzz.farm.exception.ExceptionCode;
+import com.bzzzzz.farm.common.exception.ExceptionCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;

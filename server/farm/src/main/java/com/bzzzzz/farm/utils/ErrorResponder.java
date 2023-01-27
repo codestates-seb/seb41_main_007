@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.security.utils;
+package com.bzzzzz.farm.utils;
 
 import com.bzzzzz.farm.model.dto.ErrorResponse;
 import com.google.gson.Gson;

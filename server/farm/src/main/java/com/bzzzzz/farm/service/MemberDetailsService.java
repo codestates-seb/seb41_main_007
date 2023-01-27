@@ -1,10 +1,10 @@
 package com.bzzzzz.farm.service;
 
-import com.bzzzzz.farm.exception.BusinessLogicException;
-import com.bzzzzz.farm.exception.ExceptionCode;
+import com.bzzzzz.farm.common.exception.BusinessLogicException;
+import com.bzzzzz.farm.common.exception.ExceptionCode;
 import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.repository.MemberRepository;
-import com.bzzzzz.farm.security.utils.CustomAuthorityUtils;
+import com.bzzzzz.farm.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -2,8 +2,8 @@ package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.repository.MemberRepository;
-import com.bzzzzz.farm.security.OAuthAttributes;
-import com.bzzzzz.farm.security.utils.CustomAuthorityUtils;
+import com.bzzzzz.farm.common.security.OAuthAttributes;
+import com.bzzzzz.farm.utils.CustomAuthorityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;

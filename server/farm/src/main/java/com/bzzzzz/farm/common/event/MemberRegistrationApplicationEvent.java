@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.global.helper;
+package com.bzzzzz.farm.common.event;
 
 import com.bzzzzz.farm.model.entity.Member;
 import lombok.Getter;

@@ -49,7 +49,7 @@ public class StorageService {
             byte[] content = IOUtils.toByteArray(inputStream);
             return content;
         }catch (IOException e){
-            e.printStackTrace();
+
         }
         return null;
     }
@@ -62,7 +62,7 @@ public class StorageService {
         try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
             fos.write(file.getBytes());
         } catch (Exception e) {
-            e.printStackTrace();
+
         }
         return convertedFile;
     }

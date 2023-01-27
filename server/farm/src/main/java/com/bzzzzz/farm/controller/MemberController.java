@@ -7,6 +7,8 @@ import com.bzzzzz.farm.mapper.MemberMapper;
 import com.bzzzzz.farm.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +26,9 @@ public class MemberController {
 
     //회원 정보 수정
     @PatchMapping
-    public ResponseEntity patchMember(@Valid @RequestBody MemberDto.Patch requestBody){
-        requestBody.setMemberId(memberService.getLoginMember().getMemberId());
+    public ResponseEntity patchMember(@Valid @RequestBody MemberDto.Patch requestBody,
+                                      @AuthenticationPrincipal UserDetails userDetails){
+        requestBody.setMemberId(Long.valueOf(userDetails.getUsername()));
         Member member = memberService.updateMember(mapper.memberPatchToMember(requestBody));
 
         return ResponseEntity.ok(mapper.memberToMemberResponse(member));

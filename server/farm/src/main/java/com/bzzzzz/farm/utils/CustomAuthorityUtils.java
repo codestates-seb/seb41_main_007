@@ -1,4 +1,4 @@
-package com.bzzzzz.farm.security.utils;
+package com.bzzzzz.farm.utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
