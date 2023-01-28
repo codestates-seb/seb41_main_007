@@ -4,7 +4,7 @@
   background-color: rgb(248, 249, 249);
   top: 0;
   width: 100%;
-  z-index: 9999;
+  z-index: 8000;
   position: fixed;
 }
 

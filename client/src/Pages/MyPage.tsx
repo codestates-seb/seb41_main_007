@@ -10,6 +10,9 @@ import AccordionGroup from 'Components/Mypage/AccordionGroup';
 import MainImage from 'Components/PaymentPage/MainImage';
 import DeliveryResult from 'Components/Mypage/DeliveryResult';
 import Empty from 'Components/Common/Empty';
+import { TYPE_People } from 'Types/common/product';
+import { useAppDispatch } from 'Redux/app/hook';
+import { saveDataP } from 'Redux/reducer/personDataSlice';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -17,11 +20,20 @@ const ShortContainer = styled.div`
   margin-top: 80px;
 `;
 
-export default function BasicTabs() {
+const MyPage: React.FC<{ session: any }> = ({ session }) => {
   const [value, setValue] = useState<number>(0);
+  const dispatch = useAppDispatch();
   const [isloading, setisLoading] = useState<boolean>(true);
-  const { loading, session } = useSession();
-  const [people, Setpeople] = useState();
+
+  // const [people, Setpeople] = useState<TYPE_People>({
+  //   address: '',
+  //   age: 0,
+  //   email: '',
+  //   gender: '',
+  //   memberId: 0,
+  //   name: '',
+  //   phone: '',
+  // });
   useScrollTop();
   useEffect(() => {
     if (session) {
@@ -36,7 +48,9 @@ export default function BasicTabs() {
           return res.json();
         })
         .then((res) => {
+          dispatch(saveDataP(res));
           console.log(res);
+          // Setpeople(res);
           setisLoading(false); //무한렌더링 막기용
         })
         .catch((e) => {
@@ -60,8 +74,8 @@ export default function BasicTabs() {
       //   method: 'PATCH',
       // }).then((response) => console.log(response));
     }
-  });
-  if (loading) return <Empty />;
+  }, []);
+
   if (isloading) return <Empty />;
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -95,5 +109,6 @@ export default function BasicTabs() {
       </ShortContainer>
     </div>
   );
-}
+};
 //네비게이션 오류 -> href
+export default MyPage;

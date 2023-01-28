@@ -1,6 +1,7 @@
 import React, { useState, ElementType, useCallback } from 'react';
 import RadiusButton from './RadiusButton';
 import styled from 'styled-components';
+import useBooleanInput from 'CustomHook/useBooleaninput';
 
 export const Textinput = styled.input<{ isTrue?: boolean }>`
   width: 384px;
@@ -28,6 +29,7 @@ interface Props {
   onSave: (name: string, value: string) => void;
   Component?: ElementType<any> | undefined;
   isDisabled?: boolean;
+  P_Value: string | number;
 }
 
 const ComponentsInput: React.FC<Props> = ({
@@ -35,6 +37,7 @@ const ComponentsInput: React.FC<Props> = ({
   children,
   isDisabled,
   onSave,
+  P_Value,
 }) => {
   const [control, setcontrol] = useState<boolean>(true);
   const [data, setdata] = useState<string>(''); // 데이타 출력
@@ -43,6 +46,8 @@ const ComponentsInput: React.FC<Props> = ({
   const [nameMessage, setNameMessage] = useState<string>(''); //오류 메세지
   const [isName, setIsName] = useState<boolean>(false);
   const [iserror, setIserror] = useState<boolean>(false);
+
+  console.log('안녕');
 
   const onClickForm = () => {
     if (dataname === 'name' || dataname === 'phonenumber') {
@@ -98,33 +103,30 @@ const ComponentsInput: React.FC<Props> = ({
     }
   }, []);
 
-  const onChangeNumber = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      // const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-      const numberCheck = /[^0-9]/g;
-      if (e.target.value.length < 11 || e.target.value.length > 12) {
-        setNameMessage('-를 제외한 11자리를 입력해주세요');
-        setIsName(false);
-        onSave(e.target.name, '');
-        setdataname(e.target.name);
-        setdata('');
-        setIserror(true);
-      } else if (numberCheck.test(e.target.value)) {
-        setNameMessage('숫자를 입력해주세요');
-        setIsName(false);
-        onSave(e.target.name, '');
-        setdataname(e.target.name);
-        setdata('');
-        setIserror(true);
-      } else {
-        setNameMessage('올바른 형식입니다 :)');
-        setIsName(true);
-        onChangeSave(e);
-        setIserror(false);
-      }
-    },
-    [],
-  );
+  const onChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    const numberCheck = /[^0-9]/g;
+    if (e.target.value.length < 11 || e.target.value.length > 12) {
+      setNameMessage('-를 제외한 11자리를 입력해주세요');
+      setIsName(false);
+      onSave(e.target.name, '');
+      setdataname(e.target.name);
+      setdata('');
+      setIserror(true);
+    } else if (numberCheck.test(e.target.value)) {
+      setNameMessage('숫자를 입력해주세요');
+      setIsName(false);
+      onSave(e.target.name, '');
+      setdataname(e.target.name);
+      setdata('');
+      setIserror(true);
+    } else {
+      setNameMessage('올바른 형식입니다 :)');
+      setIsName(true);
+      onChangeSave(e);
+      setIserror(false);
+    }
+  };
 
   return (
     <div>
@@ -133,7 +135,7 @@ const ComponentsInput: React.FC<Props> = ({
           <>
             <div className="flex items-center">
               <TextDiv isTrue={isDisabled}>
-                {data ? data : '입력해주세요'}
+                {data ? data : P_Value ? P_Value : '입력해주세요🙌'}
               </TextDiv>
               {isDisabled ? (
                 <></>

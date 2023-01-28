@@ -19,10 +19,6 @@ export interface OnHandleModal {
   isOpenModal: boolean;
   onClickToggleModal: () => void;
 }
-// productOptionId: number;
-// productOptionName: string;
-// price: number;
-// stock: number;
 
 export interface TYPE_ProductOption {
   productOptionId: number;
@@ -65,4 +61,14 @@ export interface TYPE_CartData {
   shippingMethod: string;
   shippingPrice: number;
   stock: number;
+}
+
+export interface TYPE_People {
+  address: string;
+  age: number;
+  email: string;
+  gender: string;
+  memberId: number;
+  name: string;
+  phone: string;
 }

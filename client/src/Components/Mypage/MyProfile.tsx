@@ -6,6 +6,9 @@ import RadioInput from 'Components/Common/Radio/RadioInput';
 import DatepickerInput from 'Components/Common/DatepickerInput';
 import TinyTitle from 'Components/Common/TinyTitle';
 import RadiusButton from 'Components/Common/RadiusButton';
+import { useAppSelector } from 'Redux/app/hook';
+import { selectDataP } from 'Redux/reducer/personDataSlice';
+import { TYPE_People } from 'Types/common/product';
 
 const Container = styled.div``;
 
@@ -22,31 +25,44 @@ const MyProfile: React.FC = () => {
   const onSave = (name: string, value: string) => {
     setValues({ ...values, [name]: value });
   };
+  console.log(values);
+  const Person: TYPE_People[] = useAppSelector(selectDataP);
+  const P_Data: TYPE_People = Person[0];
 
   return (
     <>
       <Container>
         <User>
           <TinyTitle>이름</TinyTitle>
-          <ComponentsInput onSave={onSave}></ComponentsInput>
+          <ComponentsInput
+            P_Value={P_Data.name}
+            onSave={onSave}
+          ></ComponentsInput>
 
           <TinyTitle>성별</TinyTitle>
           <ComponentsInput
+            P_Value={''}
             onSave={onSave}
             Component={RadioInput}
           ></ComponentsInput>
           <TinyTitle>생일</TinyTitle>
           <ComponentsInput
+            P_Value={P_Data.age}
             onSave={onSave}
             Component={DatepickerInput}
           ></ComponentsInput>
           <TinyTitle>연락처</TinyTitle>
           <ComponentsInput
+            P_Value={P_Data.phone}
             onSave={onSave}
             Component={phoneNumberinput}
           ></ComponentsInput>
           <TinyTitle>이메일</TinyTitle>
-          <ComponentsInput isDisabled={true} onSave={onSave}></ComponentsInput>
+          <ComponentsInput
+            P_Value={P_Data.email}
+            isDisabled={true}
+            onSave={onSave}
+          ></ComponentsInput>
         </User>
       </Container>
       <div className="my-5 relative h-6">

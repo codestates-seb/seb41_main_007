@@ -14,7 +14,7 @@ import ProductListPage from 'Pages/CategoryListPage';
 import Mypage from 'Pages/MyPage';
 import Search from 'Pages/Search';
 import NotFoundPage from 'Pages/NotFoundPage';
-
+import { MyPageSession, PaymentPageSession } from 'Utils/SessionMaster';
 import Footer from 'Components/Common/Footer';
 import Address from 'Components/PaymentPage/Adress';
 
@@ -26,12 +26,6 @@ import Post from 'Pages/Test/Post';
 
 import { useSession } from 'CustomHook/useSession';
 import Empty from 'Components/Common/Empty';
-
-// const PaymentPageSession = () => {
-//   const { loading, session } = useSession();
-//   if (loading) return <Empty />;
-//   return <PaymentPage session1={session} />;
-// };
 
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
@@ -64,7 +58,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/mypage',
-    element: withLayout(Mypage),
+    element: withLayout(MyPageSession),
   },
   {
     path: '/Basket',
@@ -96,7 +90,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/payment',
-    element: withLayout(PaymentPage),
+    element: withLayout(PaymentPageSession),
   },
   {
     path: '/test/review',
