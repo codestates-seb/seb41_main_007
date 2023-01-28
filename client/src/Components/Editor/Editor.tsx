@@ -214,11 +214,6 @@ export async function handlerCompresstion(editor: Editor, file: File) {
     console.log(formData);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
       method: 'POST',
-      cache: 'no-cache',
-      headers: {
-        // 'Content-Type': 'multipart/form-data',
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
       body: formData,
     })
       .then((response) => response.json())
