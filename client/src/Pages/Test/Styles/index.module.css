@@ -19,7 +19,12 @@
 
 .inputContents {
   margin: 10px;
+  height: 40px;
+  color: var(--black-10);
+  border: 1px solid var(--gray-12);
+  border-radius: 4px;
 }
+
 .line {
   width: 100%;
   border-bottom: 1px solid var(--gray-12);
@@ -112,7 +117,7 @@
   border: 1px solid var(--gray-12);
   border-radius: 4px;
   box-sizing: border-box;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .title:focus-within {

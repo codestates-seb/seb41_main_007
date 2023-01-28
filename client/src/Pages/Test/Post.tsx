@@ -49,7 +49,8 @@ export default function Page() {
   const [optionPrice, setOptionPrice] = useState<any>(0);
   const [optionName, setOptionName] = useState<any>('');
   const [categoryNum, setCategoryNum] = useState<number>(9999);
-  const token = localStorage.getItem('access_token');
+  const [file, setFile] = useState<any>('');
+
   const { mutate } = useCustomMutation('/products', ['post', title], 'POST');
 
   const handlerError = useCallback(
@@ -153,18 +154,39 @@ export default function Page() {
     setOptionName('');
   };
 
+  const fileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      console.log(e.target.files[0]);
+      const formData = new FormData();
+      formData.append('file', e.target.files[0]);
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
+        method: 'POST',
+        cache: 'no-cache',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  };
+
   const optionsDelHandler = (id: number) => {
     setOption(option.filter((el: any) => el.id !== id));
   };
 
   if (isLoading) return <Empty />;
+
   return (
     <div className={styles.container}>
       <div className={styles.main_container}>
         <h2 className={styles.heading}>새로운 상품글 작성</h2>
         <div className={styles.line} />
         <div className={styles.contentContainer}>
-          <h2 className={styles.heading}> 상품 정보</h2>
+          <h2 className={styles.heading}>상품 정보 등록하기</h2>
           <div className={styles.content}>
             상품가격:
             <input
@@ -186,6 +208,19 @@ export default function Page() {
             />
           </div>
         </div>
+        <div className={styles.line} />
+        <div className={styles.contentContainer}>
+          <h2 className={styles.heading}>상품 이미지 등록하기 </h2>
+          <div className={styles.content}>
+            이미지:
+            <input
+              type="file"
+              accept="image/svg, image/jpeg, image/png"
+              onChange={fileHandler}
+            />
+          </div>
+        </div>
+
         <div className={styles.contentContainer}>
           <div className={styles.line} />
           <h2 className={styles.heading}> 선택 상품 만들기</h2>
