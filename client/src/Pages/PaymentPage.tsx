@@ -7,6 +7,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Totalpay from 'Components/PaymentPage/Totalpay';
 import Basket4size from 'Components/PaymentPage/Basketfour';
 import { BGcontainer } from 'Components/Common/BGcontainer';
+import { useSession } from 'CustomHook/useSession';
+import { useNavigate } from 'react-router-dom';
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import { TYPE_CartData } from 'Types/common/product';
 
 const Container = styled.div`
   width: 830px;
@@ -23,6 +27,21 @@ const PaymentPage: React.FC = () => {
   const [order, setOrder] = useState<boolean>(true);
   const [address, setAddress] = useState<boolean>(true); //배송지
   const [payment, setPayment] = useState<boolean>(true); //결제수단
+  const { session, loading } = useSession();
+  // const { data, isLoading, error } = useCustomQuery(
+  //   `/carts`,
+  //   `/carts`,
+  //   session,
+  // );
+  // const navigate = useNavigate();
+  // if (loading || isLoading) return <></>;
+  // if (error) console.log(error);
+
+  // if (!session) {
+  //   navigate(-1);
+  // }
+  // console.log(data);
+
   return (
     <BGcontainer>
       <div className="flex">

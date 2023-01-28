@@ -6,12 +6,10 @@ import ShopingCartIcon from './Icon/ShopingCartIcon';
 import { useSession } from 'CustomHook/useSession';
 import { selectprice, Pricestate, countset } from 'Redux/reducer/priceSlice';
 import { useAppSelector, useAppDispatch } from 'Redux/app/hook';
-import { counttype } from 'Types/common/product';
-import { useQuery } from 'react-query';
-import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import { TYPE_LocalOption, TYPE_CartData } from 'Types/common/product';
+import useBooleanInput from 'CustomHook/useBooleaninput';
 
 const Logined = () => {
-  console.log('로그인');
   const logoutHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
@@ -51,117 +49,69 @@ const LoginRequired = () => {
 const TopColRight: FC = () => {
   const resultarr: Pricestate[] = useAppSelector(selectprice);
   const { session, loading } = useSession();
+  const [isOk, onisOk] = useBooleanInput(true);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    const jsondataCounter: string | null =
+      localStorage.getItem('basketsCounter');
+    const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
 
-  // const [loginBasket, setloginBasket] = useState([]);
-  // const { data, isLoading, error, status, refetch } = useQuery(
-  //   'basket',
-  //   () => {
-  //     return fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-  //       method: 'GET',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //         Authorization: `Bearer ${session}`,
-  //       },
-  //     })
-  //       .then((res: Response) => {
-  //         return res.json();
-  //       })
-  //       .then((res: []) => {
-  //         console.log(res);
-  //         setloginBasket(res);
-  //         console.log('하이');
-  //       });
-  //   },
-  //   { keepPreviousData: true },
-  // );
+    basketsCounter.forEach((element: TYPE_LocalOption) => {
+      const dispatchdata = {
+        id: element.productOptionId,
+        price: element.optionprice + element.price,
+        count: element.count,
+      };
+      dispatch(countset(dispatchdata));
+    });
+  }, []);
+  if (loading) return <></>;
+  if (isOk && session) {
+    //유즈이펙트 때문이었습니다.
+    const jsondataCounter: string | null =
+      localStorage.getItem('basketsCounter');
+    const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
 
-  // if (loading) return <></>;
-  // if (isLoading) return <></>;
-  // if (error) return <></>;
-  // console.log(data);
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session}`,
+      },
+    })
+      .then((res: Response) => {
+        return res.json();
+      })
+      .then((res: TYPE_CartData[]) => {
+        const optionIdData = res.map((getdata) => {
+          return getdata.productOptionId;
+        });
 
-  // console.log('쿼리~');
-  // fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-  //   method: 'GET',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     Authorization: `Bearer ${session}`,
-  //   },
-  // })
-  //   .then((res: Response) => {
-  //     return res.json();
-  //   })
-  //   .then((res: Response[]) => {
-  //     console.log(res);
-  //   });
+        const Filtered = basketsCounter.filter(
+          (localData: TYPE_LocalOption) => {
+            return !optionIdData.includes(localData.productOptionId);
+          },
+        );
+        Filtered.forEach((element: TYPE_LocalOption) => {
+          const suggest = {
+            productOptionId: element.productOptionId,
+            quantity: element.count,
+          };
+          fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+            body: JSON.stringify(suggest),
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${session}`,
+            },
+            method: 'POST',
+          }).then((response) => console.log(response));
+        });
+      });
 
-  // const dispatch = useAppDispatch();
-  // const [firstCheck, onfirstCheck] = useBooleanInput(true);
-  // const jsondata: string | null = localStorage.getItem('baskets');
-  // const baskets = JSON.parse(jsondata || '[]') || [];
-  // const jsondataCounter: string | null = localStorage.getItem('basketsCounter');
-  // const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
-  // if (session && firstCheck) {
-  //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Bearer ${session}`,
-  //     },
-  //   })
-  //     .then((res: Response) => {
-  //       return res.json();
-  //     })
-  //     .then((res: Response[]) => {ddd
-  //       console.log(res);
-  //       if (res) {
-  //         res.forEach((element: any) => {
-  //           const dispatchdata = {
-  //             id: element.productId,
-  //             price: element.productOptionPrice + element.productPrice,
-  //             count: element.quantity,
-  //           };
-  //           dispatch(countset(dispatchdata));
-  //           const datacount: counttype = {
-  //             id: element.productId,
-  //             price: element.productPrice,
-  //             optionprice: element.productOptionPrice,
-  //             optionname: element.productOptionName,
-  //             productOptionId: element.productOptionId,
-  //             count: element.quantity,
-  //           };
-  //           basketsCounter.push(datacount);
-  //           localStorage.setItem(
-  //             'basketsCounter',
-  //             JSON.stringify(basketsCounter),
-  //           );
-
-  //           fetch(
-  //             `${process.env.REACT_APP_BACKEND_URL}/products/${element.productId}`,
-  //             {
-  //               method: 'GET',
-  //               headers: {
-  //                 'Content-Type': 'application/json',
-  //                 Authorization: `Bearer ${session}`,
-  //               },
-  //             },
-  //           )
-  //             .then((res: Response) => {
-  //               return res.json();
-  //             })
-  //             .then((res) => {
-  //               console.log(res);
-  //               baskets.push(res);
-  //               localStorage.setItem('baskets', JSON.stringify(baskets));
-  //             });
-  //         });
-  //       }
-  //     })
-  //     .then(() => {
-  //       console.log(firstCheck);
-  //       onfirstCheck();
-  //     });
-  // }
+    //한번만 돌게하는 로직
+    console.log('두번뿐이야!!');
+    onisOk();
+  }
 
   return (
     <div className={styles.Nav_All_Container}>
@@ -190,6 +140,9 @@ const TopColRight: FC = () => {
 };
 
 export default TopColRight;
+
 //바로 값이 반영되고자 usestate 값을사용
 //use state effect 사용했으나 실패
 //로그인시 오류
+//배열객체 헷갈림 타입 잘확인할것
+//타입을 정해야 더 편하게짬

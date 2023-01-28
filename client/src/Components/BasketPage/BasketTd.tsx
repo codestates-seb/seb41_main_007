@@ -146,11 +146,11 @@ const BasketTd: FC<checkBoxtype> = ({
 
   // const [deleteb, setdeleteb] = useState<any[] | []>([]);
   const dispatch = useAppDispatch();
-
+  const optionId: number = el.productOptionResponseDtos.productOptionId;
   useEffect(() => {
     dispatch(
       countset({
-        id: el.productOptionResponseDtos.productOptionId,
+        id: optionId,
         price: el.price + OptionData.optionprice,
         count: OptionData.count,
       }),
@@ -159,9 +159,7 @@ const BasketTd: FC<checkBoxtype> = ({
 
   useEffect(() => {
     basketsCounter.forEach((data: any) => {
-      console.log(number);
-      if (data.productOptionId === el.productOptionResponseDtos.productOptionId)
-        data.count = number;
+      if (data.productOptionId === optionId) data.count = number;
     });
 
     localStorage.setItem('basketsCounter', JSON.stringify(basketsCounter));
@@ -188,8 +186,6 @@ const BasketTd: FC<checkBoxtype> = ({
         el.productOptionId !== data.productOptionResponseDtos.productOptionId
       );
     });
-    console.log(data);
-    console.log(OptionData.productOptionId);
 
     if (session) {
       fetch(
@@ -253,7 +249,12 @@ const BasketTd: FC<checkBoxtype> = ({
       </Tablebody2>
 
       <Tablebody3>
-        <CounterButton2 setnumber={setnumber} countNumber={OptionData.count} />
+        <CounterButton2
+          optionId={optionId}
+          setnumber={setnumber}
+          countNumber={OptionData.count}
+          session={session}
+        />
       </Tablebody3>
       <Tablebody4>
         {useNumberComma((el.price + OptionData.optionprice) * number)}
@@ -277,3 +278,4 @@ export default BasketTd;
 //성능 생각해서 더 우선시 되는걸 if 앞에 넣음
 //카운트버튼숫자 후버 업데이트 오류났었음
 //유지보수의 매운맛..
+//시그니처와 타입의 필요성을 느낌

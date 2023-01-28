@@ -43,3 +43,21 @@ export interface counttype {
   optionname: string;
   productOptionId: number;
 }
+
+export interface TYPE_CartData {
+  cartId: number;
+  createdAt: string;
+  modifiedAt: string;
+  photo: string;
+  productId: number;
+  productName: string;
+  productOptionId: number;
+  productOptionName: string;
+  productOptionPrice: number;
+  productPrice: number;
+  quantity: number;
+  shippingCountry: string;
+  shippingMethod: string;
+  shippingPrice: number;
+  stock: number;
+}

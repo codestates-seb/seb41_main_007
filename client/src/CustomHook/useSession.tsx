@@ -1,24 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
-// const fetcher = async (token: string) => {
-//   const url = 'http://localhost:4000/auth/validToken';
-//   try {
-//     const urlOptions = {
-//       method: 'POST',
-//       headers: {
-//         Authorization: token,
-//       },
-//     };
-//     const res = await fetch(url, urlOptions);
-//     const data = await res.json();
-//     return [null, data];
-//   } catch (error) {
-//     return [error, null];
-//   }
-// };
-
 export type Session = {
-  session: any | null | boolean;
+  session: string | null | boolean;
   loading: boolean;
 };
 
@@ -41,15 +24,6 @@ export const SessionProvider = ({ children }: { children: JSX.Element }) => {
     if (token) {
       setSession(token);
       setLoading(false);
-      //   fetcher(token)
-      //     .then((data) => {
-      //       setSession(data[1]);
-      //       setLoading(false);
-      //     })
-      //     .catch((e) => {
-      //       setSession(null);
-      //       setLoading(false);
-      //     });
     } else {
       setSession(null);
       setLoading(false);

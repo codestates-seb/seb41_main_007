@@ -1,13 +1,11 @@
-const Basketfour = () => {
-  const datas = [
-    {
-      url: `https://cdn.pixabay.com/photo/2022/08/09/15/20/tractor-7375252_960_720.jpg`,
-    },
-    {
-      url: `https://cdn.pixabay.com/photo/2022/08/09/15/20/tractor-7375252_960_720.jpg`,
-    },
-  ];
+import { TYPE_CartData } from 'Types/common/product';
+import React from 'react';
 
+interface Props {
+  data?: TYPE_CartData;
+}
+const Basketfour: React.FC<Props> = ({ data }) => {
+  console.log(data);
   return (
     <div className="mt-5 relative  h-32 w-12/12">
       <div>

@@ -68,6 +68,7 @@ const ProductPage: React.FC = () => {
   if (isLoading) return <Empty />;
   if (error) return <></>;
   if (data.length === 0) return <Empty />;
+
   //리턴 url , 로컬스토리지에 담기
   return (
     <BGcontainer>

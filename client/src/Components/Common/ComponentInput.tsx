@@ -43,7 +43,6 @@ const ComponentsInput: React.FC<Props> = ({
   const [iserror, setIserror] = useState<boolean>(false);
 
   const onClickForm = () => {
-    console.log(dataname);
     if (dataname === 'name' || dataname === 'phonenumber') {
       if (isName || control) {
         setcontrol(!control);

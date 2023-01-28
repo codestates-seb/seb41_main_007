@@ -145,7 +145,20 @@ const BasketList: FC = () => {
   const { session, loading } = useSession(); // 로딩시간만큼 내리는데 시간이 들어서 생략
   useScrollTop();
   if (loading) return <></>;
-  console.log(resultarr);
+
+  // fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+  //   method: 'GET',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     Authorization: `Bearer ${session}`,
+  //   },
+  // })
+  //   .then((res: Response) => {
+  //     return res.json();
+  //   })
+  //   .then((res: Response) => {
+  //     console.log(res);
+  //   });
 
   let result: number = resultarr.reduce((acc, cur) => {
     if (cur?.price && cur?.count) {
@@ -162,8 +175,7 @@ const BasketList: FC = () => {
     }
     return acc;
   }, 0);
-  console.log(result);
-  console.log(resultCount);
+
   // 체크박스 단일 선택
   const handleSingleCheck = (checked?: boolean, id?: number) => {
     if (checked && id) {
@@ -193,22 +205,36 @@ const BasketList: FC = () => {
     const jsondataCounter: string | null =
       localStorage.getItem('basketsCounter');
     const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
-    console.log(basketsCounter);
+
     // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
     if (checkItems.length === baskets.length) {
       setCheckItems([]);
-      localStorage.clear();
+      localStorage.removeItem('baskets');
+      localStorage.removeItem('basketsCounter');
     }
     const deleteSave = baskets.filter((el: any) => {
       return !checkItems.includes(el.productOptionResponseDtos.productOptionId);
     });
     const deleteSaveCounter = basketsCounter.filter((el: any) => {
-      console.log(el.productOptionId);
-      return !checkItems.includes(el.productOptionId);
+      if (checkItems.includes(el.productOptionId)) {
+        if (session) {
+          fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/carts/${el.productOptionId}`,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${session}`,
+              },
+              method: 'DELETE',
+            },
+          ).then((response) => console.log(response));
+        }
+        return false;
+      }
+      return true;
     });
 
     checkItems.forEach((el) => {
-      console.log(el);
       dispatch(countDelete({ id: el }));
     });
 
@@ -305,3 +331,4 @@ export default BasketList;
 
 //백엔드와 db관리하는데에 있어서 오류가 있었따.
 //id기반으로 ㅁ나들었기에
+//로컬스토리지 클리어시 토큰 삭제

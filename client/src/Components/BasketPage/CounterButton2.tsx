@@ -37,18 +37,53 @@ const Counterinput = styled.input`
 interface props {
   setnumber: Dispatch<SetStateAction<number>>;
   countNumber: number;
+  optionId: number;
+  session: string | null | boolean;
 }
 
-const CounterButton2: FC<props> = ({ setnumber, countNumber }) => {
+const CounterButton2: FC<props> = ({
+  setnumber,
+  countNumber,
+  optionId,
+  session,
+}) => {
   const [count, setCount] = useState<number>(countNumber);
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);
+    if (session) {
+      const suggest = {
+        productOptionId: optionId,
+        quantity: +1,
+      };
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+        body: JSON.stringify(suggest),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session}`,
+        },
+        method: 'POST',
+      }).then((response) => console.log(response));
+    }
   };
 
   const onDecrease = () => {
     setCount((prevCount) => {
       if (prevCount === 1) {
         return prevCount;
+      }
+      if (session) {
+        const suggest = {
+          productOptionId: optionId,
+          quantity: -1,
+        };
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+          body: JSON.stringify(suggest),
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session}`,
+          },
+          method: 'POST',
+        }).then((response) => console.log(response));
       }
       return prevCount - 1;
     });

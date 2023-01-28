@@ -141,6 +141,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
   };
 
   if (session) {
+    //확인용
     fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
       method: 'GET',
       headers: {
@@ -189,9 +190,6 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
     let IsSame: boolean = false;
 
     basketsCounter.forEach((el: any) => {
-      console.log(el.productOptionId);
-
-      console.log(option.productOptionId);
       if (el.productOptionId === option.productOptionId) {
         IsSame = true;
       }
@@ -202,13 +200,12 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
     //   if (data.productId === el.productId) IsSame = true;
     // });
 
-    console.log(data);
     if (IsSame) {
       fullBasketAlram();
 
       return;
     }
-    console.log(data.productOptionResponseDtos);
+
     data.productOptionResponseDtos.forEach((element: TYPE_ProductOption) => {
       if (element.productOptionId === option.productOptionId) {
         const newData = { ...data, productOptionResponseDtos: element };
@@ -231,22 +228,12 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
       count: count,
     };
 
-    // const dispatchdata = {
-    //   id: newData.productOptionResponseDtos.productOptionId,
-    //   price: data.price + option.price,
-    //   count: count,
-    // };
-    console.log(basketsCounter);
-    // dispatch(countset(dispatchdata));
-    //바로 반영하기위해 사용
-
     basketsCounter.push(datacount);
     emptyBasketAlram();
     localStorage.setItem('basketsCounter', JSON.stringify(basketsCounter));
     //백업용
     localStorage.setItem('baskets', JSON.stringify(baskets));
     if (session) {
-      console.log(session);
       const suggest = {
         productOptionId: option.productOptionId,
         quantity: count,
