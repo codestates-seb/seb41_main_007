@@ -9,7 +9,10 @@ import BuyButton from 'Components/Common/BuyButton';
 import { useState } from 'react';
 import { useAppDispatch } from 'Redux/app/hook';
 import { countset } from 'Redux/reducer/priceSlice';
-
+import { useNavigate } from 'react-router-dom';
+import SelectBox from 'Components/BasketPage/SelectBox';
+import { TYPE_ProductOption, counttype } from 'Types/common/product';
+import { useSession } from 'CustomHook/useSession';
 const ProductMain = styled.div`
   margin: 0 auto 50px auto;
   width: 920px;
@@ -18,9 +21,11 @@ const ProductMain = styled.div`
   display: flex;
 `;
 const ImageBox = styled.img`
-  width: 480px;
-  height: 480px;
+  width: 500px;
+  height: 500px;
   margin-left: 30px;
+  margin-top: 83px;
+  background: red;
 `;
 const ProductBox = styled.div`
   width: 400px;
@@ -35,27 +40,30 @@ const ProductPrice = styled.div<{ Mgtop: string }>`
   font-size: var(--large);
   font-weight: bold;
   margin-top: ${(props) => props.Mgtop};
+  margin-bottom: 20px;
 `;
 
 const ProductTitle = styled.h1`
-  margin-top: 25px;
+  margin-top: 100px;
+  margin-bottom: 15px;
   width: 350px;
   height: 38px;
-  font-size: var(--xlarge);
+  font-size: var(--xxlarge);
   font-weight: bold;
 `;
 const ProductContent = styled.p`
   max-width: 350px;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nomal;
+  white-space: nowrap;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 1;
 
   height: 50px;
 
   font-size: var(--medium);
   font-weight: bold;
+  margin-bottom: -20px;
 `;
 const ProductTable = styled.div<{
   Mgtop?: string;
@@ -67,7 +75,7 @@ const ProductTable = styled.div<{
   justify-content: center;
   flex-direction: column;
   width: 350px;
-  height: 50px;
+  height: 45px;
   padding: 32px 0;
   margin-top: ${(props) => props.Mgtop};
   line-height: 16px;
@@ -77,6 +85,7 @@ const ProductTable = styled.div<{
   position: relative;
   line-height: ${(props) => props.lhtop};
   // cursor: pointer;
+  margin-bottom: -5px;
 `;
 
 const Price = styled.p`
@@ -100,13 +109,28 @@ interface props {
   data: any;
 }
 
+// interface counttype {
+//   id: number;
+//   price: number;
+//   count: number;
+//   optionprice: number;
+//   optionname: string;
+//   productOptionId: number;
+// }
 const ProductMainBox: React.FC<props> = ({ data }) => {
   const [count, setCount] = useState<number>(1);
+  const [option, setOption] = useState<TYPE_ProductOption>(
+    data.productOptionResponseDtos[0],
+  );
+  const { session, loading } = useSession();
+  if (loading) return <></>;
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);
   };
+
   const onDecrease = () => {
     setCount((prevCount) => {
       if (prevCount === 1) {
@@ -115,6 +139,23 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
       return prevCount - 1;
     });
   };
+
+  if (session) {
+    //확인용
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session}`,
+      },
+    })
+      .then((res: Response) => {
+        return res.json();
+      })
+      .then((res: Response) => {
+        console.log(res);
+      });
+  }
 
   const emptyBasketAlram = () =>
     toast.success('장바구니에 담는 중입니다.', {
@@ -139,34 +180,74 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
       theme: 'light',
     });
 
-  let search = location.href;
-  search = 'returnUrl=' + search;
-
-  // const getStorage = (object, ID) => {
-  // window.location.href
-  // 비로그인시 return url
-
   const onClickBasket = (data: any) => {
     const jsondata: string | null = localStorage.getItem('baskets');
-
     const baskets = JSON.parse(jsondata || '[]') || [];
 
+    const jsondataCounter: string | null =
+      localStorage.getItem('basketsCounter');
+    const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
     let IsSame: boolean = false;
 
-    baskets.forEach((el: any) => {
-      if (data.productId === el.productId) IsSame = true;
+    basketsCounter.forEach((el: any) => {
+      if (el.productOptionId === option.productOptionId) {
+        IsSame = true;
+      }
     });
+
+    // baskets.forEach((el: any) => {
+    //   console.log(el.productOptionResponseDtos);
+    //   if (data.productId === el.productId) IsSame = true;
+    // });
 
     if (IsSame) {
       fullBasketAlram();
 
       return;
     }
-    dispatch(countset({ id: data.productId, price: data.price, count: 1 }));
-    baskets.push(data);
 
+    data.productOptionResponseDtos.forEach((element: TYPE_ProductOption) => {
+      if (element.productOptionId === option.productOptionId) {
+        const newData = { ...data, productOptionResponseDtos: element };
+        baskets.push(newData);
+        const dispatchdata = {
+          id: newData.productOptionResponseDtos.productOptionId,
+          price: data.price + option.price,
+          count: count,
+        };
+        dispatch(countset(dispatchdata));
+      }
+    });
+
+    const datacount: counttype = {
+      id: data.productId,
+      price: data.price,
+      optionprice: option.price,
+      optionname: option.productOptionName,
+      productOptionId: option.productOptionId,
+      count: count,
+    };
+
+    basketsCounter.push(datacount);
     emptyBasketAlram();
+    localStorage.setItem('basketsCounter', JSON.stringify(basketsCounter));
+    //백업용
     localStorage.setItem('baskets', JSON.stringify(baskets));
+    if (session) {
+      const suggest = {
+        productOptionId: option.productOptionId,
+        quantity: count,
+      };
+
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+        body: JSON.stringify(suggest),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session}`,
+        },
+        method: 'POST',
+      }).then((response) => console.log(response));
+    }
   };
 
   return (
@@ -178,12 +259,15 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
           <ProductTitle className="font-serif">{data.name}</ProductTitle>
           <ProductContent>{data.description}</ProductContent>
           <Ratingstar num={4}></Ratingstar>
-          <ProductPrice Mgtop="10px">
+          <ProductPrice Mgtop="2px">
             {useNumberComma(data.price)}
             <span>원</span>
           </ProductPrice>
-
-          <ProductTable fontsize="14px" lhtop="14px" Mgtop="28px">
+          <SelectBox
+            Optiondata={data.productOptionResponseDtos}
+            setOption={setOption}
+          ></SelectBox>
+          <ProductTable fontsize="14px" lhtop="14px" Mgtop="20px">
             상품수량
             <CounterButton
               count={count}
@@ -194,7 +278,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
           <ProductTable fontsize="16px" lhtop="16px" Mgtop="0">
             총 상품 금액
             <Price>
-              {useNumberComma(data.price * count)}
+              {useNumberComma((data.price + option.price) * count)}
               <span>원</span>
             </Price>
           </ProductTable>
@@ -218,7 +302,11 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
           />
           {/* Same as */}
           <ToastContainer />
-          <BuyButton background="var(--greenlogo);" color="var(--bg-white-05)">
+          <BuyButton
+            background="var(--greenlogo);"
+            color="var(--bg-white-05)"
+            onClick={() => navigate('/basket')}
+          >
             결제하기
           </BuyButton>
         </ProductBox>
@@ -228,3 +316,14 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
 };
 
 export default ProductMainBox;
+//객체 배열관리
+//밀림 현상
+//백엔드와 소통
+// let search = location.href;
+// search = 'returnUrl=' + search;
+
+// // const getStorage = (object, ID) => {
+// // window.location.href
+// // 비로그인시 return url
+//옵션아이디로 수정함녀서 괴랄해짐
+//유지보수 고려한 코딩

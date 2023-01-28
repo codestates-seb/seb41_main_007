@@ -43,7 +43,6 @@ const ComponentsInput: React.FC<Props> = ({
   const [iserror, setIserror] = useState<boolean>(false);
 
   const onClickForm = () => {
-    console.log(dataname);
     if (dataname === 'name' || dataname === 'phonenumber') {
       if (isName || control) {
         setcontrol(!control);
@@ -168,3 +167,4 @@ export default ComponentsInput;
 //플로우 방식에 다양하다보니 정신이 없었따.
 //간단하게 정리해서 풀어내는 방식이 중요한데 너무 흐름대로갔음
 //모든 오류를 막는데에 계싼적으로 행동하지 못함
+//컴포넌트화 실패

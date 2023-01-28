@@ -1,7 +1,7 @@
 import Address from 'Components/PaymentPage/Adress';
 import Payment from 'Components/PaymentPage/Payment';
 import styled from 'styled-components';
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Totalpay from 'Components/PaymentPage/Totalpay';
@@ -9,6 +9,14 @@ import Basket4size from 'Components/PaymentPage/Basketfour';
 import { BGcontainer } from 'Components/Common/BGcontainer';
 import Modal from 'Components/Common/Modal';
 import { useSelector } from 'react-redux';
+import { useSession } from 'CustomHook/useSession';
+import { useNavigate } from 'react-router-dom';
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import { TYPE_CartData } from 'Types/common/product';
+import axios from 'axios';
+import { useQuery } from 'react-query';
+import Empty from 'Components/Common/Empty';
+
 const Container = styled.div`
   width: 830px;
 `;
@@ -20,12 +28,39 @@ const Title = styled.div`
   justify-content: space-between;
   padding-right: 30px;
 `;
-const PaymentPage: React.FC = () => {
+
+const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const [order, setOrder] = useState<boolean>(true);
   const [address, setAddress] = useState<boolean>(true); //배송지
   const [payment, setPayment] = useState<boolean>(true); //결제수단
   const isModal = useSelector((state: any) => state.modal.isOpenModal);
 
+  const [data, setdata] = useState<TYPE_CartData[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session}`,
+      },
+    })
+      .then((res: Response) => {
+        return res.json();
+      })
+      .then((res) => {
+        setdata(res);
+        setLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) return <Empty />;
+  console.log(data);
   return (
     <div>
       {isModal && <Modal />}

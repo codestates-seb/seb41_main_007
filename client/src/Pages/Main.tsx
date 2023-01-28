@@ -6,8 +6,10 @@ import CustomTitle from 'Components/Header/CustomTitle';
 import Story from 'Components/Main/Story';
 import NewProduct from 'Components/NewProduct/NewProduct';
 import BestProduct from 'Components/BestProduct/BestProduct';
+import useScrollTop from 'CustomHook/useScrollTop';
 
 const Main: FC = (): JSX.Element => {
+  useScrollTop();
   return (
     <main>
       <CustomTitle title="FarmPi" description={'팜피에 오신걸 환영합니다!'} />

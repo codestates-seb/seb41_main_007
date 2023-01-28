@@ -31,7 +31,6 @@ const DatepickerInput: React.FC<props> = ({ onSave }) => {
           onChange={(newValue) => {
             if (newValue) {
               onSave('date', newValue.format('YYYY년MM월DD일'));
-              console.log(newValue.format('YYYY년MM월DD일'));
             }
           }}
           renderInput={(params) => (

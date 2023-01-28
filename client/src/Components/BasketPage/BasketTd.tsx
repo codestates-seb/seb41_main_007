@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import { useNumberComma } from 'Utils/commonFunction';
 import CounterButton2 from './CounterButton2';
 import { useAppDispatch } from 'Redux/app/hook';
-import { countset, countput } from 'Redux/reducer/priceSlice';
+import { countset, countput, countDelete } from 'Redux/reducer/priceSlice';
 import { Link } from 'react-router-dom';
+import { TYPE_LocalOption } from 'Types/common/product';
+import { useSession } from 'CustomHook/useSession';
 
 const Tablebody1 = styled.th`
   background: white;
@@ -55,7 +57,8 @@ const TableProduct = styled.div`
 `;
 
 const TableTitle = styled.div`
-  font-size: var(--medium);
+  font-size: var(--large);
+  font-weight: bold;
 `;
 
 const TableContent = styled.div`
@@ -66,6 +69,7 @@ const TableContent = styled.div`
 
 const TablePrice = styled.div`
   font-size: var(--medium);
+  color: var(--priceColor);
 `;
 
 const Tablebody3 = styled.td`
@@ -121,37 +125,84 @@ interface checkBoxtype {
   el: any;
   handleSingleCheck: (checked: boolean, id: number) => void;
   checkItems: number[];
+  // countNumber: number;
+  OptionData: TYPE_LocalOption;
 }
 
 const BasketTd: FC<checkBoxtype> = ({
   el,
   handleSingleCheck,
   checkItems,
+  // countNumber,
+  OptionData,
 }): JSX.Element => {
-  const [number, setnumber] = useState<number>(1);
+  const jsondata: string | null = localStorage.getItem('baskets');
+  const baskets = JSON.parse(jsondata || '[]') || [];
+  const jsondataCounter: string | null = localStorage.getItem('basketsCounter');
+  const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
+  const [number, setnumber] = useState<number>(OptionData.count);
+  const { session, loading } = useSession();
+  if (loading) return <></>;
+
   // const [deleteb, setdeleteb] = useState<any[] | []>([]);
   const dispatch = useAppDispatch();
-
+  const optionId: number = el.productOptionResponseDtos.productOptionId;
   useEffect(() => {
-    dispatch(countset({ id: el.productId, price: el.price, count: number }));
+    dispatch(
+      countset({
+        id: optionId,
+        price: el.price + OptionData.optionprice,
+        count: OptionData.count,
+      }),
+    );
   }, []);
 
   useEffect(() => {
-    dispatch(countput({ id: el.productId, count: number }));
+    basketsCounter.forEach((data: any) => {
+      if (data.productOptionId === optionId) data.count = number;
+    });
+
+    localStorage.setItem('basketsCounter', JSON.stringify(basketsCounter));
+    dispatch(
+      countput({
+        id: el.productOptionResponseDtos.productOptionId,
+        count: number,
+      }),
+    );
   }, [number]);
 
   const deleteBasket = (data: any) => {
-    const jsondata: string | null = localStorage.getItem('baskets');
-    const baskets = JSON.parse(jsondata || '[]') || [];
-    handleSingleCheck(false, data.productId);
+    //개인 지우는 로직
+    handleSingleCheck(false, data.productOptionResponseDtos.productOptionId);
 
     const save = baskets.filter((el: any) => {
-      return el.productId !== data.productId;
+      return (
+        el.productOptionResponseDtos.productOptionId !==
+        data.productOptionResponseDtos.productOptionId
+      );
+    });
+    const saveCounter = basketsCounter.filter((el: any) => {
+      return (
+        el.productOptionId !== data.productOptionResponseDtos.productOptionId
+      );
     });
 
-    dispatch(countput({ id: el.productId, count: 0 })); //딜리트만들기 확인하기
+    if (session) {
+      fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/carts/${OptionData.productOptionId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session}`,
+          },
+          method: 'DELETE',
+        },
+      ).then((response) => console.log(response));
+    }
+
+    dispatch(countDelete({ id: el.productOptionResponseDtos.productOptionId }));
+    localStorage.setItem('basketsCounter', JSON.stringify(saveCounter));
     localStorage.setItem('baskets', JSON.stringify(save));
-    // setnumber(0); 스택오버플로우에 올리기
   };
 
   return (
@@ -160,9 +211,18 @@ const BasketTd: FC<checkBoxtype> = ({
         <THinput
           type="checkbox"
           defaultValue="basic"
-          onChange={(e) => handleSingleCheck(e.target.checked, el.productId)}
+          onChange={(e) =>
+            handleSingleCheck(
+              e.target.checked,
+              el.productOptionResponseDtos.productOptionId,
+            )
+          }
           // 체크된 아이템 배열에 해당 아이템이 있을 경우 선택 활성화, 아닐 시 해제
-          checked={checkItems.includes(el.productId) ? true : false}
+          checked={
+            checkItems.includes(el.productOptionResponseDtos.productOptionId)
+              ? true
+              : false
+          }
         ></THinput>
       </Tablebody1>
 
@@ -171,10 +231,16 @@ const BasketTd: FC<checkBoxtype> = ({
           <TB2Container>
             <TableimgDiv url={el.photo}></TableimgDiv>
             <TableProduct>
-              <TableTitle>{el.name}</TableTitle>
+              <TableTitle>{`${el.name}`}</TableTitle>
               <TableContent>{el.description}</TableContent>
+              <div>
+                {' '}
+                {`${useNumberComma(el.price)}원 + ${useNumberComma(
+                  OptionData.optionprice,
+                )}원(Option ${OptionData.optionname})`}
+              </div>
               <TablePrice>
-                {useNumberComma(el.price)}
+                <div></div>={useNumberComma(el.price + OptionData.optionprice)}
                 <span>원</span>
               </TablePrice>
             </TableProduct>
@@ -183,10 +249,15 @@ const BasketTd: FC<checkBoxtype> = ({
       </Tablebody2>
 
       <Tablebody3>
-        <CounterButton2 setnumber={setnumber} />
+        <CounterButton2
+          optionId={optionId}
+          setnumber={setnumber}
+          countNumber={OptionData.count}
+          session={session}
+        />
       </Tablebody3>
       <Tablebody4>
-        {useNumberComma(el.price * number)}
+        {useNumberComma((el.price + OptionData.optionprice) * number)}
         <span>원</span>
       </Tablebody4>
 
@@ -203,3 +274,8 @@ const BasketTd: FC<checkBoxtype> = ({
 };
 
 export default BasketTd;
+
+//성능 생각해서 더 우선시 되는걸 if 앞에 넣음
+//카운트버튼숫자 후버 업데이트 오류났었음
+//유지보수의 매운맛..
+//시그니처와 타입의 필요성을 느낌

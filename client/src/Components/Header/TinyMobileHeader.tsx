@@ -1,7 +1,7 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import styles from './Styles/TinyMobileHeader.module.css';
 import { Link } from 'react-router-dom';
-import Logo from './Logo';
+
 import Menu from './Menu';
 import Input from './Input';
 import ArrowBackIcon from './Icon/ArrowBackIcon';
@@ -46,7 +46,7 @@ const TinyMobileHeader: FC = () => {
           style={{
             display: isOpen ? 'block' : 'none',
             marginLeft: '20px',
-            padding: '10px',
+            padding: '9px',
             backgroundColor: 'var(--green-30)',
           }}
         >
@@ -60,7 +60,7 @@ const TinyMobileHeader: FC = () => {
           style={{ display: isOpen ? 'none' : 'block' }}
         >
           <Link to="/">
-            <Logo width={150} height={150} />
+            <img width={150} height={80} src={'/image/FarmPi.svg'} alt="LOGO" />
           </Link>
         </div>
         <Menu />

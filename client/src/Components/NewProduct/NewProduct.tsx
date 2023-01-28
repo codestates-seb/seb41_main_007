@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import ProductSlider from 'Components/Common/ProductSlider';
+
 const Container = styled.div`
   div {
     width: 100%;

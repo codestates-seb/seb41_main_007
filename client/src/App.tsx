@@ -22,6 +22,16 @@ import PaymentPage from 'Pages/PaymentPage';
 import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
 import AllProductsPage from 'Pages/AllProductsPage';
 import Auth from 'Pages/Auth';
+import Post from 'Pages/Test/Post';
+
+import { useSession } from 'CustomHook/useSession';
+import Empty from 'Components/Common/Empty';
+
+const PaymentPageSession = () => {
+  const { loading, session } = useSession();
+  if (loading) return <Empty />;
+  return <PaymentPage session={session} />;
+};
 
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
@@ -62,7 +72,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/Counter',
-    element: <Counter />,
+    element: withLayout(Counter),
   },
   {
     path: '/test/counter',
@@ -86,11 +96,15 @@ const router = createBrowserRouter([
   },
   {
     path: '/payment',
-    element: withLayout(PaymentPage),
+    element: withLayout(PaymentPageSession),
   },
   {
     path: '/test/review',
     element: <ReviewQueryTest />,
+  },
+  {
+    path: '/post',
+    element: withLayout(Post),
   },
   { path: '/auth', element: <Auth /> },
 ]);

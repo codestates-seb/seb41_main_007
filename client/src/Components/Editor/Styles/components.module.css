@@ -1,0 +1,135 @@
+.toolbar {
+  position: sticky;
+  top: 55px;
+  height: 34px;
+  padding: 3px;
+  display: flex;
+  flex-wrap: wrap;
+  background-color: var(--tool-bar);
+  z-index: 20;
+}
+@media (max-width: 445px) {
+  .toolbar {
+    height: 68px;
+  }
+}
+.spoil {
+  background-color: var(--gray-50);
+  color: var(--gray-10);
+}
+.sopil_readonly {
+  background-color: var(--gray-50);
+}
+.image_container {
+  position: relative;
+  outline: none;
+  margin-top: 0.9em;
+}
+.image_container_readonly {
+  position: relative;
+  outline: none;
+  margin-top: 0.9em;
+}
+.image_wrapper {
+  position: relative;
+  display: table;
+  margin: 0 auto;
+}
+.image {
+  min-width: 200px;
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: 3px;
+}
+.image_readonly {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0 auto;
+}
+.image_container:hover .image {
+  box-shadow: 0 0 0 3px #b4d5ff;
+}
+.image_true {
+  box-shadow: 0 0 0 5px #b4d5ff;
+}
+.image_container_true:hover .image {
+  box-shadow: 0 0 0 5px #b4d5ff;
+}
+.button_container {
+  white-space: nowrap;
+}
+.delete_button {
+  padding: 3px;
+  border-radius: 7px;
+  display: none;
+  position: absolute;
+  right: 50%;
+  top: -16px;
+  transform: translateX(50%);
+  background-color: var(--bg-white-05);
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
+  z-index: 50;
+}
+.delete_button:hover {
+  background-color: var(--bg-white-10);
+}
+.line_button {
+  left: 15%;
+  display: none;
+  position: absolute;
+  padding: 2px;
+  border-radius: 50%;
+  background-color: var(--bg-white-05);
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.6);
+  z-index: 50;
+}
+.upper_line_button {
+  top: 0;
+  transform: translateY(-50%);
+}
+.lower_line_button {
+  bottom: 0px;
+  transform: translateY(50%);
+}
+.image_wrapper:hover .line_button {
+  display: inline;
+}
+.image_wrapper:hover .delete_button {
+  display: inline;
+}
+.video_container:hover .line_button {
+  display: inline;
+}
+.video_container:hover .delete_button {
+  display: inline;
+}
+.line_button:hover {
+  background-color: var(--bg-white-10);
+}
+.button_true {
+  display: block;
+}
+.video_container {
+  position: relative;
+  margin-top: 0.9em;
+  border-radius: 5px;
+  outline: none;
+  white-space: nowrap;
+}
+.video_container_readonly {
+  position: relative;
+  margin-top: 0.9em;
+  border-radius: 5px;
+  outline: none;
+  white-space: nowrap;
+}
+.video_container:hover {
+  box-shadow: 0 0 0 3px #b4d5ff;
+}
+.video_true {
+  box-shadow: 0 0 0 5px #b4d5ff;
+}
+.video_true:hover {
+  box-shadow: 0 0 0 5px #b4d5ff;
+}
