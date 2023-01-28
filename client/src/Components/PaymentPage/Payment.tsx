@@ -86,12 +86,22 @@ export const AccountTransfer: FC = (): JSX.Element => {
 };
 
 const Payment: FC = (): JSX.Element => {
+  const [kakaopay, setKakopay] = useState<boolean>(false);
   const [deposit, setDeposit] = useState<boolean>(false);
   const [creditcard, setCreditCard] = useState<boolean>(false);
   const [virtualAccout, setVirtualAccount] = useState<boolean>(false);
   const [accountTransfer, setAccountTransfer] = useState<boolean>(false);
 
+  const transferFalseKakaopay = () => {
+    setKakopay(!kakaopay);
+    setDeposit(false);
+    setCreditCard(false);
+    setVirtualAccount(false);
+    setAccountTransfer(false);
+  };
+
   const transferFalseDeposit = () => {
+    setKakopay(false);
     setDeposit(!deposit);
     setCreditCard(false);
     setVirtualAccount(false);
@@ -99,6 +109,7 @@ const Payment: FC = (): JSX.Element => {
   };
 
   const transferFalseCredit = () => {
+    setKakopay(false);
     setDeposit(false);
     setCreditCard(!creditcard);
     setVirtualAccount(false);
@@ -106,12 +117,14 @@ const Payment: FC = (): JSX.Element => {
   };
 
   const transferFalseVirtual = () => {
+    setKakopay(false);
     setDeposit(false);
     setCreditCard(false);
     setVirtualAccount(!virtualAccout);
     setAccountTransfer(false);
   };
   const transferFalseAcoount = () => {
+    setKakopay(false);
     setDeposit(false);
     setCreditCard(false);
     setVirtualAccount(false);
@@ -120,11 +133,26 @@ const Payment: FC = (): JSX.Element => {
 
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
+      <nav aria-label="kakao mailbox folders">
+        <List onClick={transferFalseKakaopay}>
+          <ListItem disablePadding>
+            <ListItemButton>
+              <ListItemIcon>
+                <div className="bg-yellow-300 px-1 rounded-lg mr-4">
+                  kakaopay
+                </div>
+              </ListItemIcon>
+              <ListItemText primary="카카오페이" />
+            </ListItemButton>
+          </ListItem>
+        </List>
+      </nav>
+      <Divider />
       <nav aria-label="main mailbox folders">
         <List onClick={transferFalseDeposit}>
           <ListItem disablePadding>
             <ListItemButton>
-              <ListItemIcon>
+              <ListItemIcon className="ml-6 mr-3">
                 <InboxIcon />
               </ListItemIcon>
               <ListItemText primary="무통장입금" />
@@ -137,7 +165,7 @@ const Payment: FC = (): JSX.Element => {
         <List onClick={transferFalseCredit}>
           <ListItem disablePadding>
             <ListItemButton>
-              <ListItemIcon>
+              <ListItemIcon className="ml-6 mr-3">
                 <AddCardOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary="신용카드" />
@@ -150,7 +178,7 @@ const Payment: FC = (): JSX.Element => {
         <List onClick={transferFalseVirtual}>
           <ListItem disablePadding>
             <ListItemButton>
-              <ListItemIcon>
+              <ListItemIcon className="ml-6 mr-3">
                 <SmartphoneOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary="가상계좌" />
@@ -163,7 +191,7 @@ const Payment: FC = (): JSX.Element => {
         <List onClick={transferFalseAcoount}>
           <ListItem disablePadding>
             <ListItemButton>
-              <ListItemIcon>
+              <ListItemIcon className="ml-6 mr-3">
                 <AttachMoneyOutlinedIcon />
               </ListItemIcon>
               <ListItemText primary="계좌이체" />
