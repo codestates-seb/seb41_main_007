@@ -8,10 +8,10 @@ public enum ExceptionCode {
     MEMBER_EXISTS(409, "Member exists"),
     NOT_LOGIN(400, "login, please"),
 
-    REVIEW_NOT_FOUND(404,"Review not found"),
+    REVIEW_NOT_FOUND(404,"리뷰를 찾을 수 없습니다"),
     REFRESH_TOKEN_NOT_FOUND(404, "Refresh token not found"),
     INVALID_USER(405,"Method not allowed"),
-    REVIEW_ANSWER_NOT_FOUND(404,"Review not found"),
+    REVIEW_ANSWER_NOT_FOUND(404,"리뷰 답변을 찾을 수 없습니다"),
 
     CAN_NOT_ORDER_PRODUCT(400, "주문할 수 없는 제품입니다."),
     CAN_NOT_CANCEL_ORDER(400,"주문을 취소할 수 없습니다."),
@@ -34,8 +34,8 @@ public enum ExceptionCode {
     CART_PRODUCT_NOT_FOUND(404, "CartProduct not found"),
     CART_NOT_FOUND(404, "Cart not found"),
 
-    QUESTION_NOT_FOUND(404,"Question not found"),
-    QUESTION_ANSWER_NOT_FOUND(404,"Question answer not found"),
+    QUESTION_NOT_FOUND(404,"질문을 찾을 수 없습니다"),
+    QUESTION_ANSWER_NOT_FOUND(404,"질문 답변을 찾을 수 없습니다"),
     PAY_CANCEL(404,"결제취소"),
     PAY_FAILED(404,"결제실패"),
     CAN_NOT_PAY(400,"결제할 수 없는 상태입니다");
