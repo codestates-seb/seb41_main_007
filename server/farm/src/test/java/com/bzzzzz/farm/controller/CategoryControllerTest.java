@@ -1,6 +1,5 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.mapper.CategoryMapper;
 import com.bzzzzz.farm.model.dto.category.CategoryPatchDto;
 import com.bzzzzz.farm.model.dto.category.CategoryPostDto;
 import com.bzzzzz.farm.model.dto.category.CategoryResponseDto;

@@ -2,7 +2,10 @@ package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
+import com.bzzzzz.farm.mapper.ProductMapper;
+import com.bzzzzz.farm.model.dto.product.ProductDetailResponseDto;
 import com.bzzzzz.farm.model.dto.product.ProductPatchDto;
+import com.bzzzzz.farm.model.dto.product.ProductPostDto;
 import com.bzzzzz.farm.model.dto.product.ProductSimpleResponseDto;
 import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.repository.ProductRepository;
@@ -22,16 +25,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductMapper productMapper;
 
     @CacheEvict(value = "getMain", allEntries = true)
-    public Product createProduct(Product product) {
-        return productRepository.save(product);
+    public Product createProduct(ProductPostDto productPostDto) {
+        return productRepository.save(
+                productMapper.productPostDtoToProduct(productPostDto)
+        );
     }
 
-    public Product findProduct(long productId) {
+    public ProductDetailResponseDto findProduct(long productId) {
         Product findProduct = findVerifiedProduct(productId);
         findProduct.addViewCount();
-        return findProduct;
+        return productMapper.productToProductDetailResponseDto(findProduct, false);
     }
 
     @Transactional(readOnly = true)

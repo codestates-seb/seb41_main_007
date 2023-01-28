@@ -1,7 +1,5 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.mapper.ProductMapper;
-import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.product.*;
 import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.model.entity.ProductCategory;
@@ -57,8 +55,6 @@ public class ProductControllerTest {
     @MockBean
     private LikeService likeService;
     @MockBean
-    private ProductMapper productMapper;
-    @MockBean
     private ProductCategoryService productCategoryService;
     @MockBean
     private ProductOptionService productOptionService;
@@ -84,8 +80,7 @@ public class ProductControllerTest {
                 .productOptionPostDtos(List.of(new ProductOptionPostDto("옵션이름", 5000, 100)))
                 .build();
 
-        given(productMapper.productPostDtoToProduct(Mockito.any(ProductPostDto.class))).willReturn(new Product());
-        given(productService.createProduct(Mockito.any(Product.class))).willReturn(product);
+        given(productService.createProduct(Mockito.any(ProductPostDto.class))).willReturn(product);
         given(productCategoryService.createProductCategory(Mockito.any(ProductCategory.class))).willReturn(new ProductCategory());
         doNothing().when(productOptionService).createProductOption(Mockito.any(ProductOption.class));
 
@@ -182,8 +177,7 @@ public class ProductControllerTest {
                                         .build()))
                 .build();
 
-        given(productService.findProduct(Mockito.anyLong())).willReturn(new Product());
-        given(productMapper.productToProductDetailResponseDto(Mockito.any(Product.class), Mockito.anyBoolean())).willReturn(response);
+        given(productService.findProduct(Mockito.anyLong())).willReturn(response);
 
         // when
         ResultActions actions = mockMvc.perform(
