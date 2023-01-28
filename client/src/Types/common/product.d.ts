@@ -32,4 +32,14 @@ export interface TYPE_LocalOption {
   optionprice: number;
   optionname: string;
   count: number;
+  productOptionId: number;
+}
+
+export interface counttype {
+  id: number;
+  price: number;
+  count: number;
+  optionprice: number;
+  optionname: string;
+  productOptionId: number;
 }
