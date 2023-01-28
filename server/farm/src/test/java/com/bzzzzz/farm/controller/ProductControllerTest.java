@@ -2,8 +2,6 @@ package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.model.dto.product.*;
 import com.bzzzzz.farm.model.entity.Product;
-import com.bzzzzz.farm.model.entity.ProductCategory;
-import com.bzzzzz.farm.model.entity.ProductOption;
 import com.bzzzzz.farm.service.LikeService;
 import com.bzzzzz.farm.service.ProductCategoryService;
 import com.bzzzzz.farm.service.ProductOptionService;
@@ -81,8 +79,9 @@ public class ProductControllerTest {
                 .build();
 
         given(productService.createProduct(Mockito.any(ProductPostDto.class))).willReturn(product);
-        given(productCategoryService.createProductCategory(Mockito.any(ProductCategory.class))).willReturn(new ProductCategory());
-        doNothing().when(productOptionService).createProductOption(Mockito.any(ProductOption.class));
+        given(productCategoryService.createProductCategory(Mockito.any(ProductCategoryPostDto.class))).willReturn(ProductCategoryResponseDto.builder().build());
+
+        doNothing().when(productOptionService).createProductOption(Mockito.any(ProductOptionPostDto.class));
 
         String content = gson.toJson(request);
 

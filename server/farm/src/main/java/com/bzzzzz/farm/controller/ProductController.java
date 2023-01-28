@@ -5,7 +5,6 @@ import com.bzzzzz.farm.model.dto.SingleResponseDto;
 import com.bzzzzz.farm.model.dto.product.ProductPatchDto;
 import com.bzzzzz.farm.model.dto.product.ProductPostDto;
 import com.bzzzzz.farm.model.dto.product.ProductSimpleResponseDto;
-import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.service.LikeService;
 import com.bzzzzz.farm.service.ProductCategoryService;
 import com.bzzzzz.farm.service.ProductOptionService;
@@ -35,14 +34,20 @@ public class ProductController {
     public ResponseEntity postProduct(@Valid @RequestBody ProductPostDto productPostDto) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
 
-        Product product = productService.createProduct(productPostDto);
-        product.getProductCategories().stream()
-                .forEach(productCategory -> productCategoryService.createProductCategory(productCategory));
-        product.getProductOptions().stream()
-                .forEach(productOption -> productOptionService.createProductOption(productOption));
+        long productId = productService.createProduct(productPostDto).getProductId();
 
+        productPostDto.getProductCategoryPostDtos().stream()
+                .forEach(productCategoryPostDto -> {
+                    productCategoryPostDto.setProductId(productId);
+                    productCategoryService.createProductCategory(productCategoryPostDto);
+                });
+        productPostDto.getProductOptionPostDtos().stream()
+                .forEach(productOptionPostDto -> {
+                    productOptionPostDto.setProductId(productId);
+                    productOptionService.createProductOption(productOptionPostDto);
+                });
 
-        return new ResponseEntity(new SingleResponseDto(product.getProductId()), HttpStatus.CREATED);
+        return new ResponseEntity(new SingleResponseDto(productId), HttpStatus.CREATED);
     }
 
     @GetMapping("/products/{product-id}")
