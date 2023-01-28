@@ -99,7 +99,7 @@ public class ProductServiceTest {
         List<ProductSimpleResponseDto> dtos = new ArrayList<>();
         for (long i = 10; i >= 1; i--) {
             dtos.add(new ProductSimpleResponseDto(
-                    i, "테스트제품" + i, 10000, "테스트사진url", "판매 중"
+                    i, "테스트제품" + i, 10000, "테스트사진url", "판매 중", 5.0
             ));
         }
         Page<ProductSimpleResponseDto> dtoPage = new PageImpl<>(dtos, PageRequest.of(page, size, Sort.by(sort).descending()), dtos.size());
