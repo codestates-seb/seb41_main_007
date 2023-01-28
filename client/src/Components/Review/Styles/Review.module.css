@@ -1,0 +1,56 @@
+@media screen and (max-width: 689px) {
+  .Review_Image_Content {
+    @apply h-32 w-32;
+  }
+  .Review_Rating {
+    @apply text-sm w-20 mr-32;
+  }
+}
+
+@media screen and (max-width: 1025px) {
+  .Review_Image_Content {
+    @apply h-32 w-32;
+  }
+  .Review_Rating {
+    @apply text-sm w-20 mr-44;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .Review_Rating {
+    @apply text-sm w-20 mr-32;
+  }
+}
+.Review_Container {
+  @apply bg-white mx-auto;
+}
+.Review_Content {
+  @apply mx-auto max-w-2xl px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8;
+}
+.Review_Title {
+  @apply text-4xl font-bold font-serif tracking-tight text-gray-900 mb-10;
+}
+.Review_Data {
+  @apply grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-1 lg:grid-cols-2  xl:gap-x-8;
+}
+.Review_Detail_Content {
+  @apply flex gap-x-4;
+}
+.Review_Image_Container {
+  @apply overflow-hidden;
+}
+.Review_Image_Content {
+  @apply h-28 w-28;
+}
+.Review_Product_Container {
+  @apply mt-4 text-base text-gray-700;
+}
+.Review_Product_Title {
+  @apply mt-1 text-sm font-medium text-gray-900;
+}
+.Review_User {
+  @apply text-sm w-12;
+}
+.Review_Date {
+  @apply text-sm text-gray-400 w-20;
+}
