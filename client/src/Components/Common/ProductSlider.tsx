@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { TYPE_Product } from 'Types/common/product';
 import Product from './Product';
 import { useMediaQuery } from 'react-responsive';
-
+import styles from './Styles/ProductSlider.module.css';
 const StyledSlider = styled(Slider)`
   position: relative;
   width: 100%;
@@ -64,14 +64,33 @@ const ProductSlider: FC<Props> = ({
   const isMobile: boolean = useMediaQuery({
     query: '(max-width:767px)',
   });
-  let size = 4;
 
   const settings = {
     infinite: true,
     speed: 200,
-    slidesToShow: size,
+    slidesToShow: 4,
     slidesToScroll: 1,
     arrows: true,
+    responsive: [
+      {
+        breakpoint: 1025,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   return (
