@@ -14,3 +14,8 @@ export interface TYPE_PageInfo {
   totalElements: number;
   totalPages: number;
 }
+
+export interface OnHandleModal {
+  isOpenModal: boolean;
+  onClickToggleModal: () => void;
+}
