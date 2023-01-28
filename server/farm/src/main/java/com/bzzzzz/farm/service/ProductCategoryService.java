@@ -1,5 +1,8 @@
 package com.bzzzzz.farm.service;
 
+import com.bzzzzz.farm.mapper.ProductMapper;
+import com.bzzzzz.farm.model.dto.product.ProductCategoryPostDto;
+import com.bzzzzz.farm.model.dto.product.ProductCategoryResponseDto;
 import com.bzzzzz.farm.model.entity.Category;
 import com.bzzzzz.farm.model.dto.product.ProductCategoryPatchDto;
 import com.bzzzzz.farm.model.entity.Product;
@@ -18,22 +21,28 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductCategoryService {
     private final ProductCategoryRepository productCategoryRepository;
+    private final ProductMapper productMapper;
 
-    public ProductCategory createProductCategory(ProductCategory productCategory) {
+    public ProductCategoryResponseDto createProductCategory(ProductCategoryPostDto productCategoryPostDto) {
+        ProductCategory productCategory = productMapper.productCategoryPostDtoToProductCategory(productCategoryPostDto);
 
         verifyExistsProductCategory(productCategory.getProduct(), productCategory.getCategory());
 
-        return productCategoryRepository.save(productCategory);
+        return productMapper.productCategoryToProductCategoryResponseDto(
+                productCategoryRepository.save(productCategory)
+        );
     }
 
-    public ProductCategory updateProductCategory(ProductCategoryPatchDto productCategoryPatchDto) {
+    public ProductCategoryResponseDto updateProductCategory(ProductCategoryPatchDto productCategoryPatchDto) {
 
         ProductCategory findProductCategory = findVerifiedProductCategory(productCategoryPatchDto.getProductCategoryId());
         verifyExistsProductCategory(findProductCategory.getProduct(), new Category(productCategoryPatchDto.getCategoryId()));
 
         Optional.ofNullable(productCategoryPatchDto.getCategoryId()).ifPresent(data -> findProductCategory.setCategory(new Category(data)));
 
-        return productCategoryRepository.save(findProductCategory);
+        return productMapper.productCategoryToProductCategoryResponseDto(
+                productCategoryRepository.save(findProductCategory)
+        );
     }
 
     public void deleteProductCategory(long productCategoryId) {

@@ -2,7 +2,10 @@ package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
+import com.bzzzzz.farm.mapper.ProductMapper;
 import com.bzzzzz.farm.model.dto.product.ProductCategoryPatchDto;
+import com.bzzzzz.farm.model.dto.product.ProductCategoryPostDto;
+import com.bzzzzz.farm.model.dto.product.ProductCategoryResponseDto;
 import com.bzzzzz.farm.model.entity.Category;
 import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.model.entity.ProductCategory;
@@ -27,6 +30,8 @@ import static org.mockito.Mockito.verify;
 public class ProductCategoryServiceTest {
     @Mock
     private ProductCategoryRepository productCategoryRepository;
+    @Mock
+    private ProductMapper productMapper;
     @InjectMocks
     private ProductCategoryService productCategoryService;
 
@@ -34,30 +39,28 @@ public class ProductCategoryServiceTest {
     @DisplayName("카테고리에 제품 담기-해피케이스")
     void createProductCategory1() {
         // given
-        Product product = new Product();
-        product.setProductId(1L);
-        Category category = new Category();
-        category.setCategoryId(1L);
+        ProductCategoryPostDto productCategoryPostDto = new ProductCategoryPostDto(3L, 1L);
 
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setProduct(product);
-        productCategory.setCategory(category);
+        productCategory.setProduct(new Product());
+        productCategory.setCategory(new Category());
 
-        ProductCategory savedProductCategory = new ProductCategory();
-        savedProductCategory.setProductCategoryId(1L);
-        savedProductCategory.setProduct(product);
-        savedProductCategory.setCategory(category);
+        ProductCategoryResponseDto productCategoryResponseDto = ProductCategoryResponseDto
+                .builder()
+                .productCategoryId(1L)
+                .categoryId(1L)
+                .build();
 
+        given(productMapper.productCategoryPostDtoToProductCategory(Mockito.any(ProductCategoryPostDto.class))).willReturn(productCategory);
         given(productCategoryRepository.findByProductAndCategory(Mockito.any(Product.class), Mockito.any(Category.class))).willReturn(Optional.ofNullable(null));
-        given(productCategoryRepository.save(Mockito.any(ProductCategory.class))).willReturn(savedProductCategory);
+        given(productCategoryRepository.save(Mockito.any(ProductCategory.class))).willReturn(new ProductCategory());
+        given(productMapper.productCategoryToProductCategoryResponseDto(Mockito.any(ProductCategory.class))).willReturn(productCategoryResponseDto);
 
         // when
-        ProductCategory result = productCategoryService.createProductCategory(productCategory);
+        ProductCategoryResponseDto result = productCategoryService.createProductCategory(productCategoryPostDto);
 
         // then
-        assertEquals(savedProductCategory.getProductCategoryId(), result.getProductCategoryId());
-        assertEquals(savedProductCategory.getProduct(), result.getProduct());
-        assertEquals(savedProductCategory.getCategory(), result.getCategory());
+        assertEquals(productCategoryPostDto.getCategory().getCategoryId(), result.getCategoryId());
     }
 
     @Test
@@ -69,20 +72,17 @@ public class ProductCategoryServiceTest {
         Category category = new Category();
         category.setCategoryId(1L);
 
-        ProductCategory findProductCategory = new ProductCategory();
-        findProductCategory.setProductCategoryId(1L);
-        findProductCategory.setProduct(product);
-        findProductCategory.setCategory(category);
-
         ProductCategory productCategory = new ProductCategory();
+        productCategory.setProductCategoryId(1L);
         productCategory.setProduct(product);
         productCategory.setCategory(category);
 
-        given(productCategoryRepository.findByProductAndCategory(Mockito.any(Product.class), Mockito.any(Category.class))).willReturn(Optional.ofNullable(findProductCategory));
+        given(productMapper.productCategoryPostDtoToProductCategory(Mockito.any(ProductCategoryPostDto.class))).willReturn(productCategory);
+        given(productCategoryRepository.findByProductAndCategory(Mockito.any(Product.class), Mockito.any(Category.class))).willReturn(Optional.ofNullable(productCategory));
 
         // when
         // then
-        BusinessLogicException exception = assertThrows(BusinessLogicException.class, () -> productCategoryService.createProductCategory(productCategory));
+        BusinessLogicException exception = assertThrows(BusinessLogicException.class, () -> productCategoryService.createProductCategory(new ProductCategoryPostDto()));
         assertEquals(ExceptionCode.PRODUCT_CATEGORY_EXISTS, exception.getExceptionCode());
     }
 
@@ -102,15 +102,22 @@ public class ProductCategoryServiceTest {
         findProductCategory.setCategory(category1);
 
         ProductCategoryPatchDto patchDto = new ProductCategoryPatchDto(findProductCategory.getProductCategoryId(), category2.getCategoryId());
+        ProductCategoryResponseDto productCategoryResponseDto = ProductCategoryResponseDto
+                .builder()
+                .categoryId(category2.getCategoryId())
+                .productCategoryId(5L)
+                .build();
+
         given(productCategoryRepository.findById(Mockito.anyLong())).willReturn(Optional.ofNullable(findProductCategory));
         given(productCategoryRepository.findByProductAndCategory(Mockito.any(Product.class), Mockito.any(Category.class))).willReturn(Optional.ofNullable(null));
         given(productCategoryRepository.save(Mockito.any(ProductCategory.class))).willReturn(findProductCategory);
+        given(productMapper.productCategoryToProductCategoryResponseDto(Mockito.any(ProductCategory.class))).willReturn(productCategoryResponseDto);
 
         // when
-        ProductCategory result = productCategoryService.updateProductCategory(patchDto);
+        ProductCategoryResponseDto result = productCategoryService.updateProductCategory(patchDto);
 
         // then
-        assertEquals(patchDto.getCategoryId(), result.getCategory().getCategoryId());
+        assertEquals(patchDto.getCategoryId(), result.getCategoryId());
     }
 
     @Test

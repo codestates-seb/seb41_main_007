@@ -1,7 +1,5 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.mapper.CategoryMapper;
-import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.category.CategoryPatchDto;
 import com.bzzzzz.farm.model.dto.category.CategoryPostDto;
 import com.bzzzzz.farm.model.dto.category.CategoryResponseDto;
@@ -31,6 +29,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -46,8 +46,6 @@ public class CategoryControllerTest {
     private Gson gson;
     @MockBean
     private CategoryService categoryService;
-    @MockBean
-    private CategoryMapper categoryMapper;
 
     @Test
     @DisplayName("카테고리 등록")
@@ -55,8 +53,7 @@ public class CategoryControllerTest {
         // given
         CategoryPostDto request = new CategoryPostDto("테스트 카테고리");
 
-        given(categoryMapper.categoryPostDtoToCategory(Mockito.any(CategoryPostDto.class))).willReturn(new Category());
-        given(categoryService.createCategory(Mockito.any(Category.class))).willReturn(new Category());
+        given(categoryService.createCategory(Mockito.any(CategoryPostDto.class))).willReturn(new Category());
 
         String content = gson.toJson(request);
 
@@ -141,8 +138,7 @@ public class CategoryControllerTest {
 
         List<CategoryResponseDto> response = List.of(categoryResponseDto1, categoryResponseDto2, categoryResponseDto3);
 
-        given(categoryService.findCategories()).willReturn(List.of());
-        given(categoryMapper.categoriesToCategoryResponseDtos(Mockito.anyList())).willReturn(response);
+        given(categoryService.findCategories()).willReturn(response);
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -186,19 +182,12 @@ public class CategoryControllerTest {
     @DisplayName("카테고리 삭제")
     void deleteCategory() throws Exception {
         // given
-        IdRequestDto request = new IdRequestDto();
-        request.setId(1L);
-
         doNothing().when(categoryService).deleteCategory(Mockito.anyLong());
-
-        String content = gson.toJson(request);
 
         // when
         ResultActions actions = mockMvc.perform(
-                delete("/categories")
-                        .contentType(MediaType.APPLICATION_JSON)
+                delete("/categories/{category-id}",1L)
                         .with(csrf())
-                        .content(content)
         );
 
         // then
@@ -207,7 +196,7 @@ public class CategoryControllerTest {
                 .andDo(document(
                         "deleteCategory",
                         preprocessRequest(prettyPrint()),
-                        requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 카테고리 식별자"))
+                        pathParameters(parameterWithName("category-id").description("카테고리 식별자"))
                 ));
     }
 }

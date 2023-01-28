@@ -2,6 +2,8 @@ package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
+import com.bzzzzz.farm.mapper.MemberMapper;
+import com.bzzzzz.farm.model.dto.member.MemberDto;
 import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.repository.MemberRepository;
 import lombok.AllArgsConstructor;
@@ -18,8 +20,11 @@ import java.util.Optional;
 @AllArgsConstructor
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final MemberMapper mapper;
 
-    public Member updateMember(Member member) {
+    public MemberDto.Response updateMember(MemberDto.Patch request) {
+        Member member = mapper.memberPatchToMember(request);
+
         Member findMember = findVerifiedMember(member.getMemberId());
         Optional.ofNullable(member.getName())
                 .ifPresent(name -> findMember.setName(name));
@@ -31,16 +36,19 @@ public class MemberService {
                 .ifPresent(phone -> findMember.setPhone(phone));
         Optional.ofNullable(member.getAddress())
                 .ifPresent(address -> findMember.setAddress(address));
-        return memberRepository.save(findMember);
+        memberRepository.save(findMember);
+
+        return mapper.memberToMemberResponse(findMember);
+
     }
 
     @Transactional(readOnly = true)
-    public Member findMember(long memberId) {
-        return findVerifiedMember(memberId);
+    public MemberDto.Response findMember(long memberId) {
+        return mapper.memberToMemberResponse(findVerifiedMember(memberId));
     }
 
-    public List<Member> findMembers(){
-        return memberRepository.findAll();
+    public List<MemberDto.Response> findMembers(){
+        return mapper.membersToMemberResponses(memberRepository.findAll());
     }
 
     public void deleteMember(long memberId) {

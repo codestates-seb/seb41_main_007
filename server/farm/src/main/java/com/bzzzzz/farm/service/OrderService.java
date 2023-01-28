@@ -2,7 +2,10 @@ package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
+import com.bzzzzz.farm.mapper.OrderMapper;
 import com.bzzzzz.farm.model.dto.order.OrderPatchDto;
+import com.bzzzzz.farm.model.dto.order.OrderPostDto;
+import com.bzzzzz.farm.model.dto.order.OrderResponseDto;
 import com.bzzzzz.farm.model.entity.Order;
 import com.bzzzzz.farm.model.entity.OrderProduct;
 import com.bzzzzz.farm.repository.OrderRepository;
@@ -17,8 +20,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderService {
     private final OrderRepository orderRepository;
+    private final OrderMapper orderMapper;
 
-    public Order createOrder(Order order) {
+    public Order createOrder(OrderPostDto orderPostDto) {
+        Order order = orderMapper.orderPostDtoToOrder(orderPostDto);
+
         verifyCanOrder(order);
         order.getOrderProducts().stream()
                 .forEach(orderProduct -> orderProduct.getProductOption().calculateStock(-orderProduct.getQuantity()));
@@ -27,13 +33,13 @@ public class OrderService {
     }
 
     public void cancelOrder(long orderId) { // 사용자가 주문을 취소
-        Order order = findOrder(orderId);
+        Order order = findVerifiedOrder(orderId);
         order.getOrderProducts().stream()
                 .forEach(orderProduct -> verifyCancelOrder(orderProduct));
     }
 
     public Order updateOrder(OrderPatchDto orderPatchDto) { // 어드민이 주문상태를 변경
-        Order order = findOrder(orderPatchDto.getOrderId());
+        Order order = findVerifiedOrder(orderPatchDto.getOrderId());
 
         Optional.ofNullable(orderPatchDto.getPaymentMethod()).ifPresent(data -> order.setPaymentMethod(data));
         Optional.ofNullable(orderPatchDto.getPaymentStatus()).ifPresent(data -> {
@@ -53,14 +59,21 @@ public class OrderService {
     }
 
     @Transactional(readOnly = true)
-    public Order findOrder(long orderId) {
-        Optional<Order> optionalOrder = orderRepository.findById(orderId);
-        return optionalOrder.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
+    public OrderResponseDto findOrder(long orderId) {
+        return orderMapper.orderToOrderResponseDto(
+                findVerifiedOrder(orderId)
+        );
     }
 
     /**
      * 서브 메서드
      */
+    @Transactional(readOnly = true)
+    private Order findVerifiedOrder(long orderId) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        return optionalOrder.orElseThrow(() -> new BusinessLogicException(ExceptionCode.ORDER_NOT_FOUND));
+    }
+
     @Transactional(readOnly = true)
     private void verifyCanOrder(Order order) {
         order.getOrderProducts().stream()
@@ -87,7 +100,7 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public void verifyAuthority(long orderId, long memberId) {
-        Order order = findOrder(orderId);
+        Order order = findVerifiedOrder(orderId);
         if (order.getMember().getMemberId() != memberId) {
             throw new BusinessLogicException(ExceptionCode.REQUEST_FORBIDDEN);
         }
@@ -95,8 +108,8 @@ public class OrderService {
 
     @Transactional(readOnly = true)
     public Order verifyPaymentStatus(long orderId) {
-        Order order = findOrder(orderId);
-        if (findOrder(orderId).getPaymentStatus().getCode() > 1) { // 1=결제전, 2=결제완료, 3=결제취소
+        Order order = findVerifiedOrder(orderId);
+        if (order.getPaymentStatus().getCode() > 1) { // 1=결제전, 2=결제완료, 3=결제취소
             throw new BusinessLogicException(ExceptionCode.CAN_NOT_PAY);
         }
         return order;

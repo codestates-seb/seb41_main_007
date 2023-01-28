@@ -22,6 +22,8 @@ public class ProductPatchDto {
 
     private String brand;
 
+    private String body;
+
     private String description;
 
     private String productStatus;
