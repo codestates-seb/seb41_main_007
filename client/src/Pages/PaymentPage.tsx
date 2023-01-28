@@ -5,14 +5,12 @@ import { useState, useEffect } from 'react';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Totalpay from 'Components/PaymentPage/Totalpay';
-import Basket4size from 'Components/PaymentPage/Basketfour';
+import BasketFour from 'Components/PaymentPage/Basketfour';
 import { BGcontainer } from 'Components/Common/BGcontainer';
 import { useSession } from 'CustomHook/useSession';
-import { useNavigate } from 'react-router-dom';
-import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { TYPE_CartData } from 'Types/common/product';
-import axios from 'axios';
-import { useQuery } from 'react-query';
+import BasketfourList from 'Components/PaymentPage/BasketfourList';
+
 import Empty from 'Components/Common/Empty';
 
 const Container = styled.div`
@@ -26,12 +24,13 @@ const Title = styled.div`
   padding-right: 30px;
 `;
 
-const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
+const PaymentPage = () => {
   const [order, setOrder] = useState<boolean>(true);
   const [address, setAddress] = useState<boolean>(true); //배송지
   const [payment, setPayment] = useState<boolean>(true); //결제수단
   const [data, setdata] = useState<TYPE_CartData[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isloading, setisLoading] = useState<boolean>(true);
+  const { loading, session } = useSession();
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
@@ -46,16 +45,16 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
       })
       .then((res) => {
         setdata(res);
-        setLoading(false);
+        setisLoading(false); //무한렌더링 막기용
       })
       .catch((e) => {
         console.log(e);
-        setLoading(false);
+        setisLoading(false);
       });
   }, []);
-
   if (loading) return <Empty />;
-  console.log(data);
+  if (isloading) return <Empty />;
+
   return (
     <BGcontainer>
       <div className="flex">
@@ -73,7 +72,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
               )}
             </button>
           </Title>
-          {order && <Basket4size />}
+          {order && <BasketfourList data={data} />}
           <Title>
             <div className=" font-semibold py-4 text-xl">배송지</div>
             <button onClick={() => setAddress(!address)}>
@@ -103,3 +102,5 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   );
 };
 export default PaymentPage;
+
+//패치오류 났음 세션 문제

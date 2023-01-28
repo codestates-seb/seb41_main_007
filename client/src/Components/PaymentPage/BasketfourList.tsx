@@ -1,21 +1,15 @@
 import { FC } from 'react';
 import Basketfour from './Basketfour';
-//1번 로컬 스토리지에서 바당옴
-//2번 로컬스토리에서 지움
+import { TYPE_CartData } from 'Types/common/product';
 
-const BasketfourList = () => {
-  const jsondata: string | null = localStorage.getItem('baskets');
-
-  const baskets = JSON.parse(jsondata || '[]');
-
-  if (baskets.length === 0) return <></>;
-
+const BasketfourList: FC<{ data: TYPE_CartData[] }> = ({ data }) => {
+  console.log(data);
   return (
-    <tbody>
-      {/* {baskets.map((el: any) => (
-        <> key={el.productId}></>
-      ))} */}
-    </tbody>
+    <div>
+      {data.map((el: any) => (
+        <Basketfour key={el.productOptionId} data={el}></Basketfour>
+      ))}
+    </div>
   );
 };
 
