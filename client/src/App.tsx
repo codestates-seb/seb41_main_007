@@ -24,6 +24,15 @@ import AllProductsPage from 'Pages/AllProductsPage';
 import Auth from 'Pages/Auth';
 import Post from 'Pages/Test/Post';
 
+import { useSession } from 'CustomHook/useSession';
+import Empty from 'Components/Common/Empty';
+
+const PaymentPageSession = () => {
+  const { loading, session } = useSession();
+  if (loading) return <Empty />;
+  return <PaymentPage session={session} />;
+};
+
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
     <>
@@ -87,7 +96,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/payment',
-    element: withLayout(PaymentPage),
+    element: withLayout(PaymentPageSession),
   },
   {
     path: '/test/review',
