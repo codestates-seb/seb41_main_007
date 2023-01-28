@@ -1,0 +1,240 @@
+.container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 200px auto 0 auto;
+}
+
+.main_container {
+  max-width: 1220px;
+  background-color: var(--bg-white-00);
+  flex: 1;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.line {
+  width: 100%;
+  border-bottom: 1px solid var(--gray-12);
+  margin: 30px 0;
+}
+
+.heading {
+  font-size: var(--large);
+  color: var(--green-70);
+  padding-bottom: 15px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+}
+
+.button_container {
+  display: flex;
+  align-items: center;
+}
+.tag_button {
+  font-size: var(--small);
+  font-weight: bold;
+  line-height: 14px;
+  height: 38px;
+  padding: 0 20px;
+  border-radius: 999px;
+  margin-left: 10px;
+  background-color: var(--bg-white-00);
+  border: 1px solid var(--gray-25);
+  color: var(--black-10);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.tag_button:hover {
+  background-color: var(--bg-white-10);
+}
+.tag_button_checked {
+  background-color: var(--green-50);
+  border-color: white;
+  color: white;
+}
+.tag_button_checked:hover {
+  background-color: var(--green-50);
+  border-color: white;
+  color: white;
+}
+
+.tag_button_disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.title {
+  position: relative;
+  flex: 1;
+  display: flex;
+  height: 40px;
+  color: var(--black-10);
+  align-items: center;
+  border: 1px solid var(--gray-12);
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 50px;
+}
+
+.title:focus-within {
+  border-color: var(--gray-45);
+}
+.title_input {
+  flex: 1;
+  height: 100%;
+  font-size: var(--medium);
+  font-weight: 400;
+  padding: 10px 10px;
+  vertical-align: text-bottom;
+  color: var(--black-10);
+}
+
+.title_input::placeholder {
+  color: var(--black-10);
+  opacity: 0.6;
+}
+
+.title_length {
+  position: absolute;
+  transform: translate3d(0, 0, 0) scale(0.7);
+  right: -5px;
+  top: -20px;
+}
+
+.title_length_error {
+  color: #c73331;
+}
+
+.wrapper {
+  flex: 1;
+  margin-top: 6px;
+}
+
+.submit_wrapper {
+  flex: 1;
+  display: flex;
+  margin-top: 20px;
+  justify-content: flex-end;
+}
+
+.submit {
+  font-size: 15px;
+  width: 130px;
+  height: 34px;
+  border-radius: 999px;
+  background-color: var(--green-50);
+  color: #fff;
+  display: flex;
+  line-height: 14px;
+  align-items: center;
+  justify-content: center;
+}
+.submit:hover {
+  background-color: var(--blue-12);
+}
+.submit:active {
+  background-color: var(--blue-13);
+}
+.submit_disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+.error_container {
+  flex: 1;
+  border: 1px solid var(--gray-12);
+  margin-top: 6px;
+  border-radius: 4px;
+}
+
+.error_title {
+  font-size: 15px;
+  line-height: 15px;
+  font-weight: bold;
+  white-space: nowrap;
+  padding: 10px;
+  background-color: var(--tool-bar);
+}
+
+.error_text_container {
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 5px;
+}
+
+.error_text {
+  font-size: 14px;
+  line-height: 14px;
+  display: -webkit-box;
+  background-color: var(--green-40);
+  color: var(--white-03);
+  border-radius: 999px;
+  padding: 8px 12px;
+  margin-top: 5px;
+  margin-left: 5px;
+  word-break: break-word;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  max-width: 100%;
+}
+
+.error_in_text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
+}
+.rule_container {
+  background-color: var(--bg-white-00);
+  padding: 15px;
+  padding-bottom: 5px;
+  border-radius: 6px;
+}
+.rule_title {
+  font-size: 18px;
+  line-height: 18px;
+  font-weight: bold;
+  white-space: nowrap;
+  padding-bottom: 10px;
+  border-bottom: solid 1px var(--gray-12);
+}
+
+.rule_text {
+  font-size: 14px;
+  line-height: 14px;
+  padding: 14px 0;
+  border-bottom: solid 1px var(--gray-12);
+  white-space: nowrap;
+}
+
+@media (max-width: 1138px) {
+  .rule_container {
+    display: none;
+  }
+  .main_container {
+    margin: 0;
+  }
+}
+@media (max-width: 690px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .community_input_container {
+    width: 100%;
+  }
+  .button_container {
+    margin-top: 10px;
+  }
+  .tag_button {
+    margin-left: 0;
+    margin-right: 10px;
+  }
+}

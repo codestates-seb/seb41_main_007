@@ -106,12 +106,22 @@
 
 @media (max-width: 600px) {
   .Header_Search_Input {
-    width: 230px;
+    width: 160px;
     margin-left: 0px;
     height: 46px;
     margin-bottom: 15px;
   }
   .Header_Input_SearchIcon {
     padding: 11px;
+  }
+}
+
+@media (max-width: 550px) {
+  .Header_Search_Input {
+    width: 160px;
+    height: 34px;
+  }
+  .Header_Input_SearchIcon {
+    padding: 6px;
   }
 }
