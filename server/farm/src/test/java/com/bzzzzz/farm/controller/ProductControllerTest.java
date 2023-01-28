@@ -294,7 +294,7 @@ public class ProductControllerTest {
                                 parameterWithName("page").description("요청할 페이지 (기본값 = 1) * 이하 미입력시 기본값 혹은 값을 주지 않습니다 *"),
                                 parameterWithName("size").description("한 페이지당 표시할 게시물 수 (기본값 = 40)"),
                                 parameterWithName("categoryId").description("특정 카테고리에 속한 제품들을 보고 싶은 경우 카테고리의 식별자를 입력"),
-                                parameterWithName("sort").description("정렬 기준 = productId(최신순, 기본값), name(상품이름순), price(가격순), brand(제조사순), likeCount(인기순), soldCount(판매량순)"),
+                                parameterWithName("sort").description("정렬 기준 = productId(최신순, 기본값), name(상품이름순), price(가격순), brand(제조사순), likeCount(인기순), soldCount(판매량순), rating(별점순)"),
                                 parameterWithName("order").description("정렬 방법 = descending(내림차순, 기본값), ascending(오름차순)"),
                                 parameterWithName("keyword").description("검색어 = 제품명, 본문, 브랜드안에서 검색")
                         ),
@@ -306,6 +306,7 @@ public class ProductControllerTest {
                                         fieldWithPath("data[*].price").type(JsonFieldType.NUMBER).description("제품 가격"),
                                         fieldWithPath("data[*].photo").type(JsonFieldType.STRING).description("제품 썸네일 사진 URL"),
                                         fieldWithPath("data[*].productStatus").type(JsonFieldType.STRING).description("제품 상태"),
+                                        fieldWithPath("data[*].rating").type(JsonFieldType.NUMBER).description("별점"),
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지"),
                                         fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("한 페이지당 표시할 데이터 수"),
