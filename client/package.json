@@ -21,6 +21,7 @@
     "@reduxjs/toolkit": "^1.9.1",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@types/is-url": "^1.2.30",
+    "axios": "^1.2.5",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.7",
     "is-url": "^1.2.4",

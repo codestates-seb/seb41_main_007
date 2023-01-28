@@ -1,7 +1,7 @@
 import Address from 'Components/PaymentPage/Adress';
 import Payment from 'Components/PaymentPage/Payment';
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Totalpay from 'Components/PaymentPage/Totalpay';
@@ -11,6 +11,8 @@ import { useSession } from 'CustomHook/useSession';
 import { useNavigate } from 'react-router-dom';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { TYPE_CartData } from 'Types/common/product';
+import axios from 'axios';
+import { useQuery } from 'react-query';
 
 const Container = styled.div`
   width: 830px;
@@ -22,24 +24,40 @@ const Title = styled.div`
   justify-content: space-between;
   padding-right: 30px;
 `;
+const fetchApi = async (session: any) => {
+  const abc = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${session}`,
+    },
+  });
+  console.info(abc);
+  return abc;
+};
 
 const PaymentPage: React.FC = () => {
   const [order, setOrder] = useState<boolean>(true);
   const [address, setAddress] = useState<boolean>(true); //배송지
   const [payment, setPayment] = useState<boolean>(true); //결제수단
+  const [data, setdata] = useState<TYPE_CartData[]>([]);
   const { session, loading } = useSession();
-  // const { data, isLoading, error } = useCustomQuery(
-  //   `/carts`,
-  //   `/carts`,
-  //   session,
-  // );
-  // const navigate = useNavigate();
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session}`,
+      },
+    })
+      .then((res: Response) => {
+        return res.json();
+      })
+      .then((res) => setdata(res));
+  }, []);
+
+  const navigate = useNavigate();
   // if (loading || isLoading) return <></>;
   // if (error) console.log(error);
-
-  // if (!session) {
-  //   navigate(-1);
-  // }
   // console.log(data);
 
   return (

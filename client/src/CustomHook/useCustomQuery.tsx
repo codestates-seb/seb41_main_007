@@ -16,6 +16,7 @@ export const useCustomQuery = (
     queryKey,
     () => {
       if (session) {
+        console.log('안녕');
         return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
           method: 'GET',
           headers: {
@@ -34,7 +35,7 @@ export const useCustomQuery = (
         });
       }
     },
-    { keepPreviousData: true },
+    { onError: (error) => console.error(error), keepPreviousData: true },
   );
 
   return { data, isLoading, error, status, refetch };
