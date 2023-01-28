@@ -10,8 +10,8 @@ import { Node } from 'slate';
 
 import { Plus, Checked } from './svg';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
-import { useNumberComma } from 'Utils/commonFunction';
 import Empty from 'Components/Common/Empty';
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 
 const INITIALVALUE: Descendant[] = [
   {
@@ -44,11 +44,14 @@ export default function Page() {
   const [price, setPrice] = useState<any>(0);
   const [brand, setBrand] = useState<string>('');
   const [title, setTitle] = useState<string>('');
-  const [desc, setDesc] = useState<string>('');
-  const [option, setOption] = useState([]);
+  const [description, setDescription] = useState<string>('');
+  const [option, setOption] = useState<any[]>([]);
   const [optionPrice, setOptionPrice] = useState<any>(0);
   const [optionName, setOptionName] = useState<any>('');
   const [categoryNum, setCategoryNum] = useState<number>(9999);
+  const [file, setFile] = useState<any>('');
+
+  const { mutate } = useCustomMutation('/products', ['post', title], 'POST');
 
   const handlerError = useCallback(
     (
@@ -75,34 +78,21 @@ export default function Page() {
       name: title,
       price: price,
       brand: brand,
-      description: desc,
-      body: value,
+      photo:
+        'https://www.thegear.kr/news/photo/old/imgdata/thegear_co_kr/201901/2019012141158917.jpg',
+      description: description,
+      body: JSON.stringify(value),
       shippingCountry: 'KOREA',
+      shippingMethod: 'PARCEL_SERVICE',
       shippingPrice: 3000,
       productCategoryPostDtos: [
         {
           categoryId: categoryNum,
         },
       ],
+      productOptionPostDtos: option,
     };
-    console.log(submitValue);
-    // const data = {
-    //   value: value,
-    //   serializedValue: serialize(value),
-    // userId: session.user.id,
-    // folderName: session.user.name + Date.now().toString(),
-    //   title: title,
-    //   tag: { spoiler: spoiler, notice: notice },
-    // };
-    // const res = await fetch(`${process.env.HOST}/backend/api/upload/post`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(data),
-    // });
-    // const result = await res.json();
-    return value;
+    mutate(submitValue);
   }
 
   function handlerTilteChange(value: string) {
@@ -110,9 +100,10 @@ export default function Page() {
   }
 
   const checkError = useCallback(() => {
-    if (price) {
-      if (price > 1000000) {
+    if (price || optionPrice) {
+      if (price > 1000000 || optionPrice > 1000000) {
         setPrice(Math.floor(price / 10));
+        setOptionPrice(Math.floor(optionPrice / 10));
       }
     }
     const type = value.map((n: any) => n.type);
@@ -122,7 +113,7 @@ export default function Page() {
     );
     handlerError('categorySelector', categoryNum === 9999);
     handlerError('emptyTitle', !emptyTitle);
-    handlerError('tooLongDesc', desc.length > 100);
+    handlerError('tooLongDesc', description.length > 100);
     const emptyText =
       !!value
         .map((n: any) => Node.string(n))
@@ -134,25 +125,73 @@ export default function Page() {
       type.includes('image') ||
       type.includes('youtube');
     handlerError('emptyText', !emptyText);
-  }, [desc, value, handlerError, categoryNum, price]);
+  }, [
+    title,
+    description,
+    value,
+    handlerError,
+    categoryNum,
+    price,
+    optionPrice,
+  ]);
 
   useEffect(() => {
     checkError();
   }, [checkError]);
 
+  const optionHandler = (e: any) => {
+    if (optionPrice === 0 && optionName.length === 0) {
+      return console.info('안되요');
+    }
+    const options = {
+      id: Date.now(),
+      productOptionName: optionName,
+      price: optionPrice,
+      stock: 10,
+    };
+    setOption([...option, options]);
+    setOptionPrice(0);
+    setOptionName('');
+  };
+
+  const fileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      console.log(e.target.files[0]);
+      const formData = new FormData();
+      formData.append('file', e.target.files[0]);
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
+        method: 'POST',
+        cache: 'no-cache',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    }
+  };
+
+  const optionsDelHandler = (id: number) => {
+    setOption(option.filter((el: any) => el.id !== id));
+  };
+
   if (isLoading) return <Empty />;
+
   return (
     <div className={styles.container}>
       <div className={styles.main_container}>
         <h2 className={styles.heading}>새로운 상품글 작성</h2>
         <div className={styles.line} />
         <div className={styles.contentContainer}>
-          <h2 className={styles.heading}> 상품 정보</h2>
+          <h2 className={styles.heading}>상품 정보 등록하기</h2>
           <div className={styles.content}>
             상품가격:
             <input
               type="number"
-              value={price}
+              value={price as number}
               placeholder="가격을 입력해주세요"
               className={styles.inputContents}
               onChange={(e) => setPrice(e.target.value)}
@@ -169,6 +208,19 @@ export default function Page() {
             />
           </div>
         </div>
+        <div className={styles.line} />
+        <div className={styles.contentContainer}>
+          <h2 className={styles.heading}>상품 이미지 등록하기 </h2>
+          <div className={styles.content}>
+            이미지:
+            <input
+              type="file"
+              accept="image/svg, image/jpeg, image/png"
+              onChange={fileHandler}
+            />
+          </div>
+        </div>
+
         <div className={styles.contentContainer}>
           <div className={styles.line} />
           <h2 className={styles.heading}> 선택 상품 만들기</h2>
@@ -176,7 +228,7 @@ export default function Page() {
             상품가격:
             <input
               type="number"
-              value={optionPrice}
+              value={optionPrice as number}
               placeholder="가격을 입력해주세요"
               className={styles.inputContents}
               onChange={(e) => setOptionPrice(e.target.value)}
@@ -192,7 +244,30 @@ export default function Page() {
               onChange={(e) => setOptionName(e.target.value)}
             />
           </div>
-          <button> 옵션 만들기</button>
+          <ul style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+            {option.length !== 0 &&
+              option.map((el: any) => {
+                return (
+                  <li key={el.id} className={styles.OptionListContent}>
+                    <div>이름:{el.productOptionName}</div>
+                    <div>가격:{el.price}</div>
+                    <button
+                      className={styles.OptionListContentDel}
+                      onClick={() => optionsDelHandler(el.id)}
+                    >
+                      삭제
+                    </button>
+                  </li>
+                );
+              })}
+          </ul>
+          <button
+            className={styles.submit}
+            style={{ marginTop: '10px' }}
+            onClick={optionHandler}
+          >
+            옵션 만들기
+          </button>
         </div>
         <div className={styles.line} />
         <div className={styles.header}>
@@ -236,17 +311,17 @@ export default function Page() {
         <div className={styles.title}>
           <input
             className={styles.title_input}
-            value={desc}
+            value={description}
             placeholder="상품 간단한 설명을 적어주세요"
-            onChange={(e) => setDesc(e.target.value)}
+            onChange={(e) => setDescription(e.target.value)}
           />
-          {desc.length > 100 && (
+          {description.length > 100 && (
             <div
               className={cx('title_length', {
-                title_length_error: desc.length > 100,
+                title_length_error: description.length > 100,
               })}
             >
-              {desc.length} / 100
+              {description.length} / 100
             </div>
           )}
         </div>

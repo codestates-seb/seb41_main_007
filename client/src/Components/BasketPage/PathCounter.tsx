@@ -20,7 +20,9 @@ const PathCounter: FC<checkBoxtype> = ({
   //     return item.id === el.productId;
   //   });
   const OptionData = resultarr.filter((data: any) => {
-    return data.id === el.productId;
+    return (
+      data.productOptionId === el.productOptionResponseDtos.productOptionId
+    );
   });
 
   console.log(OptionData);
@@ -49,3 +51,8 @@ const PathCounter: FC<checkBoxtype> = ({
 
 export default PathCounter;
 //배열 객체 혼동했음
+//옵션 인식 문제 해결
+// 옵션 각각 들어가지 않음
+//옵션 이름 문제
+//옵션 가격 책정
+//옵션 가격 넣기

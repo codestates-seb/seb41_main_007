@@ -6,6 +6,7 @@ import { useAppDispatch } from 'Redux/app/hook';
 import { countset, countput, countDelete } from 'Redux/reducer/priceSlice';
 import { Link } from 'react-router-dom';
 import { TYPE_LocalOption } from 'Types/common/product';
+import { useSession } from 'CustomHook/useSession';
 
 const Tablebody1 = styled.th`
   background: white;
@@ -140,17 +141,16 @@ const BasketTd: FC<checkBoxtype> = ({
   const jsondataCounter: string | null = localStorage.getItem('basketsCounter');
   const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
   const [number, setnumber] = useState<number>(OptionData.count);
-  console.log(OptionData);
-  console.log(OptionData.count);
+  const { session, loading } = useSession();
+  if (loading) return <></>;
+
   // const [deleteb, setdeleteb] = useState<any[] | []>([]);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log(el.price + OptionData.optionprice);
-    console.log('안녕');
     dispatch(
       countset({
-        id: el.productId,
+        id: el.productOptionResponseDtos.productOptionId,
         price: el.price + OptionData.optionprice,
         count: OptionData.count,
       }),
@@ -160,28 +160,53 @@ const BasketTd: FC<checkBoxtype> = ({
   useEffect(() => {
     basketsCounter.forEach((data: any) => {
       console.log(number);
-      if (data.id === el.productId) data.count = number;
+      if (data.productOptionId === el.productOptionResponseDtos.productOptionId)
+        data.count = number;
     });
-    console.log(basketsCounter);
-    console.log('이지');
+
     localStorage.setItem('basketsCounter', JSON.stringify(basketsCounter));
-    dispatch(countput({ id: el.productId, count: number }));
+    dispatch(
+      countput({
+        id: el.productOptionResponseDtos.productOptionId,
+        count: number,
+      }),
+    );
   }, [number]);
 
   const deleteBasket = (data: any) => {
-    handleSingleCheck(false, data.productId);
+    //개인 지우는 로직
+    handleSingleCheck(false, data.productOptionResponseDtos.productOptionId);
 
     const save = baskets.filter((el: any) => {
-      return el.productId !== data.productId;
+      return (
+        el.productOptionResponseDtos.productOptionId !==
+        data.productOptionResponseDtos.productOptionId
+      );
     });
     const saveCounter = basketsCounter.filter((el: any) => {
-      return el.id !== data.productId;
+      return (
+        el.productOptionId !== data.productOptionResponseDtos.productOptionId
+      );
     });
+    console.log(data);
+    console.log(OptionData.productOptionId);
 
-    dispatch(countDelete({ id: el.productId }));
+    if (session) {
+      fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/carts/${OptionData.productOptionId}`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session}`,
+          },
+          method: 'DELETE',
+        },
+      ).then((response) => console.log(response));
+    }
+
+    dispatch(countDelete({ id: el.productOptionResponseDtos.productOptionId }));
     localStorage.setItem('basketsCounter', JSON.stringify(saveCounter));
     localStorage.setItem('baskets', JSON.stringify(save));
-    // setnumber(0); 스택오버플로우에 올리기
   };
 
   return (
@@ -190,9 +215,18 @@ const BasketTd: FC<checkBoxtype> = ({
         <THinput
           type="checkbox"
           defaultValue="basic"
-          onChange={(e) => handleSingleCheck(e.target.checked, el.productId)}
+          onChange={(e) =>
+            handleSingleCheck(
+              e.target.checked,
+              el.productOptionResponseDtos.productOptionId,
+            )
+          }
           // 체크된 아이템 배열에 해당 아이템이 있을 경우 선택 활성화, 아닐 시 해제
-          checked={checkItems.includes(el.productId) ? true : false}
+          checked={
+            checkItems.includes(el.productOptionResponseDtos.productOptionId)
+              ? true
+              : false
+          }
         ></THinput>
       </Tablebody1>
 
@@ -242,3 +276,4 @@ export default BasketTd;
 
 //성능 생각해서 더 우선시 되는걸 if 앞에 넣음
 //카운트버튼숫자 후버 업데이트 오류났었음
+//유지보수의 매운맛..

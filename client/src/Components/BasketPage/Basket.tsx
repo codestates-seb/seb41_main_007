@@ -11,7 +11,8 @@ interface checkBoxtype {
 const Basket: FC<checkBoxtype> = ({ handleSingleCheck, checkItems }) => {
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]');
-
+  console.log(baskets);
+  console.log('중요함');
   // const resultarr: Pricestate[] = useAppSelector(selectprice);
 
   // // const onResult = (productId: number) => {
@@ -26,7 +27,7 @@ const Basket: FC<checkBoxtype> = ({ handleSingleCheck, checkItems }) => {
   return (
     <tbody>
       {baskets.map((el: any) => (
-        <tr key={el.productId}>
+        <tr key={el.productOptionResponseDtos.productOptionId}>
           <PathCounter
             el={el}
             handleSingleCheck={handleSingleCheck}

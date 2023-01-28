@@ -137,8 +137,7 @@ const ControlContainer = styled.div`
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
-  console.log('이거임');
-  console.log(resultarr);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const jsondata: string | null = localStorage.getItem('baskets');
@@ -146,16 +145,25 @@ const BasketList: FC = () => {
   const { session, loading } = useSession(); // 로딩시간만큼 내리는데 시간이 들어서 생략
   useScrollTop();
   if (loading) return <></>;
+  console.log(resultarr);
 
   let result: number = resultarr.reduce((acc, cur) => {
-    acc = acc + cur.price * cur.count;
-    return acc;
+    if (cur?.price && cur?.count) {
+      acc = acc + cur.price * cur.count;
+      return acc;
+    } else {
+      return acc;
+    }
   }, 0);
   const resultCount: number = resultarr.reduce((acc, cur) => {
-    acc = acc + cur.count;
+    if (cur?.count) {
+      acc = acc + cur.count;
+      return acc;
+    }
     return acc;
   }, 0);
-
+  console.log(result);
+  console.log(resultCount);
   // 체크박스 단일 선택
   const handleSingleCheck = (checked?: boolean, id?: number) => {
     if (checked && id) {
@@ -171,7 +179,9 @@ const BasketList: FC = () => {
     if (checked) {
       // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
       const idArray: number[] = [];
-      baskets.forEach((el: any) => idArray.push(el.productId));
+      baskets.forEach((el: any) =>
+        idArray.push(el.productOptionResponseDtos.productOptionId),
+      );
       setCheckItems(idArray);
     } else {
       // 전체 선택 해제 시 checkItems 를 빈 배열로 상태 업데이트
@@ -183,19 +193,22 @@ const BasketList: FC = () => {
     const jsondataCounter: string | null =
       localStorage.getItem('basketsCounter');
     const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
+    console.log(basketsCounter);
     // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
     if (checkItems.length === baskets.length) {
       setCheckItems([]);
       localStorage.clear();
     }
     const deleteSave = baskets.filter((el: any) => {
-      return !checkItems.includes(el.productId);
+      return !checkItems.includes(el.productOptionResponseDtos.productOptionId);
     });
     const deleteSaveCounter = basketsCounter.filter((el: any) => {
-      return !checkItems.includes(el.id);
+      console.log(el.productOptionId);
+      return !checkItems.includes(el.productOptionId);
     });
 
     checkItems.forEach((el) => {
+      console.log(el);
       dispatch(countDelete({ id: el }));
     });
 
@@ -291,3 +304,4 @@ export default BasketList;
 // 코드를 너무 복잡하게짬.. sementic 아이디 통일 못함
 
 //백엔드와 db관리하는데에 있어서 오류가 있었따.
+//id기반으로 ㅁ나들었기에

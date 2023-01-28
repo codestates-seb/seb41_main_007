@@ -81,7 +81,7 @@ const CounterButton = (props: counterProps): JSX.Element => {
             rel="stylesheet"
             href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0"
           />
-          <span className="material-symbols-outlined">
+          <span className="material-symbols-outlined text-xs">
             indeterminate_check_box
           </span>
         </Counterbutton>
@@ -90,3 +90,4 @@ const CounterButton = (props: counterProps): JSX.Element => {
   );
 };
 export default CounterButton;
+//다양한툴 밀림현상
