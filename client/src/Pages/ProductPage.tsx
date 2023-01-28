@@ -12,7 +12,7 @@ import CategoryList from 'Components/Common/CategoryList';
 import TabPanel from 'Components/Mypage/TabPanel';
 
 const ProductContainer = styled.div`
-  margin: 120px auto 120px auto;
+  margin: 120px auto 120px 280px;
   display: flex;
   align-items: center;
   justify-content: center;
