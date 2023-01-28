@@ -14,21 +14,29 @@ export const useCustomQuery = (
 ): OutPut => {
   const { data, isLoading, error, status, refetch } = useQuery(
     queryKey,
-    () => {
+    async () => {
       if (token) {
         return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json', Authorization: token },
-        }).then((res: Response) => {
-          return res.json();
-        });
+        })
+          .then((res: Response) => {
+            return res.json();
+          })
+          .catch((e) => {
+            return e;
+          });
       } else {
         return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
-        }).then((res: Response) => {
-          return res.json();
-        });
+        })
+          .then((res: Response) => {
+            return res.json();
+          })
+          .catch((e) => {
+            return e;
+          });
       }
     },
     { keepPreviousData: true },
