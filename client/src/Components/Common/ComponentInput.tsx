@@ -14,9 +14,10 @@ export const Textinput = styled.input<{ isTrue?: boolean }>`
   }
 `;
 
-const TextDiv = styled.div`
+const TextDiv = styled.div<{ isTrue?: boolean }>`
   border-bottom: 1px solid var(--gray-02);
-
+  background: ${(props) => (props.isTrue ? '#FAFAFA' : '')};
+  border: 1px solid var(--a-gray-10);
   width: 384px;
   margin: 10px 0;
   height: 28px;
@@ -26,12 +27,13 @@ interface Props {
   children?: string;
   onSave: (name: string, value: string) => void;
   Component?: ElementType<any> | undefined;
+  isDisabled?: boolean;
 }
 
 const ComponentsInput: React.FC<Props> = ({
   Component,
   children,
-
+  isDisabled,
   onSave,
 }) => {
   const [control, setcontrol] = useState<boolean>(true);
@@ -98,8 +100,17 @@ const ComponentsInput: React.FC<Props> = ({
 
   const onChangeNumber = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
+      // const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+      const numberCheck = /[^0-9]/g;
       if (e.target.value.length < 11 || e.target.value.length > 12) {
         setNameMessage('-를 제외한 11자리를 입력해주세요');
+        setIsName(false);
+        onSave(e.target.name, '');
+        setdataname(e.target.name);
+        setdata('');
+        setIserror(true);
+      } else if (numberCheck.test(e.target.value)) {
+        setNameMessage('숫자를 입력해주세요');
         setIsName(false);
         onSave(e.target.name, '');
         setdataname(e.target.name);
@@ -121,8 +132,14 @@ const ComponentsInput: React.FC<Props> = ({
         {control ? (
           <>
             <div className="flex items-center">
-              <TextDiv>{data ? data : '입력해주세요'}</TextDiv>
-              <RadiusButton onClick={onputForm}>수정</RadiusButton>
+              <TextDiv isTrue={isDisabled}>
+                {data ? data : '입력해주세요'}
+              </TextDiv>
+              {isDisabled ? (
+                <></>
+              ) : (
+                <RadiusButton onClick={onputForm}>수정</RadiusButton>
+              )}
             </div>
           </>
         ) : (

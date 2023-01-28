@@ -45,6 +45,8 @@ const MyProfile: React.FC = () => {
             onSave={onSave}
             Component={phoneNumberinput}
           ></ComponentsInput>
+          <TinyTitle>이메일</TinyTitle>
+          <ComponentsInput isDisabled={true} onSave={onSave}></ComponentsInput>
         </User>
       </Container>
       <div className="my-5 relative h-6">

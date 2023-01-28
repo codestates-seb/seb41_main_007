@@ -61,7 +61,7 @@ const CounterButton2: FC<props> = ({
           'Content-Type': 'application/json',
           Authorization: `Bearer ${session}`,
         },
-        method: 'POST',
+        method: 'PATCH',
       }).then((response) => console.log(response));
     }
   };
@@ -82,7 +82,7 @@ const CounterButton2: FC<props> = ({
             'Content-Type': 'application/json',
             Authorization: `Bearer ${session}`,
           },
-          method: 'POST',
+          method: 'PATCH',
         }).then((response) => console.log(response));
       }
       return prevCount - 1;

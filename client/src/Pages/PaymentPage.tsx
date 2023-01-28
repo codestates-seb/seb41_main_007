@@ -115,3 +115,4 @@ const PaymentPage = () => {
 export default PaymentPage;
 
 //패치오류 났음 세션 문제
+//비로그인시 오류화면 뜨는거 안보이게 삭제
