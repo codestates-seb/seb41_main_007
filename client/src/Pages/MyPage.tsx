@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import styled from 'styled-components';
 import useScrollTop from 'CustomHook/useScrollTop';
-import BasketThree from 'Components/PaymentPage/BasketThree';
-import Basketfour from 'Components/PaymentPage/Basketfour';
+import { useSession } from 'CustomHook/useSession';
 import TabPanel from 'Components/Mypage/TabPanel';
 import AccordionGroup from 'Components/Mypage/AccordionGroup';
 import MainImage from 'Components/PaymentPage/MainImage';
 import DeliveryResult from 'Components/Mypage/DeliveryResult';
-import SessionChecking from 'CustomHook/SessionChecking';
+import Empty from 'Components/Common/Empty';
+import { TYPE_People } from 'Types/common/product';
+import { useAppDispatch } from 'Redux/app/hook';
+import { saveDataP } from 'Redux/reducer/personDataSlice';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -18,13 +20,66 @@ const ShortContainer = styled.div`
   margin-top: 80px;
 `;
 
-export default function BasicTabs() {
+const MyPage: React.FC<{ session: any }> = ({ session }) => {
   const [value, setValue] = useState<number>(0);
-  SessionChecking();
+  const dispatch = useAppDispatch();
+  const [isloading, setisLoading] = useState<boolean>(true);
+
+  // const [people, Setpeople] = useState<TYPE_People>({
+  //   address: '',
+  //   age: 0,
+  //   email: '',
+  //   gender: '',
+  //   memberId: 0,
+  //   name: '',
+  //   phone: '',
+  // });
+  useScrollTop();
+  useEffect(() => {
+    if (session) {
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/members`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session}`,
+        },
+      })
+        .then((res: Response) => {
+          return res.json();
+        })
+        .then((res) => {
+          dispatch(saveDataP(res));
+          console.log(res);
+          // Setpeople(res);
+          setisLoading(false); //무한렌더링 막기용
+        })
+        .catch((e) => {
+          console.log(e);
+          setisLoading(false);
+        });
+      // const suggest = {
+      //   name: '김병수',
+      //   age: 26,
+      //   email: 'qudtn7383@gmail.com',
+      //   address: '대구',
+      //   gender: 'male',
+      //   phone: '010-0111-0000',
+      // };
+      // fetch(`${process.env.REACT_APP_BACKEND_URL}/members`, {
+      //   body: JSON.stringify(suggest),
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: `Bearer ${session}`,
+      //   },
+      //   method: 'PATCH',
+      // }).then((response) => console.log(response));
+    }
+  }, []);
+
+  if (isloading) return <Empty />;
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  useScrollTop();
 
   return (
     <div>
@@ -54,5 +109,6 @@ export default function BasicTabs() {
       </ShortContainer>
     </div>
   );
-}
+};
 //네비게이션 오류 -> href
+export default MyPage;

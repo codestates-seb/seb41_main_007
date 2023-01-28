@@ -27,7 +27,7 @@ const Title = styled.div`
   padding-right: 30px;
 `;
 
-const PaymentPage = () => {
+const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const [order, setOrder] = useState<boolean>(true);
   const [address, setAddress] = useState<boolean>(true); //배송지
   const [payment, setPayment] = useState<boolean>(true); //결제수단
@@ -35,9 +35,10 @@ const PaymentPage = () => {
 
   const [data, setdata] = useState<TYPE_CartData[]>([]);
   const [isloading, setisLoading] = useState<boolean>(true);
-  const { loading, session } = useSession();
-
+  // const { loading, session } = useSession();
+  console.log(session);
   useEffect(() => {
+    console.log('렌더링1');
     fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
       method: 'GET',
       headers: {
@@ -46,6 +47,7 @@ const PaymentPage = () => {
       },
     })
       .then((res: Response) => {
+        console.log('렌더링2');
         return res.json();
       })
       .then((res) => {
@@ -57,8 +59,13 @@ const PaymentPage = () => {
         setisLoading(false);
       });
   }, []);
-  if (loading) return <Empty />;
+  console.log('렌더링3');
+
+  if (!session) {
+    navigate(-1);
+  }
   if (isloading) return <Empty />;
+  console.log('렌더링4');
 
   return (
     <div>
@@ -112,3 +119,5 @@ const PaymentPage = () => {
 export default PaymentPage;
 
 //패치오류 났음 세션 문제
+//비로그인시 오류화면 뜨는거 안보이게 삭제
+//데이터오류남
