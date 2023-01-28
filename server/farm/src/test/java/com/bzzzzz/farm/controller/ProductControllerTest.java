@@ -256,7 +256,8 @@ public class ProductControllerTest {
                     "테스트 제품" + i,
                     30000,
                     "http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg",
-                    "판매 중"));
+                    "판매 중",
+                    5.0));
         }
 
         Page<ProductSimpleResponseDto> productPage = new PageImpl<>(

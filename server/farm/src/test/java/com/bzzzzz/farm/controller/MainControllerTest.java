@@ -59,7 +59,8 @@ public class MainControllerTest {
                     "테스트" + i,
                     5000,
                     "http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg",
-                    "판매 준비 중"));
+                    "판매 준비 중",
+                    5.0));
         }
 
         List<ReviewSimpleResponseDto> reviews = new ArrayList<>();
