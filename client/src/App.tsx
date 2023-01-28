@@ -23,7 +23,7 @@ import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
 import AllProductsPage from 'Pages/AllProductsPage';
 import Auth from 'Pages/Auth';
 import Post from 'Pages/Test/Post';
-
+import Kakaopay from 'Components/PaymentPage/Kakaopay';
 import { useSession } from 'CustomHook/useSession';
 import Empty from 'Components/Common/Empty';
 
@@ -107,6 +107,10 @@ const router = createBrowserRouter([
     element: withLayout(Post),
   },
   { path: '/auth', element: <Auth /> },
+  {
+    path: '/kakao',
+    element: <Kakaopay />,
+  },
 ]);
 
 const App: React.FC = () => {
