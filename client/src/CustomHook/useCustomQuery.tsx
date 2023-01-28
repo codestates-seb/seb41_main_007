@@ -10,15 +10,18 @@ interface OutPut {
 export const useCustomQuery = (
   url: string,
   queryKey: any,
-  token?: any,
+  session?: any,
 ): OutPut => {
   const { data, isLoading, error, status, refetch } = useQuery(
     queryKey,
     () => {
-      if (token) {
+      if (session) {
         return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
           method: 'GET',
-          headers: { 'Content-Type': 'application/json', Authorization: token },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session}`,
+          },
         }).then((res: Response) => {
           return res.json();
         });

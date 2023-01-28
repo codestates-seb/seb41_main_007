@@ -68,33 +68,7 @@ const ProductPage: React.FC = () => {
   if (isLoading) return <Empty />;
   if (error) return <></>;
   if (data.length === 0) return <Empty />;
-  //   const data ={
-  //     "name":"아테네",
-  //     "price":20000000,
-  //     "photo":"http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg",
-  //     "brand":"순양자동차",
-  //     "description":"진양철이 직원들을 쥐잡듯이 잡아가며 개발한 차량입니다.",
-  //     "shippingCountry":"KOREA",
-  //     "shippingMethod":"PARCEL_SERVICE",
-  //     "shippingPrice":3000,
-  //     "productCategoryPostDtos":[
-  //         {
-  //             "categoryId":1
-  //         }
-  //     ],
-  //     "productOptionPostDtos":[
-  //         {
-  //             "productOptionName":"자폭",
-  //             "price":1000000,
-  //             "stock":10
-  //         },
-  //                 {
-  //             "productOptionName":"본네트를 없애서 경량화",
-  //             "price":1000000,
-  //             "stock":10
-  //         }
-  //     ]
-  // }
+
   //리턴 url , 로컬스토리지에 담기
   return (
     <BGcontainer>

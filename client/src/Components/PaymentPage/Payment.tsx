@@ -110,6 +110,7 @@ const Payment: FC = (): JSX.Element => {
   const [creditcard, setCreditCard] = useState<boolean>(false);
   const [virtualAccout, setVirtualAccount] = useState<boolean>(false);
   const [accountTransfer, setAccountTransfer] = useState<boolean>(false);
+
   return (
     <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
       <nav aria-label="main mailbox folders">
