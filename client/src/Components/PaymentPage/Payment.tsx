@@ -104,6 +104,8 @@ export const AccountTransfer: FC = (): JSX.Element => {
   );
 };
 
+const onClickControl = () => {};
+
 const Payment: FC = (): JSX.Element => {
   const [deposit, setDeposit] = useState<boolean>(false);
   const [creditcard, setCreditCard] = useState<boolean>(false);

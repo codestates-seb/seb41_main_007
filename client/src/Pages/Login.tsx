@@ -1,71 +1,74 @@
-import React from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
 import { BGcontainer } from 'Components/Common/BGcontainer';
+const BigContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100vh;
+  background-image: url('/image/LoginImage.jpg');
+  background-position: 80% 50%;
+  background-size: 2500px;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+  position: relative;
 
-const Login: React.FC = () => {
-  const BigContainer = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    width: 100%;
-    height: 100vh;
-    background-image: url('/image/LoginImage.jpg');
-    background-position: 80% 50%;
-    background-size: 2500px;
-    background-repeat: no-repeat;
-    opacity: 0.9;
-    position: relative;
+  // &::before {
+  //   position: fixed;
+  //   left: 0;
+  //   right: 0;
+  //   top: 0;
+  //   bottom: 0;
+  //   background-color: rgba(0, 0, 0, 0.2);
+  //   content: '';
+  // }
+`;
 
-    // &::before {
-    //   position: fixed;
-    //   left: 0;
-    //   right: 0;
-    //   top: 0;
-    //   bottom: 0;
-    //   background-color: rgba(0, 0, 0, 0.2);
-    //   content: '';
-    // }
-  `;
+const Loginform = styled.div`
+  opacity: 0.9;
+  z-index: 5500;
 
-  const Loginform = styled.form`
-    opacity: 0.9;
-    z-index: 5500;
+  // position: absolute;
+  margin-right: 150px;
+  // margin-top: 200px;
+  width: 500px;
+  height: 500px;
+  background-color: rgb(248, 249, 249);
+  border: 2px solid white;
 
-    // position: absolute;
-    margin-right: 150px;
-    // margin-top: 200px;
-    width: 500px;
-    height: 500px;
-    background-color: rgb(248, 249, 249);
-    border: 2px solid white;
+  border-radius: 10px;
+`;
+const LoginP = styled.div<{ fontsize: string }>`
+  padding: 50px 0 20px 0;
+  text-align: center;
+  fontsize: 30px;
+  font-size: ${(props) => props.fontsize};
+`;
 
-    border-radius: 10px;
-  `;
-  const LoginP = styled.div<{ fontsize: string }>`
-    padding: 50px 0 20px 0;
-    text-align: center;
-    fontsize: 30px;
-    font-size: ${(props) => props.fontsize};
-  `;
+const GoogleBtn = styled.button`
+  opacity: 1;
+  width: 300px;
+  height: 50px;
+  padding-top: 10px;
+  margin: 10px 0px;
+  background-color: white;
+  display: flex;
+  margin: 50px auto;
+  justify-content: center;
+  border-radius: 5px;
+  border: 1px solid hsl(210, 8%, 85%);
+  position: relative;
+`;
 
-  const GoogleBtn = styled.button`
-    opacity: 1;
-    width: 300px;
-    height: 50px;
-    padding-top: 10px;
-    margin: 10px 0px;
-    background-color: white;
-    display: flex;
-    margin: 50px auto;
-    justify-content: center;
-    border-radius: 5px;
-    border: 1px solid hsl(210, 8%, 85%);
-    position: relative;
-  `;
+const BtnText = styled.span`
+  margin-left: 5px;
+`;
 
-  const BtnText = styled.span`
-    margin-left: 5px;
-  `;
+const Login: FC = () => {
+  const OauthHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    window.location.href = `${process.env.REACT_APP_BACKEND_URL}/oauth2/authorization/google`;
+  };
 
   return (
     <BGcontainer>
@@ -77,7 +80,7 @@ const Login: React.FC = () => {
             <br></br>
             아직 회원이 아니시면 회원가입을 해주세요.
           </LoginP>
-          <GoogleBtn>
+          <GoogleBtn onClick={OauthHandler}>
             <svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18">
               <path
                 d="M16.51 8H8.98v3h4.3c-.18 1-.74 1.48-1.6 2.04v2.01h2.6a7.8 7.8 0 0 0 2.38-5.88c0-.57-.05-.66-.15-1.18Z"

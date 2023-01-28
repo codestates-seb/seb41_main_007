@@ -5,21 +5,40 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RadiusButton from 'Components/Common/RadiusButton';
 import type { UserProfile } from 'Components/Mypage/DeliverySave';
 import TinyTitle from 'Components/Common/TinyTitle';
-import { ToastContainer, toast } from 'react-toastify';
+import {
+  ToastContainer,
+  toast,
+  ToastContainer as Container,
+  Zoom,
+} from 'react-toastify';
+import { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 
-interface FormValue {
-  name: string;
-  addressname: string;
-  phonenumber: string;
-}
+const StyleToastContainer = styled(ToastContainer)`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+`;
+
+const Title = styled.div`
+  border-top: 1px solid black;
+  border-bottom: 1px solid #e5e5e5;
+  display: flex;
+  justify-content: space-between;
+  padding-right: 30px;
+
+  margin-top: 20px;
+`;
 
 const User = styled.div`
   input {
-    border: 1px solid #e5e5e5;
   }
 `;
-const AddressInput = styled.div``;
 
 interface Props {
   children?: string;
@@ -35,30 +54,7 @@ const Address: React.FC<Props> = ({
   children,
 }) => {
   const numberoverAlram = () => toast.warning('11자리 이상은 불가합니다.');
-
-  const numberAlram = () =>
-    toast.warning('-를 제외하고 숫자만 입력해주세요', {
-      position: 'top-right',
-
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    });
-
-  const numberfullAlram = () =>
-    toast.warning('11자리를 채워주세요', {
-      position: 'top-right',
-
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    });
+  const [nameMessage, setNameMessage] = useState<string>('');
 
   const sucessAlram = () =>
     toast.success('저장되었습니다.', {
@@ -133,22 +129,62 @@ const Address: React.FC<Props> = ({
         </div>
         <Postcode onSave={onSave} data={data} />
       </div>
-      <ToastContainer limit={4} hideProgressBar autoClose={1000} />
-
-      <RadiusButton
-        onClick={() => {
-          if (data?.phonenumber && data?.phonenumber.length > 10) {
-            sucessAlram();
-            oncontrolCilck?.();
-          } else if (data?.phonenumber && data?.phonenumber.length < 10)
-            numberfullAlram();
-          else {
-            numberAlram();
-          }
-        }}
-      >
-        저장
-      </RadiusButton>
+      <StyleToastContainer
+        limit={4}
+        transition={Zoom}
+        hideProgressBar
+        autoClose={1000}
+      />
+      {/* <Container
+        role="alert"
+        autoClose={4000}
+        transition={Zoom}
+        draggable={false}
+        closeOnClick={false}
+        pauseOnHover={false}
+        pauseOnFocusLoss={false}
+        hideProgressBar
+        position="bottom-center"
+        theme="colored"
+        style={{ fontSize: 13 }}
+      /> */}
+      <div className="my-5 relative h-6">
+        <div className="absolute top-0 left-0">
+          <RadiusButton
+            onClick={() => {
+              if (
+                data?.addressname &&
+                data?.name &&
+                data?.phonenumber &&
+                data?.phonenumber.length > 10 &&
+                data?.name.length > 2
+              ) {
+                sucessAlram();
+                setNameMessage('성공하였습니다');
+                oncontrolCilck?.();
+              } else if (
+                !data?.phonenumber ||
+                !data?.name ||
+                !data?.addressname
+              ) {
+                setNameMessage('빈칸을 채워주세요');
+              } else if (data?.name.length < 2) {
+                setNameMessage('받는 분 정보는 2글자이상 채워주세요');
+              } else if (data?.phonenumber && data?.phonenumber.length < 10) {
+                setNameMessage('-없이 11자리 핸드폰 번호를 입력해주세요');
+              } else if (data?.phonenumber && data?.phonenumber.length > 11) {
+                setNameMessage('-없이 11자리 핸드폰 번호를 입력해주세요');
+              } else if (data?.addressname) {
+                setNameMessage('상세주소가 없다면 없음이라 적어주세요');
+              }
+            }}
+          >
+            저장
+          </RadiusButton>
+        </div>
+      </div>
+      {<div className=" text-xs">{nameMessage}</div>}
+      <Title></Title>
     </>
   );
 };

@@ -1,6 +1,5 @@
 import RadioGroup from './RadioGroup';
 import Radio from './Radio';
-import { useState } from 'react';
 
 // interface Props {
 //   children?: string;
@@ -23,12 +22,19 @@ const RadioInput: React.FC<Props> = ({ children, onChangeSave }) => {
       className=" w-96 h-12 "
     >
       <RadioGroup>
-        <Radio name="gender" value="남성" onSave={onChangeSave}>
-          남성
-        </Radio>
-        <Radio name="gender" value="여성" onSave={onChangeSave}>
-          여성
-        </Radio>
+        <div className="flex ">
+          <div className="m">
+            <Radio name="gender" value="남성" onSave={onChangeSave}>
+              &nbsp;남성
+            </Radio>
+          </div>
+          <div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <Radio name="gender" value="여성" onSave={onChangeSave}>
+              &nbsp;여성
+            </Radio>
+          </div>
+        </div>
       </RadioGroup>
     </form>
   );

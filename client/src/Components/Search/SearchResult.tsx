@@ -47,8 +47,10 @@ const SearchResult: FC<Props> = ({ sch, searchList, searchPageInfo }) => {
           />
         </div>
       ) : (
-        <div className={styles.Search_Text_Container}>
-          search에 대한 결과가없습니다
+        <div className={styles.Search_Result_Text_Container}>
+          <div className={styles.Search_Text_Container}>
+            검색된 상품이 없습니다.
+          </div>
         </div>
       )}
     </>
