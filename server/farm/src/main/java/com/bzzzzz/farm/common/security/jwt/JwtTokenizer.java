@@ -1,5 +1,7 @@
 package com.bzzzzz.farm.common.security.jwt;
 
+import com.bzzzzz.farm.common.exception.BusinessLogicException;
+import com.bzzzzz.farm.common.exception.ExceptionCode;
 import com.bzzzzz.farm.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -37,7 +39,6 @@ public class JwtTokenizer {
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
-
 
     public String generateAccessToken(Authentication authentication,String base64EncodedSecretKey) {
         // claim 생성
@@ -99,13 +100,13 @@ public class JwtTokenizer {
                     .build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("잘못된 JWT 서명입니다.");
+            throw new BusinessLogicException(ExceptionCode.WRONG_TOKEN_SIGNATURE); //잘못된 JWT 서명
         } catch (ExpiredJwtException e) {
-            log.info("만료된 JWT 토큰입니다.");
+            throw new BusinessLogicException(ExceptionCode.EXPIRATION_TOKEN); //만료된 JWT
         } catch (UnsupportedJwtException e) {
-            log.info("지원되지 않는 JWT 토큰입니다.");
+            throw new BusinessLogicException(ExceptionCode.UNSUPPORTED_TOKEN);   //지원되지 않는 JWT토큰
         } catch (IllegalArgumentException e) {
-            log.info("JWT 토큰이 잘못되었습니다.");
+            log.info("JWT 토큰이 잘못되었습니다.");      //잘못된 JWT
         }
         return false;
     }
