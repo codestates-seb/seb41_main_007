@@ -13,11 +13,6 @@ import AttachMoneyOutlinedIcon from '@mui/icons-material/AttachMoneyOutlined';
 import { Fragment, FC, useState } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { faL } from '@fortawesome/free-solid-svg-icons';
-
-const classNames: FC = (...classes: any) => {
-  return classes.filter(Boolean).join(' ');
-};
 
 export const VirtualAccount: React.FC = (): JSX.Element => {
   return (
@@ -58,21 +53,7 @@ export const Deposit: FC = (): JSX.Element => {
               >
                 <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div className="py-1">
-                    <Menu.Item>
-                      {/* {({ active }) => (
-                        <a
-                          href="#!"
-                          className={classNames(
-                            active
-                              ? 'bg-gray-100 text-gray-900'
-                              : 'text-gray-700',
-                            'block px-4 py-2 text-sm',
-                          )}
-                        >
-                          국민:766702-00022544 이유정(팜피인)
-                        </a>
-                      )} */}
-                    </Menu.Item>
+                    <Menu.Item></Menu.Item>
                   </div>
                 </Menu.Items>
               </Transition>
@@ -80,8 +61,8 @@ export const Deposit: FC = (): JSX.Element => {
           </div>
         </div>
         <div className="flex mt-4">
-          <div className="mr-6 mt-2">입금자명</div>
-          <input type="text" className="py-2 w-11/12"></input>
+          <div className="pr-6 mt-1">입금자명</div>
+          <input type="text" className="py-2 w-4/12 rounded-md"></input>
         </div>
       </div>
     </>
@@ -93,8 +74,8 @@ export const AccountTransfer: FC = (): JSX.Element => {
     <>
       <div className="bg-gray-100 mt-6 py-3 px-3">
         <div className="flex">
-          <div className="mr-6 mt-2">예금주명</div>
-          <input type="text" className="py-2 w-11/12 "></input>
+          <div className="mr-6 mt-3 ml-2">예금주명</div>
+          <input type="text" className="py-3 w-4/12 rounded-md "></input>
         </div>
         <div className="text-sm mt-5">
           - 소액 결제의 경우 PG사 정책에 따라 결제 금액 제한이 있을 수 있습니다.
@@ -103,8 +84,6 @@ export const AccountTransfer: FC = (): JSX.Element => {
     </>
   );
 };
-
-const onClickControl = () => {};
 
 const Payment: FC = (): JSX.Element => {
   const [deposit, setDeposit] = useState<boolean>(false);
