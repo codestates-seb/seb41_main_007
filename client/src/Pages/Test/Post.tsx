@@ -5,7 +5,7 @@ import styles from './Styles/index.module.css';
 import classNames from 'classnames/bind';
 import { useState, useCallback, useEffect } from 'react';
 
-import produce from 'immer';
+import { produce } from 'immer';
 import { Node } from 'slate';
 
 import { Plus, Checked } from './svg';
