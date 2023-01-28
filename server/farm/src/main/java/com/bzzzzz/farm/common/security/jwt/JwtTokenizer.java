@@ -31,7 +31,7 @@ public class JwtTokenizer {
     @Value("${jwt.key}")
     private String secretKey;
 
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60;    // 액세스 토큰 만료 시간 : 1시간
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 2;    // 액세스 토큰 만료 시간 : 1시간
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7; // 리프레쉬 토큰 만료 시간 : 7일
     private final MemberRepository memberRepository;
     public String encodeBase64SecretKey(String secretKey) {
