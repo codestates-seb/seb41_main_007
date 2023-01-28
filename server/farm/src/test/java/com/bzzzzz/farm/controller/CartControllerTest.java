@@ -1,6 +1,5 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.mapper.CartMapper;
 import com.bzzzzz.farm.model.dto.cart.CartRequestDto;
 import com.bzzzzz.farm.model.dto.cart.CartResponseDto;
 import com.bzzzzz.farm.model.entity.Cart;
@@ -49,8 +48,6 @@ public class CartControllerTest {
     @MockBean
     private CartService cartService;
     @MockBean
-    private CartMapper cartMapper;
-    @MockBean
     private ProductOptionService productOptionService;
 
     @Test
@@ -97,8 +94,7 @@ public class CartControllerTest {
 
         List<CartResponseDto> response = List.of(cartResponseDto1, cartResponseDto2);
 
-        given(cartService.findCartsByMemberId(Mockito.anyLong())).willReturn(List.of());
-        given(cartMapper.cartsToCartResponseDtos(Mockito.anyList())).willReturn(response);
+        given(cartService.findCartsByMemberId(Mockito.anyLong())).willReturn(response);
 
         // when
         ResultActions actions = mockMvc.perform(

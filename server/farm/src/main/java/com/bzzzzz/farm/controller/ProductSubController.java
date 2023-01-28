@@ -1,11 +1,9 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.mapper.ProductMapper;
 import com.bzzzzz.farm.model.dto.product.ProductCategoryPatchDto;
 import com.bzzzzz.farm.model.dto.product.ProductCategoryPostDto;
 import com.bzzzzz.farm.model.dto.product.ProductOptionPatchDto;
 import com.bzzzzz.farm.model.dto.product.ProductOptionPostDto;
-import com.bzzzzz.farm.model.entity.ProductCategory;
 import com.bzzzzz.farm.service.CategoryService;
 import com.bzzzzz.farm.service.ProductCategoryService;
 import com.bzzzzz.farm.service.ProductOptionService;
@@ -27,7 +25,6 @@ public class ProductSubController {
     private final ProductCategoryService productCategoryService;
     private final ProductOptionService productOptionService;
     private final CategoryService categoryService;
-    private final ProductMapper productMapper;
 
     /**
      * 카테고리 관련 기능
@@ -39,9 +36,7 @@ public class ProductSubController {
         productService.findVerifiedProduct(productCategoryPostDto.getProductId());
         categoryService.findVerifiedCategory(productCategoryPostDto.getCategoryId());
 
-        ProductCategory productCategory = productCategoryService.createProductCategory(productMapper.productCategoryPostDtoToProductCategory(productCategoryPostDto));
-
-        return new ResponseEntity(productMapper.productCategoryToProductCategoryResponseDto(productCategory), HttpStatus.CREATED);
+        return new ResponseEntity(productCategoryService.createProductCategory(productCategoryPostDto), HttpStatus.CREATED);
     }
 
     @PatchMapping("/products/categories")
@@ -50,9 +45,7 @@ public class ProductSubController {
 
         categoryService.findVerifiedCategory(productCategoryPatchDto.getCategoryId());
 
-        ProductCategory productCategory = productCategoryService.updateProductCategory(productCategoryPatchDto);
-
-        return new ResponseEntity(productMapper.productCategoryToProductCategoryResponseDto(productCategory), HttpStatus.OK);
+        return new ResponseEntity(productCategoryService.updateProductCategory(productCategoryPatchDto), HttpStatus.OK);
     }
 
     @DeleteMapping("/products/categories/{product-category-id}")
@@ -73,7 +66,7 @@ public class ProductSubController {
 
         productService.findVerifiedProduct(productOptionPostDto.getProductId());
 
-        productOptionService.createProductOption(productMapper.productOptionPostDtoToProductOption(productOptionPostDto));
+        productOptionService.createProductOption(productOptionPostDto);
 
         return new ResponseEntity(HttpStatus.CREATED);
     }

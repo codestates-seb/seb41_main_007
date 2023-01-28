@@ -1,7 +1,6 @@
 package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.config.ParcelTrackingConfig;
-import com.bzzzzz.farm.mapper.OrderMapper;
 import com.bzzzzz.farm.model.dto.SingleResponseDto;
 import com.bzzzzz.farm.model.dto.order.OrderPatchDto;
 import com.bzzzzz.farm.model.dto.order.OrderPostDto;
@@ -25,7 +24,6 @@ import static com.bzzzzz.farm.common.Safety.toLong;
 @Validated
 @RequiredArgsConstructor
 public class OrderController {
-    private final OrderMapper orderMapper;
     private final OrderService orderService;
     private final ProductOptionService productOptionService;
     private final ParcelTrackingConfig parcelTrackingConfig;
@@ -41,7 +39,7 @@ public class OrderController {
                                 productOptionService.findVerifiedProductOption(orderProductPostDto.getProductOptionId())
                         ));
 
-        Order order = orderService.createOrder(orderMapper.orderPostDtoToOrder(orderPostDto));
+        Order order = orderService.createOrder(orderPostDto);
 
         return new ResponseEntity(new SingleResponseDto(order.getOrderId()), HttpStatus.CREATED);
     }
@@ -71,9 +69,7 @@ public class OrderController {
                                    @AuthenticationPrincipal UserDetails userDetails) {
         orderService.verifyAuthority(orderId, toLong(userDetails.getUsername()));
 
-        Order order = orderService.findOrder(orderId);
-
-        return new ResponseEntity(orderMapper.orderToOrderResponseDto(order), HttpStatus.OK);
+        return new ResponseEntity(orderService.findOrder(orderId), HttpStatus.OK);
     }
 
     @GetMapping("/orders/parcels/{waybill-number}")

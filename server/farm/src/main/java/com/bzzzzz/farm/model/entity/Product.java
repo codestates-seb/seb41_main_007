@@ -22,7 +22,7 @@ public class Product extends Auditable {
     @Column(nullable = false)
     private Integer price;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String body; // 상품 메인 글
 
     @Column(nullable = false)

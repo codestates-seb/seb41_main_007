@@ -1,8 +1,6 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.mapper.CartMapper;
 import com.bzzzzz.farm.model.dto.cart.CartRequestDto;
-import com.bzzzzz.farm.model.entity.Cart;
 import com.bzzzzz.farm.model.entity.ProductOption;
 import com.bzzzzz.farm.service.CartService;
 import com.bzzzzz.farm.service.ProductOptionService;
@@ -24,14 +22,11 @@ import static com.bzzzzz.farm.common.Safety.toLong;
 @RequiredArgsConstructor
 public class CartController {
     private final CartService cartService;
-    private final CartMapper cartMapper;
     private final ProductOptionService productOptionService;
 
     @GetMapping("/carts")
     public ResponseEntity getCarts(@AuthenticationPrincipal UserDetails userDetails) {
-        List<Cart> carts = cartService.findCartsByMemberId(toLong(userDetails.getUsername()));
-
-        return new ResponseEntity(cartMapper.cartsToCartResponseDtos(carts), HttpStatus.OK);
+        return new ResponseEntity(cartService.findCartsByMemberId(toLong(userDetails.getUsername())), HttpStatus.OK);
     }
 
     @PostMapping("/carts")

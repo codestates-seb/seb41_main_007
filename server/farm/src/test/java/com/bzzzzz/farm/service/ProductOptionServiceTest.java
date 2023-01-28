@@ -2,7 +2,9 @@ package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
+import com.bzzzzz.farm.mapper.ProductMapper;
 import com.bzzzzz.farm.model.dto.product.ProductOptionPatchDto;
+import com.bzzzzz.farm.model.dto.product.ProductOptionPostDto;
 import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.model.entity.ProductOption;
 import com.bzzzzz.farm.repository.ProductOptionRepository;
@@ -26,6 +28,8 @@ import static org.mockito.Mockito.verify;
 public class ProductOptionServiceTest {
     @Mock
     private ProductOptionRepository productOptionRepository;
+    @Mock
+    private ProductMapper productMapper;
     @InjectMocks
     private ProductOptionService productOptionService;
 
@@ -33,15 +37,14 @@ public class ProductOptionServiceTest {
     @DisplayName("옵션 생성")
     void createProductOption() {
         // given
-        ProductOption productOption = new ProductOption();
-
-        given(productOptionRepository.save(Mockito.any(ProductOption.class))).willReturn(productOption);
+        given(productMapper.productOptionPostDtoToProductOption(Mockito.any())).willReturn(new ProductOption());
+        given(productOptionRepository.save(Mockito.any(ProductOption.class))).willReturn(new ProductOption());
 
         // when
-        productOptionService.createProductOption(productOption);
+        productOptionService.createProductOption(new ProductOptionPostDto());
 
         // then
-        verify(productOptionRepository).save(productOption);
+        verify(productOptionRepository).save(Mockito.any(ProductOption.class));
     }
 
     @Test

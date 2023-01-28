@@ -1,10 +1,12 @@
 package com.bzzzzz.farm.service;
 
-import com.bzzzzz.farm.model.entity.ProductOption;
-import com.bzzzzz.farm.repository.ProductOptionRepository;
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
+import com.bzzzzz.farm.mapper.ProductMapper;
 import com.bzzzzz.farm.model.dto.product.ProductOptionPatchDto;
+import com.bzzzzz.farm.model.dto.product.ProductOptionPostDto;
+import com.bzzzzz.farm.model.entity.ProductOption;
+import com.bzzzzz.farm.repository.ProductOptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +18,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductOptionService {
     private final ProductOptionRepository productOptionRepository;
+    private final ProductMapper productMapper;
 
-    public void createProductOption(ProductOption productOption) {
-        productOptionRepository.save(productOption);
+    public void createProductOption(ProductOptionPostDto productOptionPostDto) {
+        productOptionRepository.save(
+                productMapper.productOptionPostDtoToProductOption(productOptionPostDto)
+        );
     }
 
     public ProductOption updateProductOption(ProductOptionPatchDto productOptionPatchDto) {

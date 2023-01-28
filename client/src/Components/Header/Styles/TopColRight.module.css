@@ -1,0 +1,54 @@
+.Nav_All_Container {
+}
+.Nav_Container1 {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  text-align: right;
+  list-style: none;
+}
+.Nav_Container2 {
+  list-style: none;
+  display: flex;
+  justify-content: flex-end;
+  width: 250px;
+  gap: 20px;
+  padding-top: 20px;
+
+  position: relative;
+}
+
+.Nav_Basket {
+  background: var(--priceColor);
+  color: #fff;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  width: 20px;
+  height: 20px;
+  line-height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  right: -8%;
+  top: 30%;
+}
+
+.Nav_Menu1 {
+  float: left;
+  font-size: var(--small);
+  color: #757575;
+}
+.Nav_Menu1:hover {
+  color: var(--green-60);
+}
+
+.Nav_Menu2 {
+  float: left;
+  font-size: var(--slarge);
+  color: #000;
+  transition: all 0.3s;
+}
+
+.Nav_Menu2:hover {
+  color: var(--green-60);
+}

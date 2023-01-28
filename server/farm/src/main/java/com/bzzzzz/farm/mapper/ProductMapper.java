@@ -29,14 +29,14 @@ public interface ProductMapper {
         product.setShippingPrice(productPostDto.getShippingPrice());
 
         // ProductCategory 추가
-        productPostDto.getProductCategoryPostDtos().stream()
-                .forEach(productCategoryPostDto ->
-                        product.addProductCategory(productCategoryPostDtoToProductCategory(productCategoryPostDto)));
+//        productPostDto.getProductCategoryPostDtos().stream()
+//                .forEach(productCategoryPostDto ->
+//                        product.addProductCategory(productCategoryPostDtoToProductCategory(productCategoryPostDto)));
 
         // 옵션값들 추가
-        productPostDto.getProductOptionPostDtos().stream()
-                .forEach(productOptionPostDto ->
-                        product.addProductOption(productOptionPostDtoToProductOption(productOptionPostDto)));
+//        productPostDto.getProductOptionPostDtos().stream()
+//                .forEach(productOptionPostDto ->
+//                        product.addProductOption(productOptionPostDtoToProductOption(productOptionPostDto)));
 
         return product;
     }

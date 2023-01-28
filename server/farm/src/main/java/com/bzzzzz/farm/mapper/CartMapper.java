@@ -1,6 +1,5 @@
 package com.bzzzzz.farm.mapper;
 
-import com.bzzzzz.farm.model.dto.cart.CartRequestDto;
 import com.bzzzzz.farm.model.dto.cart.CartResponseDto;
 import com.bzzzzz.farm.model.entity.Cart;
 import com.bzzzzz.farm.model.entity.Product;
