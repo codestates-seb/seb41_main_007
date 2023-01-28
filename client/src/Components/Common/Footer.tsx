@@ -143,7 +143,7 @@ const Footer = () => {
                   택배로 발송해주시기 바랍니다.
                 </div>
               </div>
-
+            </div>
             <button className=" hover:bg-gray-600">
               <a
                 href="https://www.cjlogistics.com/ko/tool/parcel/tracking"
