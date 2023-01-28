@@ -1,10 +1,13 @@
 package com.bzzzzz.farm.service;
 
-import com.bzzzzz.farm.model.dto.category.CategoryPatchDto;
-import com.bzzzzz.farm.model.entity.Category;
-import com.bzzzzz.farm.repository.CategoryRepository;
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
+import com.bzzzzz.farm.mapper.CategoryMapper;
+import com.bzzzzz.farm.model.dto.category.CategoryPatchDto;
+import com.bzzzzz.farm.model.dto.category.CategoryPostDto;
+import com.bzzzzz.farm.model.dto.category.CategoryResponseDto;
+import com.bzzzzz.farm.model.entity.Category;
+import com.bzzzzz.farm.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -20,11 +23,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
     @CacheEvict(value = {"findCategories", "getMain"}, allEntries = true)
-    public Category createCategory(Category category) {
-        verifyExistsCategory(category.getName());
-        return categoryRepository.save(category);
+    public Category createCategory(CategoryPostDto categoryPostDto) {
+        verifyExistsCategory(categoryPostDto.getName());
+        return categoryRepository.save(
+                categoryMapper.categoryPostDtoToCategory(categoryPostDto)
+        );
     }
 
     @CacheEvict(value = {"findCategories", "getMain"}, allEntries = true)
@@ -39,8 +45,10 @@ public class CategoryService {
 
     @Transactional(readOnly = true)
     @Cacheable(value = "findCategories")
-    public List<Category> findCategories() {
-        return categoryRepository.findAll(Sort.by("sequenceNum"));
+    public List<CategoryResponseDto> findCategories() {
+        return categoryMapper.categoriesToCategoryResponseDtos(
+                categoryRepository.findAll(Sort.by("sequenceNum"))
+        );
     }
 
     @CacheEvict(value = {"findCategories", "getMain"}, allEntries = true)

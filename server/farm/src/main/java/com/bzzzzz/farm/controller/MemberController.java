@@ -2,8 +2,6 @@ package com.bzzzzz.farm.controller;
 
 
 import com.bzzzzz.farm.model.dto.member.MemberDto;
-import com.bzzzzz.farm.model.entity.Member;
-import com.bzzzzz.farm.mapper.MemberMapper;
 import com.bzzzzz.farm.service.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,36 +19,32 @@ import javax.validation.constraints.Positive;
 @AllArgsConstructor
 public class MemberController {
     private final MemberService memberService;
-    private final MemberMapper mapper;
-
 
     //회원 정보 수정
     @PatchMapping
-    public ResponseEntity patchMember(@Valid @RequestBody MemberDto.Patch requestBody,
+    public ResponseEntity patchMember(@Valid @RequestBody MemberDto.Patch request,
                                       @AuthenticationPrincipal UserDetails userDetails){
-        requestBody.setMemberId(Long.valueOf(userDetails.getUsername()));
-        Member member = memberService.updateMember(mapper.memberPatchToMember(requestBody));
+        request.setMemberId(Long.valueOf(userDetails.getUsername()));
 
-        return ResponseEntity.ok(mapper.memberToMemberResponse(member));
+        return ResponseEntity.ok(memberService.updateMember(request));
     }
 
     //본인 프로필 보기
     @GetMapping
-    public ResponseEntity getMember(){
-        return ResponseEntity.ok(mapper.memberToMemberResponse
-                (memberService.findMember(memberService.getLoginMember().getMemberId())));
+    public ResponseEntity getMember(@AuthenticationPrincipal UserDetails userDetails){
+        return ResponseEntity.ok(memberService.findMember(Long.valueOf(userDetails.getUsername())));
     }
 
     //전체 회원 조회(관리자 전용)
     @GetMapping("/all")
     public ResponseEntity getMembers(){
-        return ResponseEntity.ok(mapper.membersToMemberResponses(memberService.findMembers()));
+        return ResponseEntity.ok(memberService.findMembers());
     }
 
     //회원 탈퇴
     @DeleteMapping
-    public ResponseEntity deleteMember(){
-        memberService.deleteMember(memberService.getLoginMember().getMemberId());
+    public ResponseEntity deleteMember(@AuthenticationPrincipal UserDetails userDetails){
+        memberService.deleteMember(Long.valueOf(userDetails.getUsername()));
 
         return ResponseEntity.ok().build();
     }

@@ -2,7 +2,10 @@ package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
+import com.bzzzzz.farm.mapper.ProductMapper;
+import com.bzzzzz.farm.model.dto.product.ProductDetailResponseDto;
 import com.bzzzzz.farm.model.dto.product.ProductPatchDto;
+import com.bzzzzz.farm.model.dto.product.ProductPostDto;
 import com.bzzzzz.farm.model.dto.product.ProductSimpleResponseDto;
 import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.repository.ProductRepository;
@@ -29,6 +32,9 @@ public class ProductServiceTest {
     @Mock
     private ProductRepository productRepository;
 
+    @Mock
+    private ProductMapper productMapper;
+
     @InjectMocks
     private ProductService productService;
 
@@ -46,10 +52,11 @@ public class ProductServiceTest {
         product.setShippingMethod(Product.ShippingMethod.PARCEL_SERVICE);
         product.setShippingPrice(3000);
 
+        given(productMapper.productPostDtoToProduct(Mockito.any(ProductPostDto.class))).willReturn(product);
         given(productRepository.save(Mockito.any(Product.class))).willReturn(product);
 
         // when
-        Product result = productService.createProduct(product);
+        Product result = productService.createProduct(ProductPostDto.builder().build());
 
         // then
         assertEquals(product.getName(), result.getName());
@@ -66,13 +73,13 @@ public class ProductServiceTest {
     @DisplayName("제품식별자로 제품찾기")
     void findProduct() {
         // given
-        Product product = new Product();
-        product.setProductId(1L);
+        ProductDetailResponseDto responseDto = ProductDetailResponseDto.builder().viewCount(1).build();
 
-        given(productRepository.findById(Mockito.anyLong())).willReturn(Optional.ofNullable(product));
+        given(productRepository.findById(Mockito.anyLong())).willReturn(Optional.ofNullable(new Product()));
+        given(productMapper.productToProductDetailResponseDto(Mockito.any(Product.class), Mockito.anyBoolean())).willReturn(responseDto);
 
         // when
-        Product result = productService.findProduct(1L);
+        ProductDetailResponseDto result = productService.findProduct(1L);
 
         // then
         assertEquals(1, result.getViewCount());

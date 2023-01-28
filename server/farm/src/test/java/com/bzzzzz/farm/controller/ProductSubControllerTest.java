@@ -1,11 +1,8 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.mapper.ProductMapper;
-import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.product.*;
 import com.bzzzzz.farm.model.entity.Category;
 import com.bzzzzz.farm.model.entity.Product;
-import com.bzzzzz.farm.model.entity.ProductCategory;
 import com.bzzzzz.farm.model.entity.ProductOption;
 import com.bzzzzz.farm.service.CategoryService;
 import com.bzzzzz.farm.service.ProductCategoryService;
@@ -34,6 +31,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -55,8 +54,6 @@ public class ProductSubControllerTest {
     private ProductOptionService productOptionService;
     @MockBean
     private CategoryService categoryService;
-    @MockBean
-    private ProductMapper productMapper;
 
     @Test
     @DisplayName("카테고리에 제품을 추가")
@@ -73,9 +70,7 @@ public class ProductSubControllerTest {
 
         given(productService.findVerifiedProduct(Mockito.anyLong())).willReturn(new Product());
         given(categoryService.findVerifiedCategory(Mockito.anyLong())).willReturn(new Category());
-        given(productMapper.productCategoryPostDtoToProductCategory(Mockito.any(ProductCategoryPostDto.class))).willReturn(new ProductCategory());
-        given(productCategoryService.createProductCategory(Mockito.any(ProductCategory.class))).willReturn(new ProductCategory());
-        given(productMapper.productCategoryToProductCategoryResponseDto(Mockito.any(ProductCategory.class))).willReturn(response);
+        given(productCategoryService.createProductCategory(Mockito.any(ProductCategoryPostDto.class))).willReturn(response);
 
         String content = gson.toJson(request);
 
@@ -127,8 +122,7 @@ public class ProductSubControllerTest {
                 .build();
 
         given(categoryService.findVerifiedCategory(Mockito.anyLong())).willReturn(new Category());
-        given(productCategoryService.updateProductCategory(Mockito.any(ProductCategoryPatchDto.class))).willReturn(new ProductCategory());
-        given(productMapper.productCategoryToProductCategoryResponseDto(Mockito.any(ProductCategory.class))).willReturn(response);
+        given(productCategoryService.updateProductCategory(Mockito.any(ProductCategoryPatchDto.class))).willReturn(response);
 
         String content = gson.toJson(request);
 
@@ -171,19 +165,12 @@ public class ProductSubControllerTest {
     @DisplayName("카테고리에서 제품을 제외")
     void deleteProductCategory() throws Exception {
         // given
-        IdRequestDto request = new IdRequestDto();
-        request.setId(1L);
-
         doNothing().when(productCategoryService).deleteProductCategory(Mockito.anyLong());
-
-        String content = gson.toJson(request);
 
         // when
         ResultActions actions = mockMvc.perform(
-                delete("/products/categories")
-                        .contentType(MediaType.APPLICATION_JSON)
+                delete("/products/categories/{product-category-id}", 1L)
                         .with(csrf())
-                        .content(content)
         );
 
         // then
@@ -192,7 +179,7 @@ public class ProductSubControllerTest {
                 .andDo(document(
                         "deleteProductCategory",
                         preprocessRequest(prettyPrint()),
-                        requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 대상의 식별자"))
+                        pathParameters(parameterWithName("product-category-id").description("삭제할 대상의 식별자"))
 
                 ))
                 .andReturn();
@@ -205,8 +192,7 @@ public class ProductSubControllerTest {
         ProductOptionPostDto request = new ProductOptionPostDto("추가할 옵션명", 5000, 100, 1L);
 
         given(productService.findVerifiedProduct(Mockito.anyLong())).willReturn(new Product());
-        given(productMapper.productOptionPostDtoToProductOption(Mockito.any(ProductOptionPostDto.class))).willReturn(new ProductOption());
-        doNothing().when(productOptionService).createProductOption(Mockito.any(ProductOption.class));
+        doNothing().when(productOptionService).createProductOption(Mockito.any(ProductOptionPostDto.class));
 
         String content = gson.toJson(request);
 
@@ -275,19 +261,12 @@ public class ProductSubControllerTest {
     @DisplayName("옵션 삭제")
     void deleteProductOption() throws Exception {
         // given
-        IdRequestDto request = new IdRequestDto();
-        request.setId(1L);
-
         doNothing().when(productOptionService).deleteProductOption(Mockito.anyLong());
-
-        String content = gson.toJson(request);
 
         // when
         ResultActions actions = mockMvc.perform(
-                delete("/products/options")
-                        .contentType(MediaType.APPLICATION_JSON)
+                delete("/products/options/{product-option-id}", 1L)
                         .with(csrf())
-                        .content(content)
         );
 
         // then
@@ -296,7 +275,7 @@ public class ProductSubControllerTest {
                 .andDo(document(
                         "deleteProductOption",
                         preprocessRequest(prettyPrint()),
-                        requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 대상의 식별자"))
+                        pathParameters(parameterWithName("product-option-id").description("삭제할 대상의 식별자"))
 
                 ))
                 .andReturn();
