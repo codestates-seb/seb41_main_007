@@ -16,7 +16,7 @@ public class StorageController {
     @Autowired
     private StorageService storageService;
 
-    //500문제남
+
     @PostMapping("/file/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") List<MultipartFile> files) {
 

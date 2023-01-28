@@ -5,7 +5,6 @@ import com.bzzzzz.farm.model.dto.MultiResponseDto;
 import com.bzzzzz.farm.model.dto.review.ReviewPatchDto;
 import com.bzzzzz.farm.model.dto.review.ReviewPostDto;
 import com.bzzzzz.farm.model.dto.review.ReviewResponseDto;
-import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.model.entity.Review;
 import com.bzzzzz.farm.repository.ProductRepository;
@@ -15,6 +14,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,16 +45,14 @@ public class ReviewController {
 
     //리뷰등록
     @PostMapping("/reviews")
-    public ResponseEntity insertReview(@RequestBody @Valid ReviewPostDto reviewPostDto) {
+    public ResponseEntity insertReview(@RequestBody @Valid ReviewPostDto reviewPostDto, @AuthenticationPrincipal UserDetails userDetails) {
         Review review = reviewMapper.reviewPostDtoToReview(reviewPostDto);
 
-        Member member = memberService.getLoginMember();
-        log.info("로그인한 유저 체크: " + member.getEmail());
-        review.setMember(member);
+        log.info("로그인한 유저 체크: " + userDetails.getUsername());
 
         Product product = productRepository.findById(reviewPostDto.getProductId()).orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
         review.setProduct(product);
-        Review insertReview = reviewService.insertReview(review);
+        Review insertReview = reviewService.insertReview(review, userDetails.getUsername());
 
         //작성한 게시글 제목 로그 띄우기
         log.info("log : " + reviewPostDto.getReviewTitle());
@@ -87,12 +86,11 @@ public class ReviewController {
 
     //리뷰 수정하기
     @PatchMapping("/reviews")
-    public ResponseEntity patchReview(@RequestBody @Valid ReviewPatchDto reviewPatchDto) {
+    public ResponseEntity patchReview(@RequestBody @Valid ReviewPatchDto reviewPatchDto, @AuthenticationPrincipal UserDetails userDetails) {
 
         Review review = reviewMapper.reviewPatchDtoToReview(reviewPatchDto);
-        Member member = memberService.getLoginMember();
 
-        Review updatedReview = reviewService.updateReview(review, member);
+        Review updatedReview = reviewService.updateReview(review, userDetails.getUsername());
 
         ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(updatedReview);
 

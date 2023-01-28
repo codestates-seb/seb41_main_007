@@ -1,0 +1,127 @@
+.Header_Container {
+  box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.05), 0 1px 4px hsla(0, 0%, 0%, 0.05),
+    0 2px 8px hsla(0, 0%, 0%, 0.05);
+  background-color: rgb(248, 249, 249);
+  top: 0;
+  width: 100%;
+  z-index: 9999;
+  position: fixed;
+}
+
+.Header_Contents_Container {
+  height: 110px;
+  width: 1220px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Header_Logo_Container {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.Header_Button_Container {
+  display: flex;
+  align-items: center;
+  width: 201px;
+}
+
+.Header_Login_Button {
+  @apply text-white bg-green-700
+   hover:bg-green-600 
+    font-medium rounded-lg text-sm px-4
+    py-2 md:px-7 md:py-2.5 mr-1 md:mr-2
+    focus:outline-none;
+  height: 40px;
+  min-width: 95px;
+  text-align: center;
+  border: 1px solid #767f42;
+}
+
+.Header_Login_Button:hover {
+  border-color: white;
+  box-shadow: 0 1px 6px 0 hsl(214, 83%, 50%, 77%);
+}
+
+.Header_SignUp_Button {
+  @apply text-green-700 bg-white  hover:text-green-600
+    focus:ring-4  font-medium rounded-lg text-sm px-4
+    py-2 md:px-5 md:py-2.5 mr-1 md:mr-1
+    focus:outline-none;
+  height: 40px;
+  min-width: 95px;
+  text-align: center;
+  border: 1px solid #767f42;
+}
+
+.Header_SignUp_Button:hover {
+  border-color: white;
+  box-shadow: 0 1px 6px 0 hsl(214, 83%, 50%, 77%);
+}
+
+.Header_Search_Input {
+  width: 200px;
+  height: 40px;
+  border-color: hsl(210, 8%, 75%);
+  background-color: hsl(0, 0%, 100%);
+  color: hsl(210, 8%, 25%);
+  border: 1px solid #767f42;
+  padding-left: 10px;
+}
+
+.Header_Input_SearchIcon {
+  position: relative;
+  padding: 8px;
+  top: 6px;
+  display: inline-block;
+  opacity: 0.7;
+  background-color: var(--green-70);
+}
+
+.Header_Search_Input:focus {
+  outline: none;
+}
+
+@media (max-width: 1260px) {
+  .Header_Contents_Container {
+    display: none;
+  }
+  .Header_Search_Input {
+    margin-left: 40px;
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 900px) {
+  .Header_Search_Input {
+    width: 170px;
+    margin-left: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .Header_Search_Input {
+    width: 160px;
+    margin-left: 0px;
+    height: 46px;
+    margin-bottom: 15px;
+  }
+  .Header_Input_SearchIcon {
+    padding: 11px;
+  }
+}
+
+@media (max-width: 550px) {
+  .Header_Search_Input {
+    width: 160px;
+    height: 34px;
+  }
+  .Header_Input_SearchIcon {
+    padding: 6px;
+  }
+}
