@@ -1,10 +1,8 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.mapper.ProductMapper;
 import com.bzzzzz.farm.model.dto.product.*;
 import com.bzzzzz.farm.model.entity.Category;
 import com.bzzzzz.farm.model.entity.Product;
-import com.bzzzzz.farm.model.entity.ProductCategory;
 import com.bzzzzz.farm.model.entity.ProductOption;
 import com.bzzzzz.farm.service.CategoryService;
 import com.bzzzzz.farm.service.ProductCategoryService;
@@ -56,8 +54,6 @@ public class ProductSubControllerTest {
     private ProductOptionService productOptionService;
     @MockBean
     private CategoryService categoryService;
-    @MockBean
-    private ProductMapper productMapper;
 
     @Test
     @DisplayName("카테고리에 제품을 추가")
@@ -74,9 +70,7 @@ public class ProductSubControllerTest {
 
         given(productService.findVerifiedProduct(Mockito.anyLong())).willReturn(new Product());
         given(categoryService.findVerifiedCategory(Mockito.anyLong())).willReturn(new Category());
-        given(productMapper.productCategoryPostDtoToProductCategory(Mockito.any(ProductCategoryPostDto.class))).willReturn(new ProductCategory());
-        given(productCategoryService.createProductCategory(Mockito.any(ProductCategory.class))).willReturn(new ProductCategory());
-        given(productMapper.productCategoryToProductCategoryResponseDto(Mockito.any(ProductCategory.class))).willReturn(response);
+        given(productCategoryService.createProductCategory(Mockito.any(ProductCategoryPostDto.class))).willReturn(response);
 
         String content = gson.toJson(request);
 
@@ -128,8 +122,7 @@ public class ProductSubControllerTest {
                 .build();
 
         given(categoryService.findVerifiedCategory(Mockito.anyLong())).willReturn(new Category());
-        given(productCategoryService.updateProductCategory(Mockito.any(ProductCategoryPatchDto.class))).willReturn(new ProductCategory());
-        given(productMapper.productCategoryToProductCategoryResponseDto(Mockito.any(ProductCategory.class))).willReturn(response);
+        given(productCategoryService.updateProductCategory(Mockito.any(ProductCategoryPatchDto.class))).willReturn(response);
 
         String content = gson.toJson(request);
 
@@ -199,8 +192,7 @@ public class ProductSubControllerTest {
         ProductOptionPostDto request = new ProductOptionPostDto("추가할 옵션명", 5000, 100, 1L);
 
         given(productService.findVerifiedProduct(Mockito.anyLong())).willReturn(new Product());
-        given(productMapper.productOptionPostDtoToProductOption(Mockito.any(ProductOptionPostDto.class))).willReturn(new ProductOption());
-        doNothing().when(productOptionService).createProductOption(Mockito.any(ProductOption.class));
+        doNothing().when(productOptionService).createProductOption(Mockito.any(ProductOptionPostDto.class));
 
         String content = gson.toJson(request);
 

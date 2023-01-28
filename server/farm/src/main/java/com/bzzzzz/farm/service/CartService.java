@@ -2,6 +2,8 @@ package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
+import com.bzzzzz.farm.mapper.CartMapper;
+import com.bzzzzz.farm.model.dto.cart.CartResponseDto;
 import com.bzzzzz.farm.model.entity.Cart;
 import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.model.entity.ProductOption;
@@ -18,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CartService {
     private final CartRepository cartRepository;
+    private final CartMapper cartMapper;
 
     public Cart createCartProduct(long memberId, ProductOption productOption, int quantity) {
         Optional<Cart> optionalCart = cartRepository.findByMember_MemberIdAndProductOption_ProductOptionId(memberId, productOption.getProductOptionId());
@@ -46,8 +49,8 @@ public class CartService {
     }
 
     @Transactional(readOnly = true)
-    public List<Cart> findCartsByMemberId(long memberId) {
-        return cartRepository.findAllByMember_MemberId(memberId);
+    public List<CartResponseDto> findCartsByMemberId(long memberId) {
+        return cartMapper.cartsToCartResponseDtos(cartRepository.findAllByMember_MemberId(memberId));
     }
 
     public void deleteCart(long memberId, long productOptionId) {

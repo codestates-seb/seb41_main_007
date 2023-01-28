@@ -1,13 +1,13 @@
 package com.bzzzzz.farm.controller;
 
+import com.bzzzzz.farm.common.exception.BusinessLogicException;
+import com.bzzzzz.farm.common.exception.ExceptionCode;
 import com.bzzzzz.farm.model.dto.order.OrderPatchDto;
 import com.bzzzzz.farm.model.dto.payment.KakaoApproveResponse;
 import com.bzzzzz.farm.model.dto.payment.KakaoCancelResponse;
 import com.bzzzzz.farm.model.entity.Order;
 import com.bzzzzz.farm.service.OrderService;
 import com.bzzzzz.farm.service.PaymentService;
-import com.bzzzzz.farm.common.exception.BusinessLogicException;
-import com.bzzzzz.farm.common.exception.ExceptionCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +48,9 @@ public class PaymentController {
      */
     @PostMapping("/refund")
     public ResponseEntity refund(@RequestParam("order_id")long orderId) {
-        Order order = orderService.findOrder(orderId);
-        KakaoCancelResponse kakaoCancelResponse = paymentService.kakaoCancel(orderId, order.getPrice());
+        KakaoCancelResponse kakaoCancelResponse = paymentService.kakaoCancel(
+                orderId, orderService.findOrder(orderId).getPrice()
+        );
 
         return ResponseEntity.ok(kakaoCancelResponse);
     }

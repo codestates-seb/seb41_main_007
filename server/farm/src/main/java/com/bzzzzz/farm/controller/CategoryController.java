@@ -1,9 +1,7 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.mapper.CategoryMapper;
 import com.bzzzzz.farm.model.dto.category.CategoryPatchDto;
 import com.bzzzzz.farm.model.dto.category.CategoryPostDto;
-import com.bzzzzz.farm.model.entity.Category;
 import com.bzzzzz.farm.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,20 +11,18 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.util.List;
 
 @RestController
 @Validated
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
-    private final CategoryMapper categoryMapper;
 
     @PostMapping("/categories")
     public ResponseEntity postCategory(@Valid @RequestBody CategoryPostDto categoryPostDto) {
         //Todo: 로그인 관련 기능 들어오면 ADMIN 계정인지 확인하는 로직 필요
 
-        categoryService.createCategory(categoryMapper.categoryPostDtoToCategory(categoryPostDto));
+        categoryService.createCategory(categoryPostDto);
 
         return new ResponseEntity(HttpStatus.CREATED);
     }
@@ -43,9 +39,7 @@ public class CategoryController {
     @GetMapping("/categories")
     public ResponseEntity getCategories() {
 
-        List<Category> categories = categoryService.findCategories();
-
-        return new ResponseEntity(categoryMapper.categoriesToCategoryResponseDtos(categories), HttpStatus.OK);
+        return new ResponseEntity(categoryService.findCategories(), HttpStatus.OK);
     }
 
     @DeleteMapping("/categories/{category-id}")

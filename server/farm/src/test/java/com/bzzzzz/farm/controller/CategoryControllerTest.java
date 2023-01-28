@@ -1,6 +1,5 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.mapper.CategoryMapper;
 import com.bzzzzz.farm.model.dto.category.CategoryPatchDto;
 import com.bzzzzz.farm.model.dto.category.CategoryPostDto;
 import com.bzzzzz.farm.model.dto.category.CategoryResponseDto;
@@ -47,8 +46,6 @@ public class CategoryControllerTest {
     private Gson gson;
     @MockBean
     private CategoryService categoryService;
-    @MockBean
-    private CategoryMapper categoryMapper;
 
     @Test
     @DisplayName("카테고리 등록")
@@ -56,8 +53,7 @@ public class CategoryControllerTest {
         // given
         CategoryPostDto request = new CategoryPostDto("테스트 카테고리");
 
-        given(categoryMapper.categoryPostDtoToCategory(Mockito.any(CategoryPostDto.class))).willReturn(new Category());
-        given(categoryService.createCategory(Mockito.any(Category.class))).willReturn(new Category());
+        given(categoryService.createCategory(Mockito.any(CategoryPostDto.class))).willReturn(new Category());
 
         String content = gson.toJson(request);
 
@@ -142,8 +138,7 @@ public class CategoryControllerTest {
 
         List<CategoryResponseDto> response = List.of(categoryResponseDto1, categoryResponseDto2, categoryResponseDto3);
 
-        given(categoryService.findCategories()).willReturn(List.of());
-        given(categoryMapper.categoriesToCategoryResponseDtos(Mockito.anyList())).willReturn(response);
+        given(categoryService.findCategories()).willReturn(response);
 
         // when
         ResultActions actions = mockMvc.perform(
