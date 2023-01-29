@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { FaStar } from 'react-icons/fa';
 import styled from 'styled-components';
 
 const ARRAY = [0, 1, 2, 3, 4];
 
-function Rating() {
+const Rating = () => {
   const [clicked, setClicked] = useState([false, false, false, false, false]);
 
   const handleStarClick = (index: any) => {
@@ -50,14 +50,13 @@ function Rating() {
       </Stars>
     </Wrap>
   );
-}
+};
 
 export default Rating;
 
 const Wrap = styled.div`
   display: flex;
   flex-direction: column;
-  padding-top: 15px;
 `;
 
 const RatingText = styled.div`

@@ -225,7 +225,7 @@ const ReviewEdit: FC = () => {
   return (
     <>
       <div className={styles.comment_container}>
-        <div className={styles.Contents_Container}>
+        <div className={styles.Image_Container}>
           <div className={styles.content}>
             {userImage && (
               <img
@@ -236,11 +236,9 @@ const ReviewEdit: FC = () => {
                 style={{ objectFit: 'cover' }}
               />
             )}
-
             <label className={styles.Label_Button} htmlFor="imageFile">
               이미지 선택
             </label>
-
             <input
               id="imageFile"
               type="file"
@@ -251,8 +249,9 @@ const ReviewEdit: FC = () => {
           </div>
         </div>
         <div className={styles.Review_Container}>
-          {/* <div className={styles.content}>리뷰 별점:</div> */}
-          <Rating />
+          <div className={styles.content}>
+            <Rating />
+          </div>
           <div className={styles.content}>
             <input
               type="text"
