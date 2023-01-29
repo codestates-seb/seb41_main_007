@@ -4,6 +4,7 @@ import objectSaveSlice from 'Redux/reducer/objectSaveSlice';
 import priceSlice from 'Redux/reducer/priceSlice';
 import modalSlice from 'Redux/reducer/modalSlice';
 import personDataSlice from 'Redux/reducer/personDataSlice';
+import getDataSlice from 'Redux/reducer/getDataSlice';
 //store 만들기
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     priceCheck: priceSlice,
     modal: modalSlice,
     personSave: personDataSlice,
+    getDataSave: getDataSlice,
   },
 });
 

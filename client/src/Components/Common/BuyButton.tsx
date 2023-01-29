@@ -27,6 +27,12 @@ const Buybutton = styled.a<{
   width: 350px;
   background-color: ${(props) => props.background};
   margin-top: 13px;
+
+  &:hover {
+    outline: none;
+    border-width: 1px;
+    box-shadow: 0 0 0 4px #e9f5db, 0 0 0 4px #e9f5db;
+  }
 `;
 
 interface Props {

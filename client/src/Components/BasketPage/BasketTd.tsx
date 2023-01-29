@@ -59,6 +59,14 @@ const TableProduct = styled.div`
 const TableTitle = styled.div`
   font-size: var(--large);
   font-weight: bold;
+  display: flex;
+`;
+const TableSubTitle = styled.div`
+  font-size: var(--medium);
+  font-weight: bold;
+  display: flex;
+  margin-top: 2px;
+  padding-top: 1px;
 `;
 
 const TableContent = styled.div`
@@ -227,25 +235,32 @@ const BasketTd: FC<checkBoxtype> = ({
       </Tablebody1>
 
       <Tablebody2>
-        <Link key={el.productId} to={`/product/${el.productId}`}>
-          <TB2Container>
-            <TableimgDiv url={el.photo}></TableimgDiv>
-            <TableProduct>
-              <TableTitle>{`${el.name}`}</TableTitle>
-              <TableContent>{el.description}</TableContent>
-              <div>
-                {' '}
-                {`${useNumberComma(el.price)}원 + ${useNumberComma(
-                  OptionData.optionprice,
-                )}원(Option ${OptionData.optionname})`}
-              </div>
-              <TablePrice>
-                <div></div>={useNumberComma(el.price + OptionData.optionprice)}
-                <span>원</span>
-              </TablePrice>
-            </TableProduct>
-          </TB2Container>
-        </Link>
+        <TB2Container>
+          <Link key={el.productId} to={`/product/${el.productId}`}>
+            <div className="flex">
+              <TableimgDiv url={el.photo}></TableimgDiv>
+              <TableProduct>
+                <TableTitle>
+                  {`${el.name}`}
+                  <TableSubTitle>
+                    &ensp;{`상품번호 ${el.productId}`}
+                  </TableSubTitle>
+                </TableTitle>
+                <TableContent>{el.description}</TableContent>
+                <div>
+                  {`${useNumberComma(el.price)}원 + ${useNumberComma(
+                    OptionData.optionprice,
+                  )}원(Option ${OptionData.optionname})`}
+                </div>
+                <TablePrice>
+                  <div></div>=
+                  {useNumberComma(el.price + OptionData.optionprice)}
+                  <span>원</span>
+                </TablePrice>
+              </TableProduct>
+            </div>
+          </Link>
+        </TB2Container>
       </Tablebody2>
 
       <Tablebody3>
@@ -279,3 +294,4 @@ export default BasketTd;
 //카운트버튼숫자 후버 업데이트 오류났었음
 //유지보수의 매운맛..
 //시그니처와 타입의 필요성을 느낌
+//넓은 링크창 축소
