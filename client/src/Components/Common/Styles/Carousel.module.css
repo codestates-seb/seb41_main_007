@@ -1,4 +1,4 @@
-@media (min-width: 320px) and (max-width: 480px) {
+/* @media (min-width: 320px) and (max-width: 480px) {
   .Carousel_Container {
     height: 340px;
   }
@@ -40,10 +40,7 @@
 }
 .Carousel_Img {
   @apply object-none;
-  margin-top: 3px;
-  width: 80px;
-  height: 80px;
-}
+} */
 
 /* .Carousel_Container {
   display: flex;
@@ -82,7 +79,6 @@
   }
 } */
 
-/* 
 .Carousel_Short {
   @apply absolute lg:inset-y-28 lg:left-96 md:inset-y-14 md:left-20 inset-y-4;
 }
@@ -96,7 +92,8 @@
   @apply absolute lg:inset-y-72 lg:left-96 lg:text-2xl  inset-y-40 text-xl;
 }
 .Carousel_Img {
+  @apply object-none;
 }
 .Carousel_Img_Position {
   @apply object-none sm:object-left md:object-center lg:object-right lg:pr-72;
-} */
+}
