@@ -29,13 +29,14 @@ const MyProfile: React.FC = () => {
   const Person: TYPE_People[] = useAppSelector(selectDataP);
   const P_Data: TYPE_People = Person[0];
 
+  //P_Data.name P_Data.age 잠시대체
   return (
     <>
       <Container>
         <User>
           <TinyTitle>이름</TinyTitle>
           <ComponentsInput
-            P_Value={P_Data.name}
+            P_Value={'잠시햇어'}
             onSave={onSave}
           ></ComponentsInput>
 
@@ -47,19 +48,19 @@ const MyProfile: React.FC = () => {
           ></ComponentsInput>
           <TinyTitle>생일</TinyTitle>
           <ComponentsInput
-            P_Value={P_Data.age}
+            P_Value={'버그대체'}
             onSave={onSave}
             Component={DatepickerInput}
           ></ComponentsInput>
           <TinyTitle>연락처</TinyTitle>
           <ComponentsInput
-            P_Value={P_Data.phone}
+            P_Value={'P_Data.phone'}
             onSave={onSave}
             Component={phoneNumberinput}
           ></ComponentsInput>
           <TinyTitle>이메일</TinyTitle>
           <ComponentsInput
-            P_Value={P_Data.email}
+            P_Value={'P_Data.email'}
             isDisabled={true}
             onSave={onSave}
           ></ComponentsInput>

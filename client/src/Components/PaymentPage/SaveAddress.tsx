@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Postcode from './Postcode';
+import SavePostcode from './SavePostcode';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RadiusButton from 'Components/Common/RadiusButton';
@@ -8,7 +8,7 @@ import TinyTitle from 'Components/Common/TinyTitle';
 import { ToastContainer, toast, Zoom } from 'react-toastify';
 import { useState, Dispatch, SetStateAction } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { useSession } from 'CustomHook/useSession';
 const StyleToastContainer = styled(ToastContainer)`
   position: fixed;
   top: 50%;
@@ -35,26 +35,27 @@ const User = styled.div`
   }
 `;
 
-interface Props {
-  children?: string;
-  setDataPut: Dispatch<SetStateAction<any>>;
-  oncontrolCilck?: () => void;
-  dataPut?: TYPE_UserAddress;
-}
-
-const Address: React.FC<Props> = ({
-  oncontrolCilck,
-  dataPut,
-
-  children,
-  setDataPut,
-}) => {
+const SaveAddress = () => {
   const numberoverAlram = () => toast.warning('11자리 이상은 불가합니다.');
   const [nameMessage, setNameMessage] = useState<string>('');
   const [addressValue, setAddressValue] = useState<string[]>([]);
+  const [dataPut, setDataPut] = useState<TYPE_UserAddress>({
+    addressName: '',
+    name: '',
+    detailAddress: '',
+    phoneNumber: '',
+  });
+  const { loading, session } = useSession();
+  if (loading) return <></>;
+
+  const onSaveData = (name: string, value: string) => {
+    console.log(name, value);
+    setDataPut({ ...dataPut, [name]: value });
+  };
   const sucessAlram = () =>
     toast.success('저장되었습니다.', {
       position: 'top-right',
+
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -75,14 +76,21 @@ const Address: React.FC<Props> = ({
       // onSaveData(name, value);
     }
   };
-  // if (dataPut?.detailAddress.includes('(')) {
-  //   const saveaddress: string[] | undefined = dataPut?.detailAddress.split('(');
 
-  //   const first = saveaddress?.[1].substring(0, 5);
-  //   const second = saveaddress?.[1].substring(7);
-  //   const third = saveaddress?.[2].slice(0, -1);
-  //   setAddressValue([...first, ...second, ...third]);
-  // }
+  console.log({ ...dataPut });
+  const postAddress = () => {
+    const suggest = {
+      ...dataPut,
+    };
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/addresses`, {
+      body: JSON.stringify(suggest),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session}`,
+      },
+      method: 'POST',
+    }).then((response) => console.log(response));
+  };
 
   return (
     <>
@@ -132,10 +140,10 @@ const Address: React.FC<Props> = ({
             상세주소가 없는 경우는 없음 으로 입력해 주세요.
           </div>
         </div>
-        <Postcode
+        <SavePostcode
+          onSaveData={onSaveData}
           dataPut={dataPut}
           addressValue={addressValue.length > 1 ? addressValue : ['', '', '']}
-          setDataPut={setDataPut}
         />
       </div>
       <StyleToastContainer
@@ -144,52 +152,50 @@ const Address: React.FC<Props> = ({
         hideProgressBar
         autoClose={1000}
       />
-
+      {/* <Container
+        role="alert"
+        autoClose={4000}
+        transition={Zoom}
+        draggable={false}
+        closeOnClick={false}
+        pauseOnHover={false}
+        pauseOnFocusLoss={false}
+        hideProgressBar
+        position="bottom-center"
+        theme="colored"
+        style={{ fontSize: 13 }}
+      /> */}
       <div className="my-5 relative h-6">
         <div className="absolute top-0 left-0">
           <RadiusButton
             onClick={() => {
-              console.log(dataPut);
               const numberCheck = /[^0-9]/g;
+
               if (
                 dataPut?.addressName &&
                 dataPut?.name &&
                 dataPut?.phoneNumber &&
-                dataPut.detailAddress.includes(')') &&
                 dataPut?.phoneNumber.length > 10 &&
                 dataPut?.name.length > 1 &&
                 dataPut?.detailAddress
               ) {
                 sucessAlram();
                 setNameMessage('성공하였습니다');
-                oncontrolCilck?.();
-                sucessAlram();
+                postAddress();
               } else if (
                 !dataPut?.phoneNumber ||
                 !dataPut?.name ||
                 !dataPut?.addressName
               ) {
-                console.log(dataPut);
                 setNameMessage('빈칸을 채워주세요');
               } else if (dataPut?.name.length < 2) {
                 setNameMessage('받는 분 정보는 2글자이상 채워주세요');
-              } else if (
-                dataPut?.phoneNumber &&
-                dataPut?.phoneNumber.length < 11
-              ) {
-                setNameMessage('-없이 11자리 핸드폰 번호를 입력해주세요');
               } else if (numberCheck.test(dataPut?.phoneNumber)) {
-                console.log(dataPut.phoneNumber);
                 setNameMessage('-없이 11자리 숫자를 입력해주세요');
-              } else if (
-                !dataPut?.phoneNumber &&
-                dataPut?.phoneNumber.length > 11
-              ) {
+              } else if (dataPut?.phoneNumber.length > 11) {
                 setNameMessage('-없이 11자리 핸드폰 번호를 입력해주세요');
-              } else if (!dataPut.detailAddress) {
+              } else if (!dataPut?.detailAddress) {
                 setNameMessage('상세주소가 없다면 없음이라 적어주세요');
-              } else if (!dataPut.detailAddress.includes(')')) {
-                setNameMessage('우편번호를 눌러 입력해주세요');
               }
             }}
           >
@@ -202,7 +208,7 @@ const Address: React.FC<Props> = ({
     </>
   );
 };
-export default Address;
+export default SaveAddress;
 
 //유효성검사 안햇음
 //input number 문제
@@ -210,4 +216,4 @@ export default Address;
 //is loading 문제 해결
 //반응협 웹 css 디자인 만지기
 //온 세이브 오류나서 파괴하고 리덕스로 대체
-//최적화할때 안쓰는것 지울것
+//문제가 생겨서 해결하기위해 저장하기위한 로직 생성

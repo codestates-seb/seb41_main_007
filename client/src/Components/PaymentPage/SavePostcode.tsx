@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { useState } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import useBooleanInput from 'CustomHook/useBooleaninput';
 
@@ -23,14 +23,14 @@ const PostcodeContainer = styled.div`
 `;
 
 interface Props {
+  onSaveData: (name: string, value: string) => void;
   children?: string;
   dataPut?: TYPE_UserAddress;
   addressValue: string[];
   oncontrolCilck?: () => void;
-  setDataPut: Dispatch<SetStateAction<any>>;
 }
 
-const Postcode: React.FC<Props> = ({ addressValue, setDataPut, dataPut }) => {
+const SavePostcode: React.FC<Props> = ({ onSaveData, addressValue }) => {
   const [addressNumber, setaddressNumber] = useState(addressValue[0]);
   const [address, setaddress] = useState<string>(addressValue[1]);
   const [Detail, setDetail] = useState<string>(addressValue[2]);
@@ -41,11 +41,9 @@ const Postcode: React.FC<Props> = ({ addressValue, setDataPut, dataPut }) => {
   const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setDetail(value);
-
-    const addressData = `(${String(addressNumber)}) ${address} (${value})`;
-    console.log(addressData);
-    const name = 'detailAddress';
-    setDataPut({ ...dataPut, [name]: addressData });
+    const addressdata = `(${String(addressNumber)}) ${address} (${value})`;
+    console.log(addressdata);
+    onSaveData('detailAddress', addressdata);
   };
 
   const handleComplete = (data: any) => {
@@ -106,7 +104,7 @@ const Postcode: React.FC<Props> = ({ addressValue, setDataPut, dataPut }) => {
   );
 };
 
-export default Postcode;
+export default SavePostcode;
 
 //undefined가 들어옴
 // useEffect(() => {
