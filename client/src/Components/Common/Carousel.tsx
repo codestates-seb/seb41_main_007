@@ -32,7 +32,7 @@ const Item = ({
       <Size>
         <Paper>
           <div className={back}>
-            <div className="">
+            <div className={styles.Carousel_Entire_Content}>
               <div className={styles.Carousel_Short}>{short}</div>
               <h1 className={styles.Carousel_Title}>{title}</h1>
               <p className={styles.Carousel_Content}>{content}</p>
@@ -129,11 +129,7 @@ export const Carousell = (props: any) => {
   ];
   return (
     <div className="mt-32">
-      <Carousel
-        interval={900000000}
-        animation={'slide'}
-        className={styles.Carousel_Container}
-      >
+      <Carousel interval={900000000} animation={'slide'}>
         {items.map((item, i) => (
           <Item key={i} {...item} />
         ))}
