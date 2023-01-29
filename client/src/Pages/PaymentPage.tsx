@@ -1,20 +1,19 @@
-import Address from 'Components/PaymentPage/Adress';
-import Payment from 'Components/PaymentPage/Payment';
 import styled from 'styled-components';
 import { useState, useEffect, useCallback } from 'react';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Totalpay from 'Components/PaymentPage/Totalpay';
-import BasketFour from 'Components/PaymentPage/Basketfour';
+import { useNavigate } from 'react-router';
 import { BGcontainer } from 'Components/Common/BGcontainer';
 import Modal from 'Components/Common/Modal';
 import { useSelector } from 'react-redux';
-import { useSession } from 'CustomHook/useSession';
+import SaveAddress from 'Components/PaymentPage/SaveAddress';
 import { TYPE_CartData } from 'Types/common/product';
 import BasketfourList from 'Components/PaymentPage/BasketfourList';
 
 import Empty from 'Components/Common/Empty';
 import useScrollTop from 'CustomHook/useScrollTop';
+import Deliveryaddress from 'Components/Mypage/DeliveryManagement';
 const Container = styled.div`
   width: 830px;
 `;
@@ -35,6 +34,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
 
   const [data, setdata] = useState<TYPE_CartData[]>([]);
   const [isloading, setisLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
   // const { loading, session } = useSession();
 
   useEffect(() => {
@@ -91,7 +91,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
                 )}
               </button>
             </Title>
-            {address && <Address />}
+            {address && <Deliveryaddress />}
             <Title>
               <div className=" font-semibold py-4 text-xl">결제수단</div>
               <button onClick={() => setPayment(!payment)}>
@@ -102,7 +102,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
                 )}
               </button>
             </Title>
-            {payment && <Payment />}
+            {payment && <SaveAddress />}
           </Container>
           <Totalpay />
         </div>

@@ -1,7 +1,8 @@
 import MyProfile from 'Components/Mypage/MyProfile';
-import Deliveryaddress from 'Components/Mypage/Deliveryadress';
+import Deliveryaddress from 'Components/Mypage/DeliveryManagement';
 import Address from 'Components/PaymentPage/Adress';
 import AccordionTitle from 'Components/Common/AccordionTitle';
+import SaveAddress from 'Components/PaymentPage/SaveAddress';
 
 const AccordionGroup: React.FC = () => {
   return (
@@ -16,7 +17,11 @@ const AccordionGroup: React.FC = () => {
         ATvalue="배송지관리"
         Component={Deliveryaddress}
       />
-      <AccordionTitle Open={false} ATvalue="배송지추가" Component={Address} />
+      <AccordionTitle
+        Open={false}
+        ATvalue="배송지추가"
+        Component={SaveAddress}
+      />
     </div>
   );
 };
@@ -24,3 +29,4 @@ const AccordionGroup: React.FC = () => {
 export default AccordionGroup;
 
 //배송지 관리 추가 상관관계 만들기
+//컴포넌트에 대한 시행착오
