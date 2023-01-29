@@ -14,6 +14,7 @@ public enum ExceptionCode {
     MEMBER_EXISTS(409, "이미 존재하는 회원입니다"),
     NOT_LOGIN(400, "로그인된 사용자만 접근할 수 있습니다"),
     REFRESH_TOKEN_NOT_FOUND(404, "리프레시 토큰을 찾을 수 없습니다"),
+    ADDRESS_NOT_FOUND(404, "존재하지 않는 주소입니다"),
 
     //review
     REVIEW_NOT_FOUND(404,"Review not found"),
