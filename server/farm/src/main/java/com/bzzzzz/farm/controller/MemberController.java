@@ -3,7 +3,7 @@ package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.model.dto.member.MemberDto;
 import com.bzzzzz.farm.service.MemberService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,19 +11,19 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Positive;
+import java.text.ParseException;
 
 @RestController
 @RequestMapping("/members")
 @Validated
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MemberController {
     private final MemberService memberService;
 
     //회원 정보 수정
     @PatchMapping
     public ResponseEntity patchMember(@Valid @RequestBody MemberDto.Patch request,
-                                      @AuthenticationPrincipal UserDetails userDetails){
+                                      @AuthenticationPrincipal UserDetails userDetails) throws ParseException {
         request.setMemberId(Long.valueOf(userDetails.getUsername()));
 
         return ResponseEntity.ok(memberService.updateMember(request));

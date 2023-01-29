@@ -5,12 +5,16 @@ import lombok.Getter;
 public enum ExceptionCode {
     //common
     REQUEST_FORBIDDEN(403, "요청에 대한 권한이 없습니다"),
+    WRONG_TOKEN_SIGNATURE(400, "잘못된 JWT 서명입니다"),
+    EXPIRATION_TOKEN(400, "만료된 JWT 토큰입니다"),
+    UNSUPPORTED_TOKEN(400, "지원되지 않는 JWT 토큰입니다"),
 
     //member
     MEMBER_NOT_FOUND(404, "존재하지 않는 회원입니다"),
     MEMBER_EXISTS(409, "이미 존재하는 회원입니다"),
     NOT_LOGIN(400, "로그인된 사용자만 접근할 수 있습니다"),
     REFRESH_TOKEN_NOT_FOUND(404, "리프레시 토큰을 찾을 수 없습니다"),
+    ADDRESS_NOT_FOUND(404, "존재하지 않는 주소입니다"),
 
     //review
     REVIEW_NOT_FOUND(404,"Review not found"),

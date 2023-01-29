@@ -1,9 +1,12 @@
 package com.bzzzzz.farm.common.security;
 
+import com.bzzzzz.farm.model.entity.Address;
 import com.bzzzzz.farm.model.entity.Member;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -34,11 +37,10 @@ public class OAuthAttributes {
 
     public Member toEntity(){
         Member member = new Member();
-        member.setAddress(" ");
-        member.setAge(0);
-        member.setGender(" ");
         member.setName(name);
         member.setEmail(email);
+        List<Address> addresses = new ArrayList<>();
+        member.setAddresses(addresses);
         return member;
     }
 }

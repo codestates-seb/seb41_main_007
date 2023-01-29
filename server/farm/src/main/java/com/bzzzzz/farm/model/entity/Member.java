@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -24,26 +25,24 @@ public class Member extends Auditable {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private int age;
+    private Date birth;
+
+    @Column(unique = true)
+    private String phoneNumber;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
-    private String address;
-
-    @Column(nullable = false)
     private String gender;
-
-    @Column(unique = true)
-    private String phone;
 
     //권한
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
 
     //연관관계
+    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Address> addresses;
+
     @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Product> products;
 
