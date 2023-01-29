@@ -27,9 +27,7 @@ public interface OrderMapper {
         for (OrderProductPostDto orderProductPostDto : orderPostDto.getOrderProductPostDtos()) {
             OrderProduct orderProduct = orderProductPostDtoToOrderProduct(orderProductPostDto);
             order.addOrderProduct(orderProduct);
-            order.calculatePrice(orderProduct.getShippingPrice() +
-                    (orderProduct.getProductPrice() + orderProduct.getProductOptionPrice()) * orderProduct.getQuantity()
-            );
+            order.calculatePrice(orderProduct.getTotalPrice());
         }
 
         return order;
@@ -86,6 +84,7 @@ public interface OrderMapper {
                 .productPrice(orderProduct.getProductPrice())
                 .productOptionId(orderProduct.getProductOption().getProductOptionId())
                 .productOptionName(orderProduct.getProductOption().getProductOptionName())
+                .quantity(orderProduct.getQuantity())
                 .productOptionPrice(orderProduct.getProductOptionPrice())
                 .shippingCountry(orderProduct.getShippingCountry().getShippingType())
                 .shippingMethod(orderProduct.getShippingMethod().getShippingMethod())
