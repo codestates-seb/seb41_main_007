@@ -76,7 +76,7 @@ const MyPage: React.FC<{ session: any }> = ({ session }) => {
     }
   }, []);
 
-  if (isloading) return <Empty />;
+  // if (isloading) return <Empty />;
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -112,3 +112,4 @@ const MyPage: React.FC<{ session: any }> = ({ session }) => {
 };
 //네비게이션 오류 -> href
 export default MyPage;
+//스플릿 로직이 오류 불러일으킴

@@ -83,3 +83,10 @@ export interface TYPE_People {
   name: string;
   phone: string;
 }
+
+export interface TYPE_UserAddress {
+  addressName: string;
+  name: string;
+  detailAddress: string;
+  phoneNumber: string;
+}
