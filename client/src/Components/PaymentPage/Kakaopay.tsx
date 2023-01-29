@@ -1,35 +1,38 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 const Kakaopay: React.FC = () => {
+  const [seturl, setUrl] = useState<string>('');
+  const navigate = useNavigate();
   useEffect(() => {
     axios({
-      url: `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=1`,
+      url: `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=2`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
     })
       .then((response) => {
         console.log(response);
+        console.log(response.data.tid);
+        console.log(response.data.next_redirect_pc_url);
+        setUrl(response.data.next_redirect_pc_url);
+        console.log(seturl);
       })
       .catch((e) => {
         console.info(e);
       });
   }, []);
-  // ${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=1
-  // console.log(state);
-  return <>{/* <a href={next_redirect_pc_url}>{next_redirect_pc_url}</a> */}</>;
-  // useEffect(() => {
-  //   fetch(`${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=1`, {
-  //     body: JSON.stringify(params),
-  //     headers: {
-  //       'Content-Type': 'application/x-www-form-urlencoded',
-  //       Authorization: `KakaoAK fa319a5e8419561b15b0743226918d02`,
-  //     },
-  //     method: 'POST',
-  //   }).then((response) => console.log(response));
-  // }, []);
+
+  const KakaoRedirect = () => {
+    // return <Link to=""></Link>;
+    // navigate(`${seturl}`, { replace: true });
+    // <Link to={seturl} />;
+  };
   return (
     <>
-      <div>안녕</div>
+      <Link to={seturl} />
+      {/* <button onClick={KakaoRedirect}>결제하기</button> */}
     </>
   );
 };
@@ -57,3 +60,17 @@ export default Kakaopay;
 //     cancel_url: 'http://localhost:3000/',
 //   },
 // };
+
+// ${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=1
+// console.log(state);
+//return <>{/* <a href={next_redirect_pc_url}>{next_redirect_pc_url}</a> */}</>;
+// useEffect(() => {
+//   fetch(`${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=1`, {
+//     body: JSON.stringify(params),
+//     headers: {
+//       'Content-Type': 'application/x-www-form-urlencoded',
+//       Authorization: `KakaoAK fa319a5e8419561b15b0743226918d02`,
+//     },
+//     method: 'POST',
+//   }).then((response) => console.log(response));
+// }, []);
