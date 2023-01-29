@@ -1,38 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useEffect, FC } from 'react';
 import { FaStar } from 'react-icons/fa';
 import styled from 'styled-components';
 
 const ARRAY = [0, 1, 2, 3, 4];
 
-const Rating = () => {
-  const [clicked, setClicked] = useState([false, false, false, false, false]);
-
-  const handleStarClick = (index: any) => {
-    let clickStates = [...clicked];
-    for (let i = 0; i < 5; i++) {
-      clickStates[i] = i <= index ? true : false;
-    }
-    setClicked(clickStates);
-  };
-
-  useEffect(() => {
-    sendReview();
-  }, [clicked]); //컨디마 컨디업
-
-  const sendReview = () => {
-    let score = clicked.filter(Boolean).length;
-    // fetch('http://52.78.63.175:8000/movie', {
-    //   method: 'POST',
-    //   Headers: {
-    //     Authroization: 'e7f59ef4b4900fe5aa839fcbe7c5ceb7',
-    //   },
-    //   body: JSON.stringify({
-    //     movie_id:1
-    //     star: score,
-    //   }),
-    // });
-  };
-
+interface Props {
+  handleStarClick: (index: number) => void;
+  clicked: any;
+}
+const Rating: FC<Props> = ({ handleStarClick, clicked }) => {
   return (
     <Wrap>
       <RatingText>리뷰 평점</RatingText>

@@ -5,11 +5,10 @@ export const useCustomMutation = (
   queryKey: any,
   method: string,
   token?: string | null,
+  queryNoReset?: boolean,
 ) => {
   const queryClient = useQueryClient();
   if (token) {
-    const myHeaders = new Headers();
-    // myHeaders.append();
     const { mutate } = useMutation(
       (suggest: any) => {
         return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
@@ -22,7 +21,9 @@ export const useCustomMutation = (
         });
       },
       {
-        onSuccess: () => queryClient.invalidateQueries(queryKey),
+        onSuccess: () => {
+          queryNoReset ? null : queryClient.invalidateQueries(queryKey);
+        },
       },
     );
     return { mutate };
@@ -36,7 +37,9 @@ export const useCustomMutation = (
         });
       },
       {
-        onSuccess: () => queryClient.invalidateQueries(queryKey),
+        onSuccess: () => {
+          queryNoReset ? null : queryClient.invalidateQueries(queryKey);
+        },
       },
     );
     return { mutate };

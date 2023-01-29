@@ -19,16 +19,20 @@ import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { useSession } from 'CustomHook/useSession';
 import { TYPE_COMMENT } from 'Types/common/product';
 import Rating from './Rating';
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 const cx = className.bind(styles);
 
-const INITIALVALUE: Descendant[] = [
-  {
-    type: 'paragraph',
-    children: [{ text: '' }],
-  },
-];
+interface Props {
+  productId: string | undefined;
+}
 
 const CommentItem = ({ item }: { item: TYPE_COMMENT }) => {
+  const INITIALVALUE: Descendant[] = [
+    {
+      type: 'paragraph',
+      children: [{ text: '' }],
+    },
+  ];
   const { loading, session } = useSession();
   const [replyValue, setReplyValue] = useState<Descendant[]>(INITIALVALUE);
   const [width, setWidth] = useState<number>(700);
@@ -99,8 +103,6 @@ const CommentItem = ({ item }: { item: TYPE_COMMENT }) => {
             commentUserId={item.user.id}
             commentUsername={item.user.name}
             userId={session?.user.id}
-            likeCount={item.likeCount}
-            isLike={item.isLike}
             setEditmode={() => setEditmode(true)}
             openReply={(id: string, name: string) =>
               handlerOpenEditReply(id, name)
@@ -113,24 +115,11 @@ const CommentItem = ({ item }: { item: TYPE_COMMENT }) => {
   );
 };
 
-const ReviewList = () => {
-  let { productid } = useParams();
-  productid = '2';
+const ReviewList: FC<Props> = ({ productId }) => {
   const { isLoading, data, refetch, error } = useCustomQuery(
-    `/reviews?productId=${1}&page=1&size=10`,
-    ['reviews', productid],
+    `/reviews?productId=${productId}&page=1&size=10`,
+    ['reviews', productId],
   );
-  // const { loading, error, data, fetchMore, refetch } = useQuery<
-  //   CommentsData,
-  //   CommentsVars
-  // >(COMMENT_QUERY, {
-  //   variables: {
-  //     userId: session?.user.id,
-  //     postId: postId,
-  //     limit: 20,
-  //     sort: "top",
-  //   },
-  // });
   // const getfetchMore = useCallback(() => {
   //   if (data && data.getComments.pageInfo.hasNextPage) {
   //     fetchMore({
@@ -188,8 +177,43 @@ const ReviewList = () => {
   );
 };
 
-const ReviewEdit: FC = () => {
+const ReviewEdit: FC<Props> = ({ productId }) => {
+  const { loading, session } = useSession();
+  if (loading) return <></>;
+  if (!productId) return <></>;
+
+  const { mutate } = useCustomMutation(
+    '/reviews',
+    ['reviews', productId],
+    'POST',
+    session as string,
+  );
+  const INITIALVALUE: Descendant[] = [
+    {
+      type: 'paragraph',
+      children: [{ text: '' }],
+    },
+  ];
   const [userImage, setUserImage] = useState<any>();
+  const [clicked, setClicked] = useState<any>([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [reviewTitle, setReviewTitle] = useState<string>('');
+  const [value, setValue] = useState<Descendant[]>(INITIALVALUE);
+  const childRef = useRef<{ reset: () => void }>(null);
+
+  const handleStarClick = (index: number) => {
+    let clickStates = [...clicked];
+    for (let i = 0; i < 5; i++) {
+      clickStates[i] = i <= index ? true : false;
+    }
+    setClicked(clickStates);
+  };
+
   const handleChangeFile = (e: any) => {
     let reader = new FileReader();
     if (e.target.files[0]) {
@@ -200,26 +224,16 @@ const ReviewEdit: FC = () => {
       setUserImage(resultImage);
     };
   };
-  const INITIALVALUE: Descendant[] = [
-    {
-      type: 'paragraph',
-      children: [{ text: '' }],
-    },
-  ];
-  const [value, setValue] = useState<Descendant[]>(INITIALVALUE);
-  const childRef = useRef<{ reset: () => void }>(null);
-  const text = (value: any) => {
-    return value
-      .map((n: any) => Node.string(n))
-      .join('')
-      .replace(
-        /[\u0020\u00A0\u1680\u180E\u2000-\u200B\u202F\u205F\u3000\u3164\uFEFF]/g,
-        '',
-      );
-  };
 
   const handlerSubmit = () => {
-    console.log(JSON.stringify(value));
+    let score = clicked.filter(Boolean).length;
+    const submitValue = {
+      productId: parseInt(productId),
+      reviewTitle: reviewTitle,
+      reviewContent: JSON.stringify(value),
+      rating: score,
+    };
+    mutate(submitValue);
   };
 
   return (
@@ -250,16 +264,16 @@ const ReviewEdit: FC = () => {
         </div>
         <div className={styles.Review_Container}>
           <div className={styles.content}>
-            <Rating />
+            <Rating handleStarClick={handleStarClick} clicked={clicked} />
           </div>
           <div className={styles.content}>
             <input
               type="text"
               placeholder="리뷰제목을 입력해주세요"
-              // value={brand}
+              value={reviewTitle}
               className={styles.inputContents}
               style={{ width: '100%' }}
-              // onChange={(e) => setBrand(e.target.value)}
+              onChange={(e) => setReviewTitle(e.target.value)}
             />
           </div>
           <div className={styles.comment_input}>
@@ -284,10 +298,11 @@ const ReviewEdit: FC = () => {
 };
 
 const Review: FC = () => {
+  const { productid } = useParams();
   return (
     <div>
-      <ReviewEdit />
-      <ReviewList />
+      <ReviewEdit productId={productid} />
+      <ReviewList productId={productid} />
     </div>
   );
 };
