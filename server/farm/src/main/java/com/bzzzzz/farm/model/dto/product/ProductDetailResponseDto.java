@@ -15,6 +15,7 @@ public class ProductDetailResponseDto {
     private String shippingCountry;
     private String shippingMethod;
     private int shippingPrice;
+    private String body;
     private String description;
     private String brand;
     private String productStatus;

@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.service;
 
 
+import com.bzzzzz.farm.repository.MemberRepository;
 import com.bzzzzz.farm.repository.ReviewRepository;
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
@@ -23,13 +24,17 @@ import java.util.Optional;
 public class ReviewService {
 
     private ReviewRepository reviewRepository;
+    private MemberService memberService;
+    private MemberRepository memberRepository;
 
     public ReviewService(ReviewRepository reviewRepository) {
         this.reviewRepository = reviewRepository;
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
-    public Review insertReview(Review review) {
+    public Review insertReview(Review review, String username) {
+        Member member = memberRepository.findByEmail(username).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_LOGIN));
+        review.setMember(member);
         Review saveReview = reviewRepository.save(review);
         return saveReview;
     }
@@ -47,14 +52,14 @@ public class ReviewService {
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
-    public Review updateReview(Review review, Member member){
+    public Review updateReview(Review review, String username) {
 
         log.info("updateReview : "+review.getReviewId());
         //reviewId로 저장된 리뷰 불러오기
         Review findReview = findVerifiedReview(review.getReviewId());
 
         //글 작성 유저랑 수정하려는 유저 똑같은지 검증
-        if (!findReview.getMember().getEmail().equals(member.getEmail())){
+        if (!findReview.getMember().getEmail().equals(username)) {
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
         }
 

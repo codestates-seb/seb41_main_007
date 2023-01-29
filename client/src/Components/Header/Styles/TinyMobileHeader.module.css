@@ -1,0 +1,34 @@
+.Tiny_MobileHeader_Container {
+  display: none;
+  width: 100%;
+}
+
+.Tiny_MobileHeader_Contents_Container {
+  height: 80px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Tiny_Mobile_Header_Logo_Container {
+  padding-left: 10px;
+  height: 80px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.Tiny_MobileHeader_Input_SearchIcon {
+  padding: 10px;
+  margin-left: 20px;
+  background-color: var(--green-30);
+}
+
+@media (max-width: 600px) {
+  .Tiny_MobileHeader_Container {
+    display: block;
+  }
+}

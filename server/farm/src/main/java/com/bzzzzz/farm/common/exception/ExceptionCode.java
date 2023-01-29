@@ -18,7 +18,7 @@ public enum ExceptionCode {
     //review
     REVIEW_NOT_FOUND(404,"Review not found"),
     INVALID_USER(405,"Method not allowed"),
-    REVIEW_ANSWER_NOT_FOUND(404,"Review not found"),
+    REVIEW_ANSWER_NOT_FOUND(404,"리뷰 답변을 찾을 수 없습니다"),
 
     //order
     CAN_NOT_ORDER_PRODUCT(400, "주문할 수 없는 제품입니다."),
@@ -51,8 +51,9 @@ public enum ExceptionCode {
     CART_NOT_FOUND(404, "Cart not found"),
 
     //question
-    QUESTION_NOT_FOUND(404,"Question not found"),
-    QUESTION_ANSWER_NOT_FOUND(404,"Question answer not found");
+    QUESTION_NOT_FOUND(404,"질문을 찾을 수 없습니다"),
+    QUESTION_ANSWER_NOT_FOUND(404,"질문 답변을 찾을 수 없습니다");
+
     @Getter
     private int status;
 

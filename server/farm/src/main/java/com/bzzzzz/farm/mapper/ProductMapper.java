@@ -20,6 +20,7 @@ public interface ProductMapper {
 
         product.setName(productPostDto.getName());
         product.setPrice(productPostDto.getPrice());
+        product.setBody(productPostDto.getBody());
         product.setDescription(productPostDto.getDescription());
         product.setPhoto(productPostDto.getPhoto());
         product.setBrand(productPostDto.getBrand());
@@ -28,31 +29,16 @@ public interface ProductMapper {
         product.setShippingPrice(productPostDto.getShippingPrice());
 
         // ProductCategory 추가
-        productPostDto.getProductCategoryPostDtos().stream()
-                .forEach(productCategoryPostDto ->
-                        product.addProductCategory(productCategoryPostDtoToProductCategory(productCategoryPostDto)));
+//        productPostDto.getProductCategoryPostDtos().stream()
+//                .forEach(productCategoryPostDto ->
+//                        product.addProductCategory(productCategoryPostDtoToProductCategory(productCategoryPostDto)));
 
         // 옵션값들 추가
-        productPostDto.getProductOptionPostDtos().stream()
-                .forEach(productOptionPostDto ->
-                        product.addProductOption(productOptionPostDtoToProductOption(productOptionPostDto)));
+//        productPostDto.getProductOptionPostDtos().stream()
+//                .forEach(productOptionPostDto ->
+//                        product.addProductOption(productOptionPostDtoToProductOption(productOptionPostDto)));
 
         return product;
-    }
-
-    List<ProductSimpleResponseDto> productsToProductSimpleResponseDtos(List<Product> products);
-
-    default ProductSimpleResponseDto productToProductSimpleResponseDto(Product product) {
-        if (product == null) {
-            return null;
-        }
-
-        return new ProductSimpleResponseDto(
-                product.getProductId(),
-                product.getName(),
-                product.getPrice(),
-                product.getPhoto(),
-                product.getProductStatus().getStatus());
     }
 
     default ProductDetailResponseDto productToProductDetailResponseDto(Product product, Boolean isLiked) {
@@ -68,6 +54,7 @@ public interface ProductMapper {
                 .shippingCountry(product.getShippingCountry().getShippingType())
                 .shippingMethod(product.getShippingMethod().getShippingMethod())
                 .shippingPrice(product.getShippingPrice())
+                .body(product.getBody())
                 .description(product.getDescription())
                 .brand(product.getBrand())
                 .productStatus(product.getProductStatus().getStatus())

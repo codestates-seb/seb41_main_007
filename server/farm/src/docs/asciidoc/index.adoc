@@ -83,8 +83,8 @@ include::{snippets}/deleteProduct/curl-request.adoc[]
 .http-request
 include::{snippets}/deleteProduct/http-request.adoc[]
 
-.request-fields
-include::{snippets}/deleteProduct/request-fields.adoc[]
+.path-parameters
+include::{snippets}/deleteProduct/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/deleteProduct/http-response.adoc[]
@@ -177,8 +177,8 @@ include::{snippets}/deleteProductCategory/curl-request.adoc[]
 .http-request
 include::{snippets}/deleteProductCategory/http-request.adoc[]
 
-.request-fields
-include::{snippets}/deleteProductCategory/request-fields.adoc[]
+.path-parameters
+include::{snippets}/deleteProductCategory/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/deleteProductCategory/http-response.adoc[]
@@ -225,8 +225,8 @@ include::{snippets}/deleteProductOption/curl-request.adoc[]
 .http-request
 include::{snippets}/deleteProductOption/http-request.adoc[]
 
-.request-fields
-include::{snippets}/deleteProductOption/request-fields.adoc[]
+.path-parameters
+include::{snippets}/deleteProductOption/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/deleteProductOption/http-response.adoc[]
@@ -243,8 +243,8 @@ include::{snippets}/postLike/curl-request.adoc[]
 .http-request
 include::{snippets}/postLike/http-request.adoc[]
 
-.request-fields
-include::{snippets}/postLike/request-fields.adoc[]
+.path-parameters
+include::{snippets}/postLike/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/postLike/http-response.adoc[]
@@ -259,8 +259,8 @@ include::{snippets}/deleteLike/curl-request.adoc[]
 .http-request
 include::{snippets}/deleteLike/http-request.adoc[]
 
-.request-fields
-include::{snippets}/deleteLike/request-fields.adoc[]
+.path-parameters
+include::{snippets}/deleteLike/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/deleteLike/http-response.adoc[]
@@ -375,8 +375,8 @@ include::{snippets}/deleteCategory/curl-request.adoc[]
 .http-request
 include::{snippets}/deleteCategory/http-request.adoc[]
 
-.request-fields
-include::{snippets}/deleteCategory/request-fields.adoc[]
+.path-parameters
+include::{snippets}/deleteCategory/path-parameters.adoc[]
 
 .http-response
 include::{snippets}/deleteCategory/http-response.adoc[]

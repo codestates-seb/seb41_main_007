@@ -1,23 +1,30 @@
 import { FC } from 'react';
-import Logo from './Logo';
-import Button from './Button';
+import { Link } from 'react-router-dom';
 import Input from './Input';
-import './Styles/index.css';
+import styles from './Styles/Header.module.css';
+import TopColRight from './TopColRight';
+import MobileHeader from './MobileHeader';
+import TinyMobileHeader from './TinyMobileHeader';
 
 const Header: FC = () => {
   return (
     <header>
-      <div className="Header_Container">
-        <div className="Header_Contents_Container">
-          <div className="Header_Logo_Container">
-            <Logo width={200} height={200} />
+      <div className={styles.Header_Container}>
+        <TinyMobileHeader />
+        <MobileHeader />
+        <div className={styles.Header_Contents_Container}>
+          <Input />
+          <div className={styles.Header_Logo_Container}>
+            <Link to="/">
+              <img
+                width={230}
+                height={100}
+                src={'/image/FarmPi.svg'}
+                alt="LOGO"
+              />
+            </Link>
           </div>
-          <div className="Header_Input_Container">
-            <Input />
-          </div>
-          <div className="Header_Button_Container">
-            <Button />
-          </div>
+          <TopColRight />
         </div>
       </div>
     </header>

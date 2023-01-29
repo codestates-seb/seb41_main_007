@@ -1,0 +1,7 @@
+.doc {
+  z-index: 0;
+  word-break: break-word;
+  font-size: 14px;
+  line-height: 18px;
+  color: var(--black-10);
+}

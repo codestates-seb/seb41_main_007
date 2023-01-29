@@ -1,11 +1,7 @@
 package com.bzzzzz.farm.controller;
 
-import com.bzzzzz.farm.mapper.ProductMapper;
-import com.bzzzzz.farm.model.dto.IdRequestDto;
 import com.bzzzzz.farm.model.dto.product.*;
 import com.bzzzzz.farm.model.entity.Product;
-import com.bzzzzz.farm.model.entity.ProductCategory;
-import com.bzzzzz.farm.model.entity.ProductOption;
 import com.bzzzzz.farm.service.LikeService;
 import com.bzzzzz.farm.service.ProductCategoryService;
 import com.bzzzzz.farm.service.ProductOptionService;
@@ -57,8 +53,6 @@ public class ProductControllerTest {
     @MockBean
     private LikeService likeService;
     @MockBean
-    private ProductMapper productMapper;
-    @MockBean
     private ProductCategoryService productCategoryService;
     @MockBean
     private ProductOptionService productOptionService;
@@ -75,7 +69,8 @@ public class ProductControllerTest {
                 .price(30000)
                 .photo("http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg")
                 .brand("테스트브랜드")
-                .description("테스트 제품 설명")
+                .body("상세 설명이 들어갑니다")
+                .description("간략한 설명이 들어갑니다")
                 .shippingCountry("KOREA")
                 .shippingMethod("PARCEL_SERVICE")
                 .shippingPrice(3000)
@@ -83,10 +78,10 @@ public class ProductControllerTest {
                 .productOptionPostDtos(List.of(new ProductOptionPostDto("옵션이름", 5000, 100)))
                 .build();
 
-        given(productMapper.productPostDtoToProduct(Mockito.any(ProductPostDto.class))).willReturn(new Product());
-        given(productService.createProduct(Mockito.any(Product.class))).willReturn(product);
-        given(productCategoryService.createProductCategory(Mockito.any(ProductCategory.class))).willReturn(new ProductCategory());
-        doNothing().when(productOptionService).createProductOption(Mockito.any(ProductOption.class));
+        given(productService.createProduct(Mockito.any(ProductPostDto.class))).willReturn(product);
+        given(productCategoryService.createProductCategory(Mockito.any(ProductCategoryPostDto.class))).willReturn(ProductCategoryResponseDto.builder().build());
+
+        doNothing().when(productOptionService).createProductOption(Mockito.any(ProductOptionPostDto.class));
 
         String content = gson.toJson(request);
 
@@ -113,7 +108,8 @@ public class ProductControllerTest {
                                         fieldWithPath("price").type(JsonFieldType.NUMBER).description("제품 가격"),
                                         fieldWithPath("photo").type(JsonFieldType.STRING).description("제품 썸네일 사진 URL"),
                                         fieldWithPath("brand").type(JsonFieldType.STRING).description("제조사"),
-                                        fieldWithPath("description").type(JsonFieldType.STRING).description("제품 설명"),
+                                        fieldWithPath("body").type(JsonFieldType.STRING).description("제품 상세 설명"),
+                                        fieldWithPath("description").type(JsonFieldType.STRING).description("제품 간단 설명"),
                                         fieldWithPath("shippingCountry").type(JsonFieldType.STRING).description(
                                                 "국내/해외 배송 여부\n" +
                                                         "ENUM 타입으로 지정된 값만 입력 가능합니다.\n" +
@@ -153,7 +149,8 @@ public class ProductControllerTest {
                 .shippingCountry("국내 배송")
                 .shippingMethod("택배")
                 .shippingPrice(3000)
-                .description("테스트 제품에 대한 설명입니다.")
+                .body("제품에 대한 상세 설명입니다.")
+                .description("제품에 대한 간단한 설명입니다.")
                 .brand("테스트브랜드")
                 .productStatus("판매 중")
                 .viewCount(200)
@@ -179,8 +176,7 @@ public class ProductControllerTest {
                                         .build()))
                 .build();
 
-        given(productService.findProduct(Mockito.anyLong())).willReturn(new Product());
-        given(productMapper.productToProductDetailResponseDto(Mockito.any(Product.class), Mockito.anyBoolean())).willReturn(response);
+        given(productService.findProduct(Mockito.anyLong())).willReturn(response);
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -198,6 +194,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.shippingCountry").value(response.getShippingCountry()))
                 .andExpect(jsonPath("$.shippingMethod").value(response.getShippingMethod()))
                 .andExpect(jsonPath("$.shippingPrice").value(response.getShippingPrice()))
+                .andExpect(jsonPath("$.body").value(response.getBody()))
                 .andExpect(jsonPath("$.description").value(response.getDescription()))
                 .andExpect(jsonPath("$.brand").value(response.getBrand()))
                 .andExpect(jsonPath("$.productStatus").value(response.getProductStatus()))
@@ -226,7 +223,8 @@ public class ProductControllerTest {
                                 fieldWithPath("shippingCountry").type(JsonFieldType.STRING).description("국내/해외 배송 여부"),
                                 fieldWithPath("shippingMethod").type(JsonFieldType.STRING).description("배송 방법"),
                                 fieldWithPath("shippingPrice").type(JsonFieldType.NUMBER).description("배송비"),
-                                fieldWithPath("description").type(JsonFieldType.STRING).description("제품 설명"),
+                                fieldWithPath("body").type(JsonFieldType.STRING).description("제품 상세 설명"),
+                                fieldWithPath("description").type(JsonFieldType.STRING).description("제품 간단 설명"),
                                 fieldWithPath("brand").type(JsonFieldType.STRING).description("제조사"),
                                 fieldWithPath("productStatus").type(JsonFieldType.STRING).description("제품 상태"),
                                 fieldWithPath("viewCount").type(JsonFieldType.NUMBER).description("조회수"),
@@ -258,7 +256,8 @@ public class ProductControllerTest {
                     "테스트 제품" + i,
                     30000,
                     "http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg",
-                    "판매 중"));
+                    "판매 중",
+                    5.0));
         }
 
         Page<ProductSimpleResponseDto> productPage = new PageImpl<>(
@@ -295,7 +294,7 @@ public class ProductControllerTest {
                                 parameterWithName("page").description("요청할 페이지 (기본값 = 1) * 이하 미입력시 기본값 혹은 값을 주지 않습니다 *"),
                                 parameterWithName("size").description("한 페이지당 표시할 게시물 수 (기본값 = 40)"),
                                 parameterWithName("categoryId").description("특정 카테고리에 속한 제품들을 보고 싶은 경우 카테고리의 식별자를 입력"),
-                                parameterWithName("sort").description("정렬 기준 = productId(최신순, 기본값), name(상품이름순), price(가격순), brand(제조사순), likeCount(인기순), soldCount(판매량순)"),
+                                parameterWithName("sort").description("정렬 기준 = productId(최신순, 기본값), name(상품이름순), price(가격순), brand(제조사순), likeCount(인기순), soldCount(판매량순), rating(별점순)"),
                                 parameterWithName("order").description("정렬 방법 = descending(내림차순, 기본값), ascending(오름차순)"),
                                 parameterWithName("keyword").description("검색어 = 제품명, 본문, 브랜드안에서 검색")
                         ),
@@ -307,6 +306,7 @@ public class ProductControllerTest {
                                         fieldWithPath("data[*].price").type(JsonFieldType.NUMBER).description("제품 가격"),
                                         fieldWithPath("data[*].photo").type(JsonFieldType.STRING).description("제품 썸네일 사진 URL"),
                                         fieldWithPath("data[*].productStatus").type(JsonFieldType.STRING).description("제품 상태"),
+                                        fieldWithPath("data[*].rating").type(JsonFieldType.NUMBER).description("별점"),
                                         fieldWithPath("pageInfo").type(JsonFieldType.OBJECT).description("페이지 정보"),
                                         fieldWithPath("pageInfo.page").type(JsonFieldType.NUMBER).description("현재 페이지"),
                                         fieldWithPath("pageInfo.size").type(JsonFieldType.NUMBER).description("한 페이지당 표시할 데이터 수"),
@@ -390,18 +390,12 @@ public class ProductControllerTest {
     @DisplayName("제품 삭제")
     void deleteProduct() throws Exception {
         // given
-        IdRequestDto request = new IdRequestDto();
-        request.setId(1L);
-
-        doNothing().when(productService).deleteProduct(request.getId());
-        String content = gson.toJson(request);
+        doNothing().when(productService).deleteProduct(Mockito.anyLong());
 
         // when
         ResultActions actions = mockMvc.perform(
-                delete("/products")
-                        .contentType(MediaType.APPLICATION_JSON)
+                delete("/products/{product-id}", 1L)
                         .with(csrf())
-                        .content(content)
         );
 
         // then
@@ -410,7 +404,7 @@ public class ProductControllerTest {
                 .andDo(document(
                         "deleteProduct",
                         preprocessRequest(prettyPrint()),
-                        requestFields(fieldWithPath("id").type(JsonFieldType.NUMBER).description("삭제할 제품 식별자"))
+                        pathParameters(parameterWithName("product-id").description("제품 식별자"))
                 ));
     }
 }

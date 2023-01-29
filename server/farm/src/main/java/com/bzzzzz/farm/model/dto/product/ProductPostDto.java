@@ -27,6 +27,9 @@ public class ProductPostDto {
     private String brand;
 
     @NotBlank
+    private String body;
+
+    @NotBlank
     private String description;
 
     @NotBlank

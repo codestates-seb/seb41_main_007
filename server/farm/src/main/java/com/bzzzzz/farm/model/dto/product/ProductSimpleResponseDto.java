@@ -18,12 +18,20 @@ public class ProductSimpleResponseDto {
 
     private String productStatus;
 
+    private Double rating;
+
     @QueryProjection
-    public ProductSimpleResponseDto(Long productId, String name, int price, String photo, String productStatus) {
+    public ProductSimpleResponseDto(Long productId,
+                                    String name,
+                                    int price,
+                                    String photo,
+                                    String productStatus,
+                                    Double rating) {
         this.productId = productId;
         this.name = name;
         this.price = price;
         this.photo = photo;
         this.productStatus = productStatus;
+        this.rating = rating;
     }
 }
