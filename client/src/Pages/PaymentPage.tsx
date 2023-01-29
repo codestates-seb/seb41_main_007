@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { useState, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Totalpay from 'Components/PaymentPage/Totalpay';
@@ -35,7 +34,6 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
 
   const [data, setdata] = useState<TYPE_CartData[]>([]);
   const [isloading, setisLoading] = useState<boolean>(true);
-  const navigate = useNavigate();
   // const { loading, session } = useSession();
   const navigate = useNavigate();
   useEffect(() => {
