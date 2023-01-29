@@ -18,6 +18,7 @@ import { customTime } from 'Utils/commonFunction';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { useSession } from 'CustomHook/useSession';
 import { TYPE_COMMENT } from 'Types/common/product';
+import Rating from './Rating';
 const cx = className.bind(styles);
 
 const INITIALVALUE: Descendant[] = [
@@ -63,7 +64,6 @@ const CommentItem = ({ item }: { item: TYPE_COMMENT }) => {
     }
   }
   if (loading) return <></>;
-  console.log(item);
   return (
     <div className={styles.comment_list_wrapper}>
       <div className={styles.comment_input_rest}>
@@ -165,12 +165,11 @@ const ReviewList = () => {
         한번 더 시도하기
       </button>
     );
-  console.info(data.data);
   return (
     <>
       {data.data.length > 0 &&
         data.data.map((item: TYPE_COMMENT) => (
-          <CommentItem key={item.productId} item={item} />
+          <CommentItem key={item.reviewId} item={item} />
         ))}
       {/* {data.getComments.pageInfo.hasNextPage && (
         <div
@@ -252,7 +251,8 @@ const ReviewEdit: FC = () => {
           </div>
         </div>
         <div className={styles.Review_Container}>
-          <div className={styles.content}>리뷰 별점:</div>
+          {/* <div className={styles.content}>리뷰 별점:</div> */}
+          <Rating />
           <div className={styles.content}>
             <input
               type="text"
