@@ -49,7 +49,7 @@ export default function Page() {
   const [optionPrice, setOptionPrice] = useState<any>(0);
   const [optionName, setOptionName] = useState<any>('');
   const [categoryNum, setCategoryNum] = useState<number>(9999);
-  const [file, setFile] = useState<any>('');
+  const [file, setFile] = useState<any>();
 
   const { mutate } = useCustomMutation('/products', ['post', title], 'POST');
 

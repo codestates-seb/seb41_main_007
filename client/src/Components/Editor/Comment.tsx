@@ -75,9 +75,7 @@ const RichText = forwardRef<Ref, IProps>((props, ref) => {
       <Editable
         className={cx('doc')}
         placeholder={
-          session
-            ? 'コメントを追加'
-            : '匿名でコメントする場合は修正や削除できません'
+          session ? '리뷰 쓰기' : '리뷰를 쓰실려면 로그인을 해주세요'
         }
         renderLeaf={renderLeaf}
         renderElement={renderElement}

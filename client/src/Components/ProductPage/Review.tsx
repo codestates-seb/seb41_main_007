@@ -1,4 +1,5 @@
 import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import styles from './Styles/Review.module.css';
 import className from 'classnames/bind';
@@ -14,6 +15,9 @@ import ReadOnlyComment from '../Editor/ReadOnlyComment';
 import { EditComment, SimpleReadOnlyComment } from '../Editor/EditComment';
 
 import { customTime } from 'Utils/commonFunction';
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import { useSession } from 'CustomHook/useSession';
+import { TYPE_COMMENT } from 'Types/common/product';
 const cx = className.bind(styles);
 
 const INITIALVALUE: Descendant[] = [
@@ -23,20 +27,13 @@ const INITIALVALUE: Descendant[] = [
   },
 ];
 
-const CommentItem = ({
-  item,
-  session,
-  userInfo,
-  commentCount,
-}: {
-  item: any;
-  session?: any;
-  userInfo?: { nickname: string; userId: number };
-  commentCount: number;
-}) => {
+const CommentItem = ({ item }: { item: TYPE_COMMENT }) => {
+  const { loading, session } = useSession();
   const [replyValue, setReplyValue] = useState<Descendant[]>(INITIALVALUE);
   const [width, setWidth] = useState<number>(700);
-  const [data, setData] = useState<Descendant[]>(JSON.parse(item.body));
+  const [data, setData] = useState<Descendant[]>(
+    JSON.parse(item.reviewContent),
+  );
   const [editmode, setEditmode] = useState<boolean>(false);
   const node = useRef<HTMLDivElement>(null);
 
@@ -48,7 +45,7 @@ const CommentItem = ({
   }, [node]);
 
   function handlerOpenEditReply(id: string, name: string) {
-    if (id !== session?.user.id) {
+    if (id !== '11') {
       const newValue: Descendant[] = [
         {
           type: 'paragraph',
@@ -65,31 +62,31 @@ const CommentItem = ({
       setReplyValue(newValue);
     }
   }
-
+  if (loading) return <></>;
+  console.log(item);
   return (
     <div className={styles.comment_list_wrapper}>
       <div className={styles.comment_input_rest}>
         <div className={styles.comment_top}>
           <div className={styles.comment_top_added}>
             <Tooltip
-              content={new Date(item.createdAt).toLocaleDateString('ja')}
+              content={new Date(item.reviewCreatedAt).toLocaleDateString('ja')}
               arrow
             >
-              <span>{customTime(item.createdAt)}</span>
+              <span>{customTime(new Date(item.reviewCreatedAt))}</span>
             </Tooltip>
           </div>
         </div>
-        {editmode && session && userInfo ? (
+        {editmode && session ? (
           <EditComment
-            value={JSON.parse(item.body)}
-            commentId={item.id}
+            value={JSON.parse(item.reviewContent)}
+            commentId={item.reviewId}
             setCancel={() => setEditmode(false)}
             setData={(value: Descendant[]) => setData(value)}
           />
         ) : (
           <div className={styles.comment} ref={node}>
-            {JSON.parse(item.body).length > 4 ||
-            Math.floor(width / 14) * 4 < item.length ? (
+            {JSON.parse(item.reviewContent).length > 4 ? (
               <SimpleReadOnlyComment data={data} />
             ) : (
               <ReadOnlyComment data={data} />
@@ -117,6 +114,12 @@ const CommentItem = ({
 };
 
 const ReviewList = () => {
+  let { productid } = useParams();
+  productid = '2';
+  const { isLoading, data, refetch, error } = useCustomQuery(
+    `/reviews?productId=${1}&page=1&size=10`,
+    ['reviews', productid],
+  );
   // const { loading, error, data, fetchMore, refetch } = useQuery<
   //   CommentsData,
   //   CommentsVars
@@ -140,41 +143,35 @@ const ReviewList = () => {
   //   }
   // }, [data, fetchMore]);
   // const [ref, setRef] = useInfiniteScroll(getfetchMore);
-  // if (loading)
-  //   return (
-  //     <div
-  //       style={{ display: "flex", justifyContent: "center", marginTop: "10px" }}
-  //     >
-  //       <Loading width={30} />
-  //     </div>
-  //   );
-  // if (error || !data)
-  //   return (
-  //     <button
-  //       style={{
-  //         display: "flex",
-  //         justifyContent: "center",
-  //         marginTop: 15,
-  //         color: "var(--black-10)",
-  //       }}
-  //       onClick={() => refetch()}
-  //     >
-  //       もう一度やり直す
-  //     </button>
-  //   );
+  if (isLoading)
+    return (
+      <div
+        style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}
+      >
+        <Loading width={30} />
+      </div>
+    );
+  if (error)
+    return (
+      <button
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          marginTop: 15,
+          color: 'var(--black-10)',
+        }}
+        onClick={() => refetch()}
+      >
+        한번 더 시도하기
+      </button>
+    );
+  console.info(data.data);
   return (
     <>
-      {/* {data &&
-        data.getComments.comments.map((item) => (
-          <CommentItem
-            adminList={adminList}
-            key={item.id}
-            item={item}
-            session={session}
-            userInfo={userInfo}
-            commentCount={commentCount}
-          />
-        ))} */}
+      {data.data.length > 0 &&
+        data.data.map((item: TYPE_COMMENT) => (
+          <CommentItem key={item.productId} item={item} />
+        ))}
       {/* {data.getComments.pageInfo.hasNextPage && (
         <div
           ref={setRef}
@@ -193,6 +190,17 @@ const ReviewList = () => {
 };
 
 const ReviewEdit: FC = () => {
+  const [userImage, setUserImage] = useState<any>();
+  const handleChangeFile = (e: any) => {
+    let reader = new FileReader();
+    if (e.target.files[0]) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
+    reader.onloadend = () => {
+      const resultImage = reader.result;
+      setUserImage(resultImage);
+    };
+  };
   const INITIALVALUE: Descendant[] = [
     {
       type: 'paragraph',
@@ -211,33 +219,78 @@ const ReviewEdit: FC = () => {
       );
   };
 
-  const handlerSubmit = () => {};
+  const handlerSubmit = () => {
+    console.log(JSON.stringify(value));
+  };
+
   return (
-    <div className={styles.comment_container}>
-      <div className={styles.comment_input_rest}>
-        <div className={styles.comment_input}>
-          <CommentEditor
-            value={value}
-            setValue={(value: any) => setValue(value)}
-            ref={childRef}
-          />
+    <>
+      <div className={styles.comment_container}>
+        <div className={styles.Contents_Container}>
+          <div className={styles.content}>
+            {userImage && (
+              <img
+                width={200}
+                height={200}
+                src={userImage}
+                alt="reviewImage"
+                style={{ objectFit: 'cover' }}
+              />
+            )}
+
+            <label className={styles.Label_Button} htmlFor="imageFile">
+              이미지 선택
+            </label>
+
+            <input
+              id="imageFile"
+              type="file"
+              accept="image/svg, image/jpeg, image/png"
+              onChange={handleChangeFile}
+              className={styles.ReviewImage}
+            />
+          </div>
         </div>
-        <button
-          className={cx('comment_input_button', {
-            comment_input_button_sucess: !!text(value),
-          })}
-          onClick={handlerSubmit}
-        >
-          등록
-          {/* {loading ? <Loading width={18} /> : <span>등록</span>} */}
-        </button>
+        <div className={styles.Review_Container}>
+          <div className={styles.content}>리뷰 별점:</div>
+          <div className={styles.content}>
+            <input
+              type="text"
+              placeholder="리뷰제목을 입력해주세요"
+              // value={brand}
+              className={styles.inputContents}
+              style={{ width: '100%' }}
+              // onChange={(e) => setBrand(e.target.value)}
+            />
+          </div>
+          <div className={styles.comment_input}>
+            <CommentEditor
+              value={value}
+              setValue={(value: any) => setValue(value)}
+              ref={childRef}
+            />
+          </div>
+          <button
+            className={styles.comment_input_button}
+            onClick={handlerSubmit}
+          >
+            등록
+            {/* {loading ? <Loading width={18} /> : <span>등록</span>} */}
+          </button>
+        </div>
       </div>
-    </div>
+      <div className={styles.line}></div>
+    </>
   );
 };
 
 const Review: FC = () => {
-  return <ReviewEdit />;
+  return (
+    <div>
+      <ReviewEdit />
+      <ReviewList />
+    </div>
+  );
 };
 
 export default Review;

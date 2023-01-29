@@ -54,7 +54,7 @@ export const EditComment = ({
   value: Descendant[];
   setCancel: () => void;
   setData: (value: Descendant[]) => void;
-  commentId: string;
+  commentId: number;
 }) => {
   const [value, setValue] = useState<Descendant[]>(existingValue);
   const childRef = useRef<{ reset: () => void }>(null);

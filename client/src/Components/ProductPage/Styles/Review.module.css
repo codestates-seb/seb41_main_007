@@ -12,6 +12,7 @@
 .comment_container {
   display: flex;
 }
+
 .comment_input_user_image {
   width: 40px;
   height: 40px;
@@ -20,30 +21,24 @@
   overflow: hidden;
   background-color: #fff;
 }
-.comment_input_rest {
-  flex: 1;
-}
+
 .comment_input_name {
   color: var(--black-10);
   font-size: 13px;
   line-height: 13px;
   text-decoration: none;
 }
+
 .comment_input {
-  padding: 4px 0;
+  margin-top: 20px;
+  margin-left: 10px;
+  padding: 4px 0px 0px 0px;
   border-bottom: 1px solid var(--gray-12);
 }
 .comment_input:focus-within {
   border-color: var(--gray-45);
 }
-.comment_input_nosession {
-  flex: 1;
-  height: 18px;
-  padding: 4px 0;
-  border-bottom: 1px solid var(--gray-12);
-  cursor: text;
-  margin: auto 0;
-}
+
 .comment_placeholder {
   font-size: 14.45px;
   line-height: 18px;
@@ -51,8 +46,9 @@
   pointer-events: none;
   user-select: none;
 }
+
 .comment_input_button {
-  background-color: #71717166;
+  background-color: var(--green-70);
   margin-top: 4px;
   justify-content: center;
   align-items: center;
@@ -62,21 +58,15 @@
   line-height: 12px;
   border-radius: 6px;
   color: white;
-  display: none;
   margin-left: 100%;
   transform: translateX(-100%);
 }
-.comment_input:focus-within + .comment_input_button {
-  display: flex;
-}
-.comment_input_button_sucess {
-  display: flex;
-  background-color: var(--yellow-20);
-}
+
 .comment_list_toolbar {
   margin-top: 18px;
   display: flex;
 }
+
 .comment_list_toolbar_item {
   display: flex;
   align-items: center;
@@ -117,6 +107,7 @@
   display: flex;
   justify-content: flex-end;
 }
+
 .reply_comment_input_button {
   background-color: #71717166;
   margin-top: 4px;
@@ -131,6 +122,7 @@
   color: white;
   margin-left: 9px;
 }
+
 .reply_comment_input_cancel_button {
   color: var(--black-10);
   margin-top: 4px;
@@ -140,6 +132,7 @@
   border-radius: 6px;
   margin-left: 9px;
 }
+
 .reply_comment_input_button_sucess {
   background-color: var(--yellow-20);
 }
@@ -227,6 +220,57 @@
   line-height: 1;
   margin-left: 8px;
 }
+
+.line {
+  width: 100%;
+  border-bottom: 1px solid black;
+  margin: 30px 0;
+}
+
+.Contents_Container {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+}
+
+.Review_Container {
+  flex: 1;
+  padding: 20px;
+}
+
+.Label_Button {
+  padding: 10px 72px;
+  width: 100%;
+  font-size: 12px;
+  line-height: 12px;
+  background-color: var(--green-70);
+  border-radius: 6px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}
+
+.contents {
+  /* display: flex; */
+}
+
+.inputContents {
+  margin: 10px;
+  height: 40px;
+  color: var(--black-10);
+  border: 1px solid var(--gray-12);
+  border-radius: 4px;
+}
+
+.ReviewImage {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+}
+
 @media (hover: hover) {
   .comment_input_name:hover {
     text-decoration: underline;
