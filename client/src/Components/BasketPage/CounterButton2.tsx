@@ -50,20 +50,20 @@ const CounterButton2: FC<props> = ({
   const [count, setCount] = useState<number>(countNumber);
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);
-    if (session) {
-      const suggest = {
-        productOptionId: optionId,
-        quantity: +1,
-      };
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-        body: JSON.stringify(suggest),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session}`,
-        },
-        method: 'PATCH',
-      }).then((response) => console.log(response));
-    }
+    // if (session) {
+    //   const suggest = {
+    //     productOptionId: optionId,
+    //     quantity: +20,
+    //   };
+    //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+    //     body: JSON.stringify(suggest),
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       Authorization: `Bearer ${session}`,
+    //     },
+    //     method: 'PATCH',
+    //   }).then((response) => console.log(response));
+    // }
   };
 
   const onDecrease = () => {
@@ -71,20 +71,20 @@ const CounterButton2: FC<props> = ({
       if (prevCount === 1) {
         return prevCount;
       }
-      if (session) {
-        const suggest = {
-          productOptionId: optionId,
-          quantity: -1,
-        };
-        fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-          body: JSON.stringify(suggest),
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${session}`,
-          },
-          method: 'PATCH',
-        }).then((response) => console.log(response));
-      }
+      // if (session) {
+      //   const suggest = {
+      //     productOptionId: optionId,
+      //     quantity: -3,
+      //   };
+      //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+      //     body: JSON.stringify(suggest),
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       Authorization: `Bearer ${session}`,
+      //     },
+      //     method: 'PATCH',
+      //   }).then((response) => console.log(response));
+      // }
       return prevCount - 1;
     });
   };

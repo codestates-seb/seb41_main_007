@@ -5,7 +5,6 @@ interface Props {
   data: TYPE_CartData;
 }
 const BasketFour: React.FC<Props> = ({ data }) => {
-  console.log(data);
   return (
     <div className="mt-5 relative  h-32 w-12/12">
       <div>

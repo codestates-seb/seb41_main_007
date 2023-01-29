@@ -14,7 +14,7 @@ import { TYPE_CartData } from 'Types/common/product';
 import BasketfourList from 'Components/PaymentPage/BasketfourList';
 
 import Empty from 'Components/Common/Empty';
-
+import useScrollTop from 'CustomHook/useScrollTop';
 const Container = styled.div`
   width: 830px;
 `;
@@ -36,9 +36,8 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const [data, setdata] = useState<TYPE_CartData[]>([]);
   const [isloading, setisLoading] = useState<boolean>(true);
   // const { loading, session } = useSession();
-  console.log(session);
+
   useEffect(() => {
-    console.log('렌더링1');
     fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
       method: 'GET',
       headers: {
@@ -47,7 +46,6 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
       },
     })
       .then((res: Response) => {
-        console.log('렌더링2');
         return res.json();
       })
       .then((res) => {
@@ -59,6 +57,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
         setisLoading(false);
       });
   }, []);
+  useScrollTop();
 
   if (isloading) return <Empty />;
 
@@ -71,7 +70,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
             <div className="font-semibold py-4 text-2xl mb-3"> 주문서</div>
             <Title>
               <div className=" font-semibold py-4 text-xl">
-                주문상품정보 / 총2개
+                주문상품정보 / 총&nbsp;{data.length}개
               </div>
               <button onClick={() => setOrder(!order)}>
                 {order ? (
