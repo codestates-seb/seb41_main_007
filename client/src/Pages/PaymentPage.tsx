@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import { useSession } from 'CustomHook/useSession';
 import { TYPE_CartData } from 'Types/common/product';
 import BasketfourList from 'Components/PaymentPage/BasketfourList';
-import { useNavigate } from 'react-router-dom';
+
 import Empty from 'Components/Common/Empty';
 import useScrollTop from 'CustomHook/useScrollTop';
 const Container = styled.div`
@@ -32,7 +32,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const [address, setAddress] = useState<boolean>(true); //배송지
   const [payment, setPayment] = useState<boolean>(true); //결제수단
   const isModal = useSelector((state: any) => state.modal.isOpenModal);
-  const navigate = useNavigate();
+
   const [data, setdata] = useState<TYPE_CartData[]>([]);
   const [isloading, setisLoading] = useState<boolean>(true);
   // const { loading, session } = useSession();
