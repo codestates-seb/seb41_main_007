@@ -59,9 +59,6 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   }, []);
   useScrollTop();
 
-  if (!session) {
-    navigate(-1);
-  }
   if (isloading) return <Empty />;
 
   return (
