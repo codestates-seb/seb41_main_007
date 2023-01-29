@@ -1,6 +1,7 @@
 import Carousel from 'react-material-ui-carousel';
 import { Paper } from '@mui/material';
 import styled from 'styled-components';
+import styles from './Styles/Carousel.module.css';
 
 interface useCarousel {
   timer: number;
@@ -31,22 +32,18 @@ const Item = ({
       <Size>
         <Paper>
           <div className={back}>
-            <div className="mx-auto">
-              <div className="absolute lg:inset-y-28  md:inset-y-14  inset-y-4 mx-auto">
-                {short}
-              </div>
-              <h1 className="absolute lg:inset-y-44 lg:text-5xl md:inset-y-28 md:text-4xl  font-semibold inset-y-16 text-3xl">
-                {title}
-              </h1>
-              <p className="absolute lg:inset-y-64  lg:text-2xl md:inset-y-44 md: text-xl  inset-y-32">
-                {content}
-              </p>
-              <p className="absolute lg:inset-y-72  lg:text-2xl md:inset-y-52  md:text-xl inset-y-40 text-xl">
-                {content2}
-              </p>
-            </div>
             <div className="">
-              <img src={url} alt="carousel" className={place}></img>
+              <div className={styles.Carousel_Short}>{short}</div>
+              <h1 className={styles.Carousel_Title}>{title}</h1>
+              <p className={styles.Carousel_Content}>{content}</p>
+              <p className={styles.Carousel_Content2}>{content2}</p>
+            </div>
+            <div className={styles.Carousel_Img_Container}>
+              <img
+                src={url}
+                alt="carousel"
+                className={styles.Carousel_Img}
+              ></img>
             </div>
           </div>
         </Paper>
@@ -56,7 +53,7 @@ const Item = ({
 };
 export const Size = styled.div`
   img {
-    height: 480px;
+    height: 100%;
     width: 100%;
   }
   .background1 {
@@ -110,16 +107,17 @@ export const Carousell = (props: any) => {
         'object-none sm:object-left md:object-center lg:object-right lg:pr-72',
     },
     {
-      url: `https://cdn.inflearn.com/public/main_sliders/eead4cae-85b7-4faf-b8e4-6d7680037c2d/%5B%E1%84%86%E1%85%A6%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%92%E1%85%B5%E1%84%8B%E1%85%A5%E1%84%85%E1%85%A9%5D%E1%84%8C%E1%85%B5%E1%84%80%E1%85%B3%E1%86%B7%E1%84%92%E1%85%A1%E1%86%AF%E1%84%8B%E1%85%B5%E1%86%AB%E1%84%8C%E1%85%AE%E1%86%BC_521.gif`,
+      url: '/image/timer.gif',
       title: '지금 할인 중인 상품💸',
       content: '모든 전 상품의 할인 기회를',
       content2: '놓치지 마세요!',
       short: <Short2 />,
       back: 'background2',
-      place: 'object-none sm: object-left md:object-center lg:object-right',
+      place:
+        'object-none sm:object-left md:object-center lg:object-right lg:pr-72',
     },
     {
-      url: `https://media1.giphy.com/media/QHsMhRci6hfSqerbXy/giphy.gif?cid=ecf05e47wmvdyj0vhzmk2imbnw66zm7wyykoysob6n3jc6ls&rid=giphy.gif&ct=g`,
+      url: '/image/hand.gif',
       title: '농부들을 지지하는 팜피🐣',
       content: '농부들의 마음을 아는 팜피와',
       content2: '농사를 시작해보세요!',
@@ -131,7 +129,11 @@ export const Carousell = (props: any) => {
   ];
   return (
     <div className="mt-32">
-      <Carousel interval={900000000} animation={'slide'}>
+      <Carousel
+        interval={900000000}
+        animation={'slide'}
+        className={styles.Carousel_Container}
+      >
         {items.map((item, i) => (
           <Item key={i} {...item} />
         ))}
