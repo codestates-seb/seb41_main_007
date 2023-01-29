@@ -9,13 +9,13 @@ import { withHistory } from 'slate-history';
 
 import { Leaf, Element } from './comment_components';
 import { Descendant } from '../../Types/slate';
+import { useSession } from 'CustomHook/useSession';
 
 const cx = classNames.bind(styles);
 
 interface IProps {
   value: Descendant[];
   setValue: (value: Descendant[]) => void;
-  session?: boolean;
 }
 
 interface Ref {
@@ -23,6 +23,7 @@ interface Ref {
 }
 
 const RichText = forwardRef<Ref, IProps>((props, ref) => {
+  const { session, loading } = useSession();
   useImperativeHandle(ref, () => ({
     reset() {
       Transforms.delete(editor, {
@@ -68,12 +69,13 @@ const RichText = forwardRef<Ref, IProps>((props, ref) => {
     () => withMentions(withHistory(withReact(createEditor()))),
     [],
   );
+  if (loading) return <></>;
   return (
     <Slate editor={editor} value={value} onChange={(value) => setValue(value)}>
       <Editable
         className={cx('doc')}
         placeholder={
-          props.session
+          session
             ? 'コメントを追加'
             : '匿名でコメントする場合は修正や削除できません'
         }
