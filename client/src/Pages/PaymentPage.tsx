@@ -59,13 +59,8 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
         setisLoading(false);
       });
   }, []);
-  console.log('렌더링3');
 
-  if (!session) {
-    navigate(-1);
-  }
   if (isloading) return <Empty />;
-  console.log('렌더링4');
 
   return (
     <div>
