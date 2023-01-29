@@ -256,17 +256,19 @@ const BasketList: FC = () => {
         },
       })
         .then((res: Response) => {
-          console.log('렌더링2');
           return res.json();
         })
         .then((Carts: TYPE_CartData[]) => {
+          console.log('렌더링3');
           Carts.forEach((cartsData) => {
             const indexOption = basketOptionId.indexOf(
               cartsData.productOptionId,
             );
             const quantityValue =
               basketsCounter[indexOption].count - cartsData.quantity;
+            console.log('렌더링3');
             if (quantityValue !== 0) {
+              console.log('렌더링2');
               console.log(quantityValue);
               const suggest = {
                 productOptionId: cartsData.productOptionId,
@@ -284,14 +286,13 @@ const BasketList: FC = () => {
                 console.log(response);
                 navigate('/payment');
               });
-            } else {
-              navigate('/payment');
             }
-            // console.log(cartsData.productOptionId);
-            // console.log(basketsCounter[indexOption].count - cartsData.quantity);
+            navigate('/payment');
+            console.log('오호');
           });
+
+          navigate('/payment');
         });
-      console.log(basketOptionId);
     } else {
       navigate('/login');
     }
