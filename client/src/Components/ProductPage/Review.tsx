@@ -1,10 +1,9 @@
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import styles from './Styles/Review.module.css';
 import className from 'classnames/bind';
 
-import { Node } from 'slate';
 import { Descendant } from 'Types/slate';
 
 import Tooltip from 'Components/Common/Tooltip';
@@ -23,18 +22,15 @@ import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 const cx = className.bind(styles);
 
 interface Props {
-  productId: string | undefined;
+  productId: string;
+  session: string | null;
+}
+interface CommentItem {
+  session: string | null;
+  item: TYPE_COMMENT;
 }
 
-const CommentItem = ({ item }: { item: TYPE_COMMENT }) => {
-  const INITIALVALUE: Descendant[] = [
-    {
-      type: 'paragraph',
-      children: [{ text: '' }],
-    },
-  ];
-  const { loading, session } = useSession();
-  const [replyValue, setReplyValue] = useState<Descendant[]>(INITIALVALUE);
+const CommentItem: FC<CommentItem> = ({ item, session }) => {
   const [width, setWidth] = useState<number>(700);
   const [data, setData] = useState<Descendant[]>(
     JSON.parse(item.reviewContent),
@@ -49,25 +45,6 @@ const CommentItem = ({ item }: { item: TYPE_COMMENT }) => {
     }
   }, [node]);
 
-  function handlerOpenEditReply(id: string, name: string) {
-    if (id !== '11') {
-      const newValue: Descendant[] = [
-        {
-          type: 'paragraph',
-          children: [
-            {
-              type: 'mention',
-              character: name,
-              children: [{ text: '' }],
-            },
-            { text: '' },
-          ],
-        },
-      ];
-      setReplyValue(newValue);
-    }
-  }
-  if (loading) return <></>;
   return (
     <div className={styles.comment_list_wrapper}>
       <div className={styles.comment_input_rest}>
@@ -115,7 +92,7 @@ const CommentItem = ({ item }: { item: TYPE_COMMENT }) => {
   );
 };
 
-const ReviewList: FC<Props> = ({ productId }) => {
+const ReviewList: FC<Props> = ({ productId, session }) => {
   const { isLoading, data, refetch, error } = useCustomQuery(
     `/reviews?productId=${productId}&page=1&size=10`,
     ['reviews', productId],
@@ -158,7 +135,7 @@ const ReviewList: FC<Props> = ({ productId }) => {
     <>
       {data.data.length > 0 &&
         data.data.map((item: TYPE_COMMENT) => (
-          <CommentItem key={item.reviewId} item={item} />
+          <CommentItem key={item.reviewId} item={item} session={session} />
         ))}
       {/* {data.getComments.pageInfo.hasNextPage && (
         <div
@@ -177,16 +154,12 @@ const ReviewList: FC<Props> = ({ productId }) => {
   );
 };
 
-const ReviewEdit: FC<Props> = ({ productId }) => {
-  const { loading, session } = useSession();
-  if (loading) return <></>;
-  if (!productId) return <></>;
-
+const ReviewEdit: FC<Props> = ({ productId, session }) => {
   const { mutate } = useCustomMutation(
     '/reviews',
     ['reviews', productId],
     'POST',
-    session as string,
+    session,
   );
   const INITIALVALUE: Descendant[] = [
     {
@@ -288,7 +261,6 @@ const ReviewEdit: FC<Props> = ({ productId }) => {
             onClick={handlerSubmit}
           >
             등록
-            {/* {loading ? <Loading width={18} /> : <span>등록</span>} */}
           </button>
         </div>
       </div>
@@ -299,10 +271,14 @@ const ReviewEdit: FC<Props> = ({ productId }) => {
 
 const Review: FC = () => {
   const { productid } = useParams();
+  const { loading, session } = useSession();
+  if (loading) return <></>;
+  if (!productid) return <></>;
+
   return (
     <div>
-      <ReviewEdit productId={productid} />
-      <ReviewList productId={productid} />
+      <ReviewEdit productId={productid} session={session} />
+      <ReviewList productId={productid} session={session} />
     </div>
   );
 };
