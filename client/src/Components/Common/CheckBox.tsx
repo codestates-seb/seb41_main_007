@@ -14,7 +14,7 @@ const CheckAll = styled.div`
 
 const CheckBox: React.FC<{
   data: TYPE_CartData[];
-  onClickHandler: number;
+  onClickHandler: () => void;
 }> = ({ data, onClickHandler }) => {
   console.log(data);
   const [checkList, setCheckList] = useState<string[]>([]);
