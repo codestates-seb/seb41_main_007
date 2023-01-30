@@ -83,7 +83,6 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
 
   const handlerSubmit = () => {
     let score = starClicked.filter(Boolean).length;
-    const cache = queryClient.getQueryData(queryKey) as any;
     const submitValue = {
       reviewId: Date.now(),
       productId: parseInt(productId),
@@ -92,7 +91,9 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
       rating: score,
       reviewImage: userImage,
     };
+    const cache = queryClient.getQueryData(queryKey) as any;
     if (cache) {
+      console.log(cache);
       //중복제거
       const newArr = Array.from(new Set(cache.pages.map(JSON.stringify))).map(
         JSON.parse as any,
@@ -128,7 +129,7 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
                 className={styles.Input_User_Image}
               />
             ) : (
-              <div> </div>
+              <div className={styles.Empty_Image}> </div>
             )}
             <label className={styles.Label_Button} htmlFor="imageFile">
               이미지 선택

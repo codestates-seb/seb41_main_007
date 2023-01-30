@@ -23,6 +23,7 @@ export interface TYPE_COMMENT {
   reviewContent: string;
   reviewCreatedAt: string;
   rating: number;
+  reviewImage: string;
   eviewLastModifiedAt: string;
 }
 
