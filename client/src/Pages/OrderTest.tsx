@@ -15,7 +15,7 @@ const OrderTest: React.FC = () => {
           phone: '010-1111-1111',
           orderProductPostDtos: [
             {
-              productOptionId: 1,
+              productOptionId: 3,
               quantity: 1,
             },
           ],
