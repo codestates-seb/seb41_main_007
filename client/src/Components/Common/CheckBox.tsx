@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { modalActions } from 'Redux/reducer/modalSlice';
+import axios from 'axios';
 const CheckAll = styled.div`
   border-bottom: 1px dotted var(--black-02);
   margin-bottom: 12px;
@@ -11,6 +12,26 @@ const CheckAll = styled.div`
 const CheckBox: React.FC = () => {
   const [checkList, setCheckList] = useState<string[]>([]);
   const dispatch = useDispatch();
+
+  const [seturl, setUrl] = useState<string>('');
+  useEffect(() => {
+    axios({
+      url: `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=2`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((response) => {
+        console.log(response);
+        console.log(response.data.tid);
+        console.log(response.data.next_redirect_pc_url);
+        setUrl(response.data.next_redirect_pc_url);
+        console.log(seturl);
+      })
+      .catch((e) => {
+        console.info(e);
+      });
+  }, []);
+
   const modalOpenHandler = (event: any) => {
     event.preventDefault();
     dispatch(modalActions.openModal());
@@ -59,9 +80,11 @@ const CheckBox: React.FC = () => {
         [필수] 개인정보 수집 이용 동의
       </div>
       {checkList.length === 2 ? (
-        <button className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold">
-          결제하기
-        </button>
+        <a href={seturl} target="_blank" rel="noreferrer">
+          <button className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold">
+            결제하기
+          </button>
+        </a>
       ) : (
         <button
           onClick={modalOpenHandler}

@@ -1,10 +1,11 @@
 @media (max-width: 540px) {
   .Story_Container {
-    margin: 0px 0px 0px auto;
+    margin-left: 10px;
     @apply border-4 border-green-700 py-0 flex justify-between;
   }
   .Story_Main_Container {
-    @apply my-6 mx-6 py-0;
+    /* @apply my-6 mx-6 py-0; */
+    padding: 20px 10px;
   }
   .Story_Title {
     @apply bg-green-700 text-xs text-white mb-4 w-14 text-center rounded-xl;
@@ -18,7 +19,7 @@
   .Story_Button {
     @apply bg-green-700;
     width: 60px;
-    height: 300px;
+    height: 151px;
     font-size: 32px;
     color: white;
     display: flex;
