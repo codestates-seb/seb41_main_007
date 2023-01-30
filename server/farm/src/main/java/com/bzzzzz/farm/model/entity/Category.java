@@ -30,4 +30,8 @@ public class Category extends Auditable {
     public Category(Long categoryId) {
         this.categoryId = categoryId;
     }
+
+    public Category(String name) {
+        this.name = name;
+    }
 }
