@@ -86,7 +86,6 @@ const TopColRight: FC = () => {
         const optionIdData = res.map((getdata) => {
           return getdata.productOptionId;
         });
-
         const Filtered = basketsCounter.filter(
           (localData: TYPE_LocalOption) => {
             return !optionIdData.includes(localData.productOptionId);

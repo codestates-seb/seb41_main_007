@@ -8,7 +8,7 @@ export const useNumberComma = (num: number) => {
   return [num].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
-export const customTime = (getedValue: Date | number) => {
+export const customTime = (getedValue: Date | number | string) => {
   const date =
     typeof getedValue === 'object' ? getedValue : new Date(getedValue);
   const now = new Date();

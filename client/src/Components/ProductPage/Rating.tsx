@@ -28,6 +28,34 @@ const Rating: FC<Props> = ({ handleStarClick, clicked }) => {
   );
 };
 
+export const RatingView = ({ num }: { num: number }) => {
+  let arr = [];
+  for (let i = 0; i < num; i++) {
+    arr.push(i);
+  }
+  return (
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
+      {arr.map((el, idx) => {
+        return (
+          <div
+            key={idx}
+            style={{
+              display: 'flex',
+              color: '#fcc419',
+            }}
+          >
+            <FaStar size="20" />
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
 export default Rating;
 
 const Wrap = styled.div`
