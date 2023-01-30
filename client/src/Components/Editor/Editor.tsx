@@ -28,6 +28,7 @@ import {
   Wall,
   YoutubeButton,
 } from './Button/EditorButton';
+import { useCustomFormMutation } from 'CustomHook/useCustomMutaiton';
 
 type BLOCK = 'paragraph' | 'heading' | 'block-quote';
 
@@ -208,14 +209,9 @@ export default function RichText({ value, setValue }: IProps) {
 }
 
 export async function handlerCompresstion(editor: Editor, file: File) {
+  const { mutateAsync } = useCustomFormMutation('/file/upload', 'POST');
   if (file) {
-    const formData = new FormData();
-    formData.append('file', file);
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
-      method: 'POST',
-      body: formData,
-    })
-      .then((response) => response.json())
+    mutateAsync(file)
       .then(({ imageUrls }) => {
         const reader = new FileReader();
         reader.onload = function (e: any) {
@@ -240,7 +236,7 @@ export async function handlerCompresstion(editor: Editor, file: File) {
         reader.readAsDataURL(file);
       })
       .catch((e) => {
-        console.log(e);
+        console.info(e);
       });
   }
 }

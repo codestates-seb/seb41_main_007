@@ -1,173 +1,37 @@
 import { FC, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 
 import { Descendant } from 'Types/slate';
 
-import Tooltip from 'Components/Common/Tooltip';
-import Loading from 'Components/Loading/Loading';
-
 import Rating from './Rating';
 import CommentEditor from '../Editor/Comment';
-import ReadOnlyComment from '../Editor/ReadOnlyComment';
-import { EditComment, SimpleReadOnlyComment } from '../Editor/EditComment';
-
-import { customTime } from 'Utils/commonFunction';
-import { TYPE_COMMENT } from 'Types/common/product';
-
-import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { useSession } from 'CustomHook/useSession';
-import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
+import {
+  useCustomFormMutation,
+  useCustomMutation,
+} from 'CustomHook/useCustomMutaiton';
+
+import ReviewList from './ReviewList';
 
 import styles from './Styles/Review.module.css';
 interface Props {
   productId: string;
   session: string | null;
 }
-interface CommentItem {
-  session: string | null;
-  item: TYPE_COMMENT;
-}
 
-const CommentItem: FC<CommentItem> = ({ item, session }) => {
-  const [data, setData] = useState<Descendant[]>(
-    JSON.parse(item.reviewContent),
-  );
-  const [editmode, setEditmode] = useState<boolean>(false);
-  const node = useRef<HTMLDivElement>(null);
-
-  return (
-    <div className={styles.comment_list_wrapper}>
-      <div className={styles.comment_input_rest}>
-        <div className={styles.comment_top}>
-          <div className={styles.comment_top_added}>
-            <Tooltip
-              content={new Date(item.reviewCreatedAt).toLocaleDateString('ko')}
-              arrow
-            >
-              <span>{customTime(new Date(item.reviewCreatedAt))}</span>
-            </Tooltip>
-          </div>
-        </div>
-        {editmode && session ? (
-          <EditComment
-            value={JSON.parse(item.reviewContent)}
-            commentId={item.reviewId}
-            setCancel={() => setEditmode(false)}
-            setData={(value: Descendant[]) => setData(value)}
-          />
-        ) : (
-          <div className={styles.comment} ref={node}>
-            {JSON.parse(item.reviewContent).length > 4 ? (
-              <SimpleReadOnlyComment data={data} />
-            ) : (
-              <ReadOnlyComment data={data} />
-            )}
-          </div>
-        )}
-        <div className={styles.comment_toolbar}>
-          {/* <CommentToolbar
-            commentId={item.id}
-            commentUserId={item.user.id}
-            commentUsername={item.user.name}
-            userId={session?.user.id}
-            setEditmode={() => setEditmode(true)}
-            openReply={(id: string, name: string) =>
-              handlerOpenEditReply(id, name)
-            }
-            commentCount={commentCount}
-          /> */}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const ReviewList: FC<Props> = ({ productId, session }) => {
-  const { isLoading, data, refetch, error } = useCustomQuery(
-    `/reviews?productId=${productId}&page=1&size=10`,
-    ['reviews', productId],
-  );
-  // const getfetchMore = useCallback(() => {
-  //   if (data && data.getComments.pageInfo.hasNextPage) {
-  //     fetchMore({
-  //       variables: {
-  //         limit: 20,
-  //         cursor:
-  //           data.getComments.comments[data.getComments.comments.length - 1].id,
-  //       },
-  //     });
-  //   }
-  // }, [data, fetchMore]);
-  // const [ref, setRef] = useInfiniteScroll(getfetchMore);
-  if (isLoading)
-    return (
-      <div
-        style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}
-      >
-        <Loading width={30} />
-      </div>
-    );
-  if (error)
-    return (
-      <button
-        style={{
-          display: 'flex',
-          justifyContent: 'center',
-          marginTop: 15,
-          color: 'var(--black-10)',
-        }}
-        onClick={() => refetch()}
-      >
-        한번 더 시도하기
-      </button>
-    );
-  return (
-    <>
-      {data.data.length > 0 &&
-        data.data.map((item: TYPE_COMMENT) => (
-          <CommentItem key={item.reviewId} item={item} session={session} />
-        ))}
-      {/* {data.getComments.pageInfo.hasNextPage && (
-        <div
-          ref={setRef}
-          style={{
-            flex: 1,
-            display: "flex",
-            justifyContent: "center",
-            padding: "20px 0px",
-          }}
-        >
-          <Loading width={30} />
-        </div>
-      )} */}
-    </>
-  );
-};
+const INITIALVALUE: Descendant[] = [
+  {
+    type: 'paragraph',
+    children: [{ text: '' }],
+  },
+];
 
 const ReviewEdit: FC<Props> = ({ productId, session }) => {
-  if (!session)
-    return (
-      <>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          리뷰를 작성하실려면 로그인이 필요합니다.
-        </div>
-        <div className={styles.line}></div>
-      </>
-    );
-  const { mutate } = useCustomMutation(
-    '/reviews',
-    ['reviews', productId],
-    'POST',
-    session,
-  );
-  const INITIALVALUE: Descendant[] = [
-    {
-      type: 'paragraph',
-      children: [{ text: '' }],
-    },
-  ];
+  const queryClient = useQueryClient();
+  const queryKey = ['reviews', productId];
   const [userImage, setUserImage] = useState<any>();
-  const [clicked, setClicked] = useState<any>([
+  const [starClicked, setStarClicked] = useState<any>([
     false,
     false,
     false,
@@ -177,36 +41,77 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
   const [reviewTitle, setReviewTitle] = useState<string>('');
   const [value, setValue] = useState<Descendant[]>(INITIALVALUE);
   const childRef = useRef<{ reset: () => void }>(null);
+  const { mutate } = useCustomMutation(
+    '/reviews',
+    queryKey,
+    'POST',
+    session,
+    true,
+  );
+  const { mutateAsync } = useCustomFormMutation('/file/upload', 'POST');
+
+  if (!session)
+    return (
+      <>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          리뷰를 작성하실려면 로그인이 필요합니다.
+        </div>
+        <div className={styles.line}></div>
+      </>
+    );
 
   const handleStarClick = (index: number) => {
-    let clickStates = [...clicked];
+    let clickStates = [...starClicked];
     for (let i = 0; i < 5; i++) {
       clickStates[i] = i <= index ? true : false;
     }
-    setClicked(clickStates);
+    setStarClicked(clickStates);
   };
 
   const handleChangeFile = (e: any) => {
-    let reader = new FileReader();
     if (e.target.files[0]) {
-      reader.readAsDataURL(e.target.files[0]);
+      mutateAsync(e.target.files[0])
+        .then(({ imageUrls }) => {
+          setUserImage(imageUrls);
+        })
+        .catch((e) => {
+          console.info(e);
+          setUserImage('');
+        });
     }
-    reader.onloadend = () => {
-      const resultImage = reader.result;
-      setUserImage(resultImage);
-    };
   };
 
   const handlerSubmit = () => {
-    let score = clicked.filter(Boolean).length;
-
+    let score = starClicked.filter(Boolean).length;
+    const cache = queryClient.getQueryData(queryKey) as any;
     const submitValue = {
+      reviewId: Date.now(),
       productId: parseInt(productId),
       reviewTitle: reviewTitle,
       reviewContent: JSON.stringify(value),
       rating: score,
+      reviewImage: userImage,
     };
+    if (cache) {
+      //중복제거
+      const newArr = Array.from(new Set(cache.pages.map(JSON.stringify))).map(
+        JSON.parse as any,
+      );
+      const cacheAdd = {
+        result: [submitValue],
+        nextPage: true,
+        lastPage: false,
+      };
+      queryClient.setQueryData(queryKey, {
+        pages: [cacheAdd, ...newArr],
+        pageParams: { ...cache.pageParams },
+      });
+    }
     mutate(submitValue);
+    setValue(INITIALVALUE);
+    setStarClicked([false, false, false, false, false]);
+    setReviewTitle('');
+    setUserImage(null);
   };
 
   return (
@@ -239,7 +144,7 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
         </div>
         <div className={styles.Review_Container}>
           <div className={styles.content}>
-            <Rating handleStarClick={handleStarClick} clicked={clicked} />
+            <Rating handleStarClick={handleStarClick} clicked={starClicked} />
           </div>
           <div className={styles.content}>
             <input
