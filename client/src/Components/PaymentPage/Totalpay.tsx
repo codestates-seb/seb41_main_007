@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import CheckBox from 'Components/Common/CheckBox';
-import { TYPE_CartData } from 'Types/common/product';
+import { TYPE_CartData, TYPE_KakaoApi } from 'Types/common/product';
+type ProductData = { productOptionId: number; quantity: number };
 const Agree = styled.div``;
 const TotalContainer = styled.div`
   margin-top: 220px;
@@ -21,13 +22,50 @@ const Pay = styled.div`
 `;
 
 const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
+  const token = localStorage.getItem('access_token');
+  const productHandler = data.map((el: TYPE_KakaoApi) => {
+    const productDatas = {
+      productOptionId: el.productOptionId,
+      quantity: el.quantity,
+    };
+    return productDatas;
+  });
+  console.log('이거에룡용!!!', productHandler);
+  //
+  const onClickhandler = async () => {
+    const { onClickId } = await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/orders`,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          address: '주소',
+          name: '시영',
+          phone: '010-1111-1111',
+          orderProductPostDtos: [
+            //받아온 데이터 값 넣어야 함
+            {
+              productOptionId: 1,
+              quantity: 1,
+            },
+          ],
+        }),
+        method: 'POST',
+      },
+    )
+      .then((response) => response.json())
+      .catch((e) => console.info(e));
+    console.info(onClickId);
+  };
   return (
     <>
       <div>
         <TotalContainer>
           <div className="container">
             <div className="title flex justify-between py-4">
-              <span className="font-semibold">주문상품 정보 / 총 2개 </span>
+              <span className="font-semibold">주문상품 정보 / 총 2개</span>
               <span className="font-semibold text-sm text-gray-500">
                 상세보기
               </span>
@@ -54,7 +92,7 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
             </Pay>
             <Agree>
               <div className="text-sm text-gray-500 my-5">
-                <CheckBox data={data} />
+                <CheckBox data={data} onClickHandler={onClickhandler} />
               </div>
             </Agree>
           </div>
