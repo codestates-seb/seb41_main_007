@@ -14,14 +14,13 @@ const CheckAll = styled.div`
 
 const CheckBox: React.FC<{
   data: TYPE_CartData[];
-  onClickHandler: () => void;
-}> = ({ data, onClickHandler }) => {
+  orderid: number;
+}> = ({ data }) => {
   console.log(data);
   const [checkList, setCheckList] = useState<string[]>([]);
   const dispatch = useDispatch();
 
   const [seturl, setUrl] = useState<string>('');
-
   useEffect(() => {
     axios({
       url: `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=${33}`,
@@ -90,10 +89,7 @@ const CheckBox: React.FC<{
       </div>
       {checkList.length === 2 ? (
         <a href={seturl} target="_blank" rel="noreferrer">
-          <button
-            onClick={() => onClickHandler}
-            className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold"
-          >
+          <button className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold">
             결제하기
           </button>
         </a>
