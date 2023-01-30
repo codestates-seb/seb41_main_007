@@ -14,6 +14,7 @@ public class OrderProductResponseDto {
     private long productOptionId;
     private String productOptionName;
     private int productOptionPrice;
+    private int quantity;
     // 배송에 관한 내용
     private String shippingCountry;
     private String shippingMethod;
@@ -29,6 +30,7 @@ public class OrderProductResponseDto {
                                    int productPrice,
                                    long productOptionId,
                                    String productOptionName,
+                                   int quantity,
                                    int productOptionPrice,
                                    String shippingCountry,
                                    String shippingMethod,
@@ -41,6 +43,7 @@ public class OrderProductResponseDto {
         this.productPrice = productPrice;
         this.productOptionId = productOptionId;
         this.productOptionName = productOptionName;
+        this.quantity = quantity;
         this.productOptionPrice = productOptionPrice;
         this.shippingCountry = shippingCountry;
         this.shippingMethod = shippingMethod;

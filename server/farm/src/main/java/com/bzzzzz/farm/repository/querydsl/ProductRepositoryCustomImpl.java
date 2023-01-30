@@ -5,6 +5,9 @@ import com.bzzzzz.farm.model.dto.product.QProductSimpleResponseDto;
 import com.querydsl.core.types.Order;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.SimpleExpression;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -25,19 +28,28 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
 
     @Override
     public Page<ProductSimpleResponseDto> searchAll(Long categoryId, String keyword, Pageable pageable) {
+        // 제품당 별점
+        SimpleExpression<Double> rating = Expressions.as(JPAExpressions
+                .select(review.rating.avg())
+                .from(review)
+                .where(product.productId.eq(review.product.productId)), "rating");
+
+        // 메인 쿼리
         JPAQuery<ProductSimpleResponseDto> query = queryFactory
                 .select(new QProductSimpleResponseDto(
                         product.productId,
                         product.name,
                         product.price,
                         product.photo,
-                        product.productStatus.stringValue()))
+                        product.productStatus.stringValue(),
+                        rating))
                 .from(product)
                 .where(
                         eqCategory(categoryId),
                         eqKeyword(keyword)
                 );
 
+        // 정렬 조건
         List<ProductSimpleResponseDto> result = query
                 .orderBy(getOrderSpecifier(pageable))
                 .offset(pageable.getOffset())
@@ -79,8 +91,8 @@ public class ProductRepositoryCustomImpl implements ProductRepositoryCustom {
                 return new OrderSpecifier(order, product.likes.size());
             case "soldCount":
                 return new OrderSpecifier(order, product.soldCount);
-//            case "star":
-//                return new OrderSpecifier<>(order, product.reviews.any().rating.avg());
+            case "rating":
+                return new OrderSpecifier<>(order, Expressions.stringPath("rating"));
             default:
                 return new OrderSpecifier(order, product.productId);
         }

@@ -1,5 +1,7 @@
 package com.bzzzzz.farm.common.security.jwt;
 
+import com.bzzzzz.farm.common.exception.BusinessLogicException;
+import com.bzzzzz.farm.common.exception.ExceptionCode;
 import com.bzzzzz.farm.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -24,20 +26,20 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
+@Getter
 @Component
 @RequiredArgsConstructor
 public class JwtTokenizer {
-    @Getter
     @Value("${jwt.key}")
     private String secretKey;
 
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60;    // 액세스 토큰 만료 시간 : 1시간
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 2;    // 액세스 토큰 만료 시간 : 2시간
+
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7; // 리프레쉬 토큰 만료 시간 : 7일
     private final MemberRepository memberRepository;
     public String encodeBase64SecretKey(String secretKey) {
         return Encoders.BASE64.encode(secretKey.getBytes(StandardCharsets.UTF_8));
     }
-
 
     public String generateAccessToken(Authentication authentication,String base64EncodedSecretKey) {
         // claim 생성
@@ -99,13 +101,13 @@ public class JwtTokenizer {
                     .build().parseClaimsJws(token);
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("잘못된 JWT 서명입니다.");
+            throw new BusinessLogicException(ExceptionCode.WRONG_TOKEN_SIGNATURE); //잘못된 JWT 서명
         } catch (ExpiredJwtException e) {
-            log.info("만료된 JWT 토큰입니다.");
+            throw new BusinessLogicException(ExceptionCode.EXPIRATION_TOKEN); //만료된 JWT
         } catch (UnsupportedJwtException e) {
-            log.info("지원되지 않는 JWT 토큰입니다.");
+            throw new BusinessLogicException(ExceptionCode.UNSUPPORTED_TOKEN);   //지원되지 않는 JWT토큰
         } catch (IllegalArgumentException e) {
-            log.info("JWT 토큰이 잘못되었습니다.");
+            log.info("JWT 토큰이 잘못되었습니다.");      //잘못된 JWT
         }
         return false;
     }

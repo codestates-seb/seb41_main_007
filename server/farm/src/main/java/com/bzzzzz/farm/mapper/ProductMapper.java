@@ -41,21 +41,6 @@ public interface ProductMapper {
         return product;
     }
 
-    List<ProductSimpleResponseDto> productsToProductSimpleResponseDtos(List<Product> products);
-
-    default ProductSimpleResponseDto productToProductSimpleResponseDto(Product product) {
-        if (product == null) {
-            return null;
-        }
-
-        return new ProductSimpleResponseDto(
-                product.getProductId(),
-                product.getName(),
-                product.getPrice(),
-                product.getPhoto(),
-                product.getProductStatus().getStatus());
-    }
-
     default ProductDetailResponseDto productToProductDetailResponseDto(Product product, Boolean isLiked) {
         if (product == null) {
             return null;
