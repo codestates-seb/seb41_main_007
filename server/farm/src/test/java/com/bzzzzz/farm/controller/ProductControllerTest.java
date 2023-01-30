@@ -157,6 +157,7 @@ public class ProductControllerTest {
                 .likeCount(30)
                 .soldCount(10)
                 .isLiked(false)
+                .rating(5.0)
                 .productCategoryResponseDtos(
                         List.of(
                                 ProductCategoryResponseDto
@@ -202,6 +203,7 @@ public class ProductControllerTest {
                 .andExpect(jsonPath("$.likeCount").value(response.getLikeCount()))
                 .andExpect(jsonPath("$.soldCount").value(response.getSoldCount()))
                 .andExpect(jsonPath("$.isLiked").value(response.getIsLiked()))
+                .andExpect(jsonPath("$.rating").value(response.getRating()))
                 .andExpect(jsonPath("$.productCategoryResponseDtos").isArray())
                 .andExpect(jsonPath("$.productCategoryResponseDtos[0].productCategoryId").value(response.getProductCategoryResponseDtos().get(0).getProductCategoryId()))
                 .andExpect(jsonPath("$.productCategoryResponseDtos[0].categoryId").value(response.getProductCategoryResponseDtos().get(0).getCategoryId()))
@@ -231,6 +233,7 @@ public class ProductControllerTest {
                                 fieldWithPath("likeCount").type(JsonFieldType.NUMBER).description("추천수"),
                                 fieldWithPath("soldCount").type(JsonFieldType.NUMBER).description("판매량"),
                                 fieldWithPath("isLiked").type(JsonFieldType.BOOLEAN).description("추천 눌렀는지 여부(로그인 했을 경우)"),
+                                fieldWithPath("rating").type(JsonFieldType.NUMBER).description("제품의 평균 별점"),
                                 fieldWithPath("productOptionResponseDtos").type(JsonFieldType.ARRAY).description("제품 옵션 목록"),
                                 fieldWithPath("productOptionResponseDtos[*].productOptionId").type(JsonFieldType.NUMBER).description("옵션 식별자"),
                                 fieldWithPath("productOptionResponseDtos[*].productOptionName").type(JsonFieldType.STRING).description("옵션명"),
