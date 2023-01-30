@@ -1,6 +1,8 @@
 package com.bzzzzz.farm.controller;
 
+import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.service.LikeService;
+import com.bzzzzz.farm.service.ProductService;
 import com.google.gson.Gson;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
@@ -36,12 +39,15 @@ public class LikeControllerTest {
     private Gson gson;
     @MockBean
     private LikeService likeService;
+    @MockBean
+    private ProductService productService;
 
     @Test
     @DisplayName("제품 추천하기(좋아요)")
     void postLike() throws Exception {
         // given
-        doNothing().when(likeService).createLike(Mockito.anyLong(), Mockito.anyLong());
+        given(productService.findVerifiedProduct(Mockito.anyLong())).willReturn(new Product());
+        doNothing().when(likeService).createLike(Mockito.anyLong(), Mockito.any(Product.class));
 
         // when
         ResultActions actions = mockMvc.perform(
@@ -63,7 +69,8 @@ public class LikeControllerTest {
     @DisplayName("추천 취소하기(좋아요취소)")
     void deleteLike() throws Exception {
         // given
-        doNothing().when(likeService).deleteLike(Mockito.anyLong(), Mockito.anyLong());
+        given(productService.findVerifiedProduct(Mockito.anyLong())).willReturn(new Product());
+        doNothing().when(likeService).deleteLike(Mockito.anyLong(), Mockito.any(Product.class));
 
         // when
         ResultActions actions = mockMvc.perform(
