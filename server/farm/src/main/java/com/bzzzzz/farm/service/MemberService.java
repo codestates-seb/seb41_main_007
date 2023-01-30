@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,17 +25,23 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final MemberMapper mapper;
 
-    public MemberDto.Response updateMember(MemberDto.Patch request) throws ParseException {
-        Member member = mapper.memberPatchToMember(request);
+    public MemberDto.Response updateMember(MemberDto.Patch request) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 
-        Member findMember = findVerifiedMember(member.getMemberId());
-        Optional.ofNullable(member.getName())
+        Member findMember = findVerifiedMember(request.getMemberId());
+        Optional.ofNullable(request.getName())
                 .ifPresent(name -> findMember.setName(name));
-        Optional.ofNullable(member.getBirth())
-                .ifPresent(birth -> findMember.setBirth(birth));
-        Optional.ofNullable(member.getGender())
+        Optional.ofNullable(request.getBirth())
+                .ifPresent(birth -> {
+                    try {
+                        findMember.setBirth(formatter.parse(birth));
+                    } catch (ParseException e) {
+                        throw new BusinessLogicException(ExceptionCode.PARSE_EXCEPTION);
+                    }
+                });
+        Optional.ofNullable(request.getGender())
                 .ifPresent(gender -> findMember.setGender(gender));
-        Optional.ofNullable(member.getPhoneNumber())
+        Optional.ofNullable(request.getPhoneNumber())
                 .ifPresent(phoneNumber -> findMember.setPhoneNumber(phoneNumber));
 
         memberRepository.save(findMember);

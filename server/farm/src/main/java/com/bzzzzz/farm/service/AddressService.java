@@ -2,7 +2,7 @@ package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
-import com.bzzzzz.farm.mapper.MemberMapper;
+import com.bzzzzz.farm.mapper.AddressMapper;
 import com.bzzzzz.farm.model.dto.member.AddressDto;
 import com.bzzzzz.farm.model.entity.Address;
 import com.bzzzzz.farm.model.entity.Member;
@@ -13,14 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class AddressService {
     private final AddressRepository addressRepository;
-    private final MemberMapper mapper;
+    private final AddressMapper mapper;
 
     public AddressDto.Response createAddress(AddressDto.Post request, long memberId){
         Address address = mapper.addressPostToAddress(request);

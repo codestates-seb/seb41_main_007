@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
+import static com.bzzzzz.farm.common.Safety.toLong;
+
 @RestController
 @RequestMapping("/addresses")
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class AddressController {
     public ResponseEntity postAddress(@Valid @RequestBody AddressDto.Post request,
                                       @AuthenticationPrincipal UserDetails userDetails) {
 
-        return ResponseEntity.ok(addressService.createAddress(request,Long.valueOf(userDetails.getUsername())));
+        return ResponseEntity.ok(addressService.createAddress(request,toLong(userDetails.getUsername())));
     }
 
     //주소 수정
@@ -40,7 +42,7 @@ public class AddressController {
     //사용자가 등록한 주소 목록 반환
     @GetMapping
     public ResponseEntity getAddresses(@AuthenticationPrincipal UserDetails userDetails){
-        return ResponseEntity.ok(addressService.findAddresses(Long.valueOf(userDetails.getUsername())));
+        return ResponseEntity.ok(addressService.findAddresses(toLong(userDetails.getUsername())));
     }
 
     //주소 삭제
