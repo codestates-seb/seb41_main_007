@@ -23,6 +23,7 @@ public class ReviewToReviewsResponseDto {
     private String reviewLastModifiedAt;
 
 
+
     public ReviewToReviewsResponseDto(Long productId, Long reviewId, Long memberId, String reviewTitle, String reviewContent, float rating, String reviewImage, LocalDateTime reviewCreatedAt, LocalDateTime reviewLastModifiedAt) {
         this.productId = productId;
         this.reviewId = reviewId;

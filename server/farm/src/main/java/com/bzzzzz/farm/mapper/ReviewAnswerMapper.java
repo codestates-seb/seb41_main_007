@@ -37,11 +37,16 @@ public interface ReviewAnswerMapper {
             return reviewAnswerResponseDto;
         }
     }
-    default ReviewAnswer reviewAnswerPatchDtoToReviewAnswer(ReviewAnswerPatchDto reviewAnswerPatchDto) {
+    default ReviewAnswer reviewAnswerPatchDtoToReviewAnswer(ReviewAnswer findReviewAnswer,ReviewAnswerPatchDto reviewAnswerPatchDto, Review review) {
         if (reviewAnswerPatchDto == null) {
             return null;
         } else {
-            ReviewAnswer reviewAnswer = new ReviewAnswer(reviewAnswerPatchDto.getReview(),reviewAnswerPatchDto.getReviewAnswerTitle(),reviewAnswerPatchDto.getReviewAnswerContent());
+            ReviewAnswer reviewAnswer = new ReviewAnswer(
+                    findReviewAnswer.getReviewAnswerId(),
+                    review,
+                    reviewAnswerPatchDto.getReviewAnswerTitle(),
+                    reviewAnswerPatchDto.getReviewAnswerContent()
+            );
             return reviewAnswer;
         }
     }

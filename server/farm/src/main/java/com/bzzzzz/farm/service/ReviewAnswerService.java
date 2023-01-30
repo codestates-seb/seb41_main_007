@@ -40,14 +40,20 @@ public class ReviewAnswerService {
     }
 
     public ReviewAnswer updateReviewAnswer(ReviewAnswer reviewAnswer) {
-        return reviewAnswerRepository.save(reviewAnswer);
+        ReviewAnswer findReviewAnswer = findVerifiedReviewAnswer(reviewAnswer.getReviewAnswerId());
+        findReviewAnswer.setReviewAnswerTitle(reviewAnswer.getReviewAnswerTitle());
+        findReviewAnswer.setReviewAnswerContent(reviewAnswer.getReviewAnswerContent());
+        ReviewAnswer saveReviewAnswer = reviewAnswerRepository.save(findReviewAnswer);
+        return saveReviewAnswer;
     }
     public void deleteReviewAnswer(Long reviewAnswerId) {
         ReviewAnswer findReviewAnswer = findVerifiedReviewAnswer(reviewAnswerId);
-        reviewAnswerRepository.delete(findReviewAnswer);
+        Review findReview = reviewRepository.findReviewByReviewId(findReviewAnswer.getReview().getReviewId()).orElseThrow();
+        findReview.setReviewAnswer(null);
+        reviewRepository.save(findReview);
     }
 
-    private ReviewAnswer findVerifiedReviewAnswer(Long reviewAnswerId) {
+    public ReviewAnswer findVerifiedReviewAnswer(Long reviewAnswerId) {
         return reviewAnswerRepository.findById(reviewAnswerId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.REVIEW_ANSWER_NOT_FOUND));
     }
