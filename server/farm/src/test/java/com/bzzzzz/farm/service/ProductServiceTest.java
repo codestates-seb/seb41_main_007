@@ -79,7 +79,7 @@ public class ProductServiceTest {
         given(productMapper.productToProductDetailResponseDto(Mockito.any(Product.class), Mockito.anyBoolean())).willReturn(responseDto);
 
         // when
-        ProductDetailResponseDto result = productService.findProduct(1L);
+        ProductDetailResponseDto result = productService.findProduct(1L, false);
 
         // then
         assertEquals(1, result.getViewCount());
