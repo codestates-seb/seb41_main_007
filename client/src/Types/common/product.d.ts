@@ -103,3 +103,10 @@ export interface TYPE_getAddress {
   detailAddress: string;
   phoneNumber: string;
 }
+
+export interface TYPE_UrlProp {
+  next_redirect_pc_url: string;
+  created_at: string;
+  next_redirect_mobile_url: string;
+  tid: string;
+}
