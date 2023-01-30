@@ -53,20 +53,18 @@ public class ReviewService {
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
-    public Review updateReview(Review review, Long userId) {
+    public Review updateReview(Long reviewId, Review review, Long userId) {
 
         log.info("updateReview : "+review.getReviewId());
         //reviewId로 저장된 리뷰 불러오기
-        Review findReview = findVerifiedReview(review.getReviewId());
+        Review findReview = findVerifiedReview(reviewId);
         Member member = new Member();
         member.setMemberId(userId);
-        if(findReview.getMember().getMemberId() != member.getMemberId()){
-            throw new BusinessLogicException(ExceptionCode.INVALID_USER);
-        }
         //리뷰 내용 업데이트 로직
         findReview.setReviewTitle(review.getReviewTitle());
         findReview.setReviewContent(review.getReviewContent());
-
+        findReview.setRating(review.getRating());
+        findReview.setReviewImage(review.getReviewImage());
         return reviewRepository.save(findReview);
 
     }
