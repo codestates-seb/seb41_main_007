@@ -15,6 +15,17 @@ export interface TYPE_PageInfo {
   totalPages: number;
 }
 
+export interface TYPE_COMMENT {
+  productId: number;
+  reviewId: number;
+  memberId: number;
+  reviewTitle: string;
+  reviewContent: string;
+  reviewCreatedAt: string;
+  rating: number;
+  eviewLastModifiedAt: string;
+}
+
 export interface OnHandleModal {
   isOpenModal: boolean;
   onClickToggleModal: () => void;
@@ -80,7 +91,10 @@ export interface TYPE_UserAddress {
   phoneNumber: string;
 }
 
-export interface TYPE_KakaoApi {
-  productOptionId: number;
-  quantity: number;
+export interface TYPE_getAddress {
+  addressId: number;
+  addressName: string;
+  name: string;
+  detailAddress: string;
+  phoneNumber: string;
 }

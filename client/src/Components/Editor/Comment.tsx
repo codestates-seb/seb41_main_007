@@ -15,7 +15,6 @@ const cx = classNames.bind(styles);
 interface IProps {
   value: Descendant[];
   setValue: (value: Descendant[]) => void;
-  session?: boolean;
 }
 
 interface Ref {
@@ -68,15 +67,12 @@ const RichText = forwardRef<Ref, IProps>((props, ref) => {
     () => withMentions(withHistory(withReact(createEditor()))),
     [],
   );
+
   return (
     <Slate editor={editor} value={value} onChange={(value) => setValue(value)}>
       <Editable
         className={cx('doc')}
-        placeholder={
-          props.session
-            ? 'コメントを追加'
-            : '匿名でコメントする場合は修正や削除できません'
-        }
+        placeholder={'리뷰내용 쓰기'}
         renderLeaf={renderLeaf}
         renderElement={renderElement}
         decorate={decorate}

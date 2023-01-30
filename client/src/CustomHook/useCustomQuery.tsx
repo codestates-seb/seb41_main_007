@@ -18,7 +18,10 @@ export const useCustomQuery = (
       if (token) {
         return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
           method: 'GET',
-          headers: { 'Content-Type': 'application/json', Authorization: token },
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
         })
           .then((res: Response) => {
             return res.json();
