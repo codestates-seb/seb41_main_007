@@ -62,6 +62,5 @@ public class MemberDto {
         private String email;
         private String gender;
         private String phoneNumber;
-        private List<AddressDto.Response> addresses;
     }
 }
