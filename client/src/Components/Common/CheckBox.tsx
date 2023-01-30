@@ -14,31 +14,31 @@ const CheckAll = styled.div`
 
 const CheckBox: React.FC<{
   data: TYPE_CartData[];
-  onClickHandler: () => void;
-}> = ({ data, onClickHandler }) => {
+  onClickhandler: () => void;
+}> = ({ data, onClickhandler }) => {
   console.log(data);
   const [checkList, setCheckList] = useState<string[]>([]);
   const dispatch = useDispatch();
 
   const [seturl, setUrl] = useState<string>('');
 
-  useEffect(() => {
-    axios({
-      url: `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=${33}`,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => {
-        console.log(response);
-        console.log(response.data.tid);
-        console.log(response.data.next_redirect_pc_url);
-        setUrl(response.data.next_redirect_pc_url);
-        console.log(seturl);
-      })
-      .catch((e) => {
-        console.info(e);
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios({
+  //     url: `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=${33}`,
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //   })
+  //     .then((response) => {
+  //       console.log(response);
+  //       console.log(response.data.tid);
+  //       console.log(response.data.next_redirect_pc_url);
+  //       setUrl(response.data.next_redirect_pc_url);
+  //       console.log(seturl);
+  //     })
+  //     .catch((e) => {
+  //       console.info(e);
+  //     });
+  // }, []);
 
   const modalOpenHandler = (event: any) => {
     console.log('안녕');
@@ -89,14 +89,12 @@ const CheckBox: React.FC<{
         [필수] 개인정보 수집 이용 동의
       </div>
       {checkList.length === 2 ? (
-        <a href={seturl} target="_blank" rel="noreferrer">
-          <button
-            onClick={() => onClickHandler}
-            className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold"
-          >
-            결제하기
-          </button>
-        </a>
+        <button
+          onClick={onClickhandler}
+          className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold"
+        >
+          결제하기
+        </button>
       ) : (
         <button
           onClick={modalOpenHandler}

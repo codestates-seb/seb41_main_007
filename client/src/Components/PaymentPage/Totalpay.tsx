@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import CheckBox from 'Components/Common/CheckBox';
 import { TYPE_CartData, TYPE_KakaoApi } from 'Types/common/product';
+import { useEffect, useState } from 'react';
 type ProductData = { productOptionId: number; quantity: number };
 const Agree = styled.div``;
 const TotalContainer = styled.div`
@@ -22,6 +23,8 @@ const Pay = styled.div`
 `;
 
 const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
+  const [order_id, setorder_id] = useState<number>(0);
+  console.log(order_id);
   const token = localStorage.getItem('access_token');
   const productHandler = data.map((el: TYPE_KakaoApi) => {
     const productDatas = {
@@ -32,7 +35,10 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
   });
   console.log('이거에룡용!!!', productHandler);
   //
-  const onClickhandler = async () => {
+
+  useEffect(() => {}, []);
+
+  const onClickhandler = () => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
       headers: {
         'Content-Type': 'application/json',
@@ -42,18 +48,31 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
         address: '주소',
         name: '시영',
         phone: '010-1111-1111',
-        orderProductPostDtos: [
-          //받아온 데이터 값 넣어야 함
-          {
-            productOptionId: 1,
-            quantity: 1,
-          },
-        ],
+        orderProductPostDtos: productHandler,
       }),
       method: 'POST',
     })
       .then((response) => response.json())
-      .then((response) => console.log(response))
+      .then((response) => {
+        console.log(response);
+        console.log(
+          `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=${response.data}`,
+        );
+        fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=${response.data}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'POST',
+          },
+        )
+          .then((response) => response.json())
+          .then((response) => console.log(response))
+          .catch((e) => {
+            console.info(e);
+          });
+      })
       .catch((e) => console.info(e));
   };
   return (
@@ -89,7 +108,7 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
             </Pay>
             <Agree>
               <div className="text-sm text-gray-500 my-5">
-                <CheckBox data={data} onClickHandler={onClickhandler} />
+                <CheckBox data={data} onClickhandler={onClickhandler} />
               </div>
             </Agree>
           </div>
