@@ -104,7 +104,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
             </Title>
             {payment && <SaveAddress />}
           </Container>
-          <Totalpay />
+          <Totalpay data={data} />
         </div>
       </BGcontainer>
     </div>
