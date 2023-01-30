@@ -1,11 +1,11 @@
 package com.bzzzzz.farm.service;
 
-import com.bzzzzz.farm.model.entity.Like;
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
-import com.bzzzzz.farm.repository.LikeRepository;
+import com.bzzzzz.farm.model.entity.Like;
 import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.model.entity.Product;
+import com.bzzzzz.farm.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -18,16 +18,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LikeService {
     private final LikeRepository likeRepository;
-    private final ProductService productService;
 
     @CacheEvict(value = "getMain", allEntries = true)
-    public void createLike(long memberId, long productId) {
-        //Todo: 멤버들어오면 멤버유효성 검증을 통해 찾은 멤버로 수정해야함
+    public void createLike(long memberId, Product product) {
         Member member = new Member();
         member.setMemberId(memberId);
-
-        // Product 유효성 검증
-        Product product = productService.findVerifiedProduct(productId);
 
         // 이미 좋아요를 눌렀는가 ?
         verifyExistsLike(member, product);
@@ -37,13 +32,9 @@ public class LikeService {
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
-    public void deleteLike(long memberId, long productId) {
-        //Todo: 멤버들어오면 멤버유효성 검증을 통해 찾은 멤버로 수정해야함
+    public void deleteLike(long memberId, Product product) {
         Member member = new Member();
         member.setMemberId(memberId);
-
-        // Product 유효성 검증
-        Product product = productService.findVerifiedProduct(productId);
 
         // 좋아요를 누른적이 있는가 ?
         Like findLike = findVerifiedLike(member, product);

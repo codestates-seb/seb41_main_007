@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.controller;
 
 import com.bzzzzz.farm.service.LikeService;
+import com.bzzzzz.farm.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +22,12 @@ import static com.bzzzzz.farm.common.Safety.toLong;
 @RequiredArgsConstructor
 public class LikeController {
     private final LikeService likeService;
+    private final ProductService productService;
 
     @PostMapping("/likes/{product-id}")
     public ResponseEntity postLike(@Positive @PathVariable("product-id") long productId,
                                    @AuthenticationPrincipal UserDetails userDetails) {
-
-        likeService.createLike(toLong(userDetails.getUsername()), productId);
+        likeService.createLike(toLong(userDetails.getUsername()), productService.findVerifiedProduct(productId));
 
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -34,8 +35,7 @@ public class LikeController {
     @DeleteMapping("/likes/{product-id}")
     public ResponseEntity deleteLike(@Positive @PathVariable("product-id") long productId,
                                      @AuthenticationPrincipal UserDetails userDetails) {
-
-        likeService.deleteLike(toLong(userDetails.getUsername()), productId);
+        likeService.deleteLike(toLong(userDetails.getUsername()), productService.findVerifiedProduct(productId));
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
