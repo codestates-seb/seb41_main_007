@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -57,8 +58,11 @@ public class AddressService {
         return mapper.addressToAddressResponse(findVerifiedAddress(addressId));
     }
 
-    public List<AddressDto.Response> findAddresses(){
-        return mapper.addressToAddressResponses(addressRepository.findAll());
+    public List<AddressDto.Response> findAddresses(long memberId){
+        Member member = new Member();
+        member.setMemberId(memberId);
+
+        return mapper.addressToAddressResponses(addressRepository.findByMember(member));
     }
 
     public void deleteAddress(long addressId) {
