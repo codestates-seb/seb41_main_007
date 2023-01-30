@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'Redux/reducer/modalSlice';
-import { modalActions } from 'Redux/reducer/modalSlice';
+
 import { TYPE_CartData, TYPE_LocalOption } from 'Types/common/product';
 import axios from 'axios';
 
@@ -91,7 +91,7 @@ const CheckBox: React.FC<{
       {checkList.length === 2 ? (
         <a href={seturl} target="_blank" rel="noreferrer">
           <button
-            onClick={onClickHandler}
+            onClick={() => onClickHandler}
             className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold"
           >
             결제하기

@@ -22,7 +22,7 @@ const style = {
 export default function NewdModal() {
   const dispatch = useDispatch();
   const isModal = useAppSelector(madalState);
-  console.log(isModal);
+
   const [open, setOpen] = React.useState(isModal);
   const handleOpen = () => {
     setOpen(!open);

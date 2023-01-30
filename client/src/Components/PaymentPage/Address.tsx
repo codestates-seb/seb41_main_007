@@ -51,7 +51,7 @@ const Address: React.FC<Props> = ({
   setDataPut,
 }) => {
   const [nameMessage, setNameMessage] = useState<string>('');
-  console.log(dataPut);
+
   const { mutate } = useCustomMutation(
     `/addresses/${dataPut?.addressId}`,
     `/addresses`,
@@ -71,13 +71,10 @@ const Address: React.FC<Props> = ({
     });
 
   const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value.length);
-
     if (e.target.value.length < 12) {
       const { name, value } = e.target;
       setDataPut({ ...dataPut, [name]: value });
-      console.log(e.target.value);
-      console.log(e.target.name);
+
       // changeAddress(name, value);
       // onSaveData(name, value);
     }
@@ -154,7 +151,6 @@ const Address: React.FC<Props> = ({
         <div className="absolute top-0 left-0">
           <RadiusButton
             onClick={() => {
-              console.log(dataPut);
               const numberCheck = /[^0-9]/g;
               if (
                 dataPut?.addressName &&
@@ -174,7 +170,6 @@ const Address: React.FC<Props> = ({
                 !dataPut?.name ||
                 !dataPut?.addressName
               ) {
-                console.log(dataPut);
                 setNameMessage('빈칸을 채워주세요');
               } else if (dataPut?.name.length < 2) {
                 setNameMessage('받는 분 정보는 2글자이상 채워주세요');
@@ -184,7 +179,6 @@ const Address: React.FC<Props> = ({
               ) {
                 setNameMessage('-없이 11자리 핸드폰 번호를 입력해주세요');
               } else if (numberCheck.test(dataPut?.phoneNumber)) {
-                console.log(dataPut.phoneNumber);
                 setNameMessage('-없이 11자리 숫자를 입력해주세요');
               } else if (
                 !dataPut?.phoneNumber &&

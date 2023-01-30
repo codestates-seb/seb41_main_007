@@ -81,7 +81,7 @@ const ComponentsInput: React.FC<Props> = ({
 
   const onChangeSave = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log(name, value);
+
     onSave(name, value);
     setdataname(name);
     setdata(value);

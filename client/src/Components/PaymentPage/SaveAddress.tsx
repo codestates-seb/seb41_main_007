@@ -57,12 +57,11 @@ const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
   //   'POST',
   //   session,
   // );
-  console.log(session);
+
   // const { loading, session } = useSession();
   // if (loading) return <></>;
 
   const onSaveData = (name: string, value: string) => {
-    console.log(name, value);
     setDataPut({ ...dataPut, [name]: value });
   };
   const sucessAlram = () =>
@@ -78,19 +77,15 @@ const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
     });
 
   const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value.length);
-
     if (e.target.value.length < 12) {
       const { name, value } = e.target;
       setDataPut({ ...dataPut, [name]: value });
-      console.log(e.target.value);
-      console.log(e.target.name);
+
       // changeAddress(name, value);
       // onSaveData(name, value);
     }
   };
 
-  console.log({ ...dataPut });
   const postAddress = () => {
     const suggest = {
       ...dataPut,
@@ -107,7 +102,6 @@ const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
         return res.json();
       })
       .then((response: TYPE_getAddress) => {
-        console.log(response);
         const dispatchMeal = { ...response };
         dispatch(get_DataSave(dispatchMeal));
         queryClient.invalidateQueries('/addresses');
@@ -205,7 +199,7 @@ const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
           <RadiusButton
             onClick={() => {
               const numberCheck = /[^0-9]/g;
-              console.log('상겅');
+
               if (
                 dataPut?.addressName &&
                 dataPut?.name &&
@@ -214,7 +208,6 @@ const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
                 dataPut?.name.length > 1 &&
                 dataPut?.detailAddress
               ) {
-                console.log('키키');
                 sucessAlram();
                 setNameMessage('성공하였습니다');
                 postAddress();
