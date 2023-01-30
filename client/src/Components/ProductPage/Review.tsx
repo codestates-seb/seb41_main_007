@@ -1,5 +1,6 @@
 import { FC, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useQueryClient } from 'react-query';
 
 import { Descendant } from 'Types/slate';
 
@@ -10,6 +11,7 @@ import {
   useCustomFormMutation,
   useCustomMutation,
 } from 'CustomHook/useCustomMutaiton';
+
 import ReviewList from './ReviewList';
 
 import styles from './Styles/Review.module.css';
@@ -18,8 +20,34 @@ interface Props {
   session: string | null;
 }
 
+const INITIALVALUE: Descendant[] = [
+  {
+    type: 'paragraph',
+    children: [{ text: '' }],
+  },
+];
+
 const ReviewEdit: FC<Props> = ({ productId, session }) => {
-  const { mutate } = useCustomMutation('/', '', 'POST');
+  const queryClient = useQueryClient();
+  const queryKey = ['reviews', productId];
+  const [userImage, setUserImage] = useState<any>();
+  const [starClicked, setStarClicked] = useState<any>([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [reviewTitle, setReviewTitle] = useState<string>('');
+  const [value, setValue] = useState<Descendant[]>(INITIALVALUE);
+  const childRef = useRef<{ reset: () => void }>(null);
+  const { mutate } = useCustomMutation(
+    '/reviews',
+    queryKey,
+    'POST',
+    session,
+    true,
+  );
   const { mutateAsync } = useCustomFormMutation('/file/upload', 'POST');
 
   if (!session)
@@ -32,31 +60,12 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
       </>
     );
 
-  const INITIALVALUE: Descendant[] = [
-    {
-      type: 'paragraph',
-      children: [{ text: '' }],
-    },
-  ];
-
-  const [userImage, setUserImage] = useState<any>();
-  const [clicked, setClicked] = useState<any>([
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const [reviewTitle, setReviewTitle] = useState<string>('');
-  const [value, setValue] = useState<Descendant[]>(INITIALVALUE);
-  const childRef = useRef<{ reset: () => void }>(null);
-
   const handleStarClick = (index: number) => {
-    let clickStates = [...clicked];
+    let clickStates = [...starClicked];
     for (let i = 0; i < 5; i++) {
       clickStates[i] = i <= index ? true : false;
     }
-    setClicked(clickStates);
+    setStarClicked(clickStates);
   };
 
   const handleChangeFile = (e: any) => {
@@ -73,16 +82,36 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
   };
 
   const handlerSubmit = () => {
-    let score = clicked.filter(Boolean).length;
-
+    let score = starClicked.filter(Boolean).length;
+    const cache = queryClient.getQueryData(queryKey) as any;
     const submitValue = {
+      reviewId: Date.now(),
       productId: parseInt(productId),
       reviewTitle: reviewTitle,
       reviewContent: JSON.stringify(value),
       rating: score,
       reviewImage: userImage,
     };
+    if (cache) {
+      //중복제거
+      const newArr = Array.from(new Set(cache.pages.map(JSON.stringify))).map(
+        JSON.parse as any,
+      );
+      const cacheAdd = {
+        result: [submitValue],
+        nextPage: true,
+        lastPage: false,
+      };
+      queryClient.setQueryData(queryKey, {
+        pages: [cacheAdd, ...newArr],
+        pageParams: { ...cache.pageParams },
+      });
+    }
     mutate(submitValue);
+    setValue(INITIALVALUE);
+    setStarClicked([false, false, false, false, false]);
+    setReviewTitle('');
+    setUserImage(null);
   };
 
   return (
@@ -115,7 +144,7 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
         </div>
         <div className={styles.Review_Container}>
           <div className={styles.content}>
-            <Rating handleStarClick={handleStarClick} clicked={clicked} />
+            <Rating handleStarClick={handleStarClick} clicked={starClicked} />
           </div>
           <div className={styles.content}>
             <input

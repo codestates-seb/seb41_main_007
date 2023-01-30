@@ -1,6 +1,6 @@
 import Loading from 'Components/Loading/Loading';
 import { TYPE_COMMENT } from 'Types/common/product';
-import { FC, useRef, useState } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
 import styles from './Styles/Review.module.css';
@@ -65,11 +65,11 @@ const CommentItem: FC<CommentItem> = ({ item, session }) => {
 const ReviewList: FC<Props> = ({ productId, session }) => {
   const [pages, setPages] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
-  const getEventListWithPageInfo = async (props: any) => {
+  const getReviewsWithPageInfo = async (props: any) => {
     const data = await fetch(
       `${
         process.env.REACT_APP_BACKEND_URL
-      }/reviews?productId=${productId}&page=${pages}&size=${1}`,
+      }/reviews?productId=${productId}&page=${pages}&size=${5}`,
       {
         method: 'GET',
         headers: {
@@ -84,7 +84,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
         return e;
       });
     const { page, totalPages } = data.pageInfo;
-    const hasNextPage = totalPages - page > 0;
+    const hasNextPage = totalPages - page >= 0;
     if (!hasNextPage) setHasNextPage(false);
     return {
       result: data.data,
@@ -93,14 +93,14 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
     };
   };
 
-  const fetchMore = () => {
-    setPages(pages + 1);
-    fetchNextPage();
-  };
-
   const { isFetching, data, fetchNextPage, isLoading, error, refetch } =
-    useInfiniteQuery(['reviews', productId], getEventListWithPageInfo, {
-      getNextPageParam: (lastPage) => lastPage.nextPage,
+    useInfiniteQuery(['reviews', productId], getReviewsWithPageInfo, {
+      getNextPageParam: (lastPage) => {
+        return lastPage.nextPage;
+      },
+      onSuccess: () => {
+        setPages(pages + 1);
+      },
     });
 
   if (isLoading)
@@ -152,7 +152,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
           <Loading width={10} />
         </div>
       )}
-      {hasNextPage && <button onClick={fetchMore}>패치하기</button>}
+      {hasNextPage && <button onClick={() => fetchNextPage()}>패치하기</button>}
     </>
   );
 };
