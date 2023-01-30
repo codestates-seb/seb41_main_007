@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import CheckBox from 'Components/Common/CheckBox';
+import { TYPE_CartData } from 'Types/common/product';
 const Agree = styled.div``;
 const TotalContainer = styled.div`
   margin-top: 220px;
@@ -19,7 +20,7 @@ const Pay = styled.div`
   border-bottom: 1px solid var(--gray-20);
 `;
 
-const Totalpay: React.FC = () => {
+const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
   return (
     <>
       <div>
@@ -53,7 +54,7 @@ const Totalpay: React.FC = () => {
             </Pay>
             <Agree>
               <div className="text-sm text-gray-500 my-5">
-                <CheckBox />
+                <CheckBox data={data} />
               </div>
             </Agree>
           </div>
