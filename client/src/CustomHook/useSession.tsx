@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
 export type Session = {
-  session: string | null | boolean;
+  session: string | null;
   loading: boolean;
 };
 

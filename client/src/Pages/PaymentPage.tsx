@@ -34,9 +34,8 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const isModal = useSelector((state: any) => state.modal.isOpenModal);
   const [data, setdata] = useState<TYPE_CartData[]>([]);
   const [isloading, setisLoading] = useState<boolean>(true);
-  const navigate = useNavigate();
   // const { loading, session } = useSession();
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
       method: 'GET',
