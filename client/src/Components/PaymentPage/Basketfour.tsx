@@ -19,7 +19,7 @@ const BasketFour: React.FC<Props> = ({ data }) => {
             <div>{data.productName}</div>
             <div> {data.productOptionName}</div>
           </div>
-          <p className="absolute w-44 top-12 right-0 text-right">
+          <p className="absolute w-56 top-12 right-0 text-right">
             {data.quantity}개
             <strong className="w-36 inline-block">
               {useNumberComma(data.productPrice + data.productOptionPrice)}
@@ -33,3 +33,5 @@ const BasketFour: React.FC<Props> = ({ data }) => {
 };
 
 export default BasketFour;
+//무너지는거 수정할것
+//결제페이지 밀림 현사 ㅇ해결할것
