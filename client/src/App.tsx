@@ -15,7 +15,7 @@ import Search from 'Pages/Search';
 import NotFoundPage from 'Pages/NotFoundPage';
 import { MyPageSession, PaymentPageSession } from 'Utils/SessionMaster';
 import Footer from 'Components/Common/Footer';
-import Address from 'Components/PaymentPage/Adress';
+
 import OrderTest from 'Pages/OrderTest';
 
 import PaymentPage from 'Pages/PaymentPage';

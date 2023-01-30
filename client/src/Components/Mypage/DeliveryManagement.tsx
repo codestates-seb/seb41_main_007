@@ -30,7 +30,6 @@ const Deliveryaddress: React.FC<Props> = ({ session, setcontrol }) => {
   // if (data.length > 0) {
   //   setcontrol(true);
   // }
-  console.log(data);
 
   // if (isLoading) return <Empty />;
 
