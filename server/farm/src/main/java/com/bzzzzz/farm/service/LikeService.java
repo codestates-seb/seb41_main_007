@@ -22,7 +22,7 @@ public class LikeService {
     @CacheEvict(value = "getMain", allEntries = true)
     public void createLike(long memberId, Product product) {
         // 이미 좋아요를 눌렀는가 ?
-        verifyExistsLike(memberId, product);
+        verifyExistsLike(memberId, product.getProductId());
 
         //좋아요 생성 및 저장
         Member member = new Member();
@@ -33,7 +33,7 @@ public class LikeService {
     @CacheEvict(value = "getMain", allEntries = true)
     public void deleteLike(long memberId, Product product) {
         // 좋아요를 누른적이 있는가 ?
-        Like findLike = findVerifiedLike(memberId, product);
+        Like findLike = findVerifiedLike(memberId, product.getProductId());
 
         //좋아요 삭제
         likeRepository.delete(findLike);
@@ -43,22 +43,22 @@ public class LikeService {
      * 서브 메서드
      */
     @Transactional(readOnly = true)
-    private void verifyExistsLike(long memberId, Product product) { // Like 생성시 사용
-        Optional<Like> optionalLike = likeRepository.findByMember_MemberIdAndProduct(memberId, product);
+    private void verifyExistsLike(long memberId, long productId) { // Like 생성시 사용
+        Optional<Like> optionalLike = likeRepository.findByMember_MemberIdAndProduct_ProductId(memberId, productId);
         if (optionalLike.isPresent()) {
             throw new BusinessLogicException(ExceptionCode.LIKE_EXISTS);
         }
     }
 
     @Transactional(readOnly = true)
-    private Like findVerifiedLike(long memberId, Product product) { // Like 삭제시 사용
-        Optional<Like> optionalLike = likeRepository.findByMember_MemberIdAndProduct(memberId, product);
+    private Like findVerifiedLike(long memberId, long productId) { // Like 삭제시 사용
+        Optional<Like> optionalLike = likeRepository.findByMember_MemberIdAndProduct_ProductId(memberId, productId);
         return optionalLike.orElseThrow(() -> new BusinessLogicException(ExceptionCode.LIKE_NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
-    public boolean isLiked(long memberId, Product product) {
-        Optional<Like> optionalLike = likeRepository.findByMember_MemberIdAndProduct(memberId, product);
+    public boolean isLiked(long memberId, long productId) {
+        Optional<Like> optionalLike = likeRepository.findByMember_MemberIdAndProduct_ProductId(memberId, productId);
         if (optionalLike.isPresent()) {
             return true;
         }
