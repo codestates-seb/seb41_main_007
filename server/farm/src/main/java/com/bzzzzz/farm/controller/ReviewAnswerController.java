@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
+import static com.bzzzzz.farm.common.Safety.toLong;
+
 @Log4j2
 @RestController
 @Transactional
@@ -50,11 +52,20 @@ public class ReviewAnswerController {
 
     }
 
-    @PatchMapping("/reviews/answers")
-    public ResponseEntity updateReviewAnswer(@RequestBody @Valid ReviewAnswerPatchDto reviewAnswerPatchDto) {
+    @GetMapping("/reviews/answers/{reviewAnswerId}")
+    public ResponseEntity getReviewAnswer(@PathVariable Long reviewAnswerId) {
+        ReviewAnswer reviewAnswer = reviewAnswerService.findVerifiedReviewAnswer(reviewAnswerId);
+        ReviewAnswerResponseDto reviewAnswerResponseDto = reviewAnswerMapper.reviewAnswerToReviewAnswerResponseDto(reviewAnswer);
+        return new ResponseEntity<>(reviewAnswerResponseDto, HttpStatus.OK);
+    }
 
 
-        ReviewAnswer reviewAnswer = reviewAnswerMapper.reviewAnswerPatchDtoToReviewAnswer(reviewAnswerPatchDto);
+
+    @PatchMapping("/reviews/answers/{reviewAnswerId}")
+    public ResponseEntity updateReviewAnswer(@RequestBody @Valid ReviewAnswerPatchDto reviewAnswerPatchDto, @PathVariable Long reviewAnswerId) {
+
+        ReviewAnswer findReviewAnswer = reviewAnswerService.findVerifiedReviewAnswer(reviewAnswerId);
+        ReviewAnswer reviewAnswer = reviewAnswerMapper.reviewAnswerPatchDtoToReviewAnswer(findReviewAnswer, reviewAnswerPatchDto, findReviewAnswer.getReview());
         ReviewAnswer updatedReviewAnswer = reviewAnswerService.updateReviewAnswer(reviewAnswer);
 
         //리뷰앤서리스폰스dto 생성
@@ -65,7 +76,7 @@ public class ReviewAnswerController {
 
     @DeleteMapping("/reviews/answers/{reviewAnswerId}")
     public ResponseEntity deleteReviewAnswer(@PathVariable String reviewAnswerId) {
-        reviewAnswerService.deleteReviewAnswer(Long.parseLong(reviewAnswerId));
+        reviewAnswerService.deleteReviewAnswer(toLong(reviewAnswerId));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

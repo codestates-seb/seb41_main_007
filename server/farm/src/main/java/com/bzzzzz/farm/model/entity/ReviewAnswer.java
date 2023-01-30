@@ -32,4 +32,10 @@ public class ReviewAnswer extends Auditable {
         this.reviewAnswerContent = reviewAnswerContent;
     }
 
+    public ReviewAnswer(Long reviewAnswerId, Review review, String reviewAnswerTitle, String reviewAnswerContent) {
+        this.reviewAnswerId = reviewAnswerId;
+        this.review = review;
+        this.reviewAnswerTitle = reviewAnswerTitle;
+        this.reviewAnswerContent = reviewAnswerContent;
+    }
 }

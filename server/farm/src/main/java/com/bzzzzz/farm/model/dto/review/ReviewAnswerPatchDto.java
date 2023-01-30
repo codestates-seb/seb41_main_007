@@ -14,15 +14,6 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @Validated
 public class ReviewAnswerPatchDto {
-    @Positive
-    private Long memberId;
-    private Long productId;
-    private Long reviewId;
     private String reviewAnswerTitle;
     private String reviewAnswerContent;
-    public Review getReview() {
-        Review review = new Review();
-        review.setReviewId(reviewId);
-        return review;
-    }
 }
