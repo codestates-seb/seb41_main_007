@@ -8,6 +8,7 @@ public enum ExceptionCode {
     WRONG_TOKEN_SIGNATURE(400, "잘못된 JWT 서명입니다"),
     EXPIRATION_TOKEN(400, "만료된 JWT 토큰입니다"),
     UNSUPPORTED_TOKEN(400, "지원되지 않는 JWT 토큰입니다"),
+    PARSE_EXCEPTION(400,"입력 형식이 맞지 않습니다."),
 
     //member
     MEMBER_NOT_FOUND(404, "존재하지 않는 회원입니다"),

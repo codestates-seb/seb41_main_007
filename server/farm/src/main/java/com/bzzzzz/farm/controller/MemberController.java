@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.text.ParseException;
 
+import static com.bzzzzz.farm.common.Safety.toLong;
+
 @RestController
 @RequestMapping("/members")
 @Validated
@@ -24,7 +26,7 @@ public class MemberController {
     @PatchMapping
     public ResponseEntity patchMember(@Valid @RequestBody MemberDto.Patch request,
                                       @AuthenticationPrincipal UserDetails userDetails) throws ParseException {
-        request.setMemberId(Long.valueOf(userDetails.getUsername()));
+        request.setMemberId(toLong(userDetails.getUsername()));
 
         return ResponseEntity.ok(memberService.updateMember(request));
     }
@@ -32,7 +34,7 @@ public class MemberController {
     //본인 프로필 보기
     @GetMapping
     public ResponseEntity getMember(@AuthenticationPrincipal UserDetails userDetails){
-        return ResponseEntity.ok(memberService.findMember(Long.valueOf(userDetails.getUsername())));
+        return ResponseEntity.ok(memberService.findMember(toLong(userDetails.getUsername())));
     }
 
     //전체 회원 조회(관리자 전용)
@@ -44,7 +46,7 @@ public class MemberController {
     //회원 탈퇴
     @DeleteMapping
     public ResponseEntity deleteMember(@AuthenticationPrincipal UserDetails userDetails){
-        memberService.deleteMember(Long.valueOf(userDetails.getUsername()));
+        memberService.deleteMember(toLong(userDetails.getUsername()));
 
         return ResponseEntity.ok().build();
     }
