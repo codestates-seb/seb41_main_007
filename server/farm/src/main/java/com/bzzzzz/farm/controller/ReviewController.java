@@ -87,12 +87,12 @@ public class ReviewController {
 
 
     //리뷰 수정하기
-    @PatchMapping("/reviews")
-    public ResponseEntity patchReview(@RequestBody @Valid ReviewPatchDto reviewPatchDto, @AuthenticationPrincipal UserDetails userDetails) {
+    @PatchMapping("/reviews/{reviewId}")
+    public ResponseEntity updateReview(@RequestBody @Valid ReviewPatchDto reviewPatchDto, @PathVariable Long reviewId, @AuthenticationPrincipal UserDetails userDetails) {
 
         Review review = reviewMapper.reviewPatchDtoToReview(reviewPatchDto);
 
-        Review updatedReview = reviewService.updateReview(review, toLong(userDetails.getUsername()));
+        Review updatedReview = reviewService.updateReview(reviewId, review, toLong(userDetails.getUsername()));
 
         ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(updatedReview);
 
