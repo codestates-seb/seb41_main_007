@@ -1,26 +1,24 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
-
-import styles from './Styles/Review.module.css';
-import className from 'classnames/bind';
 
 import { Descendant } from 'Types/slate';
 
 import Tooltip from 'Components/Common/Tooltip';
 import Loading from 'Components/Loading/Loading';
 
+import Rating from './Rating';
 import CommentEditor from '../Editor/Comment';
 import ReadOnlyComment from '../Editor/ReadOnlyComment';
 import { EditComment, SimpleReadOnlyComment } from '../Editor/EditComment';
 
 import { customTime } from 'Utils/commonFunction';
+import { TYPE_COMMENT } from 'Types/common/product';
+
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { useSession } from 'CustomHook/useSession';
-import { TYPE_COMMENT } from 'Types/common/product';
-import Rating from './Rating';
 import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
-const cx = className.bind(styles);
 
+import styles from './Styles/Review.module.css';
 interface Props {
   productId: string;
   session: string | null;
@@ -31,19 +29,11 @@ interface CommentItem {
 }
 
 const CommentItem: FC<CommentItem> = ({ item, session }) => {
-  const [width, setWidth] = useState<number>(700);
   const [data, setData] = useState<Descendant[]>(
     JSON.parse(item.reviewContent),
   );
   const [editmode, setEditmode] = useState<boolean>(false);
   const node = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (node.current) {
-      const nodeRect = node.current.getBoundingClientRect();
-      setWidth(nodeRect.width);
-    }
-  }, [node]);
 
   return (
     <div className={styles.comment_list_wrapper}>
@@ -51,7 +41,7 @@ const CommentItem: FC<CommentItem> = ({ item, session }) => {
         <div className={styles.comment_top}>
           <div className={styles.comment_top_added}>
             <Tooltip
-              content={new Date(item.reviewCreatedAt).toLocaleDateString('ja')}
+              content={new Date(item.reviewCreatedAt).toLocaleDateString('ko')}
               arrow
             >
               <span>{customTime(new Date(item.reviewCreatedAt))}</span>
@@ -155,6 +145,15 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
 };
 
 const ReviewEdit: FC<Props> = ({ productId, session }) => {
+  if (!session)
+    return (
+      <>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          리뷰를 작성하실려면 로그인이 필요합니다.
+        </div>
+        <div className={styles.line}></div>
+      </>
+    );
   const { mutate } = useCustomMutation(
     '/reviews',
     ['reviews', productId],
@@ -200,6 +199,7 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
 
   const handlerSubmit = () => {
     let score = clicked.filter(Boolean).length;
+
     const submitValue = {
       productId: parseInt(productId),
       reviewTitle: reviewTitle,
@@ -214,14 +214,16 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
       <div className={styles.comment_container}>
         <div className={styles.Image_Container}>
           <div className={styles.content}>
-            {userImage && (
+            {userImage ? (
               <img
                 width={200}
                 height={200}
                 src={userImage}
                 alt="reviewImage"
-                style={{ objectFit: 'cover' }}
+                className={styles.Input_User_Image}
               />
+            ) : (
+              <div> </div>
             )}
             <label className={styles.Label_Button} htmlFor="imageFile">
               이미지 선택
@@ -244,12 +246,12 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
               type="text"
               placeholder="리뷰제목을 입력해주세요"
               value={reviewTitle}
-              className={styles.inputContents}
+              className={styles.Input_Contents}
               style={{ width: '100%' }}
               onChange={(e) => setReviewTitle(e.target.value)}
             />
           </div>
-          <div className={styles.comment_input}>
+          <div className={styles.Comment_Input}>
             <CommentEditor
               value={value}
               setValue={(value: any) => setValue(value)}
@@ -257,7 +259,7 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
             />
           </div>
           <button
-            className={styles.comment_input_button}
+            className={styles.Comment_Input_Button}
             onClick={handlerSubmit}
           >
             등록

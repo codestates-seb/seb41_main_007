@@ -9,7 +9,6 @@ import { withHistory } from 'slate-history';
 
 import { Leaf, Element } from './comment_components';
 import { Descendant } from '../../Types/slate';
-import { useSession } from 'CustomHook/useSession';
 
 const cx = classNames.bind(styles);
 
@@ -23,7 +22,6 @@ interface Ref {
 }
 
 const RichText = forwardRef<Ref, IProps>((props, ref) => {
-  const { session, loading } = useSession();
   useImperativeHandle(ref, () => ({
     reset() {
       Transforms.delete(editor, {
@@ -69,14 +67,12 @@ const RichText = forwardRef<Ref, IProps>((props, ref) => {
     () => withMentions(withHistory(withReact(createEditor()))),
     [],
   );
-  if (loading) return <></>;
+
   return (
     <Slate editor={editor} value={value} onChange={(value) => setValue(value)}>
       <Editable
         className={cx('doc')}
-        placeholder={
-          session ? '리뷰 쓰기' : '리뷰를 쓰실려면 로그인을 해주세요'
-        }
+        placeholder={'리뷰내용 쓰기'}
         renderLeaf={renderLeaf}
         renderElement={renderElement}
         decorate={decorate}
