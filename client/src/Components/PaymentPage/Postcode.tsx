@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, Dispatch, SetStateAction } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import useBooleanInput from 'CustomHook/useBooleaninput';
 
 import styled from '@emotion/styled';
-import type { UserProfile } from 'Components/Mypage/DeliverySave';
+import { TYPE_UserAddress } from 'Types/common/product';
 
 const PostcodeContainer = styled.div`
   border-top: 1px solid black;
@@ -23,38 +23,40 @@ const PostcodeContainer = styled.div`
 `;
 
 interface Props {
-  onSave?: (name: string, value: string) => void;
   children?: string;
-  data?: UserProfile;
+  dataPut?: TYPE_UserAddress;
+  addressValue: string[];
   oncontrolCilck?: () => void;
+  setDataPut: Dispatch<SetStateAction<any>>;
 }
 
-const Postcode: React.FC<Props> = ({ onSave, data }) => {
-  const saveaddress: string[] | undefined = data?.address.split('(');
-
-  let first = saveaddress?.[1].substring(0, 5);
-  let second = saveaddress?.[1].substring(7);
-  let third = saveaddress?.[2].slice(0, -1);
-  const [number, setNumber] = useState(first);
-  const [address, setaddress] = useState(second);
-  const [control, setcontrol] = useBooleanInput(true);
+const Postcode: React.FC<Props> = ({ addressValue, setDataPut, dataPut }) => {
+  const [addressNumber, setaddressNumber] = useState(addressValue[0]);
+  const [address, setaddress] = useState<string>(addressValue[1]);
+  const [Detail, setDetail] = useState<string>(addressValue[2]);
+  const [isControl, onControl] = useBooleanInput(true);
 
   const open = useDaumPostcodePopup();
 
   const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    const addressdata = `(${String(number)}) ${address} (${value})`;
-    onSave?.('address', addressdata);
+    setDetail(value);
+
+    const addressData = `(${String(addressNumber)}) ${address} (${value})`;
+    console.log(addressData);
+    const name = 'detailAddress';
+    setDataPut({ ...dataPut, [name]: addressData });
   };
 
   const handleComplete = (data: any) => {
-    let fullAddress = data.address;
-    let extraAddress = data.zonecode;
+    const fullAddress = data.address;
+    const extraAddress = data.zonecode;
 
     setaddress(fullAddress);
-    setNumber(extraAddress);
+    setaddressNumber(extraAddress);
+    onControl();
   };
-
+  console.log(address);
   const handleClick = () => {
     open({ onComplete: handleComplete });
   };
@@ -64,7 +66,7 @@ const Postcode: React.FC<Props> = ({ onSave, data }) => {
       <PostcodeContainer>
         <div></div>
         <input
-          value={first}
+          value={addressNumber ? addressNumber : '우편 번호를 눌러주세요'}
           onClick={handleClick}
           className="w-9/12"
           placeholder="우편번호 버튼을 눌러주세요"
@@ -75,20 +77,29 @@ const Postcode: React.FC<Props> = ({ onSave, data }) => {
         </button>
         <div>
           <input
-            value={second}
+            value={address ? address : ''}
             onClick={handleClick}
             className="w-full"
             readOnly
           ></input>
         </div>
         <div>
-          <input
-            value={third}
-            onChange={onChangeForm}
-            className="w-full"
-            placeholder="상세주소"
-            onBlur={setcontrol}
-          ></input>
+          {isControl ? (
+            <input
+              value={Detail}
+              readOnly
+              className="w-full"
+              placeholder="우편 번호를 입력하시고 상세주소를 입력하세요"
+              disabled
+            ></input>
+          ) : (
+            <input
+              value={Detail}
+              onChange={onChangeForm}
+              className="w-full"
+              placeholder="우편 번호를 입력하시고 상세주소를 입력하세요"
+            ></input>
+          )}
         </div>
       </PostcodeContainer>
     </>
@@ -113,3 +124,5 @@ export default Postcode;
 //체인지가 된 값을 받아와서 change 수정을 할수가 없었음
 //그래서 체인지와 동시에 수정 할 수 있또록 바꾸었음
 //그랬더니 체인지 되자말자 undefined값이 들어옴 그래서 초기값에 데이터를 내려줘서 휘발성을 막음
+//쪼개는 값에 문제생김
+//map문제가 있었음

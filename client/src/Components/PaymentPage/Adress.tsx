@@ -3,15 +3,10 @@ import Postcode from './Postcode';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RadiusButton from 'Components/Common/RadiusButton';
-import type { UserProfile } from 'Components/Mypage/DeliverySave';
+import { TYPE_UserAddress } from 'Types/common/product';
 import TinyTitle from 'Components/Common/TinyTitle';
-import {
-  ToastContainer,
-  toast,
-  ToastContainer as Container,
-  Zoom,
-} from 'react-toastify';
-import { useState } from 'react';
+import { ToastContainer, toast, Zoom } from 'react-toastify';
+import { useState, Dispatch, SetStateAction } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 
 const StyleToastContainer = styled(ToastContainer)`
@@ -42,24 +37,24 @@ const User = styled.div`
 
 interface Props {
   children?: string;
+  setDataPut: Dispatch<SetStateAction<any>>;
   oncontrolCilck?: () => void;
-  data?: UserProfile;
-  onSave?: (name: string, value: string) => void;
+  dataPut?: TYPE_UserAddress;
 }
 
 const Address: React.FC<Props> = ({
   oncontrolCilck,
-  data,
-  onSave,
+  dataPut,
+
   children,
+  setDataPut,
 }) => {
   const numberoverAlram = () => toast.warning('11자리 이상은 불가합니다.');
   const [nameMessage, setNameMessage] = useState<string>('');
-
+  const [addressValue, setAddressValue] = useState<string[]>([]);
   const sucessAlram = () =>
     toast.success('저장되었습니다.', {
       position: 'top-right',
-
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -69,15 +64,25 @@ const Address: React.FC<Props> = ({
     });
 
   const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value.length);
+
     if (e.target.value.length < 12) {
       const { name, value } = e.target;
-
-      onSave?.(name, value);
-    } else {
-      e.preventDefault();
-      numberoverAlram();
+      setDataPut({ ...dataPut, [name]: value });
+      console.log(e.target.value);
+      console.log(e.target.name);
+      // changeAddress(name, value);
+      // onSaveData(name, value);
     }
   };
+  // if (dataPut?.detailAddress.includes('(')) {
+  //   const saveaddress: string[] | undefined = dataPut?.detailAddress.split('(');
+
+  //   const first = saveaddress?.[1].substring(0, 5);
+  //   const second = saveaddress?.[1].substring(7);
+  //   const third = saveaddress?.[2].slice(0, -1);
+  //   setAddressValue([...first, ...second, ...third]);
+  // }
 
   return (
     <>
@@ -88,8 +93,8 @@ const Address: React.FC<Props> = ({
             type="text"
             placeholder="배송지명"
             className="text-sm mr-2 w-5/12 h-8"
-            name="addressname"
-            value={data?.addressname}
+            name="addressName"
+            value={dataPut?.addressName}
             onChange={onChangeForm}
             maxLength={5}
           ></input>
@@ -102,7 +107,7 @@ const Address: React.FC<Props> = ({
               className="text-sm mr-2 w-5/12 h-8 "
               maxLength={5}
               onChange={onChangeForm}
-              value={data?.name}
+              value={dataPut?.name}
               name="name"
             ></input>
             <input
@@ -110,9 +115,9 @@ const Address: React.FC<Props> = ({
               placeholder="휴대폰 번호"
               className="text-sm w-5/12 h-8 all: unset"
               onChange={onChangeForm}
-              value={data?.phonenumber}
+              value={dataPut?.phoneNumber}
               maxLength={13}
-              name="phonenumber"
+              name="phoneNumber"
             ></input>
           </div>
         </form>
@@ -127,7 +132,11 @@ const Address: React.FC<Props> = ({
             상세주소가 없는 경우는 없음 으로 입력해 주세요.
           </div>
         </div>
-        <Postcode onSave={onSave} data={data} />
+        <Postcode
+          dataPut={dataPut}
+          addressValue={addressValue.length > 1 ? addressValue : ['', '', '']}
+          setDataPut={setDataPut}
+        />
       </div>
       <StyleToastContainer
         limit={4}
@@ -135,47 +144,52 @@ const Address: React.FC<Props> = ({
         hideProgressBar
         autoClose={1000}
       />
-      {/* <Container
-        role="alert"
-        autoClose={4000}
-        transition={Zoom}
-        draggable={false}
-        closeOnClick={false}
-        pauseOnHover={false}
-        pauseOnFocusLoss={false}
-        hideProgressBar
-        position="bottom-center"
-        theme="colored"
-        style={{ fontSize: 13 }}
-      /> */}
+
       <div className="my-5 relative h-6">
         <div className="absolute top-0 left-0">
           <RadiusButton
             onClick={() => {
+              console.log(dataPut);
+              const numberCheck = /[^0-9]/g;
               if (
-                data?.addressname &&
-                data?.name &&
-                data?.phonenumber &&
-                data?.phonenumber.length > 10 &&
-                data?.name.length > 1
+                dataPut?.addressName &&
+                dataPut?.name &&
+                dataPut?.phoneNumber &&
+                dataPut.detailAddress.includes(')') &&
+                dataPut?.phoneNumber.length > 10 &&
+                dataPut?.name.length > 1 &&
+                dataPut?.detailAddress
               ) {
                 sucessAlram();
                 setNameMessage('성공하였습니다');
                 oncontrolCilck?.();
+                sucessAlram();
               } else if (
-                !data?.phonenumber ||
-                !data?.name ||
-                !data?.addressname
+                !dataPut?.phoneNumber ||
+                !dataPut?.name ||
+                !dataPut?.addressName
               ) {
+                console.log(dataPut);
                 setNameMessage('빈칸을 채워주세요');
-              } else if (data?.name.length < 2) {
+              } else if (dataPut?.name.length < 2) {
                 setNameMessage('받는 분 정보는 2글자이상 채워주세요');
-              } else if (data?.phonenumber && data?.phonenumber.length < 11) {
+              } else if (
+                dataPut?.phoneNumber &&
+                dataPut?.phoneNumber.length < 11
+              ) {
                 setNameMessage('-없이 11자리 핸드폰 번호를 입력해주세요');
-              } else if (data?.phonenumber && data?.phonenumber.length > 11) {
+              } else if (numberCheck.test(dataPut?.phoneNumber)) {
+                console.log(dataPut.phoneNumber);
+                setNameMessage('-없이 11자리 숫자를 입력해주세요');
+              } else if (
+                !dataPut?.phoneNumber &&
+                dataPut?.phoneNumber.length > 11
+              ) {
                 setNameMessage('-없이 11자리 핸드폰 번호를 입력해주세요');
-              } else if (data?.address) {
+              } else if (!dataPut.detailAddress) {
                 setNameMessage('상세주소가 없다면 없음이라 적어주세요');
+              } else if (!dataPut.detailAddress.includes(')')) {
+                setNameMessage('우편번호를 눌러 입력해주세요');
               }
             }}
           >
@@ -195,3 +209,5 @@ export default Address;
 //change 컨트롤
 //is loading 문제 해결
 //반응협 웹 css 디자인 만지기
+//온 세이브 오류나서 파괴하고 리덕스로 대체
+//최적화할때 안쓰는것 지울것

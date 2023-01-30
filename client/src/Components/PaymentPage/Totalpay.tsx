@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import CheckBox from 'Components/Common/CheckBox';
+const Agree = styled.div``;
 const TotalContainer = styled.div`
   margin-top: 220px;
   margin-left: 40px;
@@ -16,7 +18,7 @@ const TotalContainer = styled.div`
 const Pay = styled.div`
   border-bottom: 1px solid var(--gray-20);
 `;
-const Agree = styled.div``;
+
 const Totalpay: React.FC = () => {
   return (
     <>
@@ -51,12 +53,8 @@ const Totalpay: React.FC = () => {
             </Pay>
             <Agree>
               <div className="text-sm text-gray-500 my-5">
-                [필수] 주문하실 상품 및 결제, 주문정보 확인하였으며,
-                <br /> 이에 동의합니다.
+                <CheckBox />
               </div>
-              <button className="bg-green-800 w-full h-14 text-white text-justify-center font-semibold">
-                결제하기
-              </button>
             </Agree>
           </div>
         </TotalContainer>

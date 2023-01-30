@@ -129,20 +129,21 @@ const Footer = () => {
             </div>
           </Banking>
           <Change>
-            <div className="selectbottom text-sm pb-1 change__title">
-              교환/반품/배송안내
-            </div>
-            <div className="text-sm change__address">
-              <div className="mt-4">교환 및 반품주소 -</div>
-              <div className="font-semibold mb-2">
-                경상북도 경산시 진량읍 버티미길 1
+            <div className="change_container">
+              <div className="selectbottom text-sm pb-1 change__title">
+                교환/반품/배송안내
               </div>
-              <div className=" text-slate-500">
-                교환 및 반품을 하기위해 먼저 콜센터로 접수를 꼭 하시고 지정된
-                택배로 발송해주시기 바랍니다.
+              <div className="text-sm change__address">
+                <div className="mt-4">교환 및 반품주소 -</div>
+                <div className="font-semibold mb-2">
+                  경상북도 경산시 진량읍 버티미길 1
+                </div>
+                <div className=" text-slate-500">
+                  교환 및 반품을 하기위해 먼저 콜센터로 접수를 꼭 하시고 지정된
+                  택배로 발송해주시기 바랍니다.
+                </div>
               </div>
             </div>
-
             <button className=" hover:bg-gray-600">
               <a
                 href="https://www.cjlogistics.com/ko/tool/parcel/tracking"

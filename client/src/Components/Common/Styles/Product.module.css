@@ -1,4 +1,31 @@
-.Product_Img_Container {
+@media screen and (max-width: 640px) {
+  .Product_Img_Container {
+    padding: 0px 12%;
+  }
+  .Product_Img_Content {
+    @apply min-h-full min-w-full;
+  }
+  .Product_Event_Title {
+    @apply text-sm;
+  }
+  .Product_Name_Content {
+    @apply text-base;
+  }
+  .Product_Sale_Content {
+    @apply text-sm;
+  }
+  .Product_Price_Content {
+    @apply text-base;
+  }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1280px) {
+  .Product_Img_Container {
+    padding: 0px 4%;
+  }
+  .Product_Img_Content {
+    @apply h-full min-w-full;
+  }
 }
 
 .Product_Img_Content {
