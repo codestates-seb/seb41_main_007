@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { modalActions } from 'Redux/reducer/modalSlice';
+import { closeModal } from 'Redux/reducer/modalSlice';
 
 const ModalContainer = styled.div`
   width: 100%;
@@ -32,7 +32,7 @@ const Backdrop = styled.div`
   height: 100vh;
   position: fixed;
   top: 0;
-  z-index: 9999;
+  z-index: 500;
   background-color: rgba(0, 0, 0, 0.2);
 `;
 
@@ -40,7 +40,7 @@ const ModalContent: React.FC = () => {
   const dispatch = useDispatch();
   const modalCloseHandler = (event: React.MouseEvent) => {
     event.preventDefault();
-    dispatch(modalActions.closeModal());
+    dispatch(closeModal());
   };
   return (
     <>

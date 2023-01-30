@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { modalActions } from 'Redux/reducer/modalSlice';
+import { openModal } from 'Redux/reducer/modalSlice';
 import axios from 'axios';
+
 const CheckAll = styled.div`
   border-bottom: 1px dotted var(--black-02);
   margin-bottom: 12px;
@@ -33,8 +34,9 @@ const CheckBox: React.FC = () => {
   }, []);
 
   const modalOpenHandler = (event: any) => {
-    event.preventDefault();
-    dispatch(modalActions.openModal());
+    console.log('안녕');
+
+    dispatch(openModal());
   };
 
   const handleCheck = (e: any) => {

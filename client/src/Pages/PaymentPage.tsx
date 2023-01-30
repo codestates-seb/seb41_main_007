@@ -10,10 +10,12 @@ import { useSelector } from 'react-redux';
 import SaveAddress from 'Components/PaymentPage/SaveAddress';
 import { TYPE_CartData } from 'Types/common/product';
 import BasketfourList from 'Components/PaymentPage/BasketfourList';
-
+import NewModal from 'Components/Common/NewModal';
 import Empty from 'Components/Common/Empty';
 import useScrollTop from 'CustomHook/useScrollTop';
 import Deliveryaddress from 'Components/Mypage/DeliveryManagement';
+import { useAppSelector } from 'Redux/app/hook';
+import { madalState } from 'Redux/reducer/modalSlice';
 const Container = styled.div`
   width: 830px;
 `;
@@ -30,8 +32,9 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const [order, setOrder] = useState<boolean>(true);
   const [isDelivery, setisDelivery] = useState<boolean>(true);
   const [address, setAddress] = useState<boolean>(true); //배송지
+
   const [payment, setPayment] = useState<boolean>(true); //결제수단
-  const isModal = useSelector((state: any) => state.modal.isOpenModal);
+  const isModal = useAppSelector(madalState);
   const [data, setdata] = useState<TYPE_CartData[]>([]);
   const [isloading, setisLoading] = useState<boolean>(true);
   // const { loading, session } = useSession();
@@ -63,7 +66,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
 
   return (
     <div>
-      {isModal && <Modal />}
+      {isModal && <NewModal />}
       <BGcontainer>
         <div className="flex">
           <Container>
