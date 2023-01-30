@@ -28,9 +28,7 @@ public class CategoryService {
     @CacheEvict(value = {"findCategories", "getMain"}, allEntries = true)
     public Category createCategory(CategoryPostDto categoryPostDto) {
         verifyExistsCategory(categoryPostDto.getName());
-        return categoryRepository.save(
-                categoryMapper.categoryPostDtoToCategory(categoryPostDto)
-        );
+        return categoryRepository.save(new Category(categoryPostDto.getName()));
     }
 
     @CacheEvict(value = {"findCategories", "getMain"}, allEntries = true)

@@ -86,4 +86,8 @@ public class OrderProduct extends Auditable {
         this.shippingMethod = shippingMethod;
         this.shippingPrice = shippingPrice;
     }
+
+    public int getTotalPrice() {
+        return shippingPrice + (productPrice + productOptionPrice) * quantity;
+    }
 }
