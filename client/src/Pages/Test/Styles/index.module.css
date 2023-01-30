@@ -7,6 +7,7 @@
 
 .main_container {
   max-width: 1220px;
+  padding: 20px;
   background-color: var(--bg-white-00);
   flex: 1;
 }
@@ -16,10 +17,44 @@
   flex-direction: column;
 }
 
+.inputContents {
+  margin: 10px;
+  height: 40px;
+  color: var(--black-10);
+  border: 1px solid var(--gray-12);
+  border-radius: 4px;
+}
+
 .line {
   width: 100%;
   border-bottom: 1px solid var(--gray-12);
   margin: 30px 0;
+}
+
+.OptionListContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  align-items: center;
+  width: 130px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 10px;
+  font-size: 15px;
+  background-color: var(--green-50);
+  color: #fff;
+  line-height: 14px;
+}
+
+.OptionListContentDel {
+  display: inline;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  color: black;
+  border-radius: 10px;
+  padding: 10px 50px 15px 50px;
 }
 
 .heading {
@@ -82,12 +117,13 @@
   border: 1px solid var(--gray-12);
   border-radius: 4px;
   box-sizing: border-box;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .title:focus-within {
   border-color: var(--gray-45);
 }
+
 .title_input {
   flex: 1;
   height: 100%;
@@ -138,11 +174,12 @@
   align-items: center;
   justify-content: center;
 }
+
 .submit:hover {
-  background-color: var(--blue-12);
+  background-color: var(--green-60);
 }
 .submit:active {
-  background-color: var(--blue-13);
+  background-color: var(--green-60);
 }
 .submit_disabled {
   cursor: default;

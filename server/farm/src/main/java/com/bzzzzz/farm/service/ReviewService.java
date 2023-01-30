@@ -32,8 +32,9 @@ public class ReviewService {
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
-    public Review insertReview(Review review, String username) {
-        Member member = memberRepository.findByEmail(username).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_LOGIN));
+    public Review insertReview(Review review, Long userId) {
+        Member member = new Member();
+        member.setMemberId(userId);
         review.setMember(member);
         Review saveReview = reviewRepository.save(review);
         return saveReview;
@@ -52,17 +53,16 @@ public class ReviewService {
     }
 
     @CacheEvict(value = "getMain", allEntries = true)
-    public Review updateReview(Review review, String username) {
+    public Review updateReview(Review review, Long userId) {
 
         log.info("updateReview : "+review.getReviewId());
         //reviewId로 저장된 리뷰 불러오기
         Review findReview = findVerifiedReview(review.getReviewId());
-
-        //글 작성 유저랑 수정하려는 유저 똑같은지 검증
-        if (!findReview.getMember().getEmail().equals(username)) {
+        Member member = new Member();
+        member.setMemberId(userId);
+        if(findReview.getMember().getMemberId() != member.getMemberId()){
             throw new BusinessLogicException(ExceptionCode.INVALID_USER);
         }
-
         //리뷰 내용 업데이트 로직
         findReview.setReviewTitle(review.getReviewTitle());
         findReview.setReviewContent(review.getReviewContent());
@@ -78,7 +78,7 @@ public class ReviewService {
         reviewRepository.delete(findReview);
     }
 
-    private Review findVerifiedReview(Long reviewId){
+    public Review findVerifiedReview(Long reviewId){
         Optional<Review> optionalReview = reviewRepository.findReviewByReviewId(reviewId);
         log.info("verifiedReview :"+ optionalReview.get().getReviewTitle());
         Review review = optionalReview

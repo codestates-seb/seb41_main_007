@@ -1,32 +1,45 @@
 package com.bzzzzz.farm.service;
 
 import com.bzzzzz.farm.model.entity.Member;
+import com.bzzzzz.farm.model.entity.Review;
 import com.bzzzzz.farm.model.entity.ReviewAnswer;
 import com.bzzzzz.farm.repository.MemberRepository;
 import com.bzzzzz.farm.repository.ReviewAnswerRepository;
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
+import com.bzzzzz.farm.repository.ReviewRepository;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import static com.bzzzzz.farm.common.Safety.toLong;
+
 @Service
+@Log4j2
 public class ReviewAnswerService {
+
+    public ReviewAnswerService(ReviewAnswerRepository reviewAnswerRepository, MemberRepository memberRepository, ReviewRepository reviewRepository) {
+        this.reviewAnswerRepository = reviewAnswerRepository;
+        this.memberRepository = memberRepository;
+        this.reviewRepository = reviewRepository;
+    }
 
     private ReviewAnswerRepository reviewAnswerRepository;
     private MemberRepository memberRepository;
+    private ReviewService reviewService;
+    private ReviewRepository reviewRepository;
 
-    public ReviewAnswerService(ReviewAnswerRepository reviewAnswerRepository) {
-        this.reviewAnswerRepository = reviewAnswerRepository;
+
+    public ReviewAnswer insertReviewAnswer(ReviewAnswer reviewAnswer) {
+        ReviewAnswer saveReviewAnswer = reviewAnswerRepository.save(reviewAnswer);
+        log.info("saveReviewAnswer in service: "+saveReviewAnswer.getReview().getReviewTitle()+" "+saveReviewAnswer.getReview().getReviewId());
+        Review review = reviewRepository.findReviewByReviewId(saveReviewAnswer.getReview().getReviewId()).orElseThrow();
+        review.setReviewAnswer(saveReviewAnswer);
+        reviewRepository.save(review);
+
+        return saveReviewAnswer;
     }
 
-    public ReviewAnswer insertReviewAnswer(ReviewAnswer reviewAnswer, String username) {
-        Member member = memberRepository.findByEmail(username).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        reviewAnswer.setMember(member);
-        return reviewAnswerRepository.save(reviewAnswer);
-    }
-
-    public ReviewAnswer updateReviewAnswer(ReviewAnswer reviewAnswer, String username) {
-        Member member = memberRepository.findByEmail(username).orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
-        reviewAnswer.setMember(member);
+    public ReviewAnswer updateReviewAnswer(ReviewAnswer reviewAnswer) {
         return reviewAnswerRepository.save(reviewAnswer);
     }
     public void deleteReviewAnswer(Long reviewAnswerId) {

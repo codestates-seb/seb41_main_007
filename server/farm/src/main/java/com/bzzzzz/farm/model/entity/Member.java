@@ -59,12 +59,7 @@ public class Member extends Auditable {
     private List<Question> questions;
 
     @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<QuestionAnswer> questionAnswers;
-
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Review> reviews;
 
-    @OneToMany(mappedBy = "member", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    private List<ReviewAnswer> reviewAnswers;
 
 }

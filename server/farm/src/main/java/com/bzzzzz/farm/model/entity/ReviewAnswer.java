@@ -22,16 +22,14 @@ public class ReviewAnswer extends Auditable {
     @Column(nullable = false)
     private String reviewAnswerContent;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "memberId", nullable = false)
-    private Member member;
-
     @OneToOne
     @JoinColumn(name = "reviewId")
     private Review review;
 
-    public ReviewAnswer(String reviewAnswerTitle,String reviewAnswerContent) {
+    public ReviewAnswer(Review review,String reviewAnswerTitle,String reviewAnswerContent) {
+        this.review = review;
         this.reviewAnswerTitle = reviewAnswerTitle;
         this.reviewAnswerContent = reviewAnswerContent;
     }
+
 }

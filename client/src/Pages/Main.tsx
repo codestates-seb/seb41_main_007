@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Carousell } from 'Components/Common/Carousel';
-import Example from 'Components/Review/ReviewCss';
+import Review from 'Components/Review/Review';
 import StartDive from 'Components/NewProduct/StartDive';
 import CustomTitle from 'Components/Header/CustomTitle';
 import Story from 'Components/Main/Story';
@@ -18,7 +18,7 @@ const Main: FC = (): JSX.Element => {
       <NewProduct />
       <StartDive />
       <BestProduct />
-      <Example />
+      <Review />
     </main>
   );
 };

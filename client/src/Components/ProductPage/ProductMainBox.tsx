@@ -11,7 +11,8 @@ import { useAppDispatch } from 'Redux/app/hook';
 import { countset } from 'Redux/reducer/priceSlice';
 import { useNavigate } from 'react-router-dom';
 import SelectBox from 'Components/BasketPage/SelectBox';
-import { TYPE_ProductOption } from 'Types/common/product';
+import { TYPE_ProductOption, counttype } from 'Types/common/product';
+import { useSession } from 'CustomHook/useSession';
 const ProductMain = styled.div`
   margin: 0 auto 50px auto;
   width: 920px;
@@ -108,26 +109,28 @@ interface props {
   data: any;
 }
 
-interface counttype {
-  id: number;
-  price: number;
-  count: number;
-  optionprice: number;
-  optionname: string;
-  productOptionId: number;
-}
+// interface counttype {
+//   id: number;
+//   price: number;
+//   count: number;
+//   optionprice: number;
+//   optionname: string;
+//   productOptionId: number;
+// }
 const ProductMainBox: React.FC<props> = ({ data }) => {
   const [count, setCount] = useState<number>(1);
   const [option, setOption] = useState<TYPE_ProductOption>(
     data.productOptionResponseDtos[0],
   );
-  console.log(option);
+  const { session, loading } = useSession();
+  if (loading) return <></>;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);
   };
+
   const onDecrease = () => {
     setCount((prevCount) => {
       if (prevCount === 1) {
@@ -136,6 +139,23 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
       return prevCount - 1;
     });
   };
+
+  if (session) {
+    //확인용
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session}`,
+      },
+    })
+      .then((res: Response) => {
+        return res.json();
+      })
+      .then((res: Response) => {
+        console.log(res);
+      });
+  }
 
   const emptyBasketAlram = () =>
     toast.success('장바구니에 담는 중입니다.', {
@@ -160,13 +180,6 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
       theme: 'light',
     });
 
-  let search = location.href;
-  search = 'returnUrl=' + search;
-
-  // const getStorage = (object, ID) => {
-  // window.location.href
-  // 비로그인시 return url
-
   const onClickBasket = (data: any) => {
     const jsondata: string | null = localStorage.getItem('baskets');
     const baskets = JSON.parse(jsondata || '[]') || [];
@@ -176,15 +189,36 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
     const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
     let IsSame: boolean = false;
 
-    baskets.forEach((el: any) => {
-      if (data.productId === el.productId) IsSame = true;
+    basketsCounter.forEach((el: any) => {
+      if (el.productOptionId === option.productOptionId) {
+        IsSame = true;
+      }
     });
+
+    // baskets.forEach((el: any) => {
+    //   console.log(el.productOptionResponseDtos);
+    //   if (data.productId === el.productId) IsSame = true;
+    // });
 
     if (IsSame) {
       fullBasketAlram();
 
       return;
     }
+
+    data.productOptionResponseDtos.forEach((element: TYPE_ProductOption) => {
+      if (element.productOptionId === option.productOptionId) {
+        const newData = { ...data, productOptionResponseDtos: element };
+        baskets.push(newData);
+        const dispatchdata = {
+          id: newData.productOptionResponseDtos.productOptionId,
+          price: data.price + option.price,
+          count: count,
+        };
+        dispatch(countset(dispatchdata));
+      }
+    });
+
     const datacount: counttype = {
       id: data.productId,
       price: data.price,
@@ -193,20 +227,27 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
       productOptionId: option.productOptionId,
       count: count,
     };
-    const dispatchdata = {
-      id: data.productId,
-      price: data.price + option.price,
-      count: count,
-    };
-    console.log(basketsCounter);
-    dispatch(countset(dispatchdata));
-    //바로 반영하기위해 사용
-    baskets.push(data);
+
     basketsCounter.push(datacount);
     emptyBasketAlram();
     localStorage.setItem('basketsCounter', JSON.stringify(basketsCounter));
     //백업용
     localStorage.setItem('baskets', JSON.stringify(baskets));
+    if (session) {
+      const suggest = {
+        productOptionId: option.productOptionId,
+        quantity: count,
+      };
+
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+        body: JSON.stringify(suggest),
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session}`,
+        },
+        method: 'POST',
+      }).then((response) => console.log(response));
+    }
   };
 
   return (
@@ -276,3 +317,14 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
 
 export default ProductMainBox;
 //객체 배열관리
+//밀림 현상
+//백엔드와 소통
+// let search = location.href;
+// search = 'returnUrl=' + search;
+
+// // const getStorage = (object, ID) => {
+// // window.location.href
+// // 비로그인시 return url
+//옵션아이디로 수정함녀서 괴랄해짐
+//유지보수 고려한 코딩
+//결제하기 버그

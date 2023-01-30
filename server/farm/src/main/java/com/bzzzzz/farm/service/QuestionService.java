@@ -25,7 +25,10 @@ public class QuestionService {
     }
 
     //질문 글 작성
-    public Question insertQuestion(Question question) {
+    public Question insertQuestion(Question question, Long userId) {
+        Member member = new Member();
+        member.setMemberId(userId);
+        question.setMember(member);
         return questionRepository.save(question);
     }
 

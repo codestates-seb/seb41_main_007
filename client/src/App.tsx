@@ -14,7 +14,7 @@ import ProductListPage from 'Pages/CategoryListPage';
 import Mypage from 'Pages/MyPage';
 import Search from 'Pages/Search';
 import NotFoundPage from 'Pages/NotFoundPage';
-
+import { MyPageSession, PaymentPageSession } from 'Utils/SessionMaster';
 import Footer from 'Components/Common/Footer';
 import Address from 'Components/PaymentPage/Adress';
 
@@ -23,6 +23,9 @@ import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
 import AllProductsPage from 'Pages/AllProductsPage';
 import Auth from 'Pages/Auth';
 import Post from 'Pages/Test/Post';
+import Kakaopay from 'Components/PaymentPage/Kakaopay';
+import { useSession } from 'CustomHook/useSession';
+import Empty from 'Components/Common/Empty';
 
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
@@ -55,7 +58,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/mypage',
-    element: withLayout(Mypage),
+    element: withLayout(MyPageSession),
   },
   {
     path: '/Basket',
@@ -87,7 +90,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/payment',
-    element: withLayout(PaymentPage),
+    element: withLayout(PaymentPageSession),
   },
   {
     path: '/test/review',
@@ -98,6 +101,10 @@ const router = createBrowserRouter([
     element: withLayout(Post),
   },
   { path: '/auth', element: <Auth /> },
+  {
+    path: '/kakao',
+    element: <Kakaopay />,
+  },
 ]);
 
 const App: React.FC = () => {

@@ -5,7 +5,8 @@ import 'slick-carousel/slick/slick-theme.css';
 import styled from 'styled-components';
 import { TYPE_Product } from 'Types/common/product';
 import Product from './Product';
-
+import { useMediaQuery } from 'react-responsive';
+import styles from './Styles/ProductSlider.module.css';
 const StyledSlider = styled(Slider)`
   position: relative;
   width: 100%;
@@ -42,6 +43,7 @@ const StyledSlider = styled(Slider)`
     height: 40px;
   }
 `;
+
 interface Props {
   productList: TYPE_Product[];
   isNew?: boolean;
@@ -53,14 +55,42 @@ const ProductSlider: FC<Props> = ({
   isNew = false,
   isBest = false,
 }) => {
-  let size = 4;
+  const isDesktop: boolean = useMediaQuery({
+    query: '(min-width:1024px)',
+  });
+  const isTablet: boolean = useMediaQuery({
+    query: '(min-width:768px) and (max-width:1023px)',
+  });
+  const isMobile: boolean = useMediaQuery({
+    query: '(max-width:767px)',
+  });
 
   const settings = {
     infinite: true,
     speed: 200,
-    slidesToShow: size,
+    slidesToShow: 4,
     slidesToScroll: 1,
     arrows: true,
+    responsive: [
+      {
+        breakpoint: 1025,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
   };
 
   return (

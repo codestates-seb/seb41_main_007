@@ -9,6 +9,7 @@ import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.model.entity.Review;
 import com.bzzzzz.farm.repository.ProductRepository;
 import com.bzzzzz.farm.service.MemberService;
+import com.bzzzzz.farm.service.ProductService;
 import com.bzzzzz.farm.service.ReviewService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
+import static com.bzzzzz.farm.common.Safety.toLong;
 
 @Log4j2
 @RestController
@@ -33,12 +35,14 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final MemberService memberService;
     private final ProductRepository productRepository;
+    private final ProductService productService;
     private final ReviewMapper reviewMapper;
 
-    public ReviewController(ReviewService reviewService, MemberService memberService, ProductRepository productRepository, ReviewMapper reviewMapper) {
+    public ReviewController(ReviewService reviewService, MemberService memberService, ProductRepository productRepository, ProductService productService, ReviewMapper reviewMapper) {
         this.reviewService = reviewService;
         this.memberService = memberService;
         this.productRepository = productRepository;
+        this.productService = productService;
         this.reviewMapper = reviewMapper;
     }
 
@@ -47,12 +51,10 @@ public class ReviewController {
     @PostMapping("/reviews")
     public ResponseEntity insertReview(@RequestBody @Valid ReviewPostDto reviewPostDto, @AuthenticationPrincipal UserDetails userDetails) {
         Review review = reviewMapper.reviewPostDtoToReview(reviewPostDto);
-
-        log.info("로그인한 유저 체크: " + userDetails.getUsername());
-
-        Product product = productRepository.findById(reviewPostDto.getProductId()).orElseThrow(() -> new IllegalArgumentException("해당 상품이 없습니다."));
+        log.info("현재 로그인 된 유저 : "+ userDetails.getUsername());
+        Product product = productService.findVerifiedProduct(reviewPostDto.getProductId());
         review.setProduct(product);
-        Review insertReview = reviewService.insertReview(review, userDetails.getUsername());
+        Review insertReview = reviewService.insertReview(review, toLong(userDetails.getUsername()));
 
         //작성한 게시글 제목 로그 띄우기
         log.info("log : " + reviewPostDto.getReviewTitle());
@@ -90,7 +92,7 @@ public class ReviewController {
 
         Review review = reviewMapper.reviewPatchDtoToReview(reviewPatchDto);
 
-        Review updatedReview = reviewService.updateReview(review, userDetails.getUsername());
+        Review updatedReview = reviewService.updateReview(review, toLong(userDetails.getUsername()));
 
         ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(updatedReview);
 
