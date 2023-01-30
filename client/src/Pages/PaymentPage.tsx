@@ -10,10 +10,12 @@ import { useSelector } from 'react-redux';
 import SaveAddress from 'Components/PaymentPage/SaveAddress';
 import { TYPE_CartData } from 'Types/common/product';
 import BasketfourList from 'Components/PaymentPage/BasketfourList';
-
+import NewModal from 'Components/Common/NewModal';
 import Empty from 'Components/Common/Empty';
 import useScrollTop from 'CustomHook/useScrollTop';
 import Deliveryaddress from 'Components/Mypage/DeliveryManagement';
+import { useAppSelector } from 'Redux/app/hook';
+import { madalState } from 'Redux/reducer/modalSlice';
 const Container = styled.div`
   width: 830px;
 `;
@@ -29,9 +31,10 @@ const Title = styled.div`
 const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const [order, setOrder] = useState<boolean>(true);
   const [isDelivery, setisDelivery] = useState<boolean>(true);
-  const [address, setAddress] = useState<boolean>(false); //배송지
+  const [address, setAddress] = useState<boolean>(true); //배송지
+
   const [payment, setPayment] = useState<boolean>(true); //결제수단
-  const isModal = useSelector((state: any) => state.modal.isOpenModal);
+  const isModal = useAppSelector(madalState);
   const [data, setdata] = useState<TYPE_CartData[]>([]);
   const [isloading, setisLoading] = useState<boolean>(true);
   // const { loading, session } = useSession();
@@ -48,6 +51,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
         return res.json();
       })
       .then((res) => {
+        console.log(res);
         setdata(res);
         setisLoading(false); //무한렌더링 막기용
       })
@@ -57,12 +61,12 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
       });
   }, []);
   useScrollTop();
-
+  console.log(data);
   if (isloading) return <Empty />;
 
   return (
     <div>
-      {isModal && <Modal />}
+      {isModal && <NewModal />}
       <BGcontainer>
         <div className="flex">
           <Container>
@@ -101,7 +105,9 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
                 )}
               </button>
             </Title>
-            {address && <Deliveryaddress session={session} />}
+            {address && (
+              <Deliveryaddress setcontrol={setAddress} session={session} />
+            )}
 
             <Title>
               <div className=" font-semibold py-4 text-xl">결제수단</div>

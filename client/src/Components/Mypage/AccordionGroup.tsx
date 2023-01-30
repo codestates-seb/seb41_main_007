@@ -1,6 +1,6 @@
 import MyProfile from 'Components/Mypage/MyProfile';
 import Deliveryaddress from 'Components/Mypage/DeliveryManagement';
-import Address from 'Components/PaymentPage/Adress';
+import Address from 'Components/PaymentPage/Address';
 import AccordionTitle from 'Components/Common/AccordionTitle';
 import SaveAddress from 'Components/PaymentPage/SaveAddress';
 
@@ -18,7 +18,7 @@ const AccordionGroup: React.FC = () => {
         Component={SaveAddress}
       />
       <AccordionTitle
-        Open={false}
+        Open={true}
         ATvalue="배송지관리"
         Component={Deliveryaddress}
       />

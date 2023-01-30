@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
+import { openModal } from 'Redux/reducer/modalSlice';
 import { modalActions } from 'Redux/reducer/modalSlice';
 import { TYPE_CartData, TYPE_LocalOption } from 'Types/common/product';
 import axios from 'axios';
@@ -40,8 +41,9 @@ const CheckBox: React.FC<{
   }, []);
 
   const modalOpenHandler = (event: any) => {
-    event.preventDefault();
-    dispatch(modalActions.openModal());
+    console.log('안녕');
+
+    dispatch(openModal());
   };
 
   const handleCheck = (e: any) => {

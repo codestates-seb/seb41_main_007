@@ -1,15 +1,19 @@
-import Loading from 'Components/Loading/Loading';
-import { TYPE_COMMENT } from 'Types/common/product';
-import { FC, useEffect, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
-import styles from './Styles/Review.module.css';
+import { TYPE_COMMENT } from 'Types/common/product';
 import { Descendant } from 'Types/slate';
+
+import Loading from 'Components/Loading/Loading';
 import {
   EditComment,
   SimpleReadOnlyComment,
 } from 'Components/Editor/EditComment';
 import ReadOnlyComment from '../Editor/ReadOnlyComment';
+
+import { customTime } from 'Utils/commonFunction';
+import styles from './Styles/ReviewList.module.css';
+import Rating, { RatingView } from './Rating';
 
 interface Props {
   productId: string;
@@ -29,35 +33,23 @@ const CommentItem: FC<CommentItem> = ({ item, session }) => {
   const node = useRef<HTMLDivElement>(null);
 
   return (
-    <div className={styles.comment_list_wrapper}>
-      <div className={styles.comment_input_rest}>
-        {/* <div className={styles.comment_top}>
-          <div className={styles.comment_top_added}>
-            <Tooltip
-              content={new Date(item.reviewCreatedAt).toLocaleDateString('ko')}
-              arrow
-            >
-              <span>{customTime(new Date(item.reviewCreatedAt))}</span>
-            </Tooltip>
-          </div>
-        </div> */}
-        {editmode ? (
-          <EditComment
-            value={JSON.parse(item.reviewContent)}
-            commentId={item.reviewId}
-            setCancel={() => setEditmode(false)}
-            setData={(value: Descendant[]) => setData(value)}
-          />
-        ) : (
-          <div className={styles.comment} ref={node}>
-            {JSON.parse(item.reviewContent).length > 4 ? (
-              <SimpleReadOnlyComment data={data} />
-            ) : (
-              <ReadOnlyComment data={data} />
-            )}
-          </div>
-        )}
-      </div>
+    <div className={styles.Comment_List_Wrapper}>
+      {editmode ? (
+        <EditComment
+          value={JSON.parse(item.reviewContent)}
+          commentId={item.reviewId}
+          setCancel={() => setEditmode(false)}
+          setData={(value: Descendant[]) => setData(value)}
+        />
+      ) : (
+        <div className={styles.Comment} ref={node}>
+          {JSON.parse(item.reviewContent).length > 4 ? (
+            <SimpleReadOnlyComment data={data} />
+          ) : (
+            <ReadOnlyComment data={data} />
+          )}
+        </div>
+      )}
     </div>
   );
 };
@@ -108,7 +100,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
       <div
         style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}
       >
-        <Loading width={30} />
+        <Loading width={50} height={50} />
       </div>
     );
 
@@ -130,30 +122,66 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
   if (!data) return <></>;
 
   return (
-    <>
+    <div className={styles.ReviewList_Container}>
+      <span>리뷰리스트</span>
+      <span className={styles.line} />
       {data.pages.length > 0 &&
         data.pages.map((page: any) => {
           if (page.isLast) {
-            return <div key={0}>리뷰를 다 불러왔습니다</div>;
+            return <div key={Date.now()}>리뷰를 다 불러왔습니다</div>;
           }
           return page.result.map((el: TYPE_COMMENT) => {
             return (
-              <CommentItem key={el.reviewId} item={el} session={session} />
+              <div key={el.reviewId} className={styles.Review_Container}>
+                <img
+                  src={
+                    el.reviewImage
+                      ? el.reviewImage
+                      : 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/First_Tractor_Company_-_old_working_model_-_01.jpg/220px-First_Tractor_Company_-_old_working_model_-_01.jpg'
+                  }
+                  alt={'reviewImage'}
+                  className={styles.Review_Image_Content}
+                />
+                <div className={styles.Review_Contents_Container}>
+                  <div className={styles}>
+                    <h3 className={styles.Review_Product_Title}>
+                      {el.reviewTitle}
+                    </h3>
+                    <div className={styles.Review_Product_Content}>
+                      <CommentItem item={el} session={session} />
+                    </div>
+                  </div>
+                  <div className={styles.Review_Second_Row_Container}>
+                    <div className={styles.Review_User}>{el.memberId}</div>
+                    <div className={styles.Review_Rating}>
+                      평점: <RatingView num={el.rating} />
+                    </div>
+                    <div className={styles.Review_Date}>
+                      {customTime(el.reviewCreatedAt)}
+                    </div>
+                  </div>
+                </div>
+              </div>
             );
           });
         })}
-      {isFetching && (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-          }}
-        >
-          <Loading width={10} />
+      {hasNextPage && (
+        <div className={styles.FetchMore_Container}>
+          <button
+            className={styles.FetchMore_Button}
+            onClick={() => fetchNextPage()}
+          >
+            {isFetching ? (
+              <div className={styles.Loading_Container}>
+                <Loading width={20} height={20} />
+              </div>
+            ) : (
+              '리뷰 더보기'
+            )}
+          </button>
         </div>
       )}
-      {hasNextPage && <button onClick={() => fetchNextPage()}>패치하기</button>}
-    </>
+    </div>
   );
 };
 

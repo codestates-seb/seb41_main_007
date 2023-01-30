@@ -23,6 +23,7 @@ export interface TYPE_COMMENT {
   reviewContent: string;
   reviewCreatedAt: string;
   rating: number;
+  reviewImage: string;
   eviewLastModifiedAt: string;
 }
 
@@ -75,13 +76,13 @@ export interface TYPE_CartData {
 }
 
 export interface TYPE_People {
-  address: string;
-  age: number;
+  address: TYPE_getAddress[];
+  birth: string;
   email: string;
   gender: string;
   memberId: number;
   name: string;
-  phone: string;
+  phoneNumber: string;
 }
 
 export interface TYPE_UserAddress {

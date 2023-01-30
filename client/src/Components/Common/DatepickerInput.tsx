@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import dayjs from 'dayjs';
 import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
@@ -7,18 +7,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
-const DatePicker1 = styled(DatePicker)`
-  background-color: #2f3338;
-  color: white;
-`;
 interface props {
   onSave: (name: string, value: string) => void;
 }
 
 const DatepickerInput: React.FC<props> = ({ onSave }) => {
-  // const [value, setValue] = React.useState<Dayjs | null>();
-  // if (value) {
-  // }
+  const [value, setValue] = useState('2023-01-20');
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -26,11 +20,12 @@ const DatepickerInput: React.FC<props> = ({ onSave }) => {
         <DatePicker
           openTo="year"
           views={['year', 'month', 'day']}
-          label="Year, month and date"
-          value={dayjs('2023-01-20')}
+          label={value}
+          value={dayjs(value)}
           onChange={(newValue) => {
             if (newValue) {
-              onSave('date', newValue.format('YYYY년MM월DD일'));
+              setValue(newValue.format('YYYYMMDD'));
+              onSave('birth', newValue.format('YYYYMMDD'));
             }
           }}
           renderInput={(params) => (
@@ -42,3 +37,4 @@ const DatepickerInput: React.FC<props> = ({ onSave }) => {
   );
 };
 export default DatepickerInput;
+//글자색 맘에안듬
