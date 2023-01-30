@@ -48,6 +48,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
         return res.json();
       })
       .then((res) => {
+        console.log(res);
         setdata(res);
         setisLoading(false); //무한렌더링 막기용
       })
@@ -57,7 +58,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
       });
   }, []);
   useScrollTop();
-
+  console.log(data);
   if (isloading) return <Empty />;
 
   return (

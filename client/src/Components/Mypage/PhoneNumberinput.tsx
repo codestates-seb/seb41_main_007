@@ -22,7 +22,7 @@ const phoneNumberinput: React.FC<props> = ({
       onChange={onChangeNumber}
       value={data}
       maxLength={11}
-      name="phonenumber"
+      name="phoneNumber"
       isTrue={isTrue}
     ></Textinput>
   );

@@ -75,13 +75,13 @@ export interface TYPE_CartData {
 }
 
 export interface TYPE_People {
-  address: string;
-  age: number;
+  address: TYPE_getAddress[];
+  birth: string;
   email: string;
   gender: string;
   memberId: number;
   name: string;
-  phone: string;
+  phoneNumber: string;
 }
 
 export interface TYPE_UserAddress {
