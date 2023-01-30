@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 import { useCallback, useState } from 'react';
 import RadiusButton from 'Components/Common/RadiusButton';
-import Address from 'Components/PaymentPage/Adress';
+import Address from 'Components/PaymentPage/Address';
 import useBooleanInput from 'CustomHook/useBooleaninput';
-import { TYPE_UserAddress } from 'Types/common/product';
-import isEmptyObj from 'Utils/commonFunction';
+import { TYPE_getAddress } from 'Types/common/product';
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 
 const Deliverydl = styled.dl`
   margin-top: 30px;
@@ -49,7 +49,8 @@ const Deliveryp = styled.p`
 `;
 
 interface Props {
-  data: TYPE_UserAddress;
+  data: TYPE_getAddress;
+  session: any;
 }
 
 // private String addressName;
@@ -61,9 +62,17 @@ interface Props {
 // @Pattern(regexp = "^010\d{3,4}\d{4}$",
 //         message = "휴대폰 번호는 010으로 시작하는 11자리 숫자로 구성되어야 합니다.")
 // private String phoneNumber;
-const DeliverySave: React.FC<Props> = ({ data }) => {
+const DeliverySave: React.FC<Props> = ({ data, session }) => {
   const [control, oncontrolCilck] = useBooleanInput(data ? true : false);
-  const [dataPut, setDataPut] = useState<TYPE_UserAddress>(data);
+  const [dataPut, setDataPut] = useState<TYPE_getAddress>(data);
+  const deletefetch = () => {
+    mutate({});
+  };
+  const { mutate } = useCustomMutation(
+    `/addresses/${data.addressId}`,
+    `/addresses`,
+    'DELETE',
+  );
 
   return (
     <div>
@@ -73,6 +82,7 @@ const DeliverySave: React.FC<Props> = ({ data }) => {
             <Deliverydiv>{dataPut.addressName}</Deliverydiv>
             <DeliverydtLeft>
               <RadiusButton onClick={oncontrolCilck}>수정</RadiusButton>
+              <RadiusButton onClick={deletefetch}>삭제</RadiusButton>
             </DeliverydtLeft>
           </Deliverydt>
           <Deliverydd>

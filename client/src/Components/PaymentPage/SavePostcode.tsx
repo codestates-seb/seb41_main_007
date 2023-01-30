@@ -71,10 +71,10 @@ const SavePostcode: React.FC<Props> = ({
       <PostcodeContainer>
         <div></div>
         <input
-          value={isControl ? '우편 번호를 눌러주세요' : addressNumber}
+          value={isControl ? '' : addressNumber}
           onClick={handleClick}
           className="w-9/12"
-          placeholder="우편번호 버튼을 눌러주세요"
+          placeholder="우편번호 버튼을 입력하세요"
           readOnly
         ></input>
         <button type="button" onClick={handleClick} className="w-26 ml-6">

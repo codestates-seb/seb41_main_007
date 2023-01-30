@@ -29,7 +29,7 @@ const Title = styled.div`
 const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const [order, setOrder] = useState<boolean>(true);
   const [isDelivery, setisDelivery] = useState<boolean>(true);
-  const [address, setAddress] = useState<boolean>(false); //배송지
+  const [address, setAddress] = useState<boolean>(true); //배송지
   const [payment, setPayment] = useState<boolean>(true); //결제수단
   const isModal = useSelector((state: any) => state.modal.isOpenModal);
   const [data, setdata] = useState<TYPE_CartData[]>([]);
@@ -101,7 +101,9 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
                 )}
               </button>
             </Title>
-            {address && <Deliveryaddress session={session} />}
+            {address && (
+              <Deliveryaddress setcontrol={setAddress} session={session} />
+            )}
 
             <Title>
               <div className=" font-semibold py-4 text-xl">결제수단</div>

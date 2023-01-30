@@ -33,7 +33,7 @@ const AccordionTitle: React.FC<props> = ({ ATvalue, Component, Open }) => {
           )}
         </button>
       </Title>
-      {control && <Component session={session} />}
+      {control && <Component setcontrol={setcontrol} session={session} />}
     </>
   );
 };

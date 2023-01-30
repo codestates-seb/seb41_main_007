@@ -8,7 +8,7 @@ import TinyTitle from 'Components/Common/TinyTitle';
 import { ToastContainer, toast, Zoom } from 'react-toastify';
 import { useState, Dispatch, SetStateAction } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
-import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
+import { useQueryClient } from 'react-query';
 import { useAppDispatch } from 'Redux/app/hook';
 import { get_DataSave } from 'Redux/reducer/getDataSlice';
 import useBooleanInput from 'CustomHook/useBooleaninput';
@@ -40,7 +40,7 @@ const User = styled.div`
 `;
 
 const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
-  const numberoverAlram = () => toast.warning('11자리 이상은 불가합니다.');
+  const queryClient = useQueryClient();
   const [nameMessage, setNameMessage] = useState<string>('');
   const [addressValue, setAddressValue] = useState<string[]>([]);
   const [dataPut, setDataPut] = useState<TYPE_UserAddress>({
@@ -51,12 +51,12 @@ const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
   });
   const [isControl, onControl] = useBooleanInput(true);
   const dispatch = useAppDispatch();
-  const { mutate } = useCustomMutation(
-    `/addresses`,
-    `/addresses`,
-    'POST',
-    session,
-  );
+  // const { mutate } = useCustomMutation(
+  //   `/addresses`,
+  //   `/addresses`,
+  //   'POST',
+  //   session,
+  // );
   console.log(session);
   // const { loading, session } = useSession();
   // if (loading) return <></>;
@@ -110,7 +110,7 @@ const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
         console.log(response);
         const dispatchMeal = { ...response };
         dispatch(get_DataSave(dispatchMeal));
-        mutate(dispatchMeal);
+        queryClient.invalidateQueries('/addresses');
         setDataPut({
           addressName: '',
           name: '',
@@ -118,7 +118,6 @@ const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
           phoneNumber: '',
         });
 
-        console.log('ㅇㅎ');
         onControl();
       })
       .catch((e) => {

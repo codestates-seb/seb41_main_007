@@ -3,11 +3,12 @@ import Postcode from './Postcode';
 import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RadiusButton from 'Components/Common/RadiusButton';
-import { TYPE_UserAddress } from 'Types/common/product';
+import { TYPE_getAddress } from 'Types/common/product';
 import TinyTitle from 'Components/Common/TinyTitle';
 import { ToastContainer, toast, Zoom } from 'react-toastify';
 import { useState, Dispatch, SetStateAction } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 
 const StyleToastContainer = styled(ToastContainer)`
   position: fixed;
@@ -39,7 +40,7 @@ interface Props {
   children?: string;
   setDataPut: Dispatch<SetStateAction<any>>;
   oncontrolCilck?: () => void;
-  dataPut?: TYPE_UserAddress;
+  dataPut: TYPE_getAddress;
 }
 
 const Address: React.FC<Props> = ({
@@ -49,9 +50,15 @@ const Address: React.FC<Props> = ({
   children,
   setDataPut,
 }) => {
-  const numberoverAlram = () => toast.warning('11자리 이상은 불가합니다.');
   const [nameMessage, setNameMessage] = useState<string>('');
-  const [addressValue, setAddressValue] = useState<string[]>([]);
+  console.log(dataPut);
+  const { mutate } = useCustomMutation(
+    `/addresses/${dataPut?.addressId}`,
+    `/addresses`,
+    'PATCH',
+    null,
+    false,
+  );
   const sucessAlram = () =>
     toast.success('저장되었습니다.', {
       position: 'top-right',
@@ -123,18 +130,16 @@ const Address: React.FC<Props> = ({
         </form>
       </User>
       <div>
-        <div className="text-sm font-semibold mb-2">주소</div>
+        <div className="text-sm font-semibold mb-2">현재 입력 주소</div>
         <div className="bg-gray-50 py-2 text-xs mb-2 flex">
           <div className="text-lg mx-2">
             <FontAwesomeIcon icon={faCircleExclamation} />
           </div>
-          <div className="text-sm text-gray-400 mt-1">
-            상세주소가 없는 경우는 없음 으로 입력해 주세요.
-          </div>
+          <div className="text-sm mt-1">{dataPut?.detailAddress}</div>
         </div>
         <Postcode
           dataPut={dataPut}
-          addressValue={addressValue.length > 1 ? addressValue : ['', '', '']}
+          addressValue={['', '', '']}
           setDataPut={setDataPut}
         />
       </div>
@@ -155,15 +160,15 @@ const Address: React.FC<Props> = ({
                 dataPut?.addressName &&
                 dataPut?.name &&
                 dataPut?.phoneNumber &&
-                dataPut.detailAddress.includes(')') &&
+                !numberCheck.test(dataPut?.phoneNumber) &&
                 dataPut?.phoneNumber.length > 10 &&
                 dataPut?.name.length > 1 &&
                 dataPut?.detailAddress
               ) {
                 sucessAlram();
+                mutate({ ...dataPut });
                 setNameMessage('성공하였습니다');
                 oncontrolCilck?.();
-                sucessAlram();
               } else if (
                 !dataPut?.phoneNumber ||
                 !dataPut?.name ||
@@ -211,3 +216,4 @@ export default Address;
 //반응협 웹 css 디자인 만지기
 //온 세이브 오류나서 파괴하고 리덕스로 대체
 //최적화할때 안쓰는것 지울것
+//address 정보 입력받을때 입력할때를 한번에 다루려다보니 오류가 생김
