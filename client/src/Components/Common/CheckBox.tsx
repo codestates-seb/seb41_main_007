@@ -2,12 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { modalActions } from 'Redux/reducer/modalSlice';
-import {
-  TYPE_CartData,
-  TYPE_KakaoApi,
-  TYPE_LocalOption,
-} from 'Types/common/product';
-import { useSession } from 'CustomHook/useSession';
+import { TYPE_CartData, TYPE_LocalOption } from 'Types/common/product';
 import axios from 'axios';
 
 const CheckAll = styled.div`
@@ -16,24 +11,19 @@ const CheckAll = styled.div`
   padding-bottom: 12px;
 `;
 
-const CheckBox: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
+const CheckBox: React.FC<{
+  data: TYPE_CartData[];
+  onClickHandler: number;
+}> = ({ data, onClickHandler }) => {
+  console.log(data);
   const [checkList, setCheckList] = useState<string[]>([]);
   const dispatch = useDispatch();
-  const { session, loading } = useSession();
 
   const [seturl, setUrl] = useState<string>('');
-  const [orderId, setOrderId] = useState<string>('');
-  console.log(data);
-  //   useEffect(() => {
-  //   const bodydata =  data.map((el: TYPE_KakaoApi) => {
-  //          el.productOptionId,
-  //          el.quantity,
-  // })
-  //   }, []);
 
   useEffect(() => {
     axios({
-      url: `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=2`,
+      url: `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=${33}`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
     })
@@ -47,31 +37,6 @@ const CheckBox: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
       .catch((e) => {
         console.info(e);
       });
-  }, []);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
-      body: JSON.stringify({
-        address: '주소',
-        name: '시영',
-        phone: '010-1111-1111',
-        orderProductPostDtos: [
-          {
-            productOptionId: 3,
-            quantity: 1,
-          },
-          {
-            productOptionId: 5,
-            quantity: 1,
-          },
-        ],
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session}`,
-      },
-      method: 'POST',
-    }).then((response) => console.log('orderid_2 숫자가 나와야함', response));
   }, []);
 
   const modalOpenHandler = (event: any) => {
@@ -89,9 +54,6 @@ const CheckBox: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
     e.target.checked ? setCheckList(['terms', 'privacy']) : setCheckList([]);
   };
 
-  const productPrice = () => {
-    console.log(data);
-  };
   return (
     <>
       <CheckAll>
@@ -126,7 +88,10 @@ const CheckBox: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
       </div>
       {checkList.length === 2 ? (
         <a href={seturl} target="_blank" rel="noreferrer">
-          <button className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold">
+          <button
+            onClick={onClickHandler}
+            className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold"
+          >
             결제하기
           </button>
         </a>
