@@ -39,7 +39,7 @@ const Deliveryaddress: React.FC<Props> = ({ session, setcontrol }) => {
   }
 
   return (
-    <div className="h-full">
+    <div className="h-auto">
       {data.map((dataEl: TYPE_getAddress) => (
         <div key={dataEl.addressId}>
           <DeliverySave data={dataEl} session={session}></DeliverySave>
