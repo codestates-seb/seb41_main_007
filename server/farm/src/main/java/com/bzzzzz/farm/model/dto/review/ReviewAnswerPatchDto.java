@@ -1,5 +1,7 @@
 package com.bzzzzz.farm.model.dto.review;
 
+import com.bzzzzz.farm.model.entity.Member;
+import com.bzzzzz.farm.model.entity.Review;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,4 +20,9 @@ public class ReviewAnswerPatchDto {
     private Long reviewId;
     private String reviewAnswerTitle;
     private String reviewAnswerContent;
+    public Review getReview() {
+        Review review = new Review();
+        review.setReviewId(reviewId);
+        return review;
+    }
 }

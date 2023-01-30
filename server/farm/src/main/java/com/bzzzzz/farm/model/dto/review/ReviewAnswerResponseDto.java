@@ -17,19 +17,18 @@ public class ReviewAnswerResponseDto {
     private String reviewAnswerTitle;
     private String reviewAnswerContent;
     private Long reviewId;
-    private Long productId;
-    private Long memberId;
 
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
 
 
     public ReviewAnswerResponseDto(Long reviewAnswerId, String reviewAnswerTitle, String reviewAnswerContent, LocalDateTime createdAt, LocalDateTime modifiedAt,
-                                   Long reviewId, Long memberId) {
+                                   Long reviewId) {
         this.reviewAnswerId = reviewAnswerId;
         this.reviewAnswerTitle = reviewAnswerTitle;
         this.reviewAnswerContent = reviewAnswerContent;
         this.reviewId = reviewId;
-        this.memberId = memberId;
+        this.createdAt = createdAt;
+        this.lastModifiedAt = modifiedAt;
     }
 }
