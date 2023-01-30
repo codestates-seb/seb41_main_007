@@ -132,4 +132,10 @@ public class Product extends Auditable {
     public void addViewCount() {
         this.viewCount += 1;
     }
+
+    public Double getRatingAvg() {
+        return reviews.size() == 0
+                ? null
+                : reviews.stream().mapToDouble(review -> review.getRating()).average().getAsDouble();
+    }
 }

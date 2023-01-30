@@ -4,6 +4,7 @@ import com.bzzzzz.farm.model.entity.ProductCategory;
 import com.bzzzzz.farm.model.entity.ProductOption;
 import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.model.dto.product.*;
+import com.bzzzzz.farm.model.entity.Review;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -62,6 +63,7 @@ public interface ProductMapper {
                 .likeCount(product.getLikes().size())
                 .soldCount(product.getSoldCount())
                 .isLiked(isLiked)
+                .rating(product.getRatingAvg())
                 .productCategoryResponseDtos(product.getProductCategories().stream()
                         .map(productCategory -> productCategoryToProductCategoryResponseDto(productCategory))
                         .collect(Collectors.toList()))
@@ -84,7 +86,6 @@ public interface ProductMapper {
     }
 
     ProductCategory productCategoryPostDtoToProductCategory(ProductCategoryPostDto productCategoryPostDto);
-
 
     ProductOption productOptionPostDtoToProductOption(ProductOptionPostDto productOptionPostDto);
 

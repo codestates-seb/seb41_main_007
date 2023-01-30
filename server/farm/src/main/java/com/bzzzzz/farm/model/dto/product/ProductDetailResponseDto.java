@@ -23,6 +23,7 @@ public class ProductDetailResponseDto {
     private Integer likeCount;
     private Integer soldCount;
     private Boolean isLiked;
+    private Double rating;
     private List<ProductCategoryResponseDto> productCategoryResponseDtos;
     private List<ProductOptionResponseDto> productOptionResponseDtos;
 }
