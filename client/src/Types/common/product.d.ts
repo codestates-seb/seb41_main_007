@@ -79,3 +79,8 @@ export interface TYPE_UserAddress {
   detailAddress: string;
   phoneNumber: string;
 }
+
+export interface TYPE_KakaoApi {
+  productOptionId: number;
+  quantity: number;
+}
