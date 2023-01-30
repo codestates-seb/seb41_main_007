@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'Redux/reducer/modalSlice';
 
-import { TYPE_CartData, TYPE_LocalOption } from 'Types/common/product';
-import axios from 'axios';
+import { TYPE_CartData, TYPE_UrlProp } from 'Types/common/product';
 
 const CheckAll = styled.div`
   border-bottom: 1px dotted var(--black-02);
@@ -14,30 +13,14 @@ const CheckAll = styled.div`
 
 const CheckBox: React.FC<{
   data: TYPE_CartData[];
-  orderid: number;
-}> = ({ data }) => {
+  onClickhandler: () => void;
+  kakaoUrl: TYPE_UrlProp[];
+}> = ({ data, onClickhandler, kakaoUrl }) => {
+  console.log(kakaoUrl, '한번 확인해봐');
   console.log(data);
+
   const [checkList, setCheckList] = useState<string[]>([]);
   const dispatch = useDispatch();
-
-  const [seturl, setUrl] = useState<string>('');
-  useEffect(() => {
-    axios({
-      url: `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=${33}`,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-    })
-      .then((response) => {
-        console.log(response);
-        console.log(response.data.tid);
-        console.log(response.data.next_redirect_pc_url);
-        setUrl(response.data.next_redirect_pc_url);
-        console.log(seturl);
-      })
-      .catch((e) => {
-        console.info(e);
-      });
-  }, []);
 
   const modalOpenHandler = (event: any) => {
     console.log('안녕');
@@ -88,8 +71,11 @@ const CheckBox: React.FC<{
         [필수] 개인정보 수집 이용 동의
       </div>
       {checkList.length === 2 ? (
-        <a href={seturl} target="_blank" rel="noreferrer">
-          <button className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold">
+        <a href="http://" target="_blank" rel="noreferrer">
+          <button
+            onClick={onClickhandler}
+            className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold"
+          >
             결제하기
           </button>
         </a>
@@ -105,3 +91,8 @@ const CheckBox: React.FC<{
   );
 };
 export default CheckBox;
+// <a href={seturl} target="_blank" rel="noreferrer">
+//   <button className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold">
+//     결제하기
+//   </button>
+// </a>
