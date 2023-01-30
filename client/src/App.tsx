@@ -7,7 +7,6 @@ import Loading from './Components/Loading/Loading';
 import Login from './Pages/Login';
 import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
-import ReactQueryTest from 'Pages/ReactQueryTest';
 import ProductPage from 'Pages/ProductPage';
 import BasketsPage from 'Pages/BasketPage';
 import ProductListPage from 'Pages/CategoryListPage';
@@ -19,10 +18,9 @@ import Footer from 'Components/Common/Footer';
 import Address from 'Components/PaymentPage/Adress';
 
 import PaymentPage from 'Pages/PaymentPage';
-import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
 import AllProductsPage from 'Pages/AllProductsPage';
 import Auth from 'Pages/Auth';
-import Post from 'Pages/Test/Post';
+import Post from 'Pages/Post/Post';
 import { useSession } from 'CustomHook/useSession';
 import Empty from 'Components/Common/Empty';
 
@@ -72,10 +70,6 @@ const router = createBrowserRouter([
     element: <ObjectSaver />,
   },
   {
-    path: '/test',
-    element: <ReactQueryTest />,
-  },
-  {
     path: '/products/all',
     element: withLayout(AllProductsPage),
   },
@@ -90,10 +84,6 @@ const router = createBrowserRouter([
   {
     path: '/payment',
     element: withLayout(PaymentPageSession),
-  },
-  {
-    path: '/test/review',
-    element: <ReviewQueryTest />,
   },
   {
     path: '/post',
