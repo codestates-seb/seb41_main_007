@@ -2,18 +2,35 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { modalActions } from 'Redux/reducer/modalSlice';
+import {
+  TYPE_CartData,
+  TYPE_KakaoApi,
+  TYPE_LocalOption,
+} from 'Types/common/product';
+import { useSession } from 'CustomHook/useSession';
 import axios from 'axios';
+
 const CheckAll = styled.div`
   border-bottom: 1px dotted var(--black-02);
   margin-bottom: 12px;
   padding-bottom: 12px;
 `;
 
-const CheckBox: React.FC = () => {
+const CheckBox: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
   const [checkList, setCheckList] = useState<string[]>([]);
   const dispatch = useDispatch();
+  const { session, loading } = useSession();
 
   const [seturl, setUrl] = useState<string>('');
+  const [orderId, setOrderId] = useState<string>('');
+  console.log(data);
+  //   useEffect(() => {
+  //   const bodydata =  data.map((el: TYPE_KakaoApi) => {
+  //          el.productOptionId,
+  //          el.quantity,
+  // })
+  //   }, []);
+
   useEffect(() => {
     axios({
       url: `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=2`,
@@ -32,6 +49,31 @@ const CheckBox: React.FC = () => {
       });
   }, []);
 
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
+      body: JSON.stringify({
+        address: '주소',
+        name: '시영',
+        phone: '010-1111-1111',
+        orderProductPostDtos: [
+          {
+            productOptionId: 3,
+            quantity: 1,
+          },
+          {
+            productOptionId: 5,
+            quantity: 1,
+          },
+        ],
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${session}`,
+      },
+      method: 'POST',
+    }).then((response) => console.log('orderid_2 숫자가 나와야함', response));
+  }, []);
+
   const modalOpenHandler = (event: any) => {
     event.preventDefault();
     dispatch(modalActions.openModal());
@@ -47,6 +89,9 @@ const CheckBox: React.FC = () => {
     e.target.checked ? setCheckList(['terms', 'privacy']) : setCheckList([]);
   };
 
+  const productPrice = () => {
+    console.log(data);
+  };
   return (
     <>
       <CheckAll>
