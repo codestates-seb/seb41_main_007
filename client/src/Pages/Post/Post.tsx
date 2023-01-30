@@ -1,7 +1,7 @@
 import Editor from '../../Components/Editor/Editor';
 import { Descendant } from 'Types/slate';
 
-import styles from './Styles/index.module.css';
+import styles from './Styles/Post.module.css';
 import classNames from 'classnames/bind';
 import { useState, useCallback, useEffect } from 'react';
 
