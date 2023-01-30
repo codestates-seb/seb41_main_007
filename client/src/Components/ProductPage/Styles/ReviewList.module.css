@@ -80,7 +80,16 @@
 }
 .Review_User {
   @apply text-sm w-12;
+  flex: 1;
 }
+.Review_Rating {
+  display: flex;
+  flex: 1;
+  color: #787878;
+  font-size: 12px;
+  font-weight: 400;
+}
+
 .Review_Date {
   display: flex;
   flex: 1;

@@ -1,19 +1,20 @@
-import styled from 'styled-components';
-
-import Loading from 'Components/Loading/Loading';
-import { TYPE_COMMENT } from 'Types/common/product';
 import { FC, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
+import { TYPE_COMMENT } from 'Types/common/product';
 import { Descendant } from 'Types/slate';
+
+import Loading from 'Components/Loading/Loading';
 import {
   EditComment,
   SimpleReadOnlyComment,
 } from 'Components/Editor/EditComment';
 import ReadOnlyComment from '../Editor/ReadOnlyComment';
 
-import styles from './Styles/ReviewList.module.css';
 import { customTime } from 'Utils/commonFunction';
+import styles from './Styles/ReviewList.module.css';
+import Rating, { RatingView } from './Rating';
+
 interface Props {
   productId: string;
   session: string | null;
@@ -146,16 +147,18 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
                     <h3 className={styles.Review_Product_Title}>
                       {el.reviewTitle}
                     </h3>
-                    <p className={styles.Review_Product_Content}>
+                    <div className={styles.Review_Product_Content}>
                       <CommentItem item={el} session={session} />
-                    </p>
+                    </div>
                   </div>
                   <div className={styles.Review_Second_Row_Container}>
-                    <p className={styles.Review_User}>{el.memberId}</p>
-                    <p className={styles.Review_Rating}>{el.rating}</p>
-                    <p className={styles.Review_Date}>
+                    <div className={styles.Review_User}>{el.memberId}</div>
+                    <div className={styles.Review_Rating}>
+                      평점: <RatingView num={el.rating} />
+                    </div>
+                    <div className={styles.Review_Date}>
                       {customTime(el.reviewCreatedAt)}
-                    </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -173,7 +176,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
                 <Loading width={20} height={20} />
               </div>
             ) : (
-              '패치하기'
+              '리뷰 더보기'
             )}
           </button>
         </div>

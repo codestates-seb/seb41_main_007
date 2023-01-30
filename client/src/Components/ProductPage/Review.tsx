@@ -95,16 +95,16 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
     if (cache) {
       console.log(cache);
       //중복제거
-      const newArr = Array.from(new Set(cache.pages.map(JSON.stringify))).map(
-        JSON.parse as any,
-      );
+      // const newArr = Array.from(new Set(cache.pages.map(JSON.stringify))).map(
+      //   JSON.parse as any,
+      // );
       const cacheAdd = {
         result: [submitValue],
         nextPage: true,
         lastPage: false,
       };
       queryClient.setQueryData(queryKey, {
-        pages: [cacheAdd, ...newArr],
+        pages: [cacheAdd, ...cache.pages],
         pageParams: { ...cache.pageParams },
       });
     }
