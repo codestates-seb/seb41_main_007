@@ -37,10 +37,10 @@ public class AddressController {
         return ResponseEntity.ok(addressService.findAddress(addressId));
     }
 
-    //모든 주소 목록 반환
+    //사용자가 등록한 주소 목록 반환
     @GetMapping
-    public ResponseEntity getAddresses(){
-        return ResponseEntity.ok(addressService.findAddresses());
+    public ResponseEntity getAddresses(@AuthenticationPrincipal UserDetails userDetails){
+        return ResponseEntity.ok(addressService.findAddresses(Long.valueOf(userDetails.getUsername())));
     }
 
     //주소 삭제
