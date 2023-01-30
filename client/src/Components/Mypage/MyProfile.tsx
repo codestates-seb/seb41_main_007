@@ -20,12 +20,12 @@ const User = styled.div`
   }
 `;
 
-const MyProfile: React.FC = () => {
+const MyProfile: React.FC<{ session: any }> = ({ session }) => {
   const [values, setValues] = useState({});
   const onSave = (name: string, value: string) => {
     setValues({ ...values, [name]: value });
   };
-  console.log(values);
+  console.log(session);
   const Person: TYPE_People[] = useAppSelector(selectDataP);
   const P_Data: TYPE_People = Person[0];
 

@@ -140,22 +140,22 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
     });
   };
 
-  if (session) {
-    //확인용
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session}`,
-      },
-    })
-      .then((res: Response) => {
-        return res.json();
-      })
-      .then((res: Response) => {
-        console.log(res);
-      });
-  }
+  // if (session) {
+  //   //확인용
+  //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${session}`,
+  //     },
+  //   })
+  //     .then((res: Response) => {
+  //       return res.json();
+  //     })
+  //     .then((res: Response) => {
+  //       console.log(res);
+  //     });
+  // }
 
   const emptyBasketAlram = () =>
     toast.success('장바구니에 담는 중입니다.', {
@@ -249,7 +249,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
       }).then((response) => console.log(response));
     }
   };
-
+  console.log(data);
   return (
     <div>
       <ProductMain>
@@ -258,7 +258,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
         <ProductBox>
           <ProductTitle className="font-serif">{data.name}</ProductTitle>
           <ProductContent>{data.description}</ProductContent>
-          <Ratingstar num={4}></Ratingstar>
+          <Ratingstar num={data.rating}></Ratingstar>
           <ProductPrice Mgtop="2px">
             {useNumberComma(data.price)}
             <span>원</span>

@@ -28,10 +28,10 @@ const Title = styled.div`
 
 const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const [order, setOrder] = useState<boolean>(true);
-  const [address, setAddress] = useState<boolean>(true); //배송지
+  const [isDelivery, setisDelivery] = useState<boolean>(true);
+  const [address, setAddress] = useState<boolean>(false); //배송지
   const [payment, setPayment] = useState<boolean>(true); //결제수단
   const isModal = useSelector((state: any) => state.modal.isOpenModal);
-
   const [data, setdata] = useState<TYPE_CartData[]>([]);
   const [isloading, setisLoading] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -82,7 +82,18 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
             </Title>
             {order && <BasketfourList data={data} />}
             <Title>
-              <div className=" font-semibold py-4 text-xl">배송지</div>
+              <div className=" font-semibold py-4 text-xl">배송지 추가</div>
+              <button onClick={() => setisDelivery(!isDelivery)}>
+                {isDelivery ? (
+                  <FontAwesomeIcon icon={faArrowUp} />
+                ) : (
+                  <FontAwesomeIcon icon={faArrowDown} />
+                )}
+              </button>
+            </Title>
+            {isDelivery && <SaveAddress session={session} />}
+            <Title>
+              <div className=" font-semibold py-4 text-xl">배송지 관리</div>
               <button onClick={() => setAddress(!address)}>
                 {address ? (
                   <FontAwesomeIcon icon={faArrowUp} />
@@ -91,7 +102,8 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
                 )}
               </button>
             </Title>
-            {address && <Deliveryaddress />}
+            {address && <Deliveryaddress session={session} />}
+
             <Title>
               <div className=" font-semibold py-4 text-xl">결제수단</div>
               <button onClick={() => setPayment(!payment)}>
@@ -102,7 +114,6 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
                 )}
               </button>
             </Title>
-            {payment && <SaveAddress />}
           </Container>
           <Totalpay />
         </div>

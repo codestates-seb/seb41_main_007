@@ -1,22 +1,21 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from 'Redux/app/store';
-import { TYPE_UserAddress } from 'Types/common/product';
 
-const initialState: TYPE_UserAddress[] = [];
+import { TYPE_getAddress } from 'Types/common/product';
+const initialState: TYPE_getAddress[] = [];
 
 const getDataSlice = createSlice({
   name: 'getDataSave',
   initialState,
   reducers: {
-    get_DataSave: (state, action: PayloadAction<TYPE_UserAddress>) => {
-      // const found = state.find(
-      //   (e) => e.productOptionId === action.payload.productOptionId,
-      // );
-      // if (!found){}
-      console.log(action.payload);
+    get_DataSave: (state, action: PayloadAction<TYPE_getAddress>) => {
+      const found = state.find((e) => e.addressId === action.payload.addressId);
+      if (!found) {
+        console.log(action.payload);
 
-      state.push(action.payload);
+        state.push(action.payload);
+      }
     },
   },
 });

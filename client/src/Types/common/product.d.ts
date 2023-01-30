@@ -79,3 +79,11 @@ export interface TYPE_UserAddress {
   detailAddress: string;
   phoneNumber: string;
 }
+
+export interface TYPE_getAddress {
+  addressId: number;
+  addressName: string;
+  name: string;
+  detailAddress: string;
+  phoneNumber: string;
+}
