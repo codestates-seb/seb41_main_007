@@ -5,15 +5,14 @@ import com.bzzzzz.farm.mapper.ReviewAnswerMapper;
 import com.bzzzzz.farm.model.dto.review.ReviewAnswerPatchDto;
 import com.bzzzzz.farm.model.dto.review.ReviewAnswerPostDto;
 import com.bzzzzz.farm.model.dto.review.ReviewAnswerResponseDto;
-import com.bzzzzz.farm.model.entity.Member;
+import com.bzzzzz.farm.model.entity.Review;
 import com.bzzzzz.farm.model.entity.ReviewAnswer;
 import com.bzzzzz.farm.service.MemberService;
 import com.bzzzzz.farm.service.ReviewAnswerService;
+import com.bzzzzz.farm.service.ReviewService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,29 +29,33 @@ public class ReviewAnswerController {
     private final ReviewAnswerMapper reviewAnswerMapper;
 
     private final MemberService memberService;
+    private final ReviewService reviewService;
 
-    public ReviewAnswerController(ReviewAnswerService reviewAnswerService, ReviewAnswerMapper reviewAnswerMapper, MemberService memberService) {
+    public ReviewAnswerController(ReviewAnswerService reviewAnswerService, ReviewAnswerMapper reviewAnswerMapper, MemberService memberService, ReviewService reviewService) {
         this.reviewAnswerService = reviewAnswerService;
         this.reviewAnswerMapper = reviewAnswerMapper;
         this.memberService = memberService;
+        this.reviewService = reviewService;
     }
 
     @PostMapping("/reviews/answers")
-    public ResponseEntity insertReviewAnswer(@RequestBody @Valid ReviewAnswerPostDto reviewAnswerPostDto, @AuthenticationPrincipal UserDetails userDetails) {
-
-        ReviewAnswer reviewAnswer = reviewAnswerMapper.reviewAnswerPostDtoToReviewAnswer(reviewAnswerPostDto);
-        ReviewAnswer insertedReviewAnswer = reviewAnswerService.insertReviewAnswer(reviewAnswer, userDetails.getUsername());
+    public ResponseEntity insertReviewAnswer(@RequestBody @Valid ReviewAnswerPostDto reviewAnswerPostDto) {
+        log.info("reviewId in reviewId : "+reviewAnswerPostDto.getReviewId());
+        Review review = reviewService.getProductReview(reviewAnswerPostDto.getReviewId());
+        ReviewAnswer reviewAnswer = reviewAnswerMapper.reviewAnswerPostDtoToReviewAnswer(reviewAnswerPostDto, review);
+        log.info("reviewAnswer에서 review title :"+reviewAnswer.getReview().getReviewTitle());
+        ReviewAnswer insertedReviewAnswer = reviewAnswerService.insertReviewAnswer(reviewAnswer);
         ReviewAnswerResponseDto reviewAnswerResponseDto = reviewAnswerMapper.reviewAnswerToReviewAnswerResponseDto(insertedReviewAnswer);
         return new ResponseEntity<>(reviewAnswerResponseDto, HttpStatus.CREATED);
 
     }
 
     @PatchMapping("/reviews/answers")
-    public ResponseEntity updateReviewAnswer(@RequestBody @Valid ReviewAnswerPatchDto reviewAnswerPatchDto, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity updateReviewAnswer(@RequestBody @Valid ReviewAnswerPatchDto reviewAnswerPatchDto) {
 
 
         ReviewAnswer reviewAnswer = reviewAnswerMapper.reviewAnswerPatchDtoToReviewAnswer(reviewAnswerPatchDto);
-        ReviewAnswer updatedReviewAnswer = reviewAnswerService.updateReviewAnswer(reviewAnswer, userDetails.getUsername());
+        ReviewAnswer updatedReviewAnswer = reviewAnswerService.updateReviewAnswer(reviewAnswer);
 
         //리뷰앤서리스폰스dto 생성
         ReviewAnswerResponseDto reviewAnswerResponseDto = reviewAnswerMapper.reviewAnswerToReviewAnswerResponseDto(updatedReviewAnswer);

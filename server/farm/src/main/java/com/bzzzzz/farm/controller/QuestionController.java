@@ -15,11 +15,15 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+
+import static com.bzzzzz.farm.common.Safety.toLong;
 
 @Log4j2
 @RestController
@@ -45,9 +49,9 @@ public class QuestionController {
 
     //문의등록
     @PostMapping({"/questions"})
-    public ResponseEntity insertQuestion(@RequestBody @Valid QuestionPostDto questionPostDto) {
+    public ResponseEntity insertQuestion(@RequestBody @Valid QuestionPostDto questionPostDto, @AuthenticationPrincipal UserDetails userDetails) {
         Question question = questionMapper.questionPostDtoToQuestion(questionPostDto);
-        Question insertQuestion = questionService.insertQuestion(question);
+        Question insertQuestion = questionService.insertQuestion(question, toLong(userDetails.getUsername()));
 
         QuestionResponseDto questionResponseDto = questionMapper.questionToQuestionResponseDto(insertQuestion);
 
@@ -102,17 +106,11 @@ public class QuestionController {
 
     //질문 답변 작성
     @PostMapping("/questions/answers")
-    public ResponseEntity insertQuestionAnswer(@RequestBody @Valid QuestionAnswerPostDto questionAnswerPostDto) {
-        Member member = memberService.getLoginMember();
-        if (member.getRoles().equals("ROLE_ADMIN")) {
-            QuestionAnswer questionAnswer = questionAnswerMapper.questionAnswerPostDtoToQuestionAnswer(questionAnswerPostDto);
-            questionAnswer.setMember(member);
-            QuestionAnswer insertedQuestionAnswer = questionAnswerService.insertQuestionAnswer(questionAnswer);
-            QuestionAnswerResponseDto questionAnswerResponseDto = questionAnswerMapper.questionAnswerToQuestionAnswerResponseDto(insertedQuestionAnswer);
-            return new ResponseEntity<>(questionAnswerResponseDto, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+    public ResponseEntity insertQuestionAnswer(@RequestBody @Valid QuestionAnswerPostDto questionAnswerPostDto, @AuthenticationPrincipal UserDetails userDetails) {
+        QuestionAnswer questionAnswer = questionAnswerMapper.questionAnswerPostDtoToQuestionAnswer(questionAnswerPostDto);
+        QuestionAnswer insertedQuestionAnswer = questionAnswerService.insertQuestionAnswer(questionAnswer,toLong(userDetails.getUsername()));
+        QuestionAnswerResponseDto questionAnswerResponseDto = questionAnswerMapper.questionAnswerToQuestionAnswerResponseDto(insertedQuestionAnswer);
+        return new ResponseEntity<>(questionAnswerResponseDto, HttpStatus.OK);
     }
 
     //질문 답변 수정

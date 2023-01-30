@@ -1,14 +1,12 @@
 import styled from 'styled-components';
 import Ratingstar from 'Components/Common/Ratingstar';
+import styles from './Styles/Review.module.css';
 
 const User = styled.div`
   display: flex;
-  margin-top: 8px;
-  .username {
-    padding-right: 18px;
-  }
-  .rating {
-    margin-right: 58px;
+  margin-top: 20px;
+  p {
+    display: block;
   }
 `;
 
@@ -97,41 +95,39 @@ const products = [
   // More products...
 ];
 
-export default function ReviewCss() {
+const Review: React.FC = () => {
   return (
-    <div className="bg-white">
-      <div className="mx-auto max-w-2xl px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-        <h2 className="text-4xl font-bold font-serif tracking-tight text-gray-900 mb-10">
-          고객만족후기
-        </h2>
-        <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-2  xl:gap-x-8">
+    <div className={styles.Review_Container}>
+      <div className={styles.Review_Content}>
+        <h2 className={styles.Review_Title}>고객만족후기</h2>
+        <div className={styles.Review_Data}>
           {products.map((product) => (
             <a
               key={product.id}
               href={product.href}
-              className="group flex gap-x-4"
+              className={styles.Review_Detail_Content}
             >
-              <div className="aspect-w-28 aspect-h-28  overflow-hidden ">
+              <div className={styles.Review_Image_Container}>
                 <img
                   src={product.imageSrc}
                   alt={product.imageAlt}
-                  className="h-28 w-28 group-hover:opacity-75"
+                  className={styles.Review_Image_Content}
                 />
               </div>
               <div>
-                <h3 className="mt-4 text-base text-gray-700">
+                <h3 className={styles.Review_Product_Container}>
                   {product.title}
                 </h3>
-                <div className="gap-y-">
+                <div className="">
                   <Product>
-                    <p className="mt-1 text-sm font-medium text-gray-900">
+                    <p className={styles.Review_Product_Title}>
                       {product.product}
                     </p>
                   </Product>
                   <User>
-                    <p className="username text-sm">{product.user}</p>
-                    <p className="rating text-sm">{product.rating}</p>
-                    <p className="date text-sm text-gray-400">{product.date}</p>
+                    <p className={styles.Review_User}>{product.user}</p>
+                    <p className={styles.Review_Rating}>{product.rating}</p>
+                    <p className={styles.Review_Date}>{product.date}</p>
                   </User>
                 </div>
               </div>
@@ -141,4 +137,5 @@ export default function ReviewCss() {
       </div>
     </div>
   );
-}
+};
+export default Review;
