@@ -91,6 +91,10 @@ export interface TYPE_UserAddress {
   phoneNumber: string;
 }
 
+export interface TYPE_KakaoApi {
+  productOptionId: number;
+  quantity: number;
+}
 export interface TYPE_getAddress {
   addressId: number;
   addressName: string;
