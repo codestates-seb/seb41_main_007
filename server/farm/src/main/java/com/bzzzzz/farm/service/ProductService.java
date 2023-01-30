@@ -34,10 +34,10 @@ public class ProductService {
         );
     }
 
-    public ProductDetailResponseDto findProduct(long productId) {
+    public ProductDetailResponseDto findProduct(long productId, boolean isLiked) {
         Product findProduct = findVerifiedProduct(productId);
         findProduct.addViewCount();
-        return productMapper.productToProductDetailResponseDto(findProduct, false);
+        return productMapper.productToProductDetailResponseDto(findProduct, isLiked);
     }
 
     @Transactional(readOnly = true)

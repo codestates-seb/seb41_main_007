@@ -13,12 +13,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.Optional;
+
+import static com.bzzzzz.farm.common.Safety.toLong;
 
 @RestController
 @Validated
@@ -51,13 +56,12 @@ public class ProductController {
     }
 
     @GetMapping("/products/{product-id}")
-    public ResponseEntity getProduct(@Positive @PathVariable("product-id") long productId) {
-
-        Boolean isLiked = null;
-        //Todo: 로그인 유무에 따라 내가 좋아요를 눌렀는가를 표시해주는 메서드 추가 예정
-        // isLiked = likeService.isLiked(member, product); 나중에 set으로 여기서 설정해줘도 될듯 ?
-
-        return new ResponseEntity(productService.findProduct(productId), HttpStatus.OK);
+    public ResponseEntity getProduct(@Positive @PathVariable("product-id") long productId,
+                                     @AuthenticationPrincipal UserDetails userDetails) {
+        boolean isLiked = Optional.ofNullable(userDetails).isPresent()
+                ? likeService.isLiked(toLong(userDetails.getUsername()), productId)
+                : false;
+        return new ResponseEntity(productService.findProduct(productId, isLiked), HttpStatus.OK);
     }
 
     @GetMapping("/products")

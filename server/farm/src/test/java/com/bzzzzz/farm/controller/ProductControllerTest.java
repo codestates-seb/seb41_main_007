@@ -177,7 +177,7 @@ public class ProductControllerTest {
                                         .build()))
                 .build();
 
-        given(productService.findProduct(Mockito.anyLong())).willReturn(response);
+        given(productService.findProduct(Mockito.anyLong(), Mockito.anyBoolean())).willReturn(response);
 
         // when
         ResultActions actions = mockMvc.perform(
