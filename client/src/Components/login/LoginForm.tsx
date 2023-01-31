@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+import { useNavigate } from 'react-router-dom';
 const LoginDiv = styled.div`
   opacity: 0.9;
   z-index: 5500;
@@ -25,7 +25,8 @@ const GoogleBtn = styled.button`
   margin: 10px 0px;
   background-color: white;
   display: flex;
-  margin: 50px auto;
+  margin: 30px auto;
+  margin-bottom: 20px;
   justify-content: center;
   border-radius: 5px;
   border: 1px solid hsl(210, 8%, 85%);
@@ -37,18 +38,42 @@ const GoogleBtn = styled.button`
   }
 `;
 
+const GuestBtn = styled(GoogleBtn)`
+  margin-top: 0px;
+  padding-top: 0px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+`;
+
 const BtnText = styled.span`
   margin-left: 5px;
   font-size: var(--medium);
   font-weight: 700;
 `;
 const LoginForm = () => {
+  const navigate = useNavigate();
   const OauthHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     window.location.href = `${process.env.REACT_APP_BACKEND_URL}/oauth2/authorization/google`;
   };
+
+  const GuestHandler = () => {
+    localStorage.setItem(
+      'access_token',
+      'eyJhbGciOiJIUzM4NCJ9.eyJhdXRoIjoiUk9MRV9BRE1JTiIsIm5hbWUiOiLqtJHtmJzsm5AiLCJzdWIiOiIzIiwiaWF0IjoxNjc0ODg2Nzk5LCJleHAiOjE2NzYzNTgwMjd9.JiVdg9rc-HNg9inEw8KAfF7meDtl8X-XgQODcHBQHUBwX4lw-DQ7i1v8M5b_rc36',
+    );
+    localStorage.setItem(
+      'refresh_token',
+      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxMDQyNTI5MjI5MDY3Nzk3Njc4NTMiLCJpYXQiOjE2NzQ4ODY3OTksImV4cCI6MTY3NjM1ODAyOH0.F1H36p1PKfq3m8q7YOe8HtzYtvNdROZicNDE-3xDDRYW_iqJ2FO7-ElUQ1pTtI2B',
+    );
+
+    window.location.href = '/';
+  };
   return (
     <LoginDiv>
-      <div className="mt-24">
+      <div className="mt-20">
         <LoginP weight="bold" fontsize="30px">
           로그인 🙋🏻‍♀️
         </LoginP>
@@ -79,6 +104,10 @@ const LoginForm = () => {
           </div>
           <BtnText>Log in with Google</BtnText>
         </GoogleBtn>
+        <GuestBtn onClick={() => GuestHandler()}>
+          <img width={100} height={20} src={'/image/FarmPi.svg'} alt="LOGO" />
+          <BtnText>Guest</BtnText>
+        </GuestBtn>
       </div>
     </LoginDiv>
   );

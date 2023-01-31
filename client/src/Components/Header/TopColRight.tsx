@@ -14,6 +14,7 @@ const Logined = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     window.location.href = '/';
   };
   return (

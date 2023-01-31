@@ -9,7 +9,19 @@ import RadiusButton from 'Components/Common/RadiusButton';
 import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 import { TYPE_People } from 'Types/common/product';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
-const Container = styled.div``;
+import { ToastContainer, toast, Zoom } from 'react-toastify';
+import isEmptyObj from 'Utils/commonFunction';
+
+const StyleToastContainer = styled(ToastContainer)`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+`;
 
 const User = styled.div`
   input {
@@ -41,15 +53,40 @@ const MyProfile: React.FC<{ session: any }> = ({ session }) => {
   if (isLoading) return <></>;
   if (error) return <></>;
   const P_Data: TYPE_People = data;
+  const sucessAlram = () =>
+    toast.success('저장되었습니다.', {
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+  const WaringAlram = () =>
+    toast.info('바뀐 내용이 없습니다', {
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: 'light',
+    });
+
   const onPatchClick = () => {
-    mutate(values);
+    if (isEmptyObj(values)) {
+      WaringAlram();
+    } else {
+      mutate(values);
+      sucessAlram();
+      setValues({});
+    }
   };
 
   // const birthDay = P_Data.birth.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3');
   //P_Data.name P_Data.age 잠시대체
   return (
     <>
-      <Container>
+      <div>
         <User>
           <TinyTitle>이름</TinyTitle>
           <ComponentsInput
@@ -82,7 +119,13 @@ const MyProfile: React.FC<{ session: any }> = ({ session }) => {
             onSave={onSave}
           ></ComponentsInput>
         </User>
-      </Container>
+        <StyleToastContainer
+          limit={4}
+          transition={Zoom}
+          hideProgressBar
+          autoClose={1000}
+        />
+      </div>
       <div className="my-5 relative h-6">
         <div className="absolute top-0 left-0">
           <RadiusButton onClick={() => onPatchClick()}>저장</RadiusButton>

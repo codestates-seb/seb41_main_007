@@ -3,7 +3,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import styled from 'styled-components';
-
+import { useNavigate } from 'react-router-dom';
 import TabPanel from 'Components/Mypage/TabPanel';
 import AccordionGroup from 'Components/Mypage/AccordionGroup';
 import MainImage from 'Components/PaymentPage/MainImage';
@@ -17,7 +17,13 @@ const ShortContainer = styled.div`
 
 const MyPage: React.FC<{ session: any }> = ({ session }) => {
   const [value, setValue] = useState<number>(0);
-
+  const navigate = useNavigate();
+  console.log(session);
+  useEffect(() => {
+    if (!session) {
+      navigate('/login');
+    }
+  }, []);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
