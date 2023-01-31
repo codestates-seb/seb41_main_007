@@ -27,6 +27,11 @@ const Test: FC = () => {
     });
   };
 
+  const basket = () => {
+    localStorage.removeItem('baskets');
+    localStorage.removeItem('basketsCounter');
+  };
+
   return (
     <div>
       <input
@@ -47,6 +52,13 @@ const Test: FC = () => {
         onChange={(e) => setNumber(e.target.value as any)}
       />
       <button onClick={postDelHandler}>포스트 삭제</button>
+
+      <input
+        type="number"
+        value={num}
+        onChange={(e) => setNumber(e.target.value as any)}
+      />
+      <button onClick={basket}>로컬스토리지 비우기~</button>
     </div>
   );
 };
