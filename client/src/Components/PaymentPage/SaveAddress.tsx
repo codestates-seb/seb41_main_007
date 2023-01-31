@@ -13,7 +13,7 @@ import { useAppDispatch } from 'Redux/app/hook';
 import { get_DataSave } from 'Redux/reducer/getDataSlice';
 import useBooleanInput from 'CustomHook/useBooleaninput';
 
-const StyleToastContainer = styled(ToastContainer)`
+export const StyleToastContainer = styled(ToastContainer)`
   position: fixed;
   top: 50%;
   left: 50%;

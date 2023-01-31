@@ -1,19 +1,16 @@
 import { FC, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
-
-import { TYPE_COMMENT } from 'Types/common/product';
-import { Descendant } from 'Types/slate';
+import { customTime } from 'Utils/commonFunction';
+import { TYPE_Review } from 'Types/common/product';
 
 import Loading from 'Components/Loading/Loading';
-import {
-  EditComment,
-  SimpleReadOnlyComment,
-} from 'Components/Editor/EditComment';
+import { SimpleReadOnlyComment } from 'Components/Editor/EditComment';
 import ReadOnlyComment from '../Editor/ReadOnlyComment';
+import { RatingView } from './Rating';
 
-import { customTime } from 'Utils/commonFunction';
 import styles from './Styles/ReviewList.module.css';
-import Rating, { RatingView } from './Rating';
+import ReviewToolBar from './ReviewToolBar';
+import ReviewReEdit from './ReviewReEdit';
 
 interface Props {
   productId: string;
@@ -21,42 +18,33 @@ interface Props {
 }
 
 interface CommentItem {
-  session: string | null;
-  item: TYPE_COMMENT;
+  item: TYPE_Review;
 }
 
-const CommentItem: FC<CommentItem> = ({ item, session }) => {
-  const [data, setData] = useState<Descendant[]>(
-    JSON.parse(item.reviewContent),
-  );
-  const [editmode, setEditmode] = useState<boolean>(false);
+const CommentItem: FC<CommentItem> = ({ item }) => {
+  const review = JSON.parse(item.reviewContent);
+
   const node = useRef<HTMLDivElement>(null);
 
   return (
     <div className={styles.Comment_List_Wrapper}>
-      {editmode ? (
-        <EditComment
-          value={JSON.parse(item.reviewContent)}
-          commentId={item.reviewId}
-          setCancel={() => setEditmode(false)}
-          setData={(value: Descendant[]) => setData(value)}
-        />
-      ) : (
-        <div className={styles.Comment} ref={node}>
-          {JSON.parse(item.reviewContent).length > 4 ? (
-            <SimpleReadOnlyComment data={data} />
-          ) : (
-            <ReadOnlyComment data={data} />
-          )}
-        </div>
-      )}
+      <div className={styles.Comment} ref={node}>
+        {JSON.parse(item.reviewContent).length > 4 ? (
+          <SimpleReadOnlyComment data={review} />
+        ) : (
+          <ReadOnlyComment data={review} />
+        )}
+      </div>
     </div>
   );
 };
 
 const ReviewList: FC<Props> = ({ productId, session }) => {
+  const queryKey = ['reviews', productId];
   const [pages, setPages] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
+  const [editmode, setEditmode] = useState<boolean>(false);
+  const [selectedId, setSelectedId] = useState<number | undefined>();
   const getReviewsWithPageInfo = async (props: any) => {
     const data = await fetch(
       `${
@@ -86,7 +74,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
   };
 
   const { isFetching, data, fetchNextPage, isLoading, error, refetch } =
-    useInfiniteQuery(['reviews', productId], getReviewsWithPageInfo, {
+    useInfiniteQuery(queryKey, getReviewsWithPageInfo, {
       getNextPageParam: (lastPage) => {
         return lastPage.nextPage;
       },
@@ -130,37 +118,60 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
           if (page.isLast) {
             return <div key={Date.now()}></div>;
           }
-          return page.result.map((el: TYPE_COMMENT) => {
+          return page.result.map((el: TYPE_Review) => {
             return (
-              <div key={el.reviewId} className={styles.Review_Container}>
-                <img
-                  src={
-                    el.reviewImage
-                      ? el.reviewImage
-                      : 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/First_Tractor_Company_-_old_working_model_-_01.jpg/220px-First_Tractor_Company_-_old_working_model_-_01.jpg'
-                  }
-                  alt={'reviewImage'}
-                  className={styles.Review_Image_Content}
-                />
-                <div className={styles.Review_Contents_Container}>
-                  <div className={styles}>
-                    <h3 className={styles.Review_Product_Title}>
-                      {el.reviewTitle}
-                    </h3>
-                    <div className={styles.Review_Product_Content}>
-                      <CommentItem item={el} session={session} />
+              <div key={el.reviewId} style={{ width: '100%' }}>
+                {editmode && selectedId === el.reviewId ? (
+                  <ReviewReEdit
+                    key={el.reviewId}
+                    item={el}
+                    session={session}
+                    setEditmode={setEditmode}
+                  />
+                ) : (
+                  <div className={styles.Review_Container}>
+                    <div>
+                      <img
+                        src={
+                          el.reviewImage
+                            ? el.reviewImage
+                            : 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/First_Tractor_Company_-_old_working_model_-_01.jpg/220px-First_Tractor_Company_-_old_working_model_-_01.jpg'
+                        }
+                        alt={'reviewImage'}
+                        className={styles.Review_Image_Content}
+                      />
                     </div>
+                    <div className={styles.Review_Contents_Container}>
+                      <div className={styles}>
+                        <h3 className={styles.Review_Product_Title}>
+                          {el.reviewTitle}
+                        </h3>
+                        <div className={styles.Review_Product_Content}>
+                          <CommentItem item={el} />
+                        </div>
+                      </div>
+                      <div className={styles.Review_Second_Row_Container}>
+                        <div className={styles.Review_User}>
+                          {el.memberId} 님
+                        </div>
+                        <div className={styles.Review_Rating}>
+                          평점: <RatingView num={el.rating} />
+                        </div>
+                        <div className={styles.Review_Date}>
+                          {customTime(el.reviewCreatedAt)}
+                        </div>
+                      </div>
+                    </div>
+                    <ReviewToolBar
+                      setSelectedId={setSelectedId}
+                      setEditmode={() => setEditmode(true)}
+                      session={session}
+                      reviewId={el.reviewId}
+                      memberId={el.memberId}
+                      productId={el.productId}
+                    />
                   </div>
-                  <div className={styles.Review_Second_Row_Container}>
-                    <div className={styles.Review_User}>{el.memberId} 님</div>
-                    <div className={styles.Review_Rating}>
-                      평점: <RatingView num={el.rating} />
-                    </div>
-                    <div className={styles.Review_Date}>
-                      {customTime(el.reviewCreatedAt)}
-                    </div>
-                  </div>
-                </div>
+                )}
               </div>
             );
           });

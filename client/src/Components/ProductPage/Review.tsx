@@ -15,17 +15,12 @@ import {
 import ReviewList from './ReviewList';
 
 import styles from './Styles/Review.module.css';
+import { tokenDecode } from 'Utils/commonFunction';
+import { TYPE_Token } from 'Types/common/token';
 interface Props {
   productId: string;
   session: string | null;
 }
-
-const INITIALVALUE: Descendant[] = [
-  {
-    type: 'paragraph',
-    children: [{ text: '' }],
-  },
-];
 
 const ReviewEdit: FC<Props> = ({ productId, session }) => {
   const queryClient = useQueryClient();
@@ -39,7 +34,12 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
     false,
   ]);
   const [reviewTitle, setReviewTitle] = useState<string>('');
-  const [value, setValue] = useState<Descendant[]>(INITIALVALUE);
+  const [value, setValue] = useState<Descendant[]>([
+    {
+      type: 'paragraph',
+      children: [{ text: '' }],
+    },
+  ]);
   const childRef = useRef<{ reset: () => void }>(null);
   const { mutate } = useCustomMutation(
     '/reviews',
@@ -75,7 +75,7 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
           setUserImage(imageUrls);
         })
         .catch((e) => {
-          console.info(e);
+          console.error(e);
           setUserImage('');
         });
     }
@@ -83,6 +83,7 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
 
   const handlerSubmit = () => {
     let score = starClicked.filter(Boolean).length;
+    const { sub } = tokenDecode(session) as TYPE_Token;
     const submitValue = {
       reviewId: Date.now(),
       productId: parseInt(productId),
@@ -90,14 +91,11 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
       reviewContent: JSON.stringify(value),
       rating: score,
       reviewImage: userImage,
+      memberId: parseInt(sub),
+      reviewCreatedAt: Date.now(),
     };
     const cache = queryClient.getQueryData(queryKey) as any;
     if (cache) {
-      console.log(cache);
-      //중복제거
-      // const newArr = Array.from(new Set(cache.pages.map(JSON.stringify))).map(
-      //   JSON.parse as any,
-      // );
       const cacheAdd = {
         result: [submitValue],
         nextPage: true,
@@ -109,12 +107,11 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
       });
     }
     mutate(submitValue);
-    setValue(INITIALVALUE);
     setStarClicked([false, false, false, false, false]);
     setReviewTitle('');
     setUserImage(null);
+    childRef.current?.reset();
   };
-
   return (
     <>
       <div className={styles.comment_container}>
@@ -131,11 +128,11 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
             ) : (
               <div className={styles.Empty_Image}> </div>
             )}
-            <label className={styles.Label_Button} htmlFor="imageFile">
+            <label className={styles.Label_Button} htmlFor="imageFilePatch">
               이미지 선택
             </label>
             <input
-              id="imageFile"
+              id="imageFilePatch"
               type="file"
               accept="image/svg, image/jpeg, image/png"
               onChange={handleChangeFile}

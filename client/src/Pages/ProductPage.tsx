@@ -86,9 +86,6 @@ const ProductPage: React.FC = () => {
               <TabButton isTrue={value === 1} onClick={() => setValue(1)}>
                 리뷰 보기
               </TabButton>
-              <TabButton isTrue={value === 2} onClick={() => setValue(2)}>
-                1십십십십싯
-              </TabButton>
             </div>
           </div>
           <TabPanel value={value} index={0}>
@@ -96,9 +93,6 @@ const ProductPage: React.FC = () => {
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Review />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <></>
           </TabPanel>
         </div>
       </ProductContainer>
@@ -123,3 +117,4 @@ export default ProductPage;
 // 도트깨짐
 //styled 컴퍼넌트 마지막  두개넣으려면; 차이
 //로컬스토리지에서 카운터관리
+//토스트 전역에 뿌려주기

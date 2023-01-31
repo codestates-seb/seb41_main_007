@@ -1,4 +1,5 @@
-.comment_container {
+.MainReview_Container {
+  margin-top: 20px;
   display: flex;
 }
 
@@ -107,8 +108,8 @@
   background-color: var(--green-70);
 }
 
-.content {
-  margin-bottom: 10px;
+.Content {
+  margin-bottom: 5px;
 }
 
 .Input_Contents {

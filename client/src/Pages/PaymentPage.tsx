@@ -33,7 +33,7 @@ const Title = styled.div`
 const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const [order, setOrder] = useState<boolean>(true);
   const [isDelivery, setisDelivery] = useState<boolean>(true);
-  const [address, setAddress] = useState<boolean>(true); //배송지
+  const [address, setAddress] = useState<boolean>(false); //배송지
 
   const [payment, setPayment] = useState<boolean>(true); //결제수단
   const isModal = useAppSelector(madalState);
@@ -46,27 +46,12 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
     '/carts',
     session,
   );
-  // useEffect(() => {
-  //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Bearer ${session}`,
-  //     },
-  //   })
-  //     .then((res: Response) => {
-  //       return res.json();
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //       setdata(res);
-  //       setisLoading(false); //무한렌더링 막기용
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //       setisLoading(false);
-  //     });
-  // }, []);
+
+  useEffect(() => {
+    if (!session) {
+      navigate('/login');
+    }
+  }, []);
   useScrollTop();
   if (isLoading) return <Empty></Empty>;
   if (error) return <div></div>;
