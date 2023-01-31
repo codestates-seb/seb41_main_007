@@ -15,11 +15,12 @@ const PathCounter: FC<checkBoxtype> = ({
   const jsondata: string | null = localStorage.getItem('basketsCounter');
   const resultarr = JSON.parse(jsondata || '[]') || [];
 
-  const OptionData = resultarr.filter((data: any) => {
+  const optionData = resultarr.filter((data: any) => {
     return (
       data.productOptionId === el.productOptionResponseDtos.productOptionId
     );
   });
+  console.log(optionData);
 
   return (
     <>
@@ -28,7 +29,7 @@ const PathCounter: FC<checkBoxtype> = ({
         handleSingleCheck={handleSingleCheck}
         checkItems={checkItems}
         // countNumber={countnumber}
-        OptionData={OptionData[0]}
+        optionData={optionData[0]}
       ></BasketTd>
     </>
   );
