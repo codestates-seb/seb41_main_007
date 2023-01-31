@@ -1,8 +1,10 @@
 import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 import { Dispatch, FC, SetStateAction } from 'react';
 import { useQueryClient } from 'react-query';
-import { TYPE_Review } from 'Types/common/product';
 
+import styles from './Styles/ReviewToolBar.module.css';
+
+import { TYPE_Review } from 'Types/common/product';
 import { TYPE_Token } from 'Types/common/token';
 import { tokenDecode } from 'Utils/commonFunction';
 
@@ -56,11 +58,17 @@ const ReviewToolBar: FC<Props> = ({
     <>
       {memberId === parseInt(sub) ? (
         <div>
-          <button onMouseDown={handlerSubmitEdit}>
+          <button
+            onMouseDown={handlerSubmitEdit}
+            className={styles.ToolBarButton}
+          >
             <Edit />
             <span>수정</span>
           </button>
-          <button onMouseDown={handlerSubmitDelete}>
+          <button
+            onMouseDown={handlerSubmitDelete}
+            className={styles.ToolBarButton}
+          >
             <Delete />
             <span>삭제</span>
           </button>
