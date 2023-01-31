@@ -53,6 +53,7 @@ const MyProfile: React.FC<{ session: any }> = ({ session }) => {
   if (isLoading) return <></>;
   if (error) return <></>;
   const P_Data: TYPE_People = data;
+
   const sucessAlram = () =>
     toast.success('저장되었습니다.', {
       hideProgressBar: false,

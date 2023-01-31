@@ -256,7 +256,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
         <CustomTitle title={`${data.name} 상품 - FARMPI`} />
         <ImageBox src={data.photo}></ImageBox>
         <ProductBox>
-          <ProductTitle className="font-serif">{data.name}</ProductTitle>
+          <ProductTitle>{data.name}</ProductTitle>
           <ProductContent>{data.description}</ProductContent>
           <Ratingstar num={data.rating}></Ratingstar>
           <ProductPrice Mgtop="2px">

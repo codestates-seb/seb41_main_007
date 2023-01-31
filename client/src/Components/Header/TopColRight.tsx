@@ -68,7 +68,6 @@ const TopColRight: FC = () => {
   }, []);
   if (loading) return <></>;
   if (isOk && session) {
-    //유즈이펙트 때문이었습니다.
     const jsondataCounter: string | null =
       localStorage.getItem('basketsCounter');
     const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
@@ -84,28 +83,34 @@ const TopColRight: FC = () => {
         return res.json();
       })
       .then((res: TYPE_CartData[]) => {
-        const optionIdData = res.map((getdata) => {
-          return getdata.productOptionId;
-        });
-        const Filtered = basketsCounter.filter(
-          (localData: TYPE_LocalOption) => {
-            return !optionIdData.includes(localData.productOptionId);
-          },
-        );
-        Filtered.forEach((element: TYPE_LocalOption) => {
-          const suggest = {
-            productOptionId: element.productOptionId,
-            quantity: element.count,
-          };
-          fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-            body: JSON.stringify(suggest),
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${session}`,
+        if (res.length <= basketsCounter.length) {
+          const optionIdData = res.map((getdata) => {
+            return getdata.productOptionId;
+          });
+          const Filtered = basketsCounter.filter(
+            (localData: TYPE_LocalOption) => {
+              return !optionIdData.includes(localData.productOptionId);
             },
-            method: 'POST',
-          }).then((response) => console.log(response));
-        });
+          ); // 옵션 데이터가 더많음, 로컬데이타에 없음
+          Filtered.forEach((element: TYPE_LocalOption) => {
+            const suggest = {
+              productOptionId: element.productOptionId,
+              quantity: element.count,
+            };
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+              body: JSON.stringify(suggest),
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${session}`,
+              },
+              method: 'POST',
+            }).then((response) => console.log(response));
+          });
+        } else if (res.length > basketsCounter.length) {
+          const optionIdData = basketsCounter.map((localData: any) => {
+            return localData.productOptionId;
+          });
+        }
       });
 
     //한번만 돌게하는 로직

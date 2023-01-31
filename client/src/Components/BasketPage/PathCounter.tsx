@@ -20,7 +20,8 @@ const PathCounter: FC<checkBoxtype> = ({
       data.productOptionId === el.productOptionResponseDtos.productOptionId
     );
   });
-
+  console.log(OptionData);
+  console.log(OptionData[0]);
   return (
     <>
       <BasketTd
