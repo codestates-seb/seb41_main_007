@@ -1,4 +1,4 @@
-import React, { Component, useState, ElementType } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

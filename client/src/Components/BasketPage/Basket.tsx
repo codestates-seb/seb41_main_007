@@ -11,16 +11,7 @@ interface checkBoxtype {
 const Basket: FC<checkBoxtype> = ({ handleSingleCheck, checkItems }) => {
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]');
-
-  // const resultarr: Pricestate[] = useAppSelector(selectprice);
-
-  // // const onResult = (productId: number) => {
-  // //   const itemDetail = resultarr.filter((item) => {
-  // //     return item.id === productId;
-  // //   });
-  // //   return itemDetail[0] || undefined;
-  // // };
-
+  console.log(jsondata);
   if (baskets.length === 0) return <></>;
 
   return (

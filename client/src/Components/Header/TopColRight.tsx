@@ -70,7 +70,6 @@ const TopColRight: FC = () => {
   }, []);
   if (loading) return <></>;
   if (isOk && session) {
-    //유즈이펙트 때문이었습니다.
     const jsondataCounter: string | null =
       localStorage.getItem('basketsCounter');
     const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];

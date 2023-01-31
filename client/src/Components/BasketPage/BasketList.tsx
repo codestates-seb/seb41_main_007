@@ -149,20 +149,6 @@ const BasketList: FC = () => {
   useScrollTop();
   if (loading) return <></>;
 
-  // fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-  //   method: 'GET',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     Authorization: `Bearer ${session}`,
-  //   },
-  // })
-  //   .then((res: Response) => {
-  //     return res.json();
-  //   })
-  //   .then((res: Response) => {
-  //     console.log(res);
-  //   });
-
   let result: number = resultarr.reduce((acc, cur) => {
     if (cur?.price && cur?.count) {
       acc = acc + cur.price * cur.count;

@@ -28,9 +28,6 @@ const style = {
 };
 
 const Deliveryaddress: React.FC<Props> = ({ session, setcontrol }) => {
-  const [Address_Data, setAddress_Data] = useState<TYPE_getAddress[]>([]);
-  const resultarr: TYPE_getAddress[] = useAppSelector(getDataP);
-  const [isControl, onControl] = useBooleanInput(false);
   const { data, isLoading, error } = useCustomQuery(
     `/addresses`,
     `/addresses`,
@@ -41,18 +38,9 @@ const Deliveryaddress: React.FC<Props> = ({ session, setcontrol }) => {
   const handleClose = () => {
     setOpen(!open);
   };
-  // useEffect(() => {
-  //   if (data && data.length > 0) {
-  //     setcontrol(true);
-  //   }
-  // }, []);
+
   if (isLoading) return <Empty />;
   if (error) return <></>;
-  // if (data.length > 0) {
-  //   setcontrol(true);
-  // }
-
-  // if (isLoading) return <Empty />;
 
   if (!(data.length > 0)) {
     return (
