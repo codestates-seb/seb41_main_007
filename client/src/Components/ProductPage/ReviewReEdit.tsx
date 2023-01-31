@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import {
   useCustomFormMutation,
   useCustomMutation,
@@ -18,6 +18,10 @@ interface Props {
 }
 
 const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
+  const ref = useRef<any>();
+  const handleClick = (e: any) => {
+    ref.current.click();
+  };
   const queryKey = ['reviews', `${item.productId}`];
   const queryClient = useQueryClient();
   const starArr = [];
@@ -117,11 +121,11 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
             ) : (
               <div className={styles.Empty_Image}> </div>
             )}
-            <label className={styles.Label_Button} htmlFor="imageFile">
+            <button onClick={handleClick} className={styles.Label_Button}>
               이미지 선택
-            </label>
+            </button>
             <input
-              id="imageFile"
+              ref={ref}
               type="file"
               accept="image/svg, image/jpeg, image/png"
               onChange={handleChangeFile}

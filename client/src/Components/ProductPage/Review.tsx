@@ -40,6 +40,10 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
       children: [{ text: '' }],
     },
   ]);
+  const ref = useRef<any>();
+  const handleClick = (e: any) => {
+    ref.current.click();
+  };
   const childRef = useRef<{ reset: () => void }>(null);
   const { mutate } = useCustomMutation(
     '/reviews',
@@ -128,11 +132,11 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
             ) : (
               <div className={styles.Empty_Image}> </div>
             )}
-            <label className={styles.Label_Button} htmlFor="imageFilePatch">
+            <button onClick={handleClick} className={styles.Label_Button}>
               이미지 선택
-            </label>
+            </button>
             <input
-              id="imageFilePatch"
+              ref={ref}
               type="file"
               accept="image/svg, image/jpeg, image/png"
               onChange={handleChangeFile}
