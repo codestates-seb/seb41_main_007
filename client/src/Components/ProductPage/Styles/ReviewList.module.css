@@ -37,12 +37,9 @@
   border-bottom: 1px solid var(--gray-12);
 }
 
-.FetchMore_Container {
-}
-
 .FetchMore_Button {
   background-color: var(--greenlogo);
-  margin-top: 4px;
+  margin-top: 30px;
   justify-content: center;
   align-items: center;
   width: 200px;
@@ -56,9 +53,6 @@
   background-color: var(--green-70);
 }
 
-.Review_Container {
-}
-
 .Review_Image_Content {
   padding: 5px;
   min-width: 200px;
@@ -66,17 +60,17 @@
 }
 
 .Review_Contents_Container {
+  padding: 5px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: 100%;
-  /* background-color: red; */
 }
 .Review_Product_Title {
   @apply mt-4 text-base text-gray-700;
 }
 .Review_Product_Content {
-  @apply mt-1 text-sm font-medium text-gray-900;
+  @apply text-sm font-medium text-gray-900;
 }
 .Review_User {
   @apply text-sm w-12;

@@ -10,7 +10,7 @@ import BestProductSlider from 'Components/BestProductSlider';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from 'CustomHook/useSession';
 import { TYPE_CartData, TYPE_LocalOption } from 'Types/common/product';
-
+import { useQueryClient } from 'react-query';
 const BasketForm = styled.div`
   width: 1180px;
 
@@ -138,7 +138,7 @@ const ControlContainer = styled.div`
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
-
+  const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const jsondata: string | null = localStorage.getItem('baskets');
@@ -264,7 +264,19 @@ const BasketList: FC = () => {
             const indexOption = basketOptionId.indexOf(
               cartsData.productOptionId,
             );
-            console.log(indexOption);
+            if (indexOption === -1) {
+              fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/carts/${cartsData.productOptionId}`,
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session}`,
+                  },
+                  method: 'DELETE',
+                },
+              ).then((response) => console.log(response));
+            }
+
             const quantityValue =
               basketsCounter[indexOption].count - cartsData.quantity;
             console.log('렌더링3');
@@ -284,6 +296,7 @@ const BasketList: FC = () => {
                 },
                 method: 'PATCH',
               }).then((response) => {
+                queryClient.invalidateQueries('/carts');
                 console.log(response);
                 navigate('/payment');
               });

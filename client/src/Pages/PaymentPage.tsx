@@ -16,6 +16,7 @@ import useScrollTop from 'CustomHook/useScrollTop';
 import Deliveryaddress from 'Components/Mypage/DeliveryManagement';
 import { useAppSelector } from 'Redux/app/hook';
 import { madalState } from 'Redux/reducer/modalSlice';
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
 const Container = styled.div`
   width: 830px;
 `;
@@ -35,34 +36,41 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
 
   const [payment, setPayment] = useState<boolean>(true); //결제수단
   const isModal = useAppSelector(madalState);
-  const [data, setdata] = useState<TYPE_CartData[]>([]);
+  // const [data, setdata] = useState<TYPE_CartData[]>([]);
   const [isloading, setisLoading] = useState<boolean>(true);
   // const { loading, session } = useSession();
   const navigate = useNavigate();
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session}`,
-      },
-    })
-      .then((res: Response) => {
-        return res.json();
-      })
-      .then((res) => {
-        console.log(res);
-        setdata(res);
-        setisLoading(false); //무한렌더링 막기용
-      })
-      .catch((e) => {
-        console.log(e);
-        setisLoading(false);
-      });
-  }, []);
+  const { data, isLoading, error } = useCustomQuery(
+    '/carts',
+    '/carts',
+    session,
+  );
+  // useEffect(() => {
+  //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${session}`,
+  //     },
+  //   })
+  //     .then((res: Response) => {
+  //       return res.json();
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //       setdata(res);
+  //       setisLoading(false); //무한렌더링 막기용
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //       setisLoading(false);
+  //     });
+  // }, []);
   useScrollTop();
+  if (isLoading) return <Empty></Empty>;
+  if (error) return <div></div>;
 
-  if (isloading) return <Empty />;
+  // if (isloading) return <Empty />;
 
   return (
     <div>
