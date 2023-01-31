@@ -110,3 +110,8 @@ export interface TYPE_UrlProp {
   next_redirect_mobile_url: string;
   tid: string;
 }
+
+export interface TYPE_Total {
+  productOptionPrice: number;
+  quantity: number;
+}
