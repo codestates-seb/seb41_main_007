@@ -16,79 +16,77 @@ const Product = styled.div`
 const products = [
   {
     id: 1,
-    title: '이거 좋아요',
+    title: '집게 배송 빨리 왔습니다!',
     href: '#',
-    product: 'a물품이름',
+    product: '호박집게 10개 묶음',
     user: '이유정',
     rating: '⭐⭐⭐⭐',
     date: '2023.01.11',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
+    imageSrc: 'https://cdn.icon-icons.com/icons2/1875/PNG/512/user_120285.png',
     imageAlt:
       'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
   },
   {
     id: 2,
-    title: '이거 좋아요',
+    title: '튼튼할 줄 알았는데 살짝 약하네요 ㅠ',
     href: '#',
-    product: 'a물품이름',
+    product: '토마토 가지걸이',
     user: '황낙준',
-    rating: '⭐⭐⭐⭐',
+    rating: '⭐⭐',
     date: '2023.01.11',
     imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
+      'https://contents.lotteon.com/itemimage/_v162045/LO/20/24/01/24/97/_2/02/40/12/49/8/LO2024012497_2024012498_1.jpg/dims/resizef/554X554',
     imageAlt:
       'Olive drab green insulated bottle with flared screw lid and flat top.',
   },
   {
     id: 3,
-    title: '이거 좋아요',
+    title: '배송 빨라서 너무 좋았습니다 재구매할게요',
     href: '#',
-    product: 'a물품이름',
+    product: '농업용 파이프',
     user: '서형민',
     rating: '⭐⭐⭐⭐',
     date: '2023.01.11',
     imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
+      'https://shop1.daumcdn.net/thumb/R500x500.q90/?fname=http%3A%2F%2Fshop1.daumcdn.net%2Fshophow%2Fp%2FB5102781522_5280738974.jpg%3Fut%3D20210521105903',
     imageAlt:
       'Person using a pen to cross a task off a productivity paper card.',
   },
   {
     id: 4,
-    title: '이거 좋아요',
+    title: '오~~ 조립식 온실하우스 튼튼하고 좋네요 !!@',
     href: '#',
-    product: 'a물품이름',
-    user: '이유정',
+    product: '대형 조립식 온실하우스',
+    user: '김병수',
     rating: '⭐⭐⭐⭐',
     date: '2023.01.11',
     imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
+      'https://shop3.daumcdn.net/thumb/R500x500.q90/?fname=http%3A%2F%2Fshop3.daumcdn.net%2Fshophow%2Fp%2FC5092691977_530734376.jpg%3Fut%3D20200601230706',
     imageAlt:
       'Hand holding black machined steel mechanical pencil with brass tip and top.',
   },
   {
     id: 5,
-    title: '이거 좋아요',
+    title: '재단비닐,,!!!! 가성비 좋은 것 같습니다!',
     href: '#',
-    product: 'a물품이름',
-    user: '황낙준',
+    product: 'PE 재단비닐',
+    user: '이현수',
     rating: '⭐⭐⭐⭐',
     date: '2023.01.11',
     imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
+      'https://shop1.daumcdn.net/thumb/R500x500.q90/?fname=http%3A%2F%2Fshop1.daumcdn.net%2Fshophow%2Fp%2FE5099828767_2551407568.jpg%3Fut%3D20201113150834',
     imageAlt:
       'Hand holding black machined steel mechanical pencil with brass tip and top.',
   },
   {
     id: 6,
-    title: '이거 좋아요',
+    title: '감자 수확 파우치 공간 넉넉하네요 !',
     href: '#',
-    product: 'a물품이름',
-    user: '서형민',
-    rating: '⭐⭐⭐⭐',
+    product: '감자 수확 파우치',
+    user: '김시영',
+    rating: '⭐⭐⭐⭐⭐',
     date: '2023.01.11',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
+    imageSrc: 'https://cdn.icon-icons.com/icons2/1875/PNG/512/user_120285.png',
     imageAlt:
       'Hand holding black machined steel mechanical pencil with brass tip and top.',
   },
