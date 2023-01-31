@@ -275,37 +275,35 @@ const BasketList: FC = () => {
                   method: 'DELETE',
                 },
               ).then((response) => console.log(response));
-            }
+            } else {
+              const quantityValue =
+                basketsCounter[indexOption].count - cartsData.quantity;
 
-            const quantityValue =
-              basketsCounter[indexOption].count - cartsData.quantity;
-            console.log('렌더링3');
-            if (quantityValue !== 0) {
-              console.log('렌더링2');
-              console.log(quantityValue);
-              const suggest = {
-                productOptionId: cartsData.productOptionId,
-                quantity: quantityValue,
-              };
+              if (quantityValue !== 0) {
+                console.log('렌더링2');
+                console.log(quantityValue);
+                const suggest = {
+                  productOptionId: cartsData.productOptionId,
+                  quantity: quantityValue,
+                };
 
-              fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-                body: JSON.stringify(suggest),
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${session}`,
-                },
-                method: 'PATCH',
-              }).then((response) => {
-                queryClient.invalidateQueries('/carts');
-                console.log(response);
-                navigate('/payment');
-              });
+                fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+                  body: JSON.stringify(suggest),
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session}`,
+                  },
+                  method: 'PATCH',
+                }).then((response) => {
+                  queryClient.invalidateQueries('/carts');
+                  console.log(response);
+                  navigate('/payment');
+                });
+              }
             }
             navigate('/payment');
             console.log('오호');
           });
-
-          navigate('/payment');
         });
     } else {
       navigate('/login');
