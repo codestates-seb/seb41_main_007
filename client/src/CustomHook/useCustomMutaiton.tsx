@@ -51,6 +51,7 @@ export const useCustomFormMutation = (url: string, method: string) => {
     const formData = new FormData();
     formData.append('file', form);
     return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
+      cache: 'no-cache',
       body: formData,
       method: method,
     })

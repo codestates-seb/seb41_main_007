@@ -92,7 +92,6 @@ export default function Page() {
       productOptionPostDtos: option,
     };
     mutate(submitValue);
-    window.location.reload();
   }
 
   function handlerTilteChange(value: string) {
@@ -159,12 +158,12 @@ export default function Page() {
       const formData = new FormData();
       formData.append('file', e.target.files[0]);
       fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
+        cache: 'no-cache',
         method: 'POST',
         body: formData,
       })
         .then((response) => response.json())
         .then(({ imageUrls }) => {
-          console.log(imageUrls);
           setImageFile(imageUrls);
         })
         .catch((e) => {
