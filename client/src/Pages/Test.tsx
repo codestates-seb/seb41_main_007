@@ -3,7 +3,7 @@ import { FC, useState } from 'react';
 const Test: FC = () => {
   const [title, setTitle] = useState('');
   const [num, setNumber] = useState();
-
+  const [category, setCategory] = useState();
   const handler = () => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/categories`, {
       method: 'POST',
@@ -19,6 +19,13 @@ const Test: FC = () => {
       console.log(res);
     });
   };
+  const categoryDelHandler = () => {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/categories/${num}`, {
+      method: 'DELETE',
+    }).then((res) => {
+      console.log(res);
+    });
+  };
 
   return (
     <div>
@@ -28,7 +35,12 @@ const Test: FC = () => {
         onChange={(e) => setTitle(e.target.value)}
       />
       <button onClick={handler}>카테고리 생성</button>
-
+      <input
+        type="number"
+        value={category}
+        onChange={(e) => setCategory(e.target.value as any)}
+      />
+      <button onClick={categoryDelHandler}>카테고리 삭제</button>
       <input
         type="number"
         value={num}
