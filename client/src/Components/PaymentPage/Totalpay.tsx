@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 import CheckBox from 'Components/Common/CheckBox';
-import { TYPE_CartData, TYPE_KakaoApi } from 'Types/common/product';
+import {
+  TYPE_CartData,
+  TYPE_KakaoApi,
+  TYPE_UrlProp,
+} from 'Types/common/product';
 import { useEffect, useState } from 'react';
 type ProductData = { productOptionId: number; quantity: number };
 const Agree = styled.div``;
@@ -23,8 +27,10 @@ const Pay = styled.div`
 `;
 
 const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
-  const [order_id, setorder_id] = useState<number>(0);
-  console.log(order_id);
+  const [orderId, setOrderId] = useState<number>(0);
+  const [urlData, setUrlData] = useState<TYPE_UrlProp[]>([]);
+  console.log('id값', orderId);
+  console.log('urlData', urlData);
   const token = localStorage.getItem('access_token');
   const productHandler = data.map((el: TYPE_KakaoApi) => {
     const productDatas = {
@@ -54,8 +60,10 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
     })
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
+        console.log('1');
+        setOrderId(response.data);
         console.log(
+          '2',
           `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=${response.data}`,
         );
         fetch(
@@ -68,7 +76,13 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
           },
         )
           .then((response) => response.json())
-          .then((response) => console.log(response))
+          .then(
+            (response) =>
+              // console.log(response, '전체 응답 반환'),
+              setUrlData(response),
+            // setUrl(response.next_redirect_pc_url);
+            // console.log('3', response.next_redirect_pc_url),
+          )
           .catch((e) => {
             console.info(e);
           });
@@ -108,7 +122,11 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
             </Pay>
             <Agree>
               <div className="text-sm text-gray-500 my-5">
-                <CheckBox data={data} onClickhandler={onClickhandler} />
+                <CheckBox
+                  data={data}
+                  onClickhandler={onClickhandler}
+                  kakaoUrl={urlData}
+                />
               </div>
             </Agree>
           </div>
