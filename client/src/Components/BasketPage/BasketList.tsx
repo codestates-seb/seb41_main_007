@@ -264,6 +264,7 @@ const BasketList: FC = () => {
             const indexOption = basketOptionId.indexOf(
               cartsData.productOptionId,
             );
+
             if (indexOption === -1) {
               fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/carts/${cartsData.productOptionId}`,
@@ -274,7 +275,10 @@ const BasketList: FC = () => {
                   },
                   method: 'DELETE',
                 },
-              ).then((response) => console.log(response));
+              ).then((response) => {
+                queryClient.invalidateQueries('/carts');
+                console.log(response);
+              });
             } else {
               const quantityValue =
                 basketsCounter[indexOption].count - cartsData.quantity;
@@ -301,9 +305,8 @@ const BasketList: FC = () => {
                 });
               }
             }
-            navigate('/payment');
-            console.log('오호');
           });
+          navigate('/payment');
         });
     } else {
       navigate('/login');
