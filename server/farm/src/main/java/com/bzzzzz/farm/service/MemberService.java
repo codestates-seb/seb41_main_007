@@ -5,7 +5,6 @@ import com.bzzzzz.farm.common.exception.ExceptionCode;
 import com.bzzzzz.farm.mapper.MemberMapper;
 import com.bzzzzz.farm.model.dto.member.MemberDto;
 import com.bzzzzz.farm.model.entity.Member;
-import com.bzzzzz.farm.repository.AddressRepository;
 import com.bzzzzz.farm.repository.MemberRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
