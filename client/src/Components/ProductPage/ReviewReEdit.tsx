@@ -66,7 +66,6 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
 
   const handlerSubmit = () => {
     let score = starClicked.filter(Boolean).length;
-    const cache = queryClient.getQueryData(queryKey) as any;
     const submitValue = {
       reviewId: item.reviewId,
       productId: item.productId,
@@ -76,6 +75,7 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
       rating: score,
       reviewImage: userImage,
     };
+    const cache = queryClient.getQueryData(queryKey) as any;
     if (cache) {
       for (let i = 0; i < cache.pages.length; i++) {
         for (let j = 0; j < cache.pages[i].result.length; j++) {

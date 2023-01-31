@@ -168,6 +168,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
                       session={session}
                       reviewId={el.reviewId}
                       memberId={el.memberId}
+                      productId={el.productId}
                     />
                   </div>
                 )}

@@ -1,6 +1,10 @@
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
+import { Dispatch, FC, SetStateAction } from 'react';
+import { useQueryClient } from 'react-query';
+import { TYPE_Review } from 'Types/common/product';
+
 import { TYPE_Token } from 'Types/common/token';
 import { tokenDecode } from 'Utils/commonFunction';
-import { Dispatch, FC, SetStateAction } from 'react';
 
 interface Props {
   setSelectedId: Dispatch<SetStateAction<number | undefined>>;
@@ -8,6 +12,7 @@ interface Props {
   session: string | null;
   reviewId: number;
   memberId: number;
+  productId: number;
 }
 
 const ReviewToolBar: FC<Props> = ({
@@ -16,13 +21,32 @@ const ReviewToolBar: FC<Props> = ({
   setSelectedId,
   reviewId,
   memberId,
+  productId,
 }) => {
+  const queryClient = useQueryClient();
   if (!session) return <></>;
-
-  const { sub, name } = tokenDecode(session) as TYPE_Token;
+  const { mutate } = useCustomMutation(
+    `/reviews/${reviewId}`,
+    ['ReviewsDelete', productId],
+    'DELETE',
+    null,
+    true,
+  );
+  const queryKey = ['reviews', `${productId}`];
+  const { sub } = tokenDecode(session) as TYPE_Token;
   const handlerSubmitDelete = async () => {
     setSelectedId(reviewId);
+    const cache = queryClient.getQueryData(queryKey) as any;
+    if (cache) {
+      for (let i = 0; i < cache.pages.length; i++) {
+        cache.pages[i].result = cache.pages[i].result.filter(
+          (el: TYPE_Review) => el.reviewId !== reviewId,
+        );
+      }
+    }
+    mutate({ reviewId });
   };
+
   const handlerSubmitEdit = async () => {
     setSelectedId(reviewId);
     setEditmode();
