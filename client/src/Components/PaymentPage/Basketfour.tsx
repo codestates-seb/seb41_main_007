@@ -24,10 +24,13 @@ const BasketFour: React.FC<Props> = ({ data }) => {
 
         <div className=" pl-36 h-28 w-full table-cell align-middle">
           <div>
-            <div>{data.productName}</div>
-            <div> {data.productOptionName}</div>
+            <div className="font-semibold ">{data.productName}</div>
+            <div className="text-sm mt-1 text-gray-500">
+              {' '}
+              {data.productOptionName}
+            </div>
           </div>
-          <p className="absolute z-20 w-56 top-12 right-0 text-right">
+          <p className="absolute z-20 w-56 top-12 right-0 text-right text-gray-500">
             {data.quantity}개
             <strong className="w-36 inline-block">
               {useNumberComma(

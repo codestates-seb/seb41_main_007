@@ -264,8 +264,10 @@ const BasketList: FC = () => {
             const indexOption = basketOptionId.indexOf(
               cartsData.productOptionId,
             );
+            console.log(indexOption, '오케');
 
             if (indexOption === -1) {
+              console.log('렌더링4');
               fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/carts/${cartsData.productOptionId}`,
                 {
@@ -282,9 +284,9 @@ const BasketList: FC = () => {
             } else {
               const quantityValue =
                 basketsCounter[indexOption].count - cartsData.quantity;
-
+              console.log('렌더링5');
               if (quantityValue !== 0) {
-                console.log('렌더링2');
+                console.log('렌더링6');
                 console.log(quantityValue);
                 const suggest = {
                   productOptionId: cartsData.productOptionId,
@@ -304,6 +306,7 @@ const BasketList: FC = () => {
                   navigate('/payment');
                 });
               }
+              console.log('폴이치');
             }
           });
           navigate('/payment');

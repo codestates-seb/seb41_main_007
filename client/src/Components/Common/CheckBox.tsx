@@ -14,11 +14,11 @@ const CheckAll = styled.div`
 const CheckBox: React.FC<{
   data: TYPE_CartData[];
   onClickhandler: () => void;
-  kakaoUrl: TYPE_UrlProp[];
+  kakaoUrl: TYPE_UrlProp;
 }> = ({ data, onClickhandler, kakaoUrl }) => {
   console.log(kakaoUrl, '한번 확인해봐');
   console.log(data);
-
+  console.log(kakaoUrl.next_redirect_pc_url, '지금 보는것것');
   const [checkList, setCheckList] = useState<string[]>([]);
   const dispatch = useDispatch();
 
@@ -61,7 +61,7 @@ const CheckBox: React.FC<{
           <br /> 이에 동의합니다.
         </span>
       </div>
-      <div>
+      <div className="mt-1">
         <input
           type="checkbox"
           name="privacy"
@@ -71,18 +71,16 @@ const CheckBox: React.FC<{
         [필수] 개인정보 수집 이용 동의
       </div>
       {checkList.length === 2 ? (
-        <a href="http://" target="_blank" rel="noreferrer">
-          <button
-            onClick={onClickhandler}
-            className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold"
-          >
-            결제하기
-          </button>
-        </a>
+        <button
+          onClick={onClickhandler}
+          className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold mt-3"
+        >
+          결제하기
+        </button>
       ) : (
         <button
           onClick={modalOpenHandler}
-          className="bg-green-800 w-full h-14 text-white text-justify-center font-semibold"
+          className="bg-green-800 w-full h-14 text-white text-justify-center font-semibold mt-3"
         >
           결제하기
         </button>

@@ -17,6 +17,7 @@ import Deliveryaddress from 'Components/Mypage/DeliveryManagement';
 import { useAppSelector } from 'Redux/app/hook';
 import { madalState } from 'Redux/reducer/modalSlice';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import Payment from 'Components/PaymentPage/Payment';
 const Container = styled.div`
   width: 830px;
 `;
@@ -113,10 +114,11 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
                 )}
               </button>
             </Title>
-            {address && (
-              <Deliveryaddress setcontrol={setAddress} session={session} />
-            )}
-
+            <Title>
+              {address && (
+                <Deliveryaddress setcontrol={setAddress} session={session} />
+              )}
+            </Title>
             <Title>
               <div className=" font-semibold py-4 text-xl">결제수단</div>
               <button onClick={() => setPayment(!payment)}>
@@ -127,6 +129,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
                 )}
               </button>
             </Title>
+            {payment && <Payment />}
           </Container>
           <Totalpay data={data} />
         </div>
