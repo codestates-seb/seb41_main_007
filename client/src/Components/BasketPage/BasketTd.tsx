@@ -59,6 +59,14 @@ const TableProduct = styled.div`
 const TableTitle = styled.div`
   font-size: var(--large);
   font-weight: bold;
+  display: flex;
+`;
+const TableSubTitle = styled.div`
+  font-size: var(--medium);
+  font-weight: bold;
+  display: flex;
+  margin-top: 2px;
+  padding-top: 1px;
 `;
 
 const TableContent = styled.div`
@@ -146,11 +154,11 @@ const BasketTd: FC<checkBoxtype> = ({
 
   // const [deleteb, setdeleteb] = useState<any[] | []>([]);
   const dispatch = useAppDispatch();
-
+  const optionId: number = el.productOptionResponseDtos.productOptionId;
   useEffect(() => {
     dispatch(
       countset({
-        id: el.productOptionResponseDtos.productOptionId,
+        id: optionId,
         price: el.price + OptionData.optionprice,
         count: OptionData.count,
       }),
@@ -159,9 +167,7 @@ const BasketTd: FC<checkBoxtype> = ({
 
   useEffect(() => {
     basketsCounter.forEach((data: any) => {
-      console.log(number);
-      if (data.productOptionId === el.productOptionResponseDtos.productOptionId)
-        data.count = number;
+      if (data.productOptionId === optionId) data.count = number;
     });
 
     localStorage.setItem('basketsCounter', JSON.stringify(basketsCounter));
@@ -188,8 +194,6 @@ const BasketTd: FC<checkBoxtype> = ({
         el.productOptionId !== data.productOptionResponseDtos.productOptionId
       );
     });
-    console.log(data);
-    console.log(OptionData.productOptionId);
 
     if (session) {
       fetch(
@@ -231,29 +235,41 @@ const BasketTd: FC<checkBoxtype> = ({
       </Tablebody1>
 
       <Tablebody2>
-        <Link key={el.productId} to={`/product/${el.productId}`}>
-          <TB2Container>
-            <TableimgDiv url={el.photo}></TableimgDiv>
-            <TableProduct>
-              <TableTitle>{`${el.name}`}</TableTitle>
-              <TableContent>{el.description}</TableContent>
-              <div>
-                {' '}
-                {`${useNumberComma(el.price)}원 + ${useNumberComma(
-                  OptionData.optionprice,
-                )}원(Option ${OptionData.optionname})`}
-              </div>
-              <TablePrice>
-                <div></div>={useNumberComma(el.price + OptionData.optionprice)}
-                <span>원</span>
-              </TablePrice>
-            </TableProduct>
-          </TB2Container>
-        </Link>
+        <TB2Container>
+          <Link key={el.productId} to={`/product/${el.productId}`}>
+            <div className="flex">
+              <TableimgDiv url={el.photo}></TableimgDiv>
+              <TableProduct>
+                <TableTitle>
+                  {`${el.name}`}
+                  <TableSubTitle>
+                    &ensp;{`상품번호 ${el.productId}`}
+                  </TableSubTitle>
+                </TableTitle>
+                <TableContent>{el.description}</TableContent>
+                <div>
+                  {`${useNumberComma(el.price)}원 + ${useNumberComma(
+                    OptionData.optionprice,
+                  )}원(Option ${OptionData.optionname})`}
+                </div>
+                <TablePrice>
+                  <div></div>=
+                  {useNumberComma(el.price + OptionData.optionprice)}
+                  <span>원</span>
+                </TablePrice>
+              </TableProduct>
+            </div>
+          </Link>
+        </TB2Container>
       </Tablebody2>
 
       <Tablebody3>
-        <CounterButton2 setnumber={setnumber} countNumber={OptionData.count} />
+        <CounterButton2
+          optionId={optionId}
+          setnumber={setnumber}
+          countNumber={OptionData.count}
+          session={session}
+        />
       </Tablebody3>
       <Tablebody4>
         {useNumberComma((el.price + OptionData.optionprice) * number)}
@@ -277,3 +293,5 @@ export default BasketTd;
 //성능 생각해서 더 우선시 되는걸 if 앞에 넣음
 //카운트버튼숫자 후버 업데이트 오류났었음
 //유지보수의 매운맛..
+//시그니처와 타입의 필요성을 느낌
+//넓은 링크창 축소

@@ -32,16 +32,16 @@ const Item = ({
         <Paper>
           <div className={back}>
             <div className="object-none">
-              <div className="absolute lg:inset-y-28 lg:left-80 md:inset-y-14 md:left-20 inset-y-4">
+              <div className="absolute lg:inset-y-28 lg:left-60 md:inset-y-14 md:left-20 sm:inset-y-4 inset-y-4 left-14">
                 {short}
               </div>
-              <h1 className="absolute lg:inset-y-44 lg:left-80 lg:text-5xl md:inset-y-28 md:text-4xl md:left-20 font-semibold inset-y-16 text-3xl">
+              <h1 className="absolute lg:inset-y-44 lg:left-60 lg:text-5xl md:inset-y-28 md:text-4xl md:left-20 font-semibold inset-y-16 text-3xl left-14">
                 {title}
               </h1>
-              <p className="absolute lg:inset-y-64 lg:left-80 lg:text-2xl md:inset-y-44 md: text-xl md:left-20 inset-y-32">
+              <p className="absolute lg:inset-y-64 lg:left-60 lg:text-2xl md:inset-y-44 md: text-xl md:left-20 inset-y-32 left-14">
                 {content}
               </p>
-              <p className="absolute lg:inset-y-72 lg:left-80 lg:text-2xl md:inset-y-52 md:left-20 md:text-xl inset-y-40 text-xl">
+              <p className="absolute lg:inset-y-72 lg:left-60 lg:text-2xl md:inset-y-52 md:left-20 md:text-xl inset-y-40 text-xl left-14">
                 {content2}
               </p>
             </div>
@@ -56,6 +56,13 @@ const Item = ({
 };
 export const Size = styled.div`
   img {
+    @media screen and (max-width: 760px) {
+      height: 450px;
+      padding-top: 190px;
+    }
+    @media screen and (min-width: 761px) {
+      height: 450px;
+    }
     height: 480px;
     width: 100%;
   }
@@ -125,8 +132,7 @@ export const Carousell = (props: any) => {
       content2: '농사를 시작해보세요!',
       short: <Short3 />,
       back: 'background3',
-      place:
-        'object-none sm:object-left md:object-right xl:object-right xl:pr-64',
+      place: 'object-none sm:object-left lg:object-right lg:pr-60',
     },
   ];
   return (

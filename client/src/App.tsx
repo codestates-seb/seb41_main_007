@@ -7,22 +7,24 @@ import Loading from './Components/Loading/Loading';
 import Login from './Pages/Login';
 import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
-import ReactQueryTest from 'Pages/ReactQueryTest';
 import ProductPage from 'Pages/ProductPage';
 import BasketsPage from 'Pages/BasketPage';
 import ProductListPage from 'Pages/CategoryListPage';
 import Mypage from 'Pages/MyPage';
 import Search from 'Pages/Search';
 import NotFoundPage from 'Pages/NotFoundPage';
-
+import { MyPageSession, PaymentPageSession } from 'Utils/SessionMaster';
 import Footer from 'Components/Common/Footer';
-import Address from 'Components/PaymentPage/Adress';
+
+import OrderTest from 'Pages/OrderTest';
 
 import PaymentPage from 'Pages/PaymentPage';
-import ReviewQueryTest from 'Pages/Test/ReviewQueryTest';
 import AllProductsPage from 'Pages/AllProductsPage';
 import Auth from 'Pages/Auth';
-import Post from 'Pages/Test/Post';
+import Post from 'Pages/Post/Post';
+import { useSession } from 'CustomHook/useSession';
+import Empty from 'Components/Common/Empty';
+import Test from 'Pages/Test';
 
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
@@ -55,7 +57,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/mypage',
-    element: withLayout(Mypage),
+    element: withLayout(MyPageSession),
   },
   {
     path: '/Basket',
@@ -68,10 +70,6 @@ const router = createBrowserRouter([
   {
     path: '/test/counter',
     element: <ObjectSaver />,
-  },
-  {
-    path: '/test',
-    element: <ReactQueryTest />,
   },
   {
     path: '/products/all',
@@ -87,17 +85,18 @@ const router = createBrowserRouter([
   },
   {
     path: '/payment',
-    element: withLayout(PaymentPage),
-  },
-  {
-    path: '/test/review',
-    element: <ReviewQueryTest />,
+    element: withLayout(PaymentPageSession),
   },
   {
     path: '/post',
     element: withLayout(Post),
   },
+  {
+    path: '/test',
+    element: <Test />,
+  },
   { path: '/auth', element: <Auth /> },
+  { path: '/ordertest', element: <OrderTest /> },
 ]);
 
 const App: React.FC = () => {

@@ -1,4 +1,4 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState } from 'react';
 import styled from 'styled-components';
 import Basket from './Basket';
 import { useAppSelector, useAppDispatch } from 'Redux/app/hook';
@@ -9,7 +9,8 @@ import BuyButton from 'Components/Common/BuyButton';
 import BestProductSlider from 'Components/BestProductSlider';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from 'CustomHook/useSession';
-
+import { TYPE_CartData, TYPE_LocalOption } from 'Types/common/product';
+import { useQueryClient } from 'react-query';
 const BasketForm = styled.div`
   width: 1180px;
 
@@ -137,15 +138,30 @@ const ControlContainer = styled.div`
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
-
+  const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]');
+  const jsondataCounter: string | null = localStorage.getItem('basketsCounter');
+  const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
   const { session, loading } = useSession(); // 로딩시간만큼 내리는데 시간이 들어서 생략
   useScrollTop();
   if (loading) return <></>;
-  console.log(resultarr);
+
+  // fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+  //   method: 'GET',
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     Authorization: `Bearer ${session}`,
+  //   },
+  // })
+  //   .then((res: Response) => {
+  //     return res.json();
+  //   })
+  //   .then((res: Response) => {
+  //     console.log(res);
+  //   });
 
   let result: number = resultarr.reduce((acc, cur) => {
     if (cur?.price && cur?.count) {
@@ -162,8 +178,7 @@ const BasketList: FC = () => {
     }
     return acc;
   }, 0);
-  console.log(result);
-  console.log(resultCount);
+
   // 체크박스 단일 선택
   const handleSingleCheck = (checked?: boolean, id?: number) => {
     if (checked && id) {
@@ -190,25 +205,35 @@ const BasketList: FC = () => {
   };
 
   const deleteAllCheck = () => {
-    const jsondataCounter: string | null =
-      localStorage.getItem('basketsCounter');
-    const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
-    console.log(basketsCounter);
     // 전체 선택 클릭 시 데이터의 모든 아이템(id)를 담은 배열로 checkItems 상태 업데이트
     if (checkItems.length === baskets.length) {
       setCheckItems([]);
-      localStorage.clear();
+      localStorage.removeItem('baskets');
+      localStorage.removeItem('basketsCounter');
     }
     const deleteSave = baskets.filter((el: any) => {
       return !checkItems.includes(el.productOptionResponseDtos.productOptionId);
     });
     const deleteSaveCounter = basketsCounter.filter((el: any) => {
-      console.log(el.productOptionId);
-      return !checkItems.includes(el.productOptionId);
+      if (checkItems.includes(el.productOptionId)) {
+        if (session) {
+          fetch(
+            `${process.env.REACT_APP_BACKEND_URL}/carts/${el.productOptionId}`,
+            {
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${session}`,
+              },
+              method: 'DELETE',
+            },
+          ).then((response) => console.log(response));
+        }
+        return false;
+      }
+      return true;
     });
 
     checkItems.forEach((el) => {
-      console.log(el);
       dispatch(countDelete({ id: el }));
     });
 
@@ -220,7 +245,66 @@ const BasketList: FC = () => {
 
   const LoginOrGo = () => {
     if (session) {
-      navigate('/payment');
+      const basketOptionId = basketsCounter.map((basket: TYPE_LocalOption) => {
+        return basket.productOptionId;
+      });
+      fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session}`,
+        },
+      })
+        .then((res: Response) => {
+          return res.json();
+        })
+        .then((Carts: TYPE_CartData[]) => {
+          Carts.forEach((cartsData) => {
+            const indexOption = basketOptionId.indexOf(
+              cartsData.productOptionId,
+            );
+
+            if (indexOption === -1) {
+              fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/carts/${cartsData.productOptionId}`,
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session}`,
+                  },
+                  method: 'DELETE',
+                },
+              ).then((response) => {
+                queryClient.invalidateQueries('/carts');
+              });
+            } else {
+              const quantityValue =
+                basketsCounter[indexOption].count - cartsData.quantity;
+
+              if (quantityValue !== 0) {
+                console.log(quantityValue);
+                const suggest = {
+                  productOptionId: cartsData.productOptionId,
+                  quantity: quantityValue,
+                };
+
+                fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+                  body: JSON.stringify(suggest),
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session}`,
+                  },
+                  method: 'PATCH',
+                }).then((response) => {
+                  queryClient.invalidateQueries('/carts');
+                  console.log(response);
+                  navigate('/payment');
+                });
+              }
+            }
+          });
+          navigate('/payment');
+        });
     } else {
       navigate('/login');
     }
@@ -302,6 +386,12 @@ export default BasketList;
 // 페이지 이동시 리덕스값이 사라짐
 //새로고침시 리덕스 초기화 되는 문제
 // 코드를 너무 복잡하게짬.. sementic 아이디 통일 못함
+//비로그인시 메인으로 보내는게 편함
 
 //백엔드와 db관리하는데에 있어서 오류가 있었따.
 //id기반으로 ㅁ나들었기에
+//로컬스토리지 클리어시 토큰 삭제
+//넘어가는 화면이 빨라서 데이터 못받아와서 느려짐
+// 로딩화면 추가할예정
+//foreach 안돌아가는 상황이있었음
+//API밀릴경우 버그 잡음

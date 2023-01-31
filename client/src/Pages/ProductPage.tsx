@@ -10,9 +10,10 @@ import ProductMainBox from 'Components/ProductPage/ProductMainBox';
 import ProductDetailBox from 'Components/ProductPage/productDetailBox';
 import CategoryList from 'Components/Common/CategoryList';
 import TabPanel from 'Components/Mypage/TabPanel';
+import Review from 'Components/ProductPage/Review';
 
 const ProductContainer = styled.div`
-  margin: 120px auto 120px auto;
+  margin: 120px auto 120px 280px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -68,33 +69,7 @@ const ProductPage: React.FC = () => {
   if (isLoading) return <Empty />;
   if (error) return <></>;
   if (data.length === 0) return <Empty />;
-  //   const data ={
-  //     "name":"아테네",
-  //     "price":20000000,
-  //     "photo":"http://www.farminsight.net/news/photo/202011/6890_8654_2152.jpg",
-  //     "brand":"순양자동차",
-  //     "description":"진양철이 직원들을 쥐잡듯이 잡아가며 개발한 차량입니다.",
-  //     "shippingCountry":"KOREA",
-  //     "shippingMethod":"PARCEL_SERVICE",
-  //     "shippingPrice":3000,
-  //     "productCategoryPostDtos":[
-  //         {
-  //             "categoryId":1
-  //         }
-  //     ],
-  //     "productOptionPostDtos":[
-  //         {
-  //             "productOptionName":"자폭",
-  //             "price":1000000,
-  //             "stock":10
-  //         },
-  //                 {
-  //             "productOptionName":"본네트를 없애서 경량화",
-  //             "price":1000000,
-  //             "stock":10
-  //         }
-  //     ]
-  // }
+
   //리턴 url , 로컬스토리지에 담기
   return (
     <BGcontainer>
@@ -102,29 +77,22 @@ const ProductPage: React.FC = () => {
       <ProductContainer>
         <ProductMenuTitle />
         <ProductMainBox data={data}></ProductMainBox>
-
-        <div className="mt-44  ">
+        <div className="mt-44">
           <div className="relative select border-solid border-b-2">
             <div className="absolute left-0 top-0">
               <TabButton isTrue={value === 0} onClick={() => setValue(0)}>
-                1십십십십싯
+                제품 상세
               </TabButton>
               <TabButton isTrue={value === 1} onClick={() => setValue(1)}>
-                1십십십십싯
-              </TabButton>
-              <TabButton isTrue={value === 2} onClick={() => setValue(2)}>
-                1십십십십싯
+                리뷰 보기
               </TabButton>
             </div>
           </div>
           <TabPanel value={value} index={0}>
-            <ProductDetailBox />
+            <ProductDetailBox body={data.body} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <ProductDetailBox />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <ProductDetailBox />
+            <Review />
           </TabPanel>
         </div>
       </ProductContainer>
@@ -149,3 +117,4 @@ export default ProductPage;
 // 도트깨짐
 //styled 컴퍼넌트 마지막  두개넣으려면; 차이
 //로컬스토리지에서 카운터관리
+//토스트 전역에 뿌려주기

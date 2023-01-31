@@ -2,6 +2,9 @@ import { configureStore } from '@reduxjs/toolkit';
 import counterSlice from 'Redux/reducer/counterSlice';
 import objectSaveSlice from 'Redux/reducer/objectSaveSlice';
 import priceSlice from 'Redux/reducer/priceSlice';
+import modalSlice from 'Redux/reducer/modalSlice';
+import personDataSlice from 'Redux/reducer/personDataSlice';
+import getDataSlice from 'Redux/reducer/getDataSlice';
 //store 만들기
 const store = configureStore({
   reducer: {
@@ -9,6 +12,9 @@ const store = configureStore({
     counter: counterSlice, //counterSlice안의 reducers들을 하나로 합쳐주는 하나의 reducer 생성
     objectSave: objectSaveSlice,
     priceCheck: priceSlice,
+    modal: modalSlice,
+    personSave: personDataSlice,
+    getDataSave: getDataSlice,
   },
 });
 

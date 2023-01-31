@@ -1,0 +1,128 @@
+.comment_container {
+  display: flex;
+}
+
+.Input_User_Image {
+  width: 200px;
+  height: 200px;
+  object-fit: scale-down;
+}
+
+.comment_input_name {
+  color: var(--black-10);
+  font-size: 13px;
+  line-height: 13px;
+  text-decoration: none;
+}
+
+.Comment_Input {
+  margin-top: 30px;
+  padding: 4px 0px 0px 0px;
+  border-bottom: 1px solid var(--gray-12);
+}
+.Comment_Input:focus-within {
+  border-color: var(--gray-45);
+}
+
+.Comment_Input_Button {
+  background-color: var(--greenlogo);
+  margin-top: 4px;
+  justify-content: center;
+  align-items: center;
+  width: 82px;
+  height: 36px;
+  font-size: 12px;
+  line-height: 12px;
+  border-radius: 6px;
+  color: white;
+  margin-left: 100%;
+  transform: translateX(-100%);
+}
+.Comment_Input_Button:hover {
+  background-color: var(--green-70);
+}
+
+.comment_reply_list_wrapper {
+  display: flex;
+  margin-top: 18px;
+  flex-direction: column;
+}
+.comment_reply_item_wrapper {
+  display: flex;
+}
+.comment_top {
+  display: flex;
+  margin-bottom: 4px;
+}
+.comment_top_updated {
+  font-size: 13px;
+  line-height: 13px;
+}
+.comment_top_added {
+  font-size: 13px;
+  line-height: 13px;
+  margin-left: 10px;
+}
+
+.line {
+  width: 100%;
+  border-bottom: 1px solid var(--gray-12);
+  margin: 30px 0;
+}
+
+.Image_Container {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: 200px;
+  border-radius: 3px;
+}
+
+.Empty_Image {
+  width: 200px;
+  height: 200px;
+  background-color: var(--gray-12);
+  border-radius: 3px;
+}
+
+.Review_Container {
+  flex: 1;
+  padding: 0 15px 0 15px;
+}
+
+.Label_Button {
+  padding: 10px 72px;
+  width: 100%;
+  font-size: 12px;
+  line-height: 12px;
+  background-color: var(--greenlogo);
+  border-radius: 6px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}
+
+.Label_Button:hover {
+  background-color: var(--green-70);
+}
+
+.content {
+  margin-bottom: 10px;
+}
+
+.Input_Contents {
+  margin-top: 20px;
+  height: 40px;
+  color: var(--black-10);
+  border: 1px solid var(--gray-12);
+  border-radius: 4px;
+}
+
+.ReviewImage {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+}

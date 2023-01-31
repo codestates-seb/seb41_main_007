@@ -1,6 +1,7 @@
 import React, { useState, ElementType, useCallback } from 'react';
 import RadiusButton from './RadiusButton';
 import styled from 'styled-components';
+import useBooleanInput from 'CustomHook/useBooleaninput';
 
 export const Textinput = styled.input<{ isTrue?: boolean }>`
   width: 384px;
@@ -14,9 +15,10 @@ export const Textinput = styled.input<{ isTrue?: boolean }>`
   }
 `;
 
-const TextDiv = styled.div`
+const TextDiv = styled.div<{ isTrue?: boolean }>`
   border-bottom: 1px solid var(--gray-02);
-
+  background: ${(props) => (props.isTrue ? '#FAFAFA' : '')};
+  border: 1px solid var(--a-gray-10);
   width: 384px;
   margin: 10px 0;
   height: 28px;
@@ -26,13 +28,16 @@ interface Props {
   children?: string;
   onSave: (name: string, value: string) => void;
   Component?: ElementType<any> | undefined;
+  isDisabled?: boolean;
+  P_Value: string | number;
 }
 
 const ComponentsInput: React.FC<Props> = ({
   Component,
   children,
-
+  isDisabled,
   onSave,
+  P_Value,
 }) => {
   const [control, setcontrol] = useState<boolean>(true);
   const [data, setdata] = useState<string>(''); // 데이타 출력
@@ -43,13 +48,13 @@ const ComponentsInput: React.FC<Props> = ({
   const [iserror, setIserror] = useState<boolean>(false);
 
   const onClickForm = () => {
-    console.log(dataname);
-    if (dataname === 'name' || dataname === 'phonenumber') {
+    if (dataname === 'name' || dataname === 'phoneNumber') {
+      //유효성검사 허락
       if (isName || control) {
         setcontrol(!control);
         setIserror(false);
       } else {
-        setNameMessage('양식에 맞춰 입력해주세요.');
+        setNameMessage('-를 제외한 11자리 숫자를 입력해주세요');
         setIserror(true);
       }
     } else {
@@ -76,7 +81,7 @@ const ComponentsInput: React.FC<Props> = ({
 
   const onChangeSave = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log(name, value);
+
     onSave(name, value);
     setdataname(name);
     setdata(value);
@@ -84,9 +89,36 @@ const ComponentsInput: React.FC<Props> = ({
 
   const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length < 2 || e.target.value.length > 5) {
-      setNameMessage('2글자 이상 10글자 미만으로 입력해주세요.');
+      setNameMessage('2글자 이상 5글자 미만으로 입력해주세요.');
       setIsName(false);
       onSave(e.target.name, '');
+      setdataname(e.target.name); //버그해결해줌
+      setdata('');
+      setIserror(true);
+    } else {
+      setNameMessage('올바른 형식입니다 :)');
+      setIsName(true);
+      onChangeSave(e);
+      setdataname(e.target.name);
+      setIserror(false);
+    }
+  }, []);
+
+  const onChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+    const numberCheck = /[^0-9]/g;
+    if (e.target.value.length < 11 || e.target.value.length > 12) {
+      setNameMessage('-를 제외한 11자리를 입력해주세요');
+      setIsName(false);
+      onSave(e.target.name, '');
+      setdataname(e.target.name);
+      setdata('');
+      setIserror(true);
+    } else if (numberCheck.test(e.target.value)) {
+      setNameMessage('숫자를 입력해주세요');
+      setIsName(false);
+      onSave(e.target.name, '');
+      setdataname(e.target.name);
       setdata('');
       setIserror(true);
     } else {
@@ -95,26 +127,7 @@ const ComponentsInput: React.FC<Props> = ({
       onChangeSave(e);
       setIserror(false);
     }
-  }, []);
-
-  const onChangeNumber = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.value.length < 11 || e.target.value.length > 12) {
-        setNameMessage('-를 제외한 11자리를 입력해주세요');
-        setIsName(false);
-        onSave(e.target.name, '');
-        setdataname(e.target.name);
-        setdata('');
-        setIserror(true);
-      } else {
-        setNameMessage('올바른 형식입니다 :)');
-        setIsName(true);
-        onChangeSave(e);
-        setIserror(false);
-      }
-    },
-    [],
-  );
+  };
 
   return (
     <div>
@@ -122,8 +135,14 @@ const ComponentsInput: React.FC<Props> = ({
         {control ? (
           <>
             <div className="flex items-center">
-              <TextDiv>{data ? data : '입력해주세요'}</TextDiv>
-              <RadiusButton onClick={onputForm}>수정</RadiusButton>
+              <TextDiv isTrue={isDisabled}>
+                {data ? data : P_Value ? P_Value : '입력해주세요🙌'}
+              </TextDiv>
+              {isDisabled ? (
+                <></>
+              ) : (
+                <RadiusButton onClick={onputForm}>수정</RadiusButton>
+              )}
             </div>
           </>
         ) : (
@@ -140,7 +159,6 @@ const ComponentsInput: React.FC<Props> = ({
                 data-type="text"
                 name={'name'}
                 maxLength={10}
-                // onChange={onChangeSave}
                 onChange={onChangeName}
                 type="text"
                 isTrue={iserror}
@@ -169,3 +187,4 @@ export default ComponentsInput;
 //간단하게 정리해서 풀어내는 방식이 중요한데 너무 흐름대로갔음
 //모든 오류를 막는데에 계싼적으로 행동하지 못함
 //컴포넌트화 실패
+//이름 입력하니 사라지는버그

@@ -1,13 +1,10 @@
 import styled from 'styled-components';
-import TinyTitle from 'Components/Common/TinyTitle';
+import { useCallback, useState } from 'react';
 import RadiusButton from 'Components/Common/RadiusButton';
-import { useState } from 'react';
-import Address from 'Components/PaymentPage/Adress';
+import Address from 'Components/PaymentPage/Address';
 import useBooleanInput from 'CustomHook/useBooleaninput';
-import { TYPE_Product } from 'Types/common/product';
-
-//1번 로컬 스토리지에서 바당옴
-//2번 로컬스토리에서 지움
+import { TYPE_getAddress } from 'Types/common/product';
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 
 const Deliverydl = styled.dl`
   margin-top: 30px;
@@ -51,58 +48,55 @@ const Deliveryp = styled.p`
   -webkit-line-clamp: 2;
 `;
 
-interface dataprops {
-  data: UserProfile;
-}
-export interface UserProfile extends TYPE_Product {
-  addressname: string;
-  address: string;
-  phonenumber: string;
+interface Props {
+  data: TYPE_getAddress;
+  session: any;
 }
 
-// {
-//   productId: 1,
-//   addressname: '우리집',
-//   name: '황낙준',
-//   address: '(331-726) 충남 천안시 서북구',
+// private String addressName;
 
-//   phonenumber: '010-6693-2258',
-// },
-// data : UserProfile
-// UserProfile {}
-// interface UserProfile extends TYPE_PRODUCTS
+// private String name;
 
-const DeliverySave: React.FC<dataprops> = ({ data }) => {
-  const [control, oncontrolCilck] = useBooleanInput(true);
-  const [dataput, setdataput] = useState<UserProfile>(data);
+// private String detailAddress;
 
-  const onSave = (name: string, value: string) => {
-    console.log(name, value);
-    setdataput({ ...dataput, [name]: value });
+// @Pattern(regexp = "^010\d{3,4}\d{4}$",
+//         message = "휴대폰 번호는 010으로 시작하는 11자리 숫자로 구성되어야 합니다.")
+// private String phoneNumber;
+const DeliverySave: React.FC<Props> = ({ data, session }) => {
+  const [control, oncontrolCilck] = useBooleanInput(data ? true : false);
+  const [dataPut, setDataPut] = useState<TYPE_getAddress>(data);
+  const deletefetch = () => {
+    mutate({});
   };
+  const { mutate } = useCustomMutation(
+    `/addresses/${data.addressId}`,
+    `/addresses`,
+    'DELETE',
+  );
 
   return (
     <div>
       {control ? (
         <Deliverydl>
           <Deliverydt>
-            <Deliverydiv>{dataput.addressname}</Deliverydiv>
+            <Deliverydiv>{dataPut.addressName}</Deliverydiv>
             <DeliverydtLeft>
               <RadiusButton onClick={oncontrolCilck}>수정</RadiusButton>
+              <RadiusButton onClick={deletefetch}>삭제</RadiusButton>
             </DeliverydtLeft>
           </Deliverydt>
           <Deliverydd>
-            <Deliveryp>{dataput.name}</Deliveryp>
-            <Deliveryp>{dataput.address}</Deliveryp>
-            <Deliveryp>{dataput.phonenumber}</Deliveryp>
+            <Deliveryp>{dataPut.name}</Deliveryp>
+            <Deliveryp>{dataPut.detailAddress}</Deliveryp>
+            <Deliveryp>{dataPut.phoneNumber}</Deliveryp>
           </Deliverydd>
         </Deliverydl>
       ) : (
         <div>
           <Address
             oncontrolCilck={oncontrolCilck}
-            onSave={onSave}
-            data={dataput}
+            dataPut={dataPut}
+            setDataPut={setDataPut}
           ></Address>
         </div>
       )}
@@ -115,3 +109,4 @@ export default DeliverySave;
 //any 할당하면 타입을 따지지않음?
 //컴퓨터를 속임
 //change 박스 넘어가면 초기화 되는 문제 유즈 콜백 문제
+//데이터 로직 수정이 필요함

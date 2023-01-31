@@ -28,6 +28,7 @@ import {
   Wall,
   YoutubeButton,
 } from './Button/EditorButton';
+import { useCustomFormMutation } from 'CustomHook/useCustomMutaiton';
 
 type BLOCK = 'paragraph' | 'heading' | 'block-quote';
 
@@ -211,34 +212,37 @@ export async function handlerCompresstion(editor: Editor, file: File) {
   if (file) {
     const formData = new FormData();
     formData.append('file', file);
-    console.log(formData);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
       method: 'POST',
       body: formData,
     })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+      .then(async (data: any) => {
+        const { imageUrls } = await data.json();
+        const reader = new FileReader();
+        reader.onload = function (e: any) {
+          const url = e.target.result;
+          const img = new Image();
+          img.onload = function () {
+            const width = img.width;
+            const height = img.height;
+            if (width < 200) {
+              insertImage(
+                editor,
+                imageUrls,
+                200,
+                Math.floor(height * (200 / width)),
+              );
+            } else {
+              insertImage(editor, imageUrls, width, height);
+            }
+          };
+          img.src = url;
+        };
+        reader.readAsDataURL(file);
       })
       .catch((e) => {
-        console.log(e);
+        console.info(e);
       });
-    const reader = new FileReader();
-    reader.onload = function (e: any) {
-      const url = e.target.result;
-      const img = new Image();
-      img.onload = function () {
-        const width = img.width;
-        const height = img.height;
-        if (width < 200) {
-          insertImage(editor, url, 200, Math.floor(height * (200 / width)));
-        } else {
-          insertImage(editor, url, width, height);
-        }
-      };
-      img.src = url;
-    };
-    reader.readAsDataURL(file);
   }
 }
 

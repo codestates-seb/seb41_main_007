@@ -140,21 +140,22 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
     });
   };
 
-  if (session) {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session}`,
-      },
-    })
-      .then((res: Response) => {
-        return res.json();
-      })
-      .then((res: Response) => {
-        console.log(res);
-      });
-  }
+  // if (session) {
+  //   //확인용
+  //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${session}`,
+  //     },
+  //   })
+  //     .then((res: Response) => {
+  //       return res.json();
+  //     })
+  //     .then((res: Response) => {
+  //       console.log(res);
+  //     });
+  // }
 
   const emptyBasketAlram = () =>
     toast.success('장바구니에 담는 중입니다.', {
@@ -189,9 +190,6 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
     let IsSame: boolean = false;
 
     basketsCounter.forEach((el: any) => {
-      console.log(el.productOptionId);
-
-      console.log(option.productOptionId);
       if (el.productOptionId === option.productOptionId) {
         IsSame = true;
       }
@@ -202,13 +200,12 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
     //   if (data.productId === el.productId) IsSame = true;
     // });
 
-    console.log(data);
     if (IsSame) {
       fullBasketAlram();
 
       return;
     }
-    console.log(data.productOptionResponseDtos);
+
     data.productOptionResponseDtos.forEach((element: TYPE_ProductOption) => {
       if (element.productOptionId === option.productOptionId) {
         const newData = { ...data, productOptionResponseDtos: element };
@@ -231,22 +228,12 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
       count: count,
     };
 
-    // const dispatchdata = {
-    //   id: newData.productOptionResponseDtos.productOptionId,
-    //   price: data.price + option.price,
-    //   count: count,
-    // };
-    console.log(basketsCounter);
-    // dispatch(countset(dispatchdata));
-    //바로 반영하기위해 사용
-
     basketsCounter.push(datacount);
     emptyBasketAlram();
     localStorage.setItem('basketsCounter', JSON.stringify(basketsCounter));
     //백업용
     localStorage.setItem('baskets', JSON.stringify(baskets));
     if (session) {
-      console.log(session);
       const suggest = {
         productOptionId: option.productOptionId,
         quantity: count,
@@ -271,7 +258,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
         <ProductBox>
           <ProductTitle className="font-serif">{data.name}</ProductTitle>
           <ProductContent>{data.description}</ProductContent>
-          <Ratingstar num={4}></Ratingstar>
+          <Ratingstar num={data.rating}></Ratingstar>
           <ProductPrice Mgtop="2px">
             {useNumberComma(data.price)}
             <span>원</span>
@@ -299,7 +286,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
             background={'var( --white-02)'}
             onClick={() => onClickBasket(data)}
           >
-            장바구니담기
+            장바구니 담기
           </BuyButton>
           <ToastContainer
             position="top-right"
@@ -320,7 +307,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
             color="var(--bg-white-05)"
             onClick={() => navigate('/basket')}
           >
-            결제하기
+            장바구니 확인하기
           </BuyButton>
         </ProductBox>
       </ProductMain>
@@ -340,3 +327,4 @@ export default ProductMainBox;
 // // 비로그인시 return url
 //옵션아이디로 수정함녀서 괴랄해짐
 //유지보수 고려한 코딩
+//결제하기 버그

@@ -1,16 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import styled from 'styled-components';
-import useScrollTop from 'CustomHook/useScrollTop';
-import BasketThree from 'Components/PaymentPage/BasketThree';
-import Basketfour from 'Components/PaymentPage/Basketfour';
+import { useNavigate } from 'react-router-dom';
 import TabPanel from 'Components/Mypage/TabPanel';
 import AccordionGroup from 'Components/Mypage/AccordionGroup';
 import MainImage from 'Components/PaymentPage/MainImage';
 import DeliveryResult from 'Components/Mypage/DeliveryResult';
-import SessionChecking from 'CustomHook/SessionChecking';
+import MembershipWithdrawal from 'Components/Mypage/MembershipWithdrawal';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -18,13 +16,18 @@ const ShortContainer = styled.div`
   margin-top: 80px;
 `;
 
-export default function BasicTabs() {
+const MyPage: React.FC<{ session: any }> = ({ session }) => {
   const [value, setValue] = useState<number>(0);
-  SessionChecking();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!session) {
+      navigate('/login');
+    }
+  }, []);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  useScrollTop();
 
   return (
     <div>
@@ -47,12 +50,16 @@ export default function BasicTabs() {
             <AccordionGroup />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <DeliveryResult></DeliveryResult>
+            <DeliveryResult />
           </TabPanel>
-          <TabPanel value={value} index={2}></TabPanel>
+          <TabPanel value={value} index={2}>
+            <MembershipWithdrawal session={session} />
+          </TabPanel>
         </Box>
       </ShortContainer>
     </div>
   );
-}
+};
 //네비게이션 오류 -> href
+export default MyPage;
+//스플릿 로직이 오류 불러일으킴

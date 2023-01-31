@@ -1,11 +1,11 @@
 import Editor from '../../Components/Editor/Editor';
 import { Descendant } from 'Types/slate';
 
-import styles from './Styles/index.module.css';
+import styles from './Styles/Post.module.css';
 import classNames from 'classnames/bind';
 import { useState, useCallback, useEffect } from 'react';
 
-import produce from 'immer';
+import { produce } from 'immer';
 import { Node } from 'slate';
 
 import { Plus, Checked } from './svg';
@@ -49,7 +49,7 @@ export default function Page() {
   const [optionPrice, setOptionPrice] = useState<any>(0);
   const [optionName, setOptionName] = useState<any>('');
   const [categoryNum, setCategoryNum] = useState<number>(9999);
-  const [file, setFile] = useState<any>('');
+  const [imageFile, setImageFile] = useState<any>();
 
   const { mutate } = useCustomMutation('/products', ['post', title], 'POST');
 
@@ -78,8 +78,7 @@ export default function Page() {
       name: title,
       price: price,
       brand: brand,
-      photo:
-        'https://www.thegear.kr/news/photo/old/imgdata/thegear_co_kr/201901/2019012141158917.jpg',
+      photo: imageFile,
       description: description,
       body: JSON.stringify(value),
       shippingCountry: 'KOREA',
@@ -156,20 +155,19 @@ export default function Page() {
 
   const fileHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      console.log(e.target.files[0]);
       const formData = new FormData();
       formData.append('file', e.target.files[0]);
       fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
-        method: 'POST',
         cache: 'no-cache',
+        method: 'POST',
         body: formData,
       })
         .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
+        .then(({ imageUrls }) => {
+          setImageFile(imageUrls);
         })
         .catch((e) => {
-          console.log(e);
+          console.info(e);
         });
     }
   };

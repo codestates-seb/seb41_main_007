@@ -14,27 +14,12 @@ const PathCounter: FC<checkBoxtype> = ({
 }) => {
   const jsondata: string | null = localStorage.getItem('basketsCounter');
   const resultarr = JSON.parse(jsondata || '[]') || [];
-  console.log(resultarr);
 
-  //   const itemDetail = resultarr.filter((item: any) => {
-  //     return item.id === el.productId;
-  //   });
   const OptionData = resultarr.filter((data: any) => {
     return (
       data.productOptionId === el.productOptionResponseDtos.productOptionId
     );
   });
-
-  console.log(OptionData);
-  console.log('안녕');
-  // resultarr.forEach((data: any) => {
-  //   console.log(el.productId);
-  //   if (data.id === el.productId) {
-  //     countnumber = data.count;
-  //   }
-  // });
-
-  // console.log(countnumber);
 
   return (
     <>
