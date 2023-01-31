@@ -16,6 +16,8 @@ import useScrollTop from 'CustomHook/useScrollTop';
 import Deliveryaddress from 'Components/Mypage/DeliveryManagement';
 import { useAppSelector } from 'Redux/app/hook';
 import { madalState } from 'Redux/reducer/modalSlice';
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import Payment from 'Components/PaymentPage/Payment';
 const Container = styled.div`
   width: 830px;
 `;
@@ -31,38 +33,45 @@ const Title = styled.div`
 const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const [order, setOrder] = useState<boolean>(true);
   const [isDelivery, setisDelivery] = useState<boolean>(true);
-  const [address, setAddress] = useState<boolean>(true); //배송지
+  const [address, setAddress] = useState<boolean>(false); //배송지
 
   const [payment, setPayment] = useState<boolean>(true); //결제수단
   const isModal = useAppSelector(madalState);
-  const [data, setdata] = useState<TYPE_CartData[]>([]);
+  // const [data, setdata] = useState<TYPE_CartData[]>([]);
   const [isloading, setisLoading] = useState<boolean>(true);
   // const { loading, session } = useSession();
   const navigate = useNavigate();
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session}`,
-      },
-    })
-      .then((res: Response) => {
-        return res.json();
-      })
-      .then((res) => {
-        console.log(res);
-        setdata(res);
-        setisLoading(false); //무한렌더링 막기용
-      })
-      .catch((e) => {
-        console.log(e);
-        setisLoading(false);
-      });
-  }, []);
+  const { data, isLoading, error } = useCustomQuery(
+    '/carts',
+    '/carts',
+    session,
+  );
+  // useEffect(() => {
+  //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${session}`,
+  //     },
+  //   })
+  //     .then((res: Response) => {
+  //       return res.json();
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //       setdata(res);
+  //       setisLoading(false); //무한렌더링 막기용
+  //     })
+  //     .catch((e) => {
+  //       console.log(e);
+  //       setisLoading(false);
+  //     });
+  // }, []);
   useScrollTop();
+  if (isLoading) return <Empty></Empty>;
+  if (error) return <div></div>;
 
-  if (isloading) return <Empty />;
+  // if (isloading) return <Empty />;
 
   return (
     <div>
@@ -105,10 +114,11 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
                 )}
               </button>
             </Title>
-            {address && (
-              <Deliveryaddress setcontrol={setAddress} session={session} />
-            )}
-
+            <Title>
+              {address && (
+                <Deliveryaddress setcontrol={setAddress} session={session} />
+              )}
+            </Title>
             <Title>
               <div className=" font-semibold py-4 text-xl">결제수단</div>
               <button onClick={() => setPayment(!payment)}>
@@ -119,6 +129,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
                 )}
               </button>
             </Title>
+            {payment && <Payment />}
           </Container>
           <Totalpay data={data} />
         </div>

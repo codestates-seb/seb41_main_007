@@ -10,7 +10,7 @@ import BestProductSlider from 'Components/BestProductSlider';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from 'CustomHook/useSession';
 import { TYPE_CartData, TYPE_LocalOption } from 'Types/common/product';
-
+import { useQueryClient } from 'react-query';
 const BasketForm = styled.div`
   width: 1180px;
 
@@ -138,7 +138,7 @@ const ControlContainer = styled.div`
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
-
+  const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const jsondata: string | null = localStorage.getItem('baskets');
@@ -264,33 +264,51 @@ const BasketList: FC = () => {
             const indexOption = basketOptionId.indexOf(
               cartsData.productOptionId,
             );
-            const quantityValue =
-              basketsCounter[indexOption].count - cartsData.quantity;
-            console.log('렌더링3');
-            if (quantityValue !== 0) {
-              console.log('렌더링2');
-              console.log(quantityValue);
-              const suggest = {
-                productOptionId: cartsData.productOptionId,
-                quantity: quantityValue,
-              };
+            console.log(indexOption, '오케');
 
-              fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-                body: JSON.stringify(suggest),
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${session}`,
+            if (indexOption === -1) {
+              console.log('렌더링4');
+              fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/carts/${cartsData.productOptionId}`,
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session}`,
+                  },
+                  method: 'DELETE',
                 },
-                method: 'PATCH',
-              }).then((response) => {
+              ).then((response) => {
+                queryClient.invalidateQueries('/carts');
                 console.log(response);
-                navigate('/payment');
               });
-            }
-            navigate('/payment');
-            console.log('오호');
-          });
+            } else {
+              const quantityValue =
+                basketsCounter[indexOption].count - cartsData.quantity;
+              console.log('렌더링5');
+              if (quantityValue !== 0) {
+                console.log('렌더링6');
+                console.log(quantityValue);
+                const suggest = {
+                  productOptionId: cartsData.productOptionId,
+                  quantity: quantityValue,
+                };
 
+                fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+                  body: JSON.stringify(suggest),
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session}`,
+                  },
+                  method: 'PATCH',
+                }).then((response) => {
+                  queryClient.invalidateQueries('/carts');
+                  console.log(response);
+                  navigate('/payment');
+                });
+              }
+              console.log('폴이치');
+            }
+          });
           navigate('/payment');
         });
     } else {
