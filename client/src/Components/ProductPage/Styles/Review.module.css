@@ -42,24 +42,6 @@
   background-color: var(--green-70);
 }
 
-/* .reply_comment_container {
-  display: flex;
-  margin-top: 10px;
-}
-.reply_button_container {
-  display: flex;
-  justify-content: flex-end;
-} */
-.reply_comment_input_cancel_button {
-  color: var(--black-10);
-  margin-top: 4px;
-  padding: 12px;
-  font-size: 12px;
-  line-height: 12px;
-  border-radius: 6px;
-  margin-left: 9px;
-}
-
 .comment_reply_list_wrapper {
   display: flex;
   margin-top: 18px;
