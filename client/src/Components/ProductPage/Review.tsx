@@ -133,7 +133,7 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
               <div className={styles.Empty_Image}> </div>
             )}
             <button onClick={handleClick} className={styles.Label_Button}>
-              이미지 선택
+              이미지선택
             </button>
             <input
               ref={ref}
