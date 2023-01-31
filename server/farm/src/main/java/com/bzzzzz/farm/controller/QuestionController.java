@@ -82,12 +82,11 @@ public class QuestionController {
 
     //특정 문의 수정
     @PatchMapping("/questions/{questionId}")
-    public ResponseEntity patchQuestion(@RequestBody @Valid QuestionPostDto questionPatchDto, @PathVariable String questionId) {
+    public ResponseEntity patchQuestion(@RequestBody @Valid QuestionPostDto questionPatchDto, @PathVariable String questionId, @AuthenticationPrincipal UserDetails userDetails) {
         Question question = questionMapper.questionPostDtoToQuestion(questionPatchDto);
-        Member member = memberService.getLoginMember();
         question.setQuestionId(Long.parseLong(questionId));
 
-        Question updatedQuestion = questionService.updateQuestion(question, member);
+        Question updatedQuestion = questionService.updateQuestion(question);
 
         QuestionResponseDto questionResponseDto = questionMapper.questionToQuestionResponseDto(updatedQuestion);
         return new ResponseEntity(questionResponseDto, HttpStatus.OK);
@@ -107,20 +106,21 @@ public class QuestionController {
     //질문 답변 작성
     @PostMapping("/questions/answers")
     public ResponseEntity insertQuestionAnswer(@RequestBody @Valid QuestionAnswerPostDto questionAnswerPostDto, @AuthenticationPrincipal UserDetails userDetails) {
+        Question question = questionService.getQuestion(questionAnswerPostDto.getQuestionId());
         QuestionAnswer questionAnswer = questionAnswerMapper.questionAnswerPostDtoToQuestionAnswer(questionAnswerPostDto);
+        questionAnswer.setQuestion(question);
         QuestionAnswer insertedQuestionAnswer = questionAnswerService.insertQuestionAnswer(questionAnswer,toLong(userDetails.getUsername()));
         QuestionAnswerResponseDto questionAnswerResponseDto = questionAnswerMapper.questionAnswerToQuestionAnswerResponseDto(insertedQuestionAnswer);
         return new ResponseEntity<>(questionAnswerResponseDto, HttpStatus.OK);
     }
 
     //질문 답변 수정
-    @PatchMapping("/questions/answers")
-    public ResponseEntity updateQuestionAnswer(@RequestBody @Valid QuestionAnswerPatchDto questionAnswerPatchDto) {
-        Member member = memberService.getLoginMember();
+    @PatchMapping("/questions/answers/{questionAnswerId}")
+    public ResponseEntity updateQuestionAnswer(@RequestBody @Valid QuestionAnswerPatchDto questionAnswerPatchDto, @PathVariable String questionAnswerId) {
+
 
         QuestionAnswer questionAnswer = questionAnswerMapper.questionAnswerPatchDtoToQuestionAnswer(questionAnswerPatchDto);
-        questionAnswer.setMember(member);
-        QuestionAnswer updatedQuestionAnswer = questionAnswerService.updateQuestionAnswer(questionAnswer);
+        QuestionAnswer updatedQuestionAnswer = questionAnswerService.updateQuestionAnswer(questionAnswer,toLong(questionAnswerId));
 
         QuestionAnswerResponseDto questionAnswerResponseDto = questionAnswerMapper.questionAnswerToQuestionAnswerResponseDto(updatedQuestionAnswer);
 
@@ -129,7 +129,7 @@ public class QuestionController {
 
     @DeleteMapping("/questions/answers/{questionAnswerId}")
     public ResponseEntity deleteQuestionAnswer(@PathVariable String questionAnswerId) {
-        questionAnswerService.deleteQuestionAnswer(Long.parseLong(questionAnswerId));
+        questionAnswerService.deleteQuestionAnswer(toLong(questionAnswerId));
         return new ResponseEntity(HttpStatus.OK);
     }
 
