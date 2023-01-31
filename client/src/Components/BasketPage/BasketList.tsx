@@ -264,7 +264,9 @@ const BasketList: FC = () => {
             const indexOption = basketOptionId.indexOf(
               cartsData.productOptionId,
             );
+            console.log(indexOption, '오케');
             if (indexOption === -1) {
+              console.log('렌더링4');
               fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/carts/${cartsData.productOptionId}`,
                 {
@@ -275,40 +277,37 @@ const BasketList: FC = () => {
                   method: 'DELETE',
                 },
               ).then((response) => console.log(response));
-            }
+            } else {
+              const quantityValue =
+                basketsCounter[indexOption].count - cartsData.quantity;
+              console.log('렌더링5');
+              if (quantityValue !== 0) {
+                console.log('렌더링6');
+                console.log(quantityValue);
+                const suggest = {
+                  productOptionId: cartsData.productOptionId,
+                  quantity: quantityValue,
+                };
 
-            const quantityValue =
-              basketsCounter[indexOption].count - cartsData.quantity;
-            console.log('렌더링3');
-            if (quantityValue !== 0) {
-              console.log('렌더링2');
-              console.log(quantityValue);
-              const suggest = {
-                productOptionId: cartsData.productOptionId,
-                quantity: quantityValue,
-              };
-
-              fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-                body: JSON.stringify(suggest),
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${session}`,
-                },
-                method: 'PATCH',
-              }).then((response) => {
-                queryClient.invalidateQueries('/carts');
-                console.log(response);
-                navigate('/payment');
-              });
+                fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+                  body: JSON.stringify(suggest),
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session}`,
+                  },
+                  method: 'PATCH',
+                }).then((response) => {
+                  queryClient.invalidateQueries('/carts');
+                  console.log(response);
+                  navigate('/payment');
+                });
+              }
+              console.log('폴이치');
             }
-            navigate('/payment');
-            console.log('오호');
           });
-          console.log('확인');
+          console.log('감자');
           navigate('/payment');
         });
-      console.log('확인2');
-      navigate('/payment');
     } else {
       navigate('/login');
     }
