@@ -108,7 +108,7 @@ const TopColRight: FC = () => {
       });
 
     //한번만 돌게하는 로직
-    console.log('두번뿐이야!!');
+
     onisOk();
   }
 

@@ -41,14 +41,14 @@ const SavePostcode: React.FC<Props> = ({
   const [addressNumber, setaddressNumber] = useState(addressValue[0]);
   const [address, setaddress] = useState<string>(addressValue[1]);
   const [Detail, setDetail] = useState<string>(addressValue[2]);
-  console.log(addressValue);
+
   const open = useDaumPostcodePopup();
 
   const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     setDetail(value);
     const addressdata = `(${String(addressNumber)}) ${address} (${value})`;
-    console.log(addressdata);
+
     onSaveData('detailAddress', addressdata);
   };
 
@@ -61,7 +61,7 @@ const SavePostcode: React.FC<Props> = ({
     setDetail('');
     onControl();
   };
-  console.log(address);
+
   const handleClick = () => {
     open({ onComplete: handleComplete });
   };

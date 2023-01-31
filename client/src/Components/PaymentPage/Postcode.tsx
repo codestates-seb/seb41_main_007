@@ -35,9 +35,7 @@ const Postcode: React.FC<Props> = ({ addressValue, setDataPut, dataPut }) => {
   const [address, setaddress] = useState<string>(addressValue[1]);
   const [Detail, setDetail] = useState<string>(addressValue[2]);
   const [isControl, onControl] = useBooleanInput(true);
-  console.log(dataPut);
 
-  console.log(addressValue);
   const open = useDaumPostcodePopup();
 
   const onChangeForm = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +43,7 @@ const Postcode: React.FC<Props> = ({ addressValue, setDataPut, dataPut }) => {
     setDetail(value);
 
     const addressData = `(${String(addressNumber)}) ${address} (${value})`;
-    console.log(addressData);
+
     const name = 'detailAddress';
     setDataPut({ ...dataPut, [name]: addressData });
   };
@@ -58,7 +56,7 @@ const Postcode: React.FC<Props> = ({ addressValue, setDataPut, dataPut }) => {
     setaddressNumber(extraAddress);
     onControl();
   };
-  console.log(address);
+
   const handleClick = () => {
     open({ onComplete: handleComplete });
   };

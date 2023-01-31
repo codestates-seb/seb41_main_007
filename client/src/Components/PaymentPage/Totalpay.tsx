@@ -1,5 +1,12 @@
 import styled from 'styled-components';
 import CheckBox from 'Components/Common/CheckBox';
+import {
+  TYPE_CartData,
+  TYPE_KakaoApi,
+  TYPE_UrlProp,
+} from 'Types/common/product';
+import { useEffect, useState } from 'react';
+type ProductData = { productOptionId: number; quantity: number };
 const Agree = styled.div``;
 const TotalContainer = styled.div`
   margin-top: 220px;
@@ -19,14 +26,76 @@ const Pay = styled.div`
   border-bottom: 1px solid var(--gray-20);
 `;
 
-const Totalpay: React.FC = () => {
+const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
+  const [orderId, setOrderId] = useState<number>(0);
+  const [urlData, setUrlData] = useState<TYPE_UrlProp[]>([]);
+  console.log('id값', orderId);
+  console.log('urlData', urlData);
+  const token = localStorage.getItem('access_token');
+  const productHandler = data.map((el: TYPE_KakaoApi) => {
+    const productDatas = {
+      productOptionId: el.productOptionId,
+      quantity: el.quantity,
+    };
+    return productDatas;
+  });
+  console.log('이거에룡용!!!', productHandler);
+  //
+
+  useEffect(() => {}, []);
+
+  const onClickhandler = () => {
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        address: '주소',
+        name: '시영',
+        phone: '010-1111-1111',
+        orderProductPostDtos: productHandler,
+      }),
+      method: 'POST',
+    })
+      .then((response) => response.json())
+      .then((response) => {
+        console.log('1');
+        setOrderId(response.data);
+        console.log(
+          '2',
+          `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=${response.data}`,
+        );
+        fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/payment/ready?order_id=${response.data}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'POST',
+          },
+        )
+          .then((response) => response.json())
+          .then(
+            (response) =>
+              // console.log(response, '전체 응답 반환'),
+              setUrlData(response),
+            // setUrl(response.next_redirect_pc_url);
+            // console.log('3', response.next_redirect_pc_url),
+          )
+          .catch((e) => {
+            console.info(e);
+          });
+      })
+      .catch((e) => console.info(e));
+  };
   return (
     <>
       <div>
         <TotalContainer>
           <div className="container">
             <div className="title flex justify-between py-4">
-              <span className="font-semibold">주문상품 정보 / 총 2개 </span>
+              <span className="font-semibold">주문상품 정보 / 총 2개</span>
               <span className="font-semibold text-sm text-gray-500">
                 상세보기
               </span>
@@ -53,7 +122,11 @@ const Totalpay: React.FC = () => {
             </Pay>
             <Agree>
               <div className="text-sm text-gray-500 my-5">
-                <CheckBox />
+                <CheckBox
+                  data={data}
+                  onClickhandler={onClickhandler}
+                  kakaoUrl={urlData}
+                />
               </div>
             </Agree>
           </div>

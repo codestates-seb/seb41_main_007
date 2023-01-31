@@ -12,8 +12,6 @@ const personDataSlice = createSlice({
     saveDataP: (state, action: PayloadAction<TYPE_People>) => {
       const found = state.find((e) => e.memberId === action.payload.memberId);
       if (!found) {
-        console.log(action.payload);
-
         state.push(action.payload);
       }
     },

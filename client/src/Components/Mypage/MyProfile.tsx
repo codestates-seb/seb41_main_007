@@ -42,11 +42,9 @@ const MyProfile: React.FC<{ session: any }> = ({ session }) => {
   if (error) return <></>;
   const P_Data: TYPE_People = data;
   const onPatchClick = () => {
-    console.log(values);
     mutate(values);
   };
 
-  console.log(values);
   // const birthDay = P_Data.birth.replace(/(\d{4})(\d{2})(\d{2})/g, '$1-$2-$3');
   //P_Data.name P_Data.age 잠시대체
   return (

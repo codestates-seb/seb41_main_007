@@ -92,10 +92,21 @@ export interface TYPE_UserAddress {
   phoneNumber: string;
 }
 
+export interface TYPE_KakaoApi {
+  productOptionId: number;
+  quantity: number;
+}
 export interface TYPE_getAddress {
   addressId: number;
   addressName: string;
   name: string;
   detailAddress: string;
   phoneNumber: string;
+}
+
+export interface TYPE_UrlProp {
+  next_redirect_pc_url: string;
+  created_at: string;
+  next_redirect_mobile_url: string;
+  tid: string;
 }

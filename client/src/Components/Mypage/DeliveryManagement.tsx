@@ -30,7 +30,6 @@ const Deliveryaddress: React.FC<Props> = ({ session, setcontrol }) => {
   // if (data.length > 0) {
   //   setcontrol(true);
   // }
-  console.log(data);
 
   // if (isLoading) return <Empty />;
 
@@ -39,7 +38,7 @@ const Deliveryaddress: React.FC<Props> = ({ session, setcontrol }) => {
   }
 
   return (
-    <div className="h-auto">
+    <div className="h-auto ">
       {data.map((dataEl: TYPE_getAddress) => (
         <div key={dataEl.addressId}>
           <DeliverySave data={dataEl} session={session}></DeliverySave>
