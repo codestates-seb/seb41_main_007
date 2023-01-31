@@ -8,6 +8,7 @@ import { selectprice, Pricestate, countset } from 'Redux/reducer/priceSlice';
 import { useAppSelector, useAppDispatch } from 'Redux/app/hook';
 import { TYPE_LocalOption, TYPE_CartData } from 'Types/common/product';
 import useBooleanInput from 'CustomHook/useBooleaninput';
+import { useQueryClient } from 'react-query';
 
 const Logined = () => {
   const logoutHandler = (
@@ -52,6 +53,7 @@ const TopColRight: FC = () => {
   const { session, loading } = useSession();
   const [isOk, onisOk] = useBooleanInput(true);
   const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   useEffect(() => {
     const jsondataCounter: string | null =
       localStorage.getItem('basketsCounter');
@@ -83,7 +85,7 @@ const TopColRight: FC = () => {
         return res.json();
       })
       .then((res: TYPE_CartData[]) => {
-        if (res.length <= basketsCounter.length) {
+        if (res.length < basketsCounter.length) {
           const optionIdData = res.map((getdata) => {
             return getdata.productOptionId;
           });
@@ -91,7 +93,7 @@ const TopColRight: FC = () => {
             (localData: TYPE_LocalOption) => {
               return !optionIdData.includes(localData.productOptionId);
             },
-          ); // 옵션 데이터가 더많음, 로컬데이타에 없음
+          );
           Filtered.forEach((element: TYPE_LocalOption) => {
             const suggest = {
               productOptionId: element.productOptionId,
@@ -107,13 +109,40 @@ const TopColRight: FC = () => {
             }).then((response) => console.log(response));
           });
         } else if (res.length > basketsCounter.length) {
-          const optionIdData = basketsCounter.map((localData: any) => {
-            return localData.productOptionId;
+          const optionIdData = basketsCounter.map((getdata: any) => {
+            return getdata.productOptionId;
+          });
+          const Filtered = res.filter((Data: TYPE_CartData) => {
+            return !optionIdData.includes(Data.productOptionId);
+          });
+          console.log(Filtered);
+          Filtered.forEach((el: TYPE_CartData) => {
+            console.log(
+              `${process.env.REACT_APP_BACKEND_URL}/carts/${el.productOptionId}`,
+            );
+            fetch(
+              `${process.env.REACT_APP_BACKEND_URL}/carts/${el.productOptionId}`,
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${session}`,
+                },
+                method: 'DELETE',
+              },
+            ).then((response) => {
+              console.log(response);
+              queryClient.invalidateQueries('/carts');
+            });
           });
         }
       });
 
+    console.log('안녕');
     //한번만 돌게하는 로직
+    const optionIdData = basketsCounter.map((getdata: any) => {
+      return getdata.productOptionId;
+    });
+    console.log(optionIdData);
 
     onisOk();
   }

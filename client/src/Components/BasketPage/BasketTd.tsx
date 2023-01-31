@@ -134,7 +134,7 @@ interface checkBoxtype {
   handleSingleCheck: (checked: boolean, id: number) => void;
   checkItems: number[];
   // countNumber: number;
-  OptionData: TYPE_LocalOption;
+  optionData: TYPE_LocalOption;
 }
 
 const BasketTd: FC<checkBoxtype> = ({
@@ -142,14 +142,14 @@ const BasketTd: FC<checkBoxtype> = ({
   handleSingleCheck,
   checkItems,
   // countNumber,
-  OptionData,
+  optionData,
 }): JSX.Element => {
-  console.log(OptionData);
+  console.log(optionData);
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]') || [];
   const jsondataCounter: string | null = localStorage.getItem('basketsCounter');
   const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
-  const [number, setnumber] = useState<number>(OptionData.count);
+  const [number, setnumber] = useState<number>(optionData.count);
   const { session, loading } = useSession();
   if (loading) return <></>;
 
@@ -160,8 +160,8 @@ const BasketTd: FC<checkBoxtype> = ({
     dispatch(
       countset({
         id: optionId,
-        price: el.price + OptionData.optionprice,
-        count: OptionData.count,
+        price: el.price + optionData.optionprice,
+        count: optionData.count,
       }),
     );
   }, []);
@@ -198,7 +198,7 @@ const BasketTd: FC<checkBoxtype> = ({
 
     if (session) {
       fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/carts/${OptionData.productOptionId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/carts/${optionData.productOptionId}`,
         {
           headers: {
             'Content-Type': 'application/json',
@@ -250,12 +250,12 @@ const BasketTd: FC<checkBoxtype> = ({
                 <TableContent>{el.description}</TableContent>
                 <div>
                   {`${useNumberComma(el.price)}원 + ${useNumberComma(
-                    OptionData.optionprice,
-                  )}원(Option ${OptionData.optionname})`}
+                    optionData.optionprice,
+                  )}원(Option ${optionData.optionname})`}
                 </div>
                 <TablePrice>
                   <div></div>=
-                  {useNumberComma(el.price + OptionData.optionprice)}
+                  {useNumberComma(el.price + optionData.optionprice)}
                   <span>원</span>
                 </TablePrice>
               </TableProduct>
@@ -268,12 +268,12 @@ const BasketTd: FC<checkBoxtype> = ({
         <CounterButton2
           optionId={optionId}
           setnumber={setnumber}
-          countNumber={OptionData.count}
+          countNumber={optionData.count}
           session={session}
         />
       </Tablebody3>
       <Tablebody4>
-        {useNumberComma((el.price + OptionData.optionprice) * number)}
+        {useNumberComma((el.price + optionData.optionprice) * number)}
         <span>원</span>
       </Tablebody4>
 

@@ -94,8 +94,7 @@
 .Label_Button {
   padding: 10px 72px;
   width: 100%;
-  font-size: 12px;
-  line-height: 12px;
+  font-size: 11px;
   background-color: var(--greenlogo);
   border-radius: 6px;
   justify-content: center;
