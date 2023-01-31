@@ -265,6 +265,7 @@ const BasketList: FC = () => {
               cartsData.productOptionId,
             );
             console.log(indexOption, '오케');
+
             if (indexOption === -1) {
               console.log('렌더링4');
               fetch(
@@ -276,7 +277,10 @@ const BasketList: FC = () => {
                   },
                   method: 'DELETE',
                 },
-              ).then((response) => console.log(response));
+              ).then((response) => {
+                queryClient.invalidateQueries('/carts');
+                console.log(response);
+              });
             } else {
               const quantityValue =
                 basketsCounter[indexOption].count - cartsData.quantity;
@@ -305,7 +309,6 @@ const BasketList: FC = () => {
               console.log('폴이치');
             }
           });
-          console.log('감자');
           navigate('/payment');
         });
     } else {
