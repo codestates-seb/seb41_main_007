@@ -30,7 +30,9 @@ const BasketFour: React.FC<Props> = ({ data }) => {
           <p className="absolute z-20 w-56 top-12 right-0 text-right">
             {data.quantity}개
             <strong className="w-36 inline-block">
-              {useNumberComma(data.productPrice + data.productOptionPrice)}
+              {useNumberComma(
+                (data.productPrice + data.productOptionPrice) * data.quantity,
+              )}
               <span>원</span>
             </strong>
           </p>
