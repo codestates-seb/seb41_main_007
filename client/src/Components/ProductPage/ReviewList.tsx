@@ -130,15 +130,17 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
                   />
                 ) : (
                   <div className={styles.Review_Container}>
-                    <img
-                      src={
-                        el.reviewImage
-                          ? el.reviewImage
-                          : 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/First_Tractor_Company_-_old_working_model_-_01.jpg/220px-First_Tractor_Company_-_old_working_model_-_01.jpg'
-                      }
-                      alt={'reviewImage'}
-                      className={styles.Review_Image_Content}
-                    />
+                    <div>
+                      <img
+                        src={
+                          el.reviewImage
+                            ? el.reviewImage
+                            : 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/First_Tractor_Company_-_old_working_model_-_01.jpg/220px-First_Tractor_Company_-_old_working_model_-_01.jpg'
+                        }
+                        alt={'reviewImage'}
+                        className={styles.Review_Image_Content}
+                      />
+                    </div>
                     <div className={styles.Review_Contents_Container}>
                       <div className={styles}>
                         <h3 className={styles.Review_Product_Title}>

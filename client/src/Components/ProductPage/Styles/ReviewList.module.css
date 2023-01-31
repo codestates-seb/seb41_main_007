@@ -54,9 +54,10 @@
 }
 
 .Review_Image_Content {
-  padding: 5px;
-  min-width: 200px;
+  width: 200px;
   height: 200px;
+  object-fit: contain;
+  padding: 5px;
 }
 
 .Review_Contents_Container {
