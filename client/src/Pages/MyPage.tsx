@@ -8,6 +8,7 @@ import TabPanel from 'Components/Mypage/TabPanel';
 import AccordionGroup from 'Components/Mypage/AccordionGroup';
 import MainImage from 'Components/PaymentPage/MainImage';
 import DeliveryResult from 'Components/Mypage/DeliveryResult';
+import MembershipWithdrawal from 'Components/Mypage/MembershipWithdrawal';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -18,7 +19,7 @@ const ShortContainer = styled.div`
 const MyPage: React.FC<{ session: any }> = ({ session }) => {
   const [value, setValue] = useState<number>(0);
   const navigate = useNavigate();
-  console.log(session);
+
   useEffect(() => {
     if (!session) {
       navigate('/login');
@@ -49,9 +50,11 @@ const MyPage: React.FC<{ session: any }> = ({ session }) => {
             <AccordionGroup />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <DeliveryResult></DeliveryResult>
+            <DeliveryResult />
           </TabPanel>
-          <TabPanel value={value} index={2}></TabPanel>
+          <TabPanel value={value} index={2}>
+            <MembershipWithdrawal session={session} />
+          </TabPanel>
         </Box>
       </ShortContainer>
     </div>
