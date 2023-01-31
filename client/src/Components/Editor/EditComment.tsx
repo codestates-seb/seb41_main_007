@@ -69,50 +69,15 @@ export const EditComment = ({
   };
 
   async function handlerSubmit() {
-    if (!!text(value)) {
-      const newArray = value.map((item: any) => {
-        const text = item.children[0].text;
-        const match = text.match(
-          /(http(s)?:\/\/)[\w-@:%._\+~#="'<>,?\/\[\]\{\}\(\)\~\`!$\^&\*]{2,}/gi,
-        );
-        if (match) {
-          const newText = text.replace(
-            /(http(s)?:\/\/)[\w-@:%._\+~#="'<>,?\/\[\]\{\}\(\)\~\`!$\^&\*]{2,}/gi,
-            '2E1#$D^&S*$A74&-+1@AKMDJ38^7ASD*&%^QD3s@2E1#$D^&S*$A74&-+1@',
-          );
-          const newTextArray = newText.split('2E1#$D^&S*$A74&-+1@');
-          const newChildren: any = [];
-          for (let i = 0; i < newTextArray.length; i++) {
-            let j = 0;
-            let children: { text: string; link?: boolean } = { text: '' };
-            if (newTextArray[i] === 'AKMDJ38^7ASD*&%^QD3s@') {
-              newTextArray[i] = match[j];
-              children.link = true;
-              j++;
-            }
-            children.text = newTextArray[i];
-            newChildren.push(children);
-          }
-          const newItem = { ...item, children: newChildren };
-          return newItem;
-        }
-        return item;
-      });
-      const length = newArray.map((n) => Node.string(n)).join('').length;
-      const reCommentData = {
-        commentId: commentId,
-        value: newArray,
-        length: length,
-      };
-      // const { data } = await mutateFunction({
-      //   variables: { data: reCommentData },
-      // });
-      //   if (data.uploadReComment) {
-      setData(value);
-      setCancel();
-      //   }
-    }
+    const reCommentData = {
+      commentId: commentId,
+      length: length,
+    };
+
+    setData(value);
+    setCancel();
   }
+
   return (
     <div className={styles.comment_container}>
       <div className={styles.comment_input_rest}>

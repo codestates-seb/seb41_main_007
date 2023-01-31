@@ -1,31 +1,27 @@
-import { FC, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useQueryClient } from 'react-query';
-
-import { Descendant } from 'Types/slate';
-
-import Rating from './Rating';
-import CommentEditor from '../Editor/Comment';
-import { useSession } from 'CustomHook/useSession';
+import { FC, useState } from 'react';
 import {
   useCustomFormMutation,
   useCustomMutation,
 } from 'CustomHook/useCustomMutaiton';
+import { EditComment } from 'Components/Editor/EditComment';
+import { Descendant } from 'Types/slate';
+import styles from './Styles/ReviewReEdit.module.css';
+import Rating from './Rating';
 
-import ReviewList from './ReviewList';
-
-import styles from './Styles/Review.module.css';
-import { tokenDecode } from 'Utils/commonFunction';
-import { TYPE_Token } from 'Types/common/token';
 interface Props {
-  productId: string;
+  item: any;
   session: string | null;
+  setEditmode: (param: boolean) => void;
 }
 
-const ReviewEdit: FC<Props> = ({ productId, session }) => {
-  const queryClient = useQueryClient();
-  const queryKey = ['reviews', productId];
+const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
+  const queryKey = ['reviews', item];
   const [userImage, setUserImage] = useState<any>();
+
+  const [reviewContentData, setReviewContentData] = useState<Descendant[]>(
+    JSON.parse(item.reviewContent),
+  );
+
   const [starClicked, setStarClicked] = useState<any>([
     false,
     false,
@@ -34,13 +30,6 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
     false,
   ]);
   const [reviewTitle, setReviewTitle] = useState<string>('');
-  const [value, setValue] = useState<Descendant[]>([
-    {
-      type: 'paragraph',
-      children: [{ text: '' }],
-    },
-  ]);
-  const childRef = useRef<{ reset: () => void }>(null);
   const { mutate } = useCustomMutation(
     '/reviews',
     queryKey,
@@ -49,16 +38,6 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
     true,
   );
   const { mutateAsync } = useCustomFormMutation('/file/upload', 'POST');
-
-  if (!session)
-    return (
-      <>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-          리뷰를 작성하실려면 로그인이 필요합니다.
-        </div>
-        <div className={styles.line}></div>
-      </>
-    );
 
   const handleStarClick = (index: number) => {
     let clickStates = [...starClicked];
@@ -75,7 +54,7 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
           setUserImage(imageUrls);
         })
         .catch((e) => {
-          console.error(e);
+          console.info(e);
           setUserImage('');
         });
     }
@@ -83,35 +62,33 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
 
   const handlerSubmit = () => {
     let score = starClicked.filter(Boolean).length;
-    const { sub } = tokenDecode(session) as TYPE_Token;
     const submitValue = {
       reviewId: Date.now(),
-      productId: parseInt(productId),
       reviewTitle: reviewTitle,
-      reviewContent: JSON.stringify(value),
+      reviewContent: JSON.stringify(reviewContentData),
       rating: score,
       reviewImage: userImage,
-      memberId: parseInt(sub),
-      reviewCreatedAt: Date.now(),
     };
-    const cache = queryClient.getQueryData(queryKey) as any;
-    if (cache) {
-      const cacheAdd = {
-        result: [submitValue],
-        nextPage: true,
-        lastPage: false,
-      };
-      queryClient.setQueryData(queryKey, {
-        pages: [cacheAdd, ...cache.pages],
-        pageParams: { ...cache.pageParams },
-      });
-    }
-    mutate(submitValue);
-    setStarClicked([false, false, false, false, false]);
-    setReviewTitle('');
-    setUserImage(null);
-    childRef.current?.reset();
+    // const cache = queryClient.getQueryData(queryKey) as any;
+    // if (cache) {
+    //   console.log(cache);
+    //   //중복제거
+    //   // const newArr = Array.from(new Set(cache.pages.map(JSON.stringify))).map(
+    //   //   JSON.parse as any,
+    //   // );
+    //   const cacheAdd = {
+    //     result: [submitValue],
+    //     nextPage: true,
+    //     lastPage: false,
+    //   };
+    //   queryClient.setQueryData(queryKey, {
+    //     pages: [cacheAdd, ...cache.pages],
+    //     pageParams: { ...cache.pageParams },
+    //   });
+    // }
+    // mutate(submitValue);
   };
+
   return (
     <>
       <div className={styles.comment_container}>
@@ -155,10 +132,11 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
             />
           </div>
           <div className={styles.Comment_Input}>
-            <CommentEditor
-              value={value}
-              setValue={(value: any) => setValue(value)}
-              ref={childRef}
+            <EditComment
+              value={JSON.parse(item.reviewContent)}
+              commentId={item.reviewId}
+              setCancel={() => setEditmode(false)}
+              setData={(value: Descendant[]) => setReviewContentData(value)}
             />
           </div>
           <button
@@ -174,18 +152,4 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
   );
 };
 
-const Review: FC = () => {
-  const { productid } = useParams();
-  const { loading, session } = useSession();
-  if (loading) return <></>;
-  if (!productid) return <></>;
-
-  return (
-    <div>
-      <ReviewEdit productId={productid} session={session} />
-      <ReviewList productId={productid} session={session} />
-    </div>
-  );
-};
-
-export default Review;
+export default ReviewReEdit;
