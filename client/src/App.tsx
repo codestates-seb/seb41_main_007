@@ -24,6 +24,7 @@ import Auth from 'Pages/Auth';
 import Post from 'Pages/Post/Post';
 import { useSession } from 'CustomHook/useSession';
 import Empty from 'Components/Common/Empty';
+import Test from 'Pages/Test';
 
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
@@ -89,6 +90,10 @@ const router = createBrowserRouter([
   {
     path: '/post',
     element: withLayout(Post),
+  },
+  {
+    path: '/test',
+    element: <Test />,
   },
   { path: '/auth', element: <Auth /> },
   { path: '/ordertest', element: <OrderTest /> },

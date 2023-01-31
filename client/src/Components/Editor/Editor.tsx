@@ -209,10 +209,15 @@ export default function RichText({ value, setValue }: IProps) {
 }
 
 export async function handlerCompresstion(editor: Editor, file: File) {
-  const { mutateAsync } = useCustomFormMutation('/file/upload', 'POST');
   if (file) {
-    mutateAsync(file)
-      .then(({ imageUrls }) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
+      method: 'POST',
+      body: formData,
+    })
+      .then(async (data: any) => {
+        const { imageUrls } = await data.json();
         const reader = new FileReader();
         reader.onload = function (e: any) {
           const url = e.target.result;

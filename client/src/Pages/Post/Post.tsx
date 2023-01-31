@@ -160,11 +160,11 @@ export default function Page() {
       formData.append('file', e.target.files[0]);
       fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
         method: 'POST',
-        cache: 'no-cache',
         body: formData,
       })
         .then((response) => response.json())
         .then(({ imageUrls }) => {
+          console.log(imageUrls);
           setImageFile(imageUrls);
         })
         .catch((e) => {

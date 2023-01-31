@@ -23,7 +23,7 @@ const products = [
     rating: '⭐⭐⭐⭐',
     date: '2023.01.11',
     imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
+      'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcQQMZmvzUTXRUOAdadrxh5OcdPqI1GlMc72t9YbZ6vlgfdWWwHadmiBhVWS4sZCvpVzpPzbF50nrl356ttH21td5hskyBaddj5iHo1qHBHIvPXhNngnF0oaLg&usqp=CAE',
     imageAlt:
       'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
   },
@@ -36,7 +36,7 @@ const products = [
     rating: '⭐⭐⭐⭐',
     date: '2023.01.11',
     imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
+      'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSJzByPJ1odxVDfmlk3btQVsvKx4F5Fb3Ds5t72ielFLN0xkhwwehKopk-eN0yIF40t6JFl-916rQQ_yN7dI_N7ZPyhQeLdUT6uZ0hwTHSnmBoYSpVvvSJa&usqp=CAE',
     imageAlt:
       'Olive drab green insulated bottle with flared screw lid and flat top.',
   },
@@ -49,7 +49,7 @@ const products = [
     rating: '⭐⭐⭐⭐',
     date: '2023.01.11',
     imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
+      'https://encrypted-tbn1.gstatic.com/shopping?q=tbn:ANd9GcS6wCu1kpAH2HYsQqqtiOktyS1sWXicimQAA-HgX3NghZ7rXsnd3ovp5Kbyc31FvmS9YayXWe8TdfiR30mvTg14C5NRice7Uq9ol9vqteItjTSAo5Znd51J6A&usqp=CAE',
     imageAlt:
       'Person using a pen to cross a task off a productivity paper card.',
   },
@@ -62,7 +62,7 @@ const products = [
     rating: '⭐⭐⭐⭐',
     date: '2023.01.11',
     imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
+      'https://cdn.pixabay.com/photo/2018/03/21/18/02/tractor-3247632__340.jpg',
     imageAlt:
       'Hand holding black machined steel mechanical pencil with brass tip and top.',
   },
@@ -75,7 +75,7 @@ const products = [
     rating: '⭐⭐⭐⭐',
     date: '2023.01.11',
     imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
+      'https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSKR5TjHBQvaKG4BkBp-atAB7tLJbsZ3KB349IC2P_lVZ3eQh4iIRhXVQylVBC2gz1CAJWQhBznTINcj2fLghgzA3E0kc_r97P3XG3ueOBsvrvYE_nz7Ty-&usqp=CAE',
     imageAlt:
       'Hand holding black machined steel mechanical pencil with brass tip and top.',
   },
