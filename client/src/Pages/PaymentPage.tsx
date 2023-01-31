@@ -46,27 +46,12 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
     '/carts',
     session,
   );
-  // useEffect(() => {
-  //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-  //     method: 'GET',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       Authorization: `Bearer ${session}`,
-  //     },
-  //   })
-  //     .then((res: Response) => {
-  //       return res.json();
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //       setdata(res);
-  //       setisLoading(false); //무한렌더링 막기용
-  //     })
-  //     .catch((e) => {
-  //       console.log(e);
-  //       setisLoading(false);
-  //     });
-  // }, []);
+
+  useEffect(() => {
+    if (!session) {
+      navigate('/login');
+    }
+  }, []);
   useScrollTop();
   if (isLoading) return <Empty></Empty>;
   if (error) return <div></div>;

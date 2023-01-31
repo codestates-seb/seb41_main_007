@@ -37,9 +37,6 @@ const Deliveryaddress: React.FC<Props> = ({ session, setcontrol }) => {
     session,
   );
   const [open, setOpen] = useState(true);
-  const handleOpen = () => {
-    setOpen(!open);
-  };
 
   const handleClose = () => {
     setOpen(!open);

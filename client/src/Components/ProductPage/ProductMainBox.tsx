@@ -286,7 +286,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
             background={'var( --white-02)'}
             onClick={() => onClickBasket(data)}
           >
-            장바구니담기
+            장바구니 담기
           </BuyButton>
           <ToastContainer
             position="top-right"
@@ -307,7 +307,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
             color="var(--bg-white-05)"
             onClick={() => navigate('/basket')}
           >
-            결제하기
+            장바구니 확인하기
           </BuyButton>
         </ProductBox>
       </ProductMain>

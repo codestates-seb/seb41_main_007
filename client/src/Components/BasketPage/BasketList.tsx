@@ -259,15 +259,12 @@ const BasketList: FC = () => {
           return res.json();
         })
         .then((Carts: TYPE_CartData[]) => {
-          console.log('렌더링3');
           Carts.forEach((cartsData) => {
             const indexOption = basketOptionId.indexOf(
               cartsData.productOptionId,
             );
-            console.log(indexOption, '오케');
 
             if (indexOption === -1) {
-              console.log('렌더링4');
               fetch(
                 `${process.env.REACT_APP_BACKEND_URL}/carts/${cartsData.productOptionId}`,
                 {
@@ -279,14 +276,12 @@ const BasketList: FC = () => {
                 },
               ).then((response) => {
                 queryClient.invalidateQueries('/carts');
-                console.log(response);
               });
             } else {
               const quantityValue =
                 basketsCounter[indexOption].count - cartsData.quantity;
-              console.log('렌더링5');
+
               if (quantityValue !== 0) {
-                console.log('렌더링6');
                 console.log(quantityValue);
                 const suggest = {
                   productOptionId: cartsData.productOptionId,
@@ -306,7 +301,6 @@ const BasketList: FC = () => {
                   navigate('/payment');
                 });
               }
-              console.log('폴이치');
             }
           });
           navigate('/payment');
@@ -400,3 +394,4 @@ export default BasketList;
 //넘어가는 화면이 빨라서 데이터 못받아와서 느려짐
 // 로딩화면 추가할예정
 //foreach 안돌아가는 상황이있었음
+//API밀릴경우 버그 잡음
