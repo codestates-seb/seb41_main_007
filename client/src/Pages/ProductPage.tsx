@@ -86,9 +86,6 @@ const ProductPage: React.FC = () => {
               <TabButton isTrue={value === 1} onClick={() => setValue(1)}>
                 리뷰 보기
               </TabButton>
-              <TabButton isTrue={value === 2} onClick={() => setValue(2)}>
-                1십십십십싯
-              </TabButton>
             </div>
           </div>
           <TabPanel value={value} index={0}>
@@ -96,9 +93,6 @@ const ProductPage: React.FC = () => {
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Review />
-          </TabPanel>
-          <TabPanel value={value} index={2}>
-            <></>
           </TabPanel>
         </div>
       </ProductContainer>

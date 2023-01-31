@@ -3,37 +3,41 @@ import {
   useCustomFormMutation,
   useCustomMutation,
 } from 'CustomHook/useCustomMutaiton';
+
+import { useQueryClient } from 'react-query';
 import { EditComment } from 'Components/Editor/EditComment';
 import { Descendant } from 'Types/slate';
 import styles from './Styles/ReviewReEdit.module.css';
 import Rating from './Rating';
+import { TYPE_Review } from 'Types/common/product';
 
 interface Props {
-  item: any;
+  item: TYPE_Review;
   session: string | null;
   setEditmode: (param: boolean) => void;
 }
 
 const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
-  const queryKey = ['reviews', item];
-  const [userImage, setUserImage] = useState<any>();
-
+  const queryKey = ['reviews', `${item.productId}`];
+  const queryClient = useQueryClient();
+  const starArr = [];
+  for (let i = 0; i < 5; i++) {
+    if (i < item.rating) {
+      starArr.push(true);
+    } else {
+      starArr.push(false);
+    }
+  }
   const [reviewContentData, setReviewContentData] = useState<Descendant[]>(
     JSON.parse(item.reviewContent),
   );
-
-  const [starClicked, setStarClicked] = useState<any>([
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-  const [reviewTitle, setReviewTitle] = useState<string>('');
+  const [userImage, setUserImage] = useState<any>(item.reviewImage);
+  const [starClicked, setStarClicked] = useState<any>(starArr);
+  const [reviewTitle, setReviewTitle] = useState<string>(item.reviewTitle);
   const { mutate } = useCustomMutation(
-    '/reviews',
-    queryKey,
-    'POST',
+    `/reviews/${item.reviewId}`,
+    ['ReviewsPatch', item.productId],
+    'PATCH',
     session,
     true,
   );
@@ -63,37 +67,45 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
   const handlerSubmit = () => {
     let score = starClicked.filter(Boolean).length;
     const submitValue = {
-      reviewId: Date.now(),
-      reviewTitle: reviewTitle,
+      reviewId: item.reviewId,
+      productId: item.productId,
+      memberId: item.memberId,
       reviewContent: JSON.stringify(reviewContentData),
+      reviewTitle: reviewTitle,
       rating: score,
       reviewImage: userImage,
     };
-    // const cache = queryClient.getQueryData(queryKey) as any;
-    // if (cache) {
-    //   console.log(cache);
-    //   //중복제거
-    //   // const newArr = Array.from(new Set(cache.pages.map(JSON.stringify))).map(
-    //   //   JSON.parse as any,
-    //   // );
-    //   const cacheAdd = {
-    //     result: [submitValue],
-    //     nextPage: true,
-    //     lastPage: false,
-    //   };
-    //   queryClient.setQueryData(queryKey, {
-    //     pages: [cacheAdd, ...cache.pages],
-    //     pageParams: { ...cache.pageParams },
-    //   });
-    // }
-    // mutate(submitValue);
+    const cache = queryClient.getQueryData(queryKey) as any;
+    if (cache) {
+      for (let i = 0; i < cache.pages.length; i++) {
+        for (let j = 0; j < cache.pages[i].result.length; j++) {
+          if (cache.pages[i].result[j]['reviewId'] === item.reviewId) {
+            cache.pages[i].result[j] = {
+              productId: cache.pages[i].result[j]['productId'],
+              reviewId: cache.pages[i].result[j]['reviewId'],
+              memberId: cache.pages[i].result[j]['memberId'],
+              reviewLastModifiedAt: `${new Date()}`,
+              reviewCreatedAt: cache.pages[i].result[j]['reviewCreatedAt'],
+              reviewContent: JSON.stringify(reviewContentData),
+              reviewTitle: reviewTitle,
+              rating: score,
+              reviewImage: userImage,
+            };
+          }
+        }
+      }
+      mutate(submitValue);
+      setEditmode(false);
+    } else {
+      console.info('리뷰 변경실패');
+    }
   };
 
   return (
     <>
-      <div className={styles.comment_container}>
+      <div className={styles.MainReview_Container}>
         <div className={styles.Image_Container}>
-          <div className={styles.content}>
+          <div className={styles.Content}>
             {userImage ? (
               <img
                 width={200}
@@ -118,10 +130,10 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
           </div>
         </div>
         <div className={styles.Review_Container}>
-          <div className={styles.content}>
+          <div className={styles.Content}>
             <Rating handleStarClick={handleStarClick} clicked={starClicked} />
           </div>
-          <div className={styles.content}>
+          <div className={styles.Content}>
             <input
               type="text"
               placeholder="리뷰제목을 입력해주세요"
@@ -131,20 +143,14 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
               onChange={(e) => setReviewTitle(e.target.value)}
             />
           </div>
-          <div className={styles.Comment_Input}>
+          <div className={styles.Content}>
             <EditComment
-              value={JSON.parse(item.reviewContent)}
-              commentId={item.reviewId}
+              value={reviewContentData}
+              setReviewContentData={setReviewContentData}
               setCancel={() => setEditmode(false)}
-              setData={(value: Descendant[]) => setReviewContentData(value)}
+              handlerSubmit={handlerSubmit}
             />
           </div>
-          <button
-            className={styles.Comment_Input_Button}
-            onClick={handlerSubmit}
-          >
-            등록
-          </button>
         </div>
       </div>
       <div className={styles.line}></div>

@@ -1,14 +1,10 @@
 import { FC, useRef, useState } from 'react';
 import { useInfiniteQuery } from 'react-query';
 import { customTime } from 'Utils/commonFunction';
-import { TYPE_COMMENT } from 'Types/common/product';
-import { Descendant } from 'Types/slate';
+import { TYPE_Review } from 'Types/common/product';
 
 import Loading from 'Components/Loading/Loading';
-import {
-  EditComment,
-  SimpleReadOnlyComment,
-} from 'Components/Editor/EditComment';
+import { SimpleReadOnlyComment } from 'Components/Editor/EditComment';
 import ReadOnlyComment from '../Editor/ReadOnlyComment';
 import { RatingView } from './Rating';
 
@@ -22,24 +18,21 @@ interface Props {
 }
 
 interface CommentItem {
-  session: string | null;
-  item: TYPE_COMMENT;
-  setEditmode: (param: boolean) => void;
+  item: TYPE_Review;
 }
 
-const CommentItem: FC<CommentItem> = ({ item, session, setEditmode }) => {
-  const [data, setData] = useState<Descendant[]>(
-    JSON.parse(item.reviewContent),
-  );
+const CommentItem: FC<CommentItem> = ({ item }) => {
+  const review = JSON.parse(item.reviewContent);
+
   const node = useRef<HTMLDivElement>(null);
 
   return (
     <div className={styles.Comment_List_Wrapper}>
       <div className={styles.Comment} ref={node}>
         {JSON.parse(item.reviewContent).length > 4 ? (
-          <SimpleReadOnlyComment data={data} />
+          <SimpleReadOnlyComment data={review} />
         ) : (
-          <ReadOnlyComment data={data} />
+          <ReadOnlyComment data={review} />
         )}
       </div>
     </div>
@@ -47,6 +40,7 @@ const CommentItem: FC<CommentItem> = ({ item, session, setEditmode }) => {
 };
 
 const ReviewList: FC<Props> = ({ productId, session }) => {
+  const queryKey = ['reviews', productId];
   const [pages, setPages] = useState(1);
   const [hasNextPage, setHasNextPage] = useState(true);
   const [editmode, setEditmode] = useState<boolean>(false);
@@ -80,7 +74,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
   };
 
   const { isFetching, data, fetchNextPage, isLoading, error, refetch } =
-    useInfiniteQuery(['reviews', productId], getReviewsWithPageInfo, {
+    useInfiniteQuery(queryKey, getReviewsWithPageInfo, {
       getNextPageParam: (lastPage) => {
         return lastPage.nextPage;
       },
@@ -124,7 +118,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
           if (page.isLast) {
             return <div key={Date.now()}></div>;
           }
-          return page.result.map((el: TYPE_COMMENT) => {
+          return page.result.map((el: TYPE_Review) => {
             return (
               <div key={el.reviewId} style={{ width: '100%' }}>
                 {editmode && selectedId === el.reviewId ? (
@@ -136,26 +130,24 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
                   />
                 ) : (
                   <div className={styles.Review_Container}>
-                    <img
-                      src={
-                        el.reviewImage
-                          ? el.reviewImage
-                          : 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/First_Tractor_Company_-_old_working_model_-_01.jpg/220px-First_Tractor_Company_-_old_working_model_-_01.jpg'
-                      }
-                      alt={'reviewImage'}
-                      className={styles.Review_Image_Content}
-                    />
+                    <div>
+                      <img
+                        src={
+                          el.reviewImage
+                            ? el.reviewImage
+                            : 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/First_Tractor_Company_-_old_working_model_-_01.jpg/220px-First_Tractor_Company_-_old_working_model_-_01.jpg'
+                        }
+                        alt={'reviewImage'}
+                        className={styles.Review_Image_Content}
+                      />
+                    </div>
                     <div className={styles.Review_Contents_Container}>
                       <div className={styles}>
                         <h3 className={styles.Review_Product_Title}>
                           {el.reviewTitle}
                         </h3>
                         <div className={styles.Review_Product_Content}>
-                          <CommentItem
-                            item={el}
-                            session={session}
-                            setEditmode={setEditmode}
-                          />
+                          <CommentItem item={el} />
                         </div>
                       </div>
                       <div className={styles.Review_Second_Row_Container}>
@@ -176,6 +168,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
                       session={session}
                       reviewId={el.reviewId}
                       memberId={el.memberId}
+                      productId={el.productId}
                     />
                   </div>
                 )}
