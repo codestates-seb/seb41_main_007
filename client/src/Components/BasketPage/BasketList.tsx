@@ -264,6 +264,7 @@ const BasketList: FC = () => {
             const indexOption = basketOptionId.indexOf(
               cartsData.productOptionId,
             );
+            console.log(indexOption);
             const quantityValue =
               basketsCounter[indexOption].count - cartsData.quantity;
             console.log('렌더링3');
@@ -290,9 +291,11 @@ const BasketList: FC = () => {
             navigate('/payment');
             console.log('오호');
           });
-
+          console.log('확인');
           navigate('/payment');
         });
+      console.log('확인2');
+      navigate('/payment');
     } else {
       navigate('/login');
     }
