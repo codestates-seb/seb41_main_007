@@ -55,6 +55,12 @@ const TopColRight: FC = () => {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   useEffect(() => {
+    const clearOk: string | null = localStorage.getItem('clear');
+    if (!clearOk) {
+      localStorage.clear();
+      localStorage.setItem('clear', 'true');
+    }
+
     const jsondataCounter: string | null =
       localStorage.getItem('basketsCounter');
     const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
