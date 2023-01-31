@@ -18,7 +18,7 @@ const AccordionGroup: React.FC = () => {
         Component={SaveAddress}
       />
       <AccordionTitle
-        Open={true}
+        Open={false}
         ATvalue="배송지관리"
         Component={Deliveryaddress}
       />
