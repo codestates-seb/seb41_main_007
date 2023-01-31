@@ -15,7 +15,7 @@ export interface TYPE_PageInfo {
   totalPages: number;
 }
 
-export interface TYPE_COMMENT {
+export interface TYPE_Review {
   productId: number;
   reviewId: number;
   memberId: number;

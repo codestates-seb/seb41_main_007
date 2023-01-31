@@ -1,5 +1,5 @@
 import { Descendant } from 'Types/slate';
-import { useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 
 import styles from './Styles/EditComment.module.css';
 import classNames from 'classnames/bind';
@@ -46,17 +46,17 @@ export function SimpleReadOnlyComment({ data }: { data: any }) {
 }
 
 export const EditComment = ({
-  commentId,
   setCancel,
-  value: existingValue,
-  setData,
+  value,
+  handlerSubmit,
+  setReviewContentData,
 }: {
   value: Descendant[];
   setCancel: () => void;
-  setData: (value: Descendant[]) => void;
-  commentId: number;
+  handlerSubmit: () => void;
+  setReviewContentData: Dispatch<SetStateAction<any[]>>;
 }) => {
-  const [value, setValue] = useState<Descendant[]>(existingValue);
+  // const [value, setValue] = useState<Descendant[]>(existingValue);
   const childRef = useRef<{ reset: () => void }>(null);
   const text = (value: any) => {
     return value
@@ -68,23 +68,13 @@ export const EditComment = ({
       );
   };
 
-  async function handlerSubmit() {
-    const reCommentData = {
-      commentId: commentId,
-      length: length,
-    };
-
-    setData(value);
-    setCancel();
-  }
-
   return (
     <div className={styles.comment_container}>
       <div className={styles.comment_input_rest}>
         <div className={styles.comment_input}>
           <CommentEditor
             value={value}
-            setValue={(value) => setValue(value)}
+            setValue={(value) => setReviewContentData(value)}
             ref={childRef}
           />
         </div>
@@ -102,7 +92,6 @@ export const EditComment = ({
             onClick={handlerSubmit}
           >
             수정
-            {/* {loading ? <Loading width={18} /> : <span>修正</span>} */}
           </button>
         </div>
       </div>

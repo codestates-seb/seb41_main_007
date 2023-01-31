@@ -128,11 +128,11 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
             ) : (
               <div className={styles.Empty_Image}> </div>
             )}
-            <label className={styles.Label_Button} htmlFor="imageFile">
+            <label className={styles.Label_Button} htmlFor="imageFilePatch">
               이미지 선택
             </label>
             <input
-              id="imageFile"
+              id="imageFilePatch"
               type="file"
               accept="image/svg, image/jpeg, image/png"
               onChange={handleChangeFile}
