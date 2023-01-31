@@ -123,12 +123,12 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
 
   return (
     <div className={styles.ReviewList_Container}>
-      <span>리뷰리스트</span>
+      <span className={styles.Review_Product_Title}>리뷰리스트</span>
       <span className={styles.line} />
       {data.pages.length > 0 &&
         data.pages.map((page: any) => {
           if (page.isLast) {
-            return <div key={Date.now()}>리뷰를 다 불러왔습니다</div>;
+            return <div key={Date.now()}></div>;
           }
           return page.result.map((el: TYPE_COMMENT) => {
             return (
@@ -152,7 +152,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
                     </div>
                   </div>
                   <div className={styles.Review_Second_Row_Container}>
-                    <div className={styles.Review_User}>{el.memberId}</div>
+                    <div className={styles.Review_User}>{el.memberId} 님</div>
                     <div className={styles.Review_Rating}>
                       평점: <RatingView num={el.rating} />
                     </div>
@@ -166,20 +166,18 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
           });
         })}
       {hasNextPage && (
-        <div className={styles.FetchMore_Container}>
-          <button
-            className={styles.FetchMore_Button}
-            onClick={() => fetchNextPage()}
-          >
-            {isFetching ? (
-              <div className={styles.Loading_Container}>
-                <Loading width={20} height={20} />
-              </div>
-            ) : (
-              '리뷰 더보기'
-            )}
-          </button>
-        </div>
+        <button
+          className={styles.FetchMore_Button}
+          onClick={() => fetchNextPage()}
+        >
+          {isFetching ? (
+            <div className={styles.Loading_Container}>
+              <Loading width={20} height={20} />
+            </div>
+          ) : (
+            '리뷰 더보기'
+          )}
+        </button>
       )}
     </div>
   );
