@@ -40,7 +40,7 @@ const Main = styled.div`
 `;
 const Client = styled.div`
   min-width: 310px;
-  border-right: 1px solid #e1e1e1;
+  border-right: 1px solid #040404;
   padding-right: 47px;
 
   .client__title {
@@ -64,7 +64,6 @@ const Banking = styled.div`
   padding-left: 40px;
   padding-right: 40px;
   min-width: 460px;
-
   margin: 0 auto;
   .banking__title {
     margin-top: 30px;
@@ -72,6 +71,7 @@ const Banking = styled.div`
   }
 
   @media (max-width: 1260px) {
+    margin: 0 auto;
     border: 0;
     padding-right: 0px;
   }
