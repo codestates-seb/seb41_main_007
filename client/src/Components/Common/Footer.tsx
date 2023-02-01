@@ -56,7 +56,6 @@ const Client = styled.div`
     font-size: 13px;
   }
   @media (max-width: 870px) {
-    display: none;
   }
 `;
 const Banking = styled.div`

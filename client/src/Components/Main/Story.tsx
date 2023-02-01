@@ -4,8 +4,11 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import styles from './Styles/Story.module.css';
+import ComponentModal from 'Components/Common/ComponentModal';
+import useBooleanInput from 'CustomHook/useBooleaninput';
 
 const Story: FC = () => {
+  const [isControl, onisControl, setisControl] = useBooleanInput(true);
   const navigate = useNavigate();
   return (
     <div className="flex">
@@ -21,14 +24,23 @@ const Story: FC = () => {
             </div>
           </div>
         </div>
+
         <button
           className={styles.Story_Button}
           onClick={() => {
-            navigate(
-              '/products/all?sort=likeCount&order=ascending&page=1&size=20',
-            );
+            onisControl();
           }}
         >
+          {isControl ? (
+            <></>
+          ) : (
+            <ComponentModal isButton={true} setValue={setisControl}>
+              <div>
+                방문해주셔서 감사합니다! <br></br>전 상품 10% 할인을
+                진행중입니다💸<br></br>
+              </div>
+            </ComponentModal>
+          )}
           <FontAwesomeIcon icon={faArrowRight} />
         </button>
       </div>

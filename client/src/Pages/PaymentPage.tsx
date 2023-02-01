@@ -117,11 +117,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
                 )}
               </button>
             </Title>
-            <Title>
-              {address && (
-                <Deliveryaddress setcontrol={setAddress} session={session} />
-              )}
-            </Title>
+            <Title>{address && <Deliveryaddress session={session} />}</Title>
             <Title>
               <div className=" font-semibold py-4 text-xl">결제수단</div>
               <button onClick={() => setPayment(!payment)}>
