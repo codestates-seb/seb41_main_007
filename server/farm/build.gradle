@@ -78,6 +78,9 @@ dependencies {
 
     // 크롤링
     implementation 'org.jsoup:jsoup:1.15.3'
+
+    // 슬랙 로그 웹훅
+    implementation 'com.github.maricn:logback-slack-appender:1.4.0'
 }
 
 tasks.named('test') {

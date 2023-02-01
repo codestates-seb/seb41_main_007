@@ -42,10 +42,8 @@ public class ReviewAnswerController {
 
     @PostMapping("/reviews/answers")
     public ResponseEntity insertReviewAnswer(@RequestBody @Valid ReviewAnswerPostDto reviewAnswerPostDto) {
-        log.info("reviewId in reviewId : "+reviewAnswerPostDto.getReviewId());
         Review review = reviewService.getProductReview(reviewAnswerPostDto.getReviewId());
         ReviewAnswer reviewAnswer = reviewAnswerMapper.reviewAnswerPostDtoToReviewAnswer(reviewAnswerPostDto, review);
-        log.info("reviewAnswer에서 review title :"+reviewAnswer.getReview().getReviewTitle());
         ReviewAnswer insertedReviewAnswer = reviewAnswerService.insertReviewAnswer(reviewAnswer);
         ReviewAnswerResponseDto reviewAnswerResponseDto = reviewAnswerMapper.reviewAnswerToReviewAnswerResponseDto(insertedReviewAnswer);
         return new ResponseEntity<>(reviewAnswerResponseDto, HttpStatus.CREATED);

@@ -25,13 +25,13 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
-    @CacheEvict(value = {"findCategories", "getMain"}, allEntries = true)
+    @CacheEvict(value = "findCategories", allEntries = true)
     public Category createCategory(CategoryPostDto categoryPostDto) {
         verifyExistsCategory(categoryPostDto.getName());
         return categoryRepository.save(new Category(categoryPostDto.getName()));
     }
 
-    @CacheEvict(value = {"findCategories", "getMain"}, allEntries = true)
+    @CacheEvict(value = "findCategories", allEntries = true)
     public Category updateCategory(CategoryPatchDto categoryPatchDto) {
         Category findCategory = findVerifiedCategory(categoryPatchDto.getCategoryId());
 
@@ -49,7 +49,7 @@ public class CategoryService {
         );
     }
 
-    @CacheEvict(value = {"findCategories", "getMain"}, allEntries = true)
+    @CacheEvict(value = "findCategories", allEntries = true)
     public void deleteCategory(long categoryId) {
         Category category = findVerifiedCategory(categoryId);
 

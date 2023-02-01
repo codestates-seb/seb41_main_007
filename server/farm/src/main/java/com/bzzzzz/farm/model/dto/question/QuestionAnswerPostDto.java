@@ -13,7 +13,6 @@ import javax.validation.constraints.Positive;
 @Validated
 public class QuestionAnswerPostDto {
     @Positive
-    private Long memberId;
     private Long questionId;
     private String questionAnswerTitle;
     private String questionAnswerContent;

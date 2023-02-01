@@ -12,8 +12,6 @@ import javax.validation.constraints.Positive;
 @NoArgsConstructor
 @Validated
 public class QuestionPostDto {
-    @Positive
-    private Long memberId;
     private String questionTitle;
     private String questionContent;
 }

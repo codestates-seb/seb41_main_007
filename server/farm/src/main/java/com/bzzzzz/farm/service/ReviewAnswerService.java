@@ -31,7 +31,6 @@ public class ReviewAnswerService {
 
     public ReviewAnswer insertReviewAnswer(ReviewAnswer reviewAnswer) {
         ReviewAnswer saveReviewAnswer = reviewAnswerRepository.save(reviewAnswer);
-        log.info("saveReviewAnswer in service: "+saveReviewAnswer.getReview().getReviewTitle()+" "+saveReviewAnswer.getReview().getReviewId());
         Review review = reviewRepository.findReviewByReviewId(saveReviewAnswer.getReview().getReviewId()).orElseThrow();
         review.setReviewAnswer(saveReviewAnswer);
         reviewRepository.save(review);

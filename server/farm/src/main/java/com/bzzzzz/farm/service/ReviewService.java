@@ -9,6 +9,7 @@ import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.model.entity.Review;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
     }
 
-    @CacheEvict(value = "getMain", allEntries = true)
+    @CacheEvict(value = "findReviewsOrderByReviewId", allEntries = true)
     public Review insertReview(Review review, Long userId) {
         Member member = new Member();
         member.setMemberId(userId);
@@ -52,10 +53,9 @@ public class ReviewService {
         return reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 없습니다."));
     }
 
-    @CacheEvict(value = "getMain", allEntries = true)
+    @CacheEvict(value = "findReviewsOrderByReviewId", allEntries = true)
     public Review updateReview(Long reviewId, Review review, Long userId) {
 
-        log.info("updateReview : "+review.getReviewId());
         //reviewId로 저장된 리뷰 불러오기
         Review findReview = findVerifiedReview(reviewId);
         Member member = new Member();
@@ -70,7 +70,7 @@ public class ReviewService {
     }
 
     //특정 리뷰 삭제
-    @CacheEvict(value = "getMain", allEntries = true)
+    @CacheEvict(value = "findReviewsOrderByReviewId", allEntries = true)
     public void deleteReview(Long reviewId){
         Review findReview = findVerifiedReview(reviewId);
         reviewRepository.delete(findReview);
@@ -78,7 +78,6 @@ public class ReviewService {
 
     public Review findVerifiedReview(Long reviewId){
         Optional<Review> optionalReview = reviewRepository.findReviewByReviewId(reviewId);
-        log.info("verifiedReview :"+ optionalReview.get().getReviewTitle());
         Review review = optionalReview
                 .orElseThrow(()-> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
         return review;
@@ -86,9 +85,10 @@ public class ReviewService {
 
 
     private Pageable createPageable(int page, int size) {
-        return PageRequest.of(page, size);
+        return PageRequest.of(page, size, Sort.by("reviewId").descending());
     }
 
+    @Cacheable(value = "findReviewsOrderByReviewId")
     @Transactional(readOnly = true)
     public List<Review> findReviewsOrderByReviewId() { // 메인페이지에 하단부에 사용
         return reviewRepository.findAll(PageRequest.of(0, 4, Sort.by("reviewId").descending())).getContent();

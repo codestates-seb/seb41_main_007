@@ -9,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,13 +53,9 @@ public class QuestionService {
     }
 
     //질문 글 수정
-    public Question updateQuestion(Question question, Member member){
+    public Question updateQuestion(Question question){
         Question findQuestion = findVerifiedQuestion(question.getQuestionId());
 
-        //글 작성 유저와 현재 로그인된 유저가 같은지 검증
-        if(!findQuestion.getMember().getEmail().equals(member.getEmail())){
-            throw new BusinessLogicException(ExceptionCode.INVALID_USER);
-        }
         findQuestion.setQuestionTitle(question.getQuestionTitle());
         findQuestion.setQuestionContent(question.getQuestionContent());
 
@@ -66,7 +63,7 @@ public class QuestionService {
     }
 
     private Pageable createPageable(int page, int size) {
-        return PageRequest.of(page, size);
+        return PageRequest.of(page, size, Sort.by("questionId").descending());
     }
 
     private Question findVerifiedQuestion(Long questionId){
