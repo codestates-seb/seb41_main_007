@@ -79,13 +79,7 @@ const ProductSlider: FC<Props> = ({
         },
       },
       {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 480,
+        breakpoint: 870,
         settings: {
           slidesToShow: 1,
         },
