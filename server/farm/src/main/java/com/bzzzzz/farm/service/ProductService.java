@@ -11,6 +11,7 @@ import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -27,7 +28,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductMapper productMapper;
 
-    @CacheEvict(value = "getMain", allEntries = true)
+    @CacheEvict(value = "findProducts", allEntries = true)
     public Product createProduct(ProductPostDto productPostDto) {
         return productRepository.save(
                 productMapper.productPostDtoToProduct(productPostDto)
@@ -41,6 +42,7 @@ public class ProductService {
     }
 
     @Transactional(readOnly = true)
+    @Cacheable(cacheNames = "findProducts", key = "{#page, #size, #sort, #order, #categoryId}", condition = "#keyword==null")
     public Page<ProductSimpleResponseDto> findProducts(int page, int size, String sort, String order, Long categoryId, String keyword) {
         // 허용 값 이외의 값은 모두 디폴트 값으로 만들어 Pageable 객체를 생성
         Pageable pageable = order.equals("ascending")
@@ -50,7 +52,7 @@ public class ProductService {
         return productRepository.searchAll(categoryId, keyword, pageable);
     }
 
-    @CacheEvict(value = "getMain", allEntries = true)
+    @CacheEvict(value = "findProducts", allEntries = true)
     public Product updateProduct(ProductPatchDto productPatchDto) {
 
         Product findProduct = findVerifiedProduct(productPatchDto.getProductId());
@@ -69,7 +71,7 @@ public class ProductService {
         return findProduct;
     }
 
-    @CacheEvict(value = "getMain", allEntries = true)
+    @CacheEvict(value = "findProducts", allEntries = true)
     public void deleteProduct(long productId) {
         productRepository.delete(findVerifiedProduct(productId));
     }
