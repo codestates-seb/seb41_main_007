@@ -212,7 +212,10 @@ const BasketList: FC = () => {
               },
               method: 'DELETE',
             },
-          ).then((response) => console.log(response));
+          ).then((response) => {
+            queryClient.invalidateQueries('/carts');
+            console.log(response);
+          });
         }
         return false;
       }
@@ -234,6 +237,7 @@ const BasketList: FC = () => {
       const basketOptionId = basketsCounter.map((basket: TYPE_LocalOption) => {
         return basket.productOptionId;
       });
+
       fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
         method: 'GET',
         headers: {
@@ -245,6 +249,8 @@ const BasketList: FC = () => {
           return res.json();
         })
         .then((Carts: TYPE_CartData[]) => {
+          queryClient.invalidateQueries('/carts');
+
           Carts.forEach((cartsData) => {
             const indexOption = basketOptionId.indexOf(
               cartsData.productOptionId,
@@ -268,7 +274,6 @@ const BasketList: FC = () => {
                 basketsCounter[indexOption].count - cartsData.quantity;
 
               if (quantityValue !== 0) {
-                console.log(quantityValue);
                 const suggest = {
                   productOptionId: cartsData.productOptionId,
                   quantity: quantityValue,
@@ -284,11 +289,11 @@ const BasketList: FC = () => {
                 }).then((response) => {
                   queryClient.invalidateQueries('/carts');
                   console.log(response);
-                  navigate('/payment');
                 });
               }
             }
           });
+
           navigate('/payment');
         });
     } else {

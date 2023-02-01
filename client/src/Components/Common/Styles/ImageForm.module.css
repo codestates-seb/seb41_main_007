@@ -1,0 +1,48 @@
+.Image_Container {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  height: 200px;
+  border-radius: 3px;
+}
+
+.Empty_Image {
+  width: 200px;
+  height: 200px;
+  background-color: var(--gray-12);
+  border-radius: 3px;
+}
+
+.ReviewImage {
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+}
+
+.Input_User_Image {
+  width: 200px;
+  height: 200px;
+  object-fit: scale-down;
+}
+
+.Content {
+  margin-bottom: 5px;
+}
+
+.Label_Button {
+  padding: 10px 72px;
+  width: 100%;
+  font-size: 11px;
+  background-color: var(--greenlogo);
+  border-radius: 6px;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+}
+
+.Label_Button:hover {
+  background-color: var(--green-70);
+}

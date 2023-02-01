@@ -38,20 +38,38 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const [payment, setPayment] = useState<boolean>(true); //결제수단
   const isModal = useAppSelector(madalState);
   // const [data, setdata] = useState<TYPE_CartData[]>([]);
-  const [isloading, setisLoading] = useState<boolean>(true);
+  // const [isloading, setisLoading] = useState<boolean>(true);
   // const { loading, session } = useSession();
   const navigate = useNavigate();
-  const { data, isLoading, error } = useCustomQuery(
+
+  const { data, isLoading, error, refetch } = useCustomQuery(
     '/carts',
     '/carts',
     session,
   );
 
   useEffect(() => {
+    refetch();
+    // fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //     Authorization: `Bearer ${session}`,
+    //   },
+    // })
+    //   .then((res: Response) => {
+    //     return res.json();
+    //   })
+    //   .then((res: TYPE_CartData[]) => {
+    //     setdata(res);
+    //     setisLoading(false);
+    //   });
+
     if (!session) {
       navigate('/login');
     }
   }, []);
+
   useScrollTop();
   if (isLoading) return <Empty></Empty>;
   if (error) return <div></div>;
