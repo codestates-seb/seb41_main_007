@@ -84,7 +84,7 @@ public class ReviewService {
 
 
     private Pageable createPageable(int page, int size) {
-        return PageRequest.of(page, size);
+        return PageRequest.of(page, size, Sort.by("reviewId").descending());
     }
 
     @Transactional(readOnly = true)
