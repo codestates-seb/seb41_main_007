@@ -64,7 +64,8 @@ export default function Page() {
         | 'tooLongDesc'
         | 'imageLimit'
         | 'failToSend'
-        | 'categorySelector',
+        | 'categorySelector'
+        | 'optionCreate',
       boolean: boolean,
     ) => {
       setError(

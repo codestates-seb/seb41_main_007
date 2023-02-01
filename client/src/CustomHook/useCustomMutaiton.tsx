@@ -20,7 +20,7 @@ export const useCustomMutation = (
           method: method,
         })
           .then((res) => res.json())
-          .catch((e) => e);
+          .catch((e) => false);
       },
       {
         onSuccess: () => {
@@ -38,7 +38,7 @@ export const useCustomMutation = (
           method: method,
         })
           .then((res) => res.json())
-          .catch((e) => e);
+          .catch((e) => false);
       },
       {
         onSuccess: () => {

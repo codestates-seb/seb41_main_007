@@ -31,6 +31,10 @@
   transform: translateX(-100%);
 }
 
+.Comment_Input_Button_Disabled {
+  cursor: default;
+  opacity: 0.4;
+}
 .Comment_Input_Button:hover {
   background-color: var(--green-70);
 }
@@ -46,9 +50,25 @@
 }
 
 .Input_Contents {
+  width: 100%;
   margin-top: 20px;
   height: 40px;
   color: var(--black-10);
   border: 1px solid var(--gray-12);
   border-radius: 4px;
+  padding-left: 5px;
+}
+
+.Error_Text_Container {
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 5px;
+}
+
+.Error_Text {
+  font-size: var(--small);
+  line-height: 14px;
+  padding: 3px;
+  color: red;
+  opacity: 0.7;
 }
