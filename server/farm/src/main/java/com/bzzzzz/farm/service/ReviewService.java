@@ -55,7 +55,6 @@ public class ReviewService {
     @CacheEvict(value = "getMain", allEntries = true)
     public Review updateReview(Long reviewId, Review review, Long userId) {
 
-        log.info("updateReview : "+review.getReviewId());
         //reviewId로 저장된 리뷰 불러오기
         Review findReview = findVerifiedReview(reviewId);
         Member member = new Member();
@@ -78,7 +77,6 @@ public class ReviewService {
 
     public Review findVerifiedReview(Long reviewId){
         Optional<Review> optionalReview = reviewRepository.findReviewByReviewId(reviewId);
-        log.info("verifiedReview :"+ optionalReview.get().getReviewTitle());
         Review review = optionalReview
                 .orElseThrow(()-> new BusinessLogicException(ExceptionCode.REVIEW_NOT_FOUND));
         return review;
