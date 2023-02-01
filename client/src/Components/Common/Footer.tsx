@@ -4,10 +4,11 @@ import { useState } from 'react';
 
 const Container = styled.div`
   width: 100%;
+
   height: 450px;
   background-color: #f4f4f4;
   border: 1px solid #e7e7e7;
-  padding: 27px 180px 150px 180px;
+  padding: 27px 0 150px 0;
   margin: 75px auto 0 auto;
   .select {
     margin-top: 57px;
@@ -16,19 +17,35 @@ const Container = styled.div`
     margin-top: 30px;
   }
   margin-top: 75px;
+  @media (max-width: 1260px) {
+    min-width: 320px;
+  }
 `;
 const Main = styled.div`
   background-color: #ebebeb;
   height: 340px;
   display: flex;
-  width: 1240px;
+  width: 1220px;
   padding: 25px 50px 50px 50px;
   margin: 0px auto;
+  @media (max-width: 1260px) {
+    width: 870px;
+  }
+  @media (max-width: 870px) {
+    width: 570px;
+  }
+  @media (max-width: 600px) {
+    padding: 25px 0 50px 0;
+    width: auto;
+    min-width: 320px;
+    max-width: 470px;
+  }
 `;
 const Client = styled.div`
-  width: 520px;
+  min-width: 310px;
   border-right: 1px solid #e1e1e1;
   padding-right: 47px;
+
   .client__title {
     border-bottom: 1px solid black;
   }
@@ -41,19 +58,38 @@ const Client = styled.div`
     margin-top: 30px;
     font-size: 13px;
   }
+  @media (max-width: 870px) {
+    display: none;
+  }
 `;
 const Banking = styled.div`
   border-right: 1px solid #e1e1e1;
   padding-left: 40px;
   padding-right: 40px;
-  width: 790px;
+  min-width: 460px;
 
+  margin: 0 auto;
   .banking__title {
     margin-top: 30px;
     border-bottom: 1px solid black;
   }
+
+  @media (max-width: 1260px) {
+    border: 0;
+    padding-right: 0px;
+  }
+  @media (max-width: 870px) {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+  @media (max-width: 600px) {
+    width: 50%;
+    min-width: 300px;
+    width: auto;
+  }
 `;
 const Change = styled.div`
+  min-width: 360px;
   padding-left: 40px;
   .change__title {
     border-bottom: 1px solid black;
@@ -65,6 +101,9 @@ const Change = styled.div`
     height: 40px;
     margin-top: 50px;
     font-size: 13px;
+  }
+  @media (max-width: 1260px) {
+    display: none;
   }
 `;
 
