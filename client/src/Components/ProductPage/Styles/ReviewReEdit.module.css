@@ -2,18 +2,9 @@
   margin-top: 20px;
   display: flex;
 }
-
-.Input_User_Image {
-  width: 200px;
-  height: 200px;
-  object-fit: scale-down;
-}
-
-.comment_input_name {
-  color: var(--black-10);
-  font-size: 13px;
-  line-height: 13px;
-  text-decoration: none;
+.Review_Container {
+  flex: 1;
+  padding: 0 15px 0 15px;
 }
 
 .Comment_Input {
@@ -43,68 +34,10 @@
   background-color: var(--green-70);
 }
 
-.comment_reply_list_wrapper {
-  display: flex;
-  margin-top: 18px;
-  flex-direction: column;
-}
-.comment_reply_item_wrapper {
-  display: flex;
-}
-.comment_top {
-  display: flex;
-  margin-bottom: 4px;
-}
-.comment_top_updated {
-  font-size: 13px;
-  line-height: 13px;
-}
-.comment_top_added {
-  font-size: 13px;
-  line-height: 13px;
-  margin-left: 10px;
-}
-
 .line {
   width: 100%;
   border-bottom: 1px solid var(--gray-12);
   margin: 30px 0;
-}
-
-.Image_Container {
-  display: flex;
-  flex-direction: column;
-  width: 200px;
-  height: 200px;
-  border-radius: 3px;
-}
-
-.Empty_Image {
-  width: 200px;
-  height: 200px;
-  background-color: var(--gray-12);
-  border-radius: 3px;
-}
-
-.Review_Container {
-  flex: 1;
-  padding: 0 15px 0 15px;
-}
-
-.Label_Button {
-  padding: 10px 72px;
-  width: 100%;
-  font-size: 11px;
-  background-color: var(--greenlogo);
-  border-radius: 6px;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  cursor: pointer;
-}
-
-.Label_Button:hover {
-  background-color: var(--green-70);
 }
 
 .Content {
@@ -117,12 +50,4 @@
   color: var(--black-10);
   border: 1px solid var(--gray-12);
   border-radius: 4px;
-}
-
-.ReviewImage {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
 }

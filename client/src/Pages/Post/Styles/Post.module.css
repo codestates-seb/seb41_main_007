@@ -1,4 +1,4 @@
-.container {
+.Container {
   position: relative;
   display: flex;
   justify-content: center;
@@ -12,9 +12,10 @@
   flex: 1;
 }
 
-.contentContainer {
+.Contents_Container {
   display: flex;
   flex-direction: column;
+  margin: 10px;
 }
 
 .inputContents {
