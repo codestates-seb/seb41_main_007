@@ -18,7 +18,9 @@ export const useCustomMutation = (
             Authorization: `Bearer ${token}`,
           },
           method: method,
-        });
+        })
+          .then((res) => res.json())
+          .catch((e) => false);
       },
       {
         onSuccess: () => {
@@ -34,7 +36,9 @@ export const useCustomMutation = (
           body: JSON.stringify(suggest),
           headers: { 'Content-Type': 'application/json' },
           method: method,
-        });
+        })
+          .then((res) => res.json())
+          .catch((e) => false);
       },
       {
         onSuccess: () => {
@@ -44,23 +48,4 @@ export const useCustomMutation = (
     );
     return { data, isLoading, mutate, mutateAsync };
   }
-};
-
-export const useCustomFormMutation = (url: string, method: string) => {
-  const { data, isLoading, mutate, mutateAsync } = useMutation((form: any) => {
-    const formData = new FormData();
-    formData.append('file', form);
-    return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
-      cache: 'no-cache',
-      body: formData,
-      method: method,
-    })
-      .then((res: Response) => {
-        return res.json();
-      })
-      .catch((e) => {
-        return e;
-      });
-  });
-  return { data, isLoading, mutate, mutateAsync };
 };

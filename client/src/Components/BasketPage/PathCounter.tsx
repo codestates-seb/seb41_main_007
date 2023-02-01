@@ -15,21 +15,16 @@ const PathCounter: FC<checkBoxtype> = ({
   const jsondata: string | null = localStorage.getItem('basketsCounter');
   const resultarr = JSON.parse(jsondata || '[]') || [];
   if (resultarr === undefined) {
-    console.log('허수아비');
     return <></>;
   }
-  console.log(resultarr);
-  console.log('짐');
+
   const optionData = resultarr.filter((data: any) => {
     return (
       data.productOptionId === el.productOptionResponseDtos.productOptionId
     );
   });
 
-  console.log(optionData);
-  console.log(optionData[0]);
   if (optionData === undefined) {
-    console.log(el);
     return <></>;
   }
 

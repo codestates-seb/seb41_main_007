@@ -1,8 +1,5 @@
 import { FC, useRef, useState } from 'react';
-import {
-  useCustomFormMutation,
-  useCustomMutation,
-} from 'CustomHook/useCustomMutaiton';
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 
 import { useQueryClient } from 'react-query';
 import { EditComment } from 'Components/Editor/EditComment';
@@ -10,6 +7,8 @@ import { Descendant } from 'Types/slate';
 import styles from './Styles/ReviewReEdit.module.css';
 import Rating from './Rating';
 import { TYPE_Review } from 'Types/common/product';
+import { pictureCreate } from 'Utils/api';
+import ImageForm from 'Components/Common/ImageForm';
 
 interface Props {
   item: TYPE_Review;
@@ -18,10 +17,6 @@ interface Props {
 }
 
 const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
-  const ref = useRef<any>();
-  const handleClick = (e: any) => {
-    ref.current.click();
-  };
   const queryKey = ['reviews', `${item.productId}`];
   const queryClient = useQueryClient();
   const starArr = [];
@@ -45,7 +40,6 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
     session,
     true,
   );
-  const { mutateAsync } = useCustomFormMutation('/file/upload', 'POST');
 
   const handleStarClick = (index: number) => {
     let clickStates = [...starClicked];
@@ -55,16 +49,16 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
     setStarClicked(clickStates);
   };
 
-  const handleChangeFile = (e: any) => {
+  const handleChangeFile = async (e: any) => {
     if (e.target.files[0]) {
-      mutateAsync(e.target.files[0])
-        .then(({ imageUrls }) => {
-          setUserImage(imageUrls);
-        })
-        .catch((e) => {
-          console.info(e);
-          setUserImage('');
-        });
+      const res = await pictureCreate('/file/upload', e.target.files[0]);
+      if (res) {
+        setUserImage(res.imageUrls);
+        e.target.value = '';
+      } else {
+        setUserImage('');
+        e.target.value = '';
+      }
     }
   };
 
@@ -108,31 +102,7 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
   return (
     <>
       <div className={styles.MainReview_Container}>
-        <div className={styles.Image_Container}>
-          <div className={styles.Content}>
-            {userImage ? (
-              <img
-                width={200}
-                height={200}
-                src={userImage}
-                alt="reviewImage"
-                className={styles.Input_User_Image}
-              />
-            ) : (
-              <div className={styles.Empty_Image}> </div>
-            )}
-            <button onClick={handleClick} className={styles.Label_Button}>
-              이미지선택
-            </button>
-            <input
-              ref={ref}
-              type="file"
-              accept="image/svg, image/jpeg, image/png"
-              onChange={handleChangeFile}
-              className={styles.ReviewImage}
-            />
-          </div>
-        </div>
+        <ImageForm userImage={userImage} setUserImage={setUserImage} />
         <div className={styles.Review_Container}>
           <div className={styles.Content}>
             <Rating handleStarClick={handleStarClick} clicked={starClicked} />
