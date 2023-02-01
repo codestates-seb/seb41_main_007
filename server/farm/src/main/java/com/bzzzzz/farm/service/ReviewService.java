@@ -9,6 +9,7 @@ import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.model.entity.Review;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +32,7 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
     }
 
-    @CacheEvict(value = "getMain", allEntries = true)
+    @CacheEvict(value = "findReviewsOrderByReviewId", allEntries = true)
     public Review insertReview(Review review, Long userId) {
         Member member = new Member();
         member.setMemberId(userId);
@@ -52,7 +53,7 @@ public class ReviewService {
         return reviewRepository.findById(reviewId).orElseThrow(() -> new IllegalArgumentException("해당 리뷰가 없습니다."));
     }
 
-    @CacheEvict(value = "getMain", allEntries = true)
+    @CacheEvict(value = "findReviewsOrderByReviewId", allEntries = true)
     public Review updateReview(Long reviewId, Review review, Long userId) {
 
         log.info("updateReview : "+review.getReviewId());
@@ -70,7 +71,7 @@ public class ReviewService {
     }
 
     //특정 리뷰 삭제
-    @CacheEvict(value = "getMain", allEntries = true)
+    @CacheEvict(value = "findReviewsOrderByReviewId", allEntries = true)
     public void deleteReview(Long reviewId){
         Review findReview = findVerifiedReview(reviewId);
         reviewRepository.delete(findReview);
@@ -89,6 +90,7 @@ public class ReviewService {
         return PageRequest.of(page, size);
     }
 
+    @Cacheable(value = "findReviewsOrderByReviewId")
     @Transactional(readOnly = true)
     public List<Review> findReviewsOrderByReviewId() { // 메인페이지에 하단부에 사용
         return reviewRepository.findAll(PageRequest.of(0, 4, Sort.by("reviewId").descending())).getContent();
