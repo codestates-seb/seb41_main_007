@@ -138,7 +138,7 @@ export const Carousell = (props: any) => {
   ];
   return (
     <div className="mt-32">
-      <Carousel interval={900000000} animation={'slide'}>
+      <Carousel interval={8000} animation={'slide'}>
         {items.map((item, i) => (
           <Item key={i} {...item} />
         ))}
