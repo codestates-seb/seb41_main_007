@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Select from './Select';
 import { useState } from 'react';
-
+import { banktype } from 'Types/common/product';
 const Container = styled.div`
   width: 100%;
 
@@ -10,9 +10,6 @@ const Container = styled.div`
   border: 1px solid #e7e7e7;
   padding: 27px 0 150px 0;
   margin: 75px auto 0 auto;
-  .select {
-    margin-top: 57px;
-  }
   .selectbottom {
     margin-top: 30px;
   }
@@ -106,14 +103,6 @@ const Change = styled.div`
   }
 `;
 
-export interface banktype {
-  id: number;
-  name: string;
-  avatar: string;
-  Bankaccount: string;
-  Bankname: string;
-}
-
 const Footer = () => {
   const people = {
     id: 1,
@@ -162,8 +151,11 @@ const Footer = () => {
               </div>
             </div>
             <div className="text-2xl">{Bankdata.Bankaccount}</div>
-            <div className="select">
-              <Select setBankdata={setBankdata} />
+            <div className="flex-auto mt-3">
+              <div className="mt-14 text-sm pb-1">입금은행</div>
+              <div className="select">
+                <Select setBankdata={setBankdata} />
+              </div>
             </div>
           </Banking>
           <Change>

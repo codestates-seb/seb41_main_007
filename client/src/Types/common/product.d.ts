@@ -115,3 +115,11 @@ export interface TYPE_Total {
   productOptionPrice: number;
   quantity: number;
 }
+
+export interface banktype {
+  id: number;
+  name: string;
+  avatar: string;
+  Bankaccount: string;
+  Bankname: string;
+}

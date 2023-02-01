@@ -47,7 +47,7 @@ const CheckBox: React.FC<{
           onChange={checkAll}
           checked={checkList.length === 2 ? true : false}
         />
-        아래 내용에 모두 동의합니다.
+        &nbsp;&nbsp;아래 내용에 모두 동의합니다.
       </CheckAll>
       <div>
         <input
@@ -57,7 +57,7 @@ const CheckBox: React.FC<{
           checked={checkList.includes('terms') ? true : false}
         />
         <span className="agree">
-          [필수] 주문하실 상품 및 결제, 주문정보 확인하였으며,
+          &nbsp;&nbsp;[필수] 주문하실 상품 및 결제, 주문정보 확인하였으며,
           <br /> 이에 동의합니다.
         </span>
       </div>
@@ -68,7 +68,7 @@ const CheckBox: React.FC<{
           onChange={handleCheck}
           checked={checkList.includes('privacy') ? true : false}
         />
-        [필수] 개인정보 수집 이용 동의
+        &nbsp;&nbsp;[필수] 개인정보 수집 이용 동의
       </div>
       {checkList.length === 2 ? (
         <button
