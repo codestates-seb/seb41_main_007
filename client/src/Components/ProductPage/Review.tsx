@@ -7,16 +7,14 @@ import { Descendant } from 'Types/slate';
 import Rating from './Rating';
 import CommentEditor from '../Editor/Comment';
 import { useSession } from 'CustomHook/useSession';
-import {
-  useCustomFormMutation,
-  useCustomMutation,
-} from 'CustomHook/useCustomMutaiton';
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 
 import ReviewList from './ReviewList';
 
 import styles from './Styles/Review.module.css';
 import { tokenDecode } from 'Utils/commonFunction';
 import { TYPE_Token } from 'Types/common/token';
+import ImageForm from 'Components/Common/ImageForm';
 interface Props {
   productId: string;
   session: string | null;
@@ -40,19 +38,15 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
       children: [{ text: '' }],
     },
   ]);
-  const ref = useRef<any>();
-  const handleClick = (e: any) => {
-    ref.current.click();
-  };
+
   const childRef = useRef<{ reset: () => void }>(null);
-  const { mutate } = useCustomMutation(
+  const { mutateAsync } = useCustomMutation(
     '/reviews',
     queryKey,
     'POST',
     session,
     true,
   );
-  const { mutateAsync } = useCustomFormMutation('/file/upload', 'POST');
 
   if (!session)
     return (
@@ -72,20 +66,7 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
     setStarClicked(clickStates);
   };
 
-  const handleChangeFile = (e: any) => {
-    if (e.target.files[0]) {
-      mutateAsync(e.target.files[0])
-        .then(({ imageUrls }) => {
-          setUserImage(imageUrls);
-        })
-        .catch((e) => {
-          console.error(e);
-          setUserImage('');
-        });
-    }
-  };
-
-  const handlerSubmit = () => {
+  const handlerSubmit = async () => {
     let score = starClicked.filter(Boolean).length;
     const { sub } = tokenDecode(session) as TYPE_Token;
     const submitValue = {
@@ -98,10 +79,11 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
       memberId: parseInt(sub),
       reviewCreatedAt: Date.now(),
     };
+    const res = await mutateAsync(submitValue);
     const cache = queryClient.getQueryData(queryKey) as any;
-    if (cache) {
+    if (res && cache) {
       const cacheAdd = {
-        result: [submitValue],
+        result: [res],
         nextPage: true,
         lastPage: false,
       };
@@ -110,45 +92,20 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
         pageParams: { ...cache.pageParams },
       });
     }
-    mutate(submitValue);
     setStarClicked([false, false, false, false, false]);
     setReviewTitle('');
-    setUserImage(null);
+    setUserImage('');
     childRef.current?.reset();
   };
   return (
     <>
-      <div className={styles.comment_container}>
-        <div className={styles.Image_Container}>
-          <div className={styles.content}>
-            {userImage ? (
-              <img
-                width={200}
-                height={200}
-                src={userImage}
-                alt="reviewImage"
-                className={styles.Input_User_Image}
-              />
-            ) : (
-              <div className={styles.Empty_Image}> </div>
-            )}
-            <button onClick={handleClick} className={styles.Label_Button}>
-              이미지선택
-            </button>
-            <input
-              ref={ref}
-              type="file"
-              accept="image/svg, image/jpeg, image/png"
-              onChange={handleChangeFile}
-              className={styles.ReviewImage}
-            />
-          </div>
-        </div>
+      <div className={styles.Main_Review_Container}>
+        <ImageForm userImage={userImage} setUserImage={setUserImage} />
         <div className={styles.Review_Container}>
-          <div className={styles.content}>
+          <div className={styles.Content}>
             <Rating handleStarClick={handleStarClick} clicked={starClicked} />
           </div>
-          <div className={styles.content}>
+          <div className={styles.Content}>
             <input
               type="text"
               placeholder="리뷰제목을 입력해주세요"
