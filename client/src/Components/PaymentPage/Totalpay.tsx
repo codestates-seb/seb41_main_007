@@ -124,7 +124,7 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
           <div className="container">
             <div className="title flex justify-between py-4">
               <span className="font-semibold">
-                주문상품 정보 / 총 {CountsForPills}개
+                주문상품 정보 / 총 {useNumberComma(CountsForPills)}개
               </span>
               <span className="font-semibold text-sm text-gray-500">
                 상세보기
@@ -133,7 +133,9 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
             <Pay>
               <div className=" flex justify-between mt-6">
                 <span className="text-sm text-gray-500">주문금액</span>
-                <span className="font-semibold text-lg">{TotalForPills}원</span>
+                <span className="font-semibold text-lg">
+                  {useNumberComma(TotalForPills)}원
+                </span>
               </div>
               <div className=" flex justify-between">
                 <span className="text-sm text-gray-500">(+)배송비</span>
@@ -142,14 +144,14 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
               <div className=" flex justify-between">
                 <span className=" text-sm text-gray-500">(-)상품할인10%</span>
                 <span className="font-semibold text-lg">
-                  {DiscountForPills}원
+                  {useNumberComma(DiscountForPills)}원
                 </span>
               </div>
               <div className=" flex justify-between py-4">
                 <span className="">총 결제 금액</span>
-                <span className="font-semibold text-xl text-red-700">
-                  {TotalForPills - DiscountForPills}원
-                </span>
+                <div className="font-semibold text-xl text-red-700">
+                  {useNumberComma(TotalForPills - DiscountForPills)}원
+                </div>
               </div>
             </Pay>
             <Agree>
