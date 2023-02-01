@@ -7,6 +7,9 @@ const Container = styled.div`
     width: 100%;
     height: 360px;
   }
+  @media (max-width: 1260px) {
+    min-width: 320px;
+  }
 `;
 
 const NewProduct: React.FC = (): JSX.Element => {
