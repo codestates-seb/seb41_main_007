@@ -13,6 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import SelectBox from 'Components/BasketPage/SelectBox';
 import { TYPE_ProductOption, counttype } from 'Types/common/product';
 import { useSession } from 'CustomHook/useSession';
+import { useQueryClient } from 'react-query';
+
 const ProductMain = styled.div`
   margin: 0 auto 50px auto;
   width: 920px;
@@ -126,7 +128,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
   if (loading) return <></>;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   const onIncrease = () => {
     setCount((prevCount) => prevCount + 1);
   };
@@ -246,7 +248,10 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
           Authorization: `Bearer ${session}`,
         },
         method: 'POST',
-      }).then((response) => console.log(response));
+      }).then((response) => {
+        queryClient.invalidateQueries('/carts');
+        console.log(response);
+      });
     }
   };
 

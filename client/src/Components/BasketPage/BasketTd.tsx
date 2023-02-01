@@ -144,7 +144,6 @@ const BasketTd: FC<checkBoxtype> = ({
   // countNumber,
   optionData,
 }): JSX.Element => {
-  console.log(optionData);
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]') || [];
   const jsondataCounter: string | null = localStorage.getItem('basketsCounter');

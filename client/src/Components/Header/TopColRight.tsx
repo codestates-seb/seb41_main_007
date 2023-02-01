@@ -55,6 +55,12 @@ const TopColRight: FC = () => {
   const dispatch = useAppDispatch();
   const queryClient = useQueryClient();
   useEffect(() => {
+    const clearOk: string | null = localStorage.getItem('clear');
+    if (!clearOk) {
+      localStorage.clear();
+      localStorage.setItem('clear', 'true');
+    }
+
     const jsondataCounter: string | null =
       localStorage.getItem('basketsCounter');
     const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
@@ -115,11 +121,8 @@ const TopColRight: FC = () => {
           const Filtered = res.filter((Data: TYPE_CartData) => {
             return !optionIdData.includes(Data.productOptionId);
           });
-          console.log(Filtered);
+
           Filtered.forEach((el: TYPE_CartData) => {
-            console.log(
-              `${process.env.REACT_APP_BACKEND_URL}/carts/${el.productOptionId}`,
-            );
             fetch(
               `${process.env.REACT_APP_BACKEND_URL}/carts/${el.productOptionId}`,
               {
@@ -130,19 +133,16 @@ const TopColRight: FC = () => {
                 method: 'DELETE',
               },
             ).then((response) => {
-              console.log(response);
               queryClient.invalidateQueries('/carts');
             });
           });
         }
       });
 
-    console.log('안녕');
     //한번만 돌게하는 로직
     const optionIdData = basketsCounter.map((getdata: any) => {
       return getdata.productOptionId;
     });
-    console.log(optionIdData);
 
     onisOk();
   }
@@ -180,3 +180,5 @@ export default TopColRight;
 //로그인시 오류
 //배열객체 헷갈림 타입 잘확인할것
 //타입을 정해야 더 편하게짬
+//로컬스토리 비우는 로직 추가했고
+//api 버그 수정
