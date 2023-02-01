@@ -35,7 +35,6 @@ public class StorageService {
             File fileObj = convertMultiPartFileToFile(file);
             String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
             s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj));
-            log.info(s3Client.getUrl(bucketName, fileName).toString());
             fileUrls.add(s3Client.getUrl(bucketName, fileName).toString());
             fileObj.delete();
         }

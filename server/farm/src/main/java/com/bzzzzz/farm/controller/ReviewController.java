@@ -51,14 +51,9 @@ public class ReviewController {
     @PostMapping("/reviews")
     public ResponseEntity insertReview(@RequestBody @Valid ReviewPostDto reviewPostDto, @AuthenticationPrincipal UserDetails userDetails) {
         Review review = reviewMapper.reviewPostDtoToReview(reviewPostDto);
-        log.info("현재 로그인 된 유저 : "+ userDetails.getUsername());
         Product product = productService.findVerifiedProduct(reviewPostDto.getProductId());
         review.setProduct(product);
         Review insertReview = reviewService.insertReview(review, toLong(userDetails.getUsername()));
-
-        //작성한 게시글 제목 로그 띄우기
-        log.info("log : " + reviewPostDto.getReviewTitle());
-
         ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(insertReview);
         return new ResponseEntity(reviewResponseDto, HttpStatus.CREATED);
     }
