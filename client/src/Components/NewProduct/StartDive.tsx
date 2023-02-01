@@ -1,8 +1,7 @@
+import { useNavigate } from 'react-router-dom';
+
 const StartDive = () => {
-  // const navigate = useNavigate();
-  // const navigateProduct = () => {
-  //   navigate('/')
-  //}
+  const navigate = useNavigate();
   return (
     <div className="bg-gray-50 mt-8 mb-4 ">
       <div className="mx-auto max-w-7xl py-12 px-6 lg:flex lg:items-center lg:justify-between lg:py-16 lg:px-8">
@@ -14,20 +13,24 @@ const StartDive = () => {
         </h2>
         <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
           <div className="inline-flex rounded-md shadow">
-            <a
-              href="#!"
+            <button
+              onClick={() => navigate('/login')}
               className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 px-5 py-3 text-base font-medium text-white hover:bg-green-700"
             >
               Get started
-            </a>
+            </button>
           </div>
           <div className="ml-3 inline-flex rounded-md shadow">
-            <a
-              href="#!"
+            <button
+              onClick={() =>
+                navigate(
+                  '/products/all?sort=likeCount&order=ascending&page=1&size=20',
+                )
+              }
               className="inline-flex items-center justify-center rounded-md border border-transparent bg-white px-5 py-3 text-base font-medium text-green-600 hover:bg-green-50"
             >
-              FarmAndPeople
-            </a>
+              All Products
+            </button>
           </div>
         </div>
       </div>
