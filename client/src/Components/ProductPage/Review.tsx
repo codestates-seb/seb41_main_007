@@ -149,6 +149,7 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
   useEffect(() => {
     checkError();
   }, [checkError]);
+
   return (
     <>
       <div className={styles.Main_Review_Container}>
@@ -219,7 +220,7 @@ const Review: FC = () => {
   );
 };
 
-const ErrorMessage = ({ error, type }: { error: any; type: string }) => {
+const ErrorMessage = ({ error, type }: { error: boolean; type: string }) => {
   return (
     <>
       {type === 'emptyTitle' && error && (
