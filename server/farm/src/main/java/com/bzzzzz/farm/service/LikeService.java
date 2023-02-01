@@ -19,7 +19,7 @@ import java.util.Optional;
 public class LikeService {
     private final LikeRepository likeRepository;
 
-    @CacheEvict(value = "getMain", allEntries = true)
+    @CacheEvict(value = "findProducts", allEntries = true)
     public void createLike(long memberId, Product product) {
         // 이미 좋아요를 눌렀는가 ?
         verifyExistsLike(memberId, product.getProductId());
@@ -30,7 +30,7 @@ public class LikeService {
         likeRepository.save(new Like(null, member, product));
     }
 
-    @CacheEvict(value = "getMain", allEntries = true)
+    @CacheEvict(value = "findProducts", allEntries = true)
     public void deleteLike(long memberId, Product product) {
         // 좋아요를 누른적이 있는가 ?
         Like findLike = findVerifiedLike(memberId, product.getProductId());
