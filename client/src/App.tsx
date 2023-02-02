@@ -1,29 +1,27 @@
-import React from 'react';
-
+import { FC } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Header from './Components/Header/index';
-import Main from './Pages/Main';
-import Loading from './Components/Loading/Loading';
-import Login from './Pages/Login';
-import Counter from 'Redux/ex/counter';
-import ObjectSaver from 'Redux/ex/objectSave';
-import ProductPage from 'Pages/ProductPage';
-import BasketsPage from 'Pages/BasketPage';
-import ProductListPage from 'Pages/CategoryListPage';
-import Search from 'Pages/Search';
-import NotFoundPage from 'Pages/NotFoundPage';
 import { MyPageSession, PaymentPageSession } from 'Utils/SessionMaster';
-import Footer from 'Components/Common/Footer';
-
-import OrderTest from 'Pages/OrderTest';
-
-import AllProductsPage from 'Pages/AllProductsPage';
-import Auth from 'Pages/Auth';
-import Post from 'Pages/Post/Post';
-import Test from 'Pages/Test';
 import { ToastContainer } from 'react-toastify';
 
-const withLayout = (Component: React.FC): JSX.Element => {
+import Header from './Components/Header/index';
+import Loading from './Components/Loading/Loading';
+import Footer from 'Components/Common/Footer';
+import Counter from 'Redux/ex/counter';
+import ObjectSaver from 'Redux/ex/objectSave';
+
+import ProductListPage from 'Pages/CategoryListPage';
+import BasketsPage from 'Pages/BasketPage';
+import ProductPage from 'Pages/ProductPage';
+import AllProductsPage from 'Pages/AllProductsPage';
+import Search from 'Pages/Search';
+import NotFoundPage from 'Pages/NotFoundPage';
+import Main from './Pages/Main';
+import Auth from 'Pages/Auth';
+import Post from 'Pages/Post/Post';
+import Login from './Pages/Login';
+import Test from 'Pages/Test';
+
+const withLayout = (Component: FC): JSX.Element => {
   return (
     <>
       <Header />
@@ -94,7 +92,6 @@ const router = createBrowserRouter([
     element: <Test />,
   },
   { path: '/auth', element: <Auth /> },
-  { path: '/ordertest', element: <OrderTest /> },
 ]);
 
 const App: React.FC = () => {
