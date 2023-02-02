@@ -155,22 +155,22 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
     });
   };
 
-  if (session) {
-    //확인용
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session}`,
-      },
-    })
-      .then((res: Response) => {
-        return res.json();
-      })
-      .then((res: Response) => {
-        console.log(res);
-      });
-  }
+  // if (session) {
+  //   //확인용
+  //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${session}`,
+  //     },
+  //   })
+  //     .then((res: Response) => {
+  //       return res.json();
+  //     })
+  //     .then((res: Response) => {
+  //       console.log(res);
+  //     });
+  // }
 
   const emptyBasketAlram = () =>
     toast.success('장바구니에 담는 중입니다.', {
