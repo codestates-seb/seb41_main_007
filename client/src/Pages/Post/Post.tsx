@@ -57,8 +57,14 @@ export default function Page() {
   const [optionName, setOptionName] = useState<any>('');
   const [categoryNum, setCategoryNum] = useState<number>(9999);
   const [imageFile, setImageFile] = useState<any>('');
-
-  const { mutate } = useCustomMutation('/products', ['post', title], 'POST');
+  const token = localStorage.getItem('access_token');
+  if (!token) return <></>;
+  const { mutate } = useCustomMutation(
+    '/products',
+    ['post', title],
+    'POST',
+    token,
+  );
 
   const handlerError = useCallback(
     (
