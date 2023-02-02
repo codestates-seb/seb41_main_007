@@ -40,14 +40,15 @@ const CategoryList: FC<Props> = ({ categoryList }) => {
 };
 
 const CategoryItem: FC<Category> = ({ categoryId, name }) => {
-  console.log(categoryId);
   return (
     <>
       <CustomTitle
         title={`${name} | FarmPi`}
         description={`카테고리${name} 상품입니다`}
       />
-      <Link to={`/products/${categoryId}`}>{name}</Link>
+      <Link className={styles.Category_Name} to={`/products/${categoryId}`}>
+        {name}
+      </Link>
     </>
   );
 };
