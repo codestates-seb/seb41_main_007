@@ -1,19 +1,15 @@
-interface useCreateProps {
-  url: string;
-  id: any;
-  data: any;
-}
+import { compressImage } from './commpressImage';
 
-export const pictureCreate = (url: string, data: any) => {
+export const pictureCreate = async (url: string, data: any) => {
+  const res = await compressImage(data);
   const formData = new FormData();
-  formData.append('file', data);
+  formData.append('file', res);
   const token = localStorage.getItem('access_token');
   if (!token) return false;
   return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
     cache: 'no-cache',
     body: formData,
     headers: {
-      'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
     method: 'POST',
