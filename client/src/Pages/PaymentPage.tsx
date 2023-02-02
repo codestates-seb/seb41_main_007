@@ -16,6 +16,7 @@ import { madalState } from 'Redux/reducer/modalSlice';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import Payment from 'Components/PaymentPage/Payment';
 import CustomTitle from 'Components/Header/CustomTitle';
+import RouteChangeTracker from 'Utils/GoogleTracker';
 const Container = styled.div`
   width: 830px;
 `;
@@ -29,6 +30,7 @@ const Title = styled.div`
 `;
 
 const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
+  RouteChangeTracker();
   const [order, setOrder] = useState<boolean>(true);
   const [isDelivery, setisDelivery] = useState<boolean>(true);
   const [address, setAddress] = useState<boolean>(false);

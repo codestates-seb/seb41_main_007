@@ -11,8 +11,10 @@ import NotFoundPage from './NotFoundPage';
 import { BGcontainer } from 'Components/Common/BGcontainer';
 import CategoryList from 'Components/Common/CategoryList';
 import ProductSlider from 'Components/Common/ProductSlider';
+import RouteChangeTracker from 'Utils/GoogleTracker';
 
 const NoKeywordSearch: FC = () => {
+  RouteChangeTracker();
   const size = 8;
   const page = 1;
   const sort = 'likeCount';
