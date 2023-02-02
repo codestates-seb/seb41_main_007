@@ -20,7 +20,7 @@
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1280px) {
-  .Product_Img_Container {
+  .Product_Container {
     padding: 0px 4%;
   }
   .Product_Img_Content {
@@ -42,6 +42,9 @@
 
 .Product_Sale_Content {
   @apply text-gray-400 text-xs mt-1;
+}
+.Product_Container {
+  @apply w-full overflow-hidden rounded-md  group-hover:opacity-75 lg:aspect-none;
 }
 
 .Product_Name_Content {
