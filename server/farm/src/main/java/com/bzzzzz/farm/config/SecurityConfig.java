@@ -52,22 +52,22 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         //member
-                        .antMatchers(HttpMethod.GET,"/members").hasRole("ADMIN")
+                        //.antMatchers(HttpMethod.GET,"/members").hasRole("ADMIN")
                         //address
-                        .antMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
-                        .antMatchers(HttpMethod.PATCH, "/products").hasRole("ADMIN")
-                        .antMatchers(HttpMethod.DELETE, "/products").hasRole("ADMIN")
+                        //.antMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
+                        //.antMatchers(HttpMethod.PATCH, "/products").hasRole("ADMIN")
+                        //.antMatchers(HttpMethod.DELETE, "/products").hasRole("ADMIN")
                         //answer
-                        .antMatchers(HttpMethod.POST, "**/answers").hasRole("ADMIN")
-                        .antMatchers(HttpMethod.PATCH, "**/answers").hasRole("ADMIN")
-                        .antMatchers(HttpMethod.DELETE, "**/answers").hasRole("ADMIN")
+                        //.antMatchers(HttpMethod.POST, "**/answers").hasRole("ADMIN")
+                        //.antMatchers(HttpMethod.PATCH, "**/answers").hasRole("ADMIN")
+                        //.antMatchers(HttpMethod.DELETE, "**/answers").hasRole("ADMIN")
                         //order
-                        .antMatchers(HttpMethod.PATCH,"/orders").hasRole("ADMIN")
+                        //.antMatchers(HttpMethod.PATCH,"/orders").hasRole("ADMIN")
                         //carts
-                        .antMatchers(HttpMethod.GET,"/carts").authenticated()
+                        //.antMatchers(HttpMethod.GET,"/carts").authenticated()
                         //address
-                        .antMatchers(HttpMethod.POST,"/addresses").authenticated()
-                        .antMatchers(HttpMethod.GET,"/addresses").authenticated()
+                        //.antMatchers(HttpMethod.POST,"/addresses").authenticated()
+                        //.antMatchers(HttpMethod.GET,"/addresses").authenticated()
                         .anyRequest().permitAll())
                 .apply(new JwtSecurityConfig(jwtTokenizer))
                 // OAuth2.0 로그인 설정
