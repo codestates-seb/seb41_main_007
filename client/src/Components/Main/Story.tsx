@@ -1,15 +1,13 @@
 import { FC } from 'react';
-import styled from 'styled-components';
 import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useNavigate } from 'react-router-dom';
 import styles from './Styles/Story.module.css';
 import ComponentModal from 'Components/Common/ComponentModal';
 import useBooleanInput from 'CustomHook/useBooleaninput';
 
 const Story: FC = () => {
   const [isControl, onisControl, setisControl] = useBooleanInput(true);
-  const navigate = useNavigate();
+
   return (
     <div className="flex">
       <div className={styles.Story_BigContainer}>

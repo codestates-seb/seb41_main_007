@@ -131,3 +131,14 @@ export interface banktype {
   Bankaccount: string;
   Bankname: string;
 }
+
+export interface TYPE_ReviewAll {
+  createdAt: string;
+  memberName: string;
+  productId: number;
+  rating: number;
+  reviewContent: string;
+  reviewId: number;
+  reviewImage: string;
+  reviewTitle: string;
+}
