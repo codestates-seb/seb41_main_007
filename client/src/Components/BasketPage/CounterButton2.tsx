@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { FC, useState, Dispatch, SetStateAction, useEffect } from 'react';
+import ComponentModal from 'Components/Common/ComponentModal';
+import useBooleanInput from 'CustomHook/useBooleaninput';
 
 const Counterdiv = styled.div`
   box-sizing: border-box;
@@ -47,23 +49,18 @@ const CounterButton2: FC<props> = ({
   optionId,
   session,
 }) => {
+  const [isControl, onisControl, setisControl] = useBooleanInput(true);
   const [count, setCount] = useState<number>(countNumber);
+
   const onIncrease = () => {
-    setCount((prevCount) => prevCount + 1);
-    // if (session) {
-    //   const suggest = {
-    //     productOptionId: optionId,
-    //     quantity: +20,
-    //   };
-    //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-    //     body: JSON.stringify(suggest),
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //       Authorization: `Bearer ${session}`,
-    //     },
-    //     method: 'PATCH',
-    //   }).then((response) => console.log(response));
-    // }
+    setCount((prevCount) => {
+      if (prevCount === 5) {
+        onisControl();
+        return prevCount;
+      }
+
+      return prevCount + 1;
+    });
   };
 
   const onDecrease = () => {
@@ -71,20 +68,7 @@ const CounterButton2: FC<props> = ({
       if (prevCount === 1) {
         return prevCount;
       }
-      // if (session) {
-      //   const suggest = {
-      //     productOptionId: optionId,
-      //     quantity: -3,
-      //   };
-      //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-      //     body: JSON.stringify(suggest),
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //       Authorization: `Bearer ${session}`,
-      //     },
-      //     method: 'PATCH',
-      //   }).then((response) => console.log(response));
-      // }
+
       return prevCount - 1;
     });
   };
@@ -113,8 +97,20 @@ const CounterButton2: FC<props> = ({
           alt="minus"
         />
       </Counterbutton>
+      {isControl ? (
+        <></>
+      ) : (
+        <ComponentModal isButton={true} setValue={setisControl}>
+          <div>
+            현재 수량은 5개로 제한되어 있습니다 <br></br>전 상품 10% 할인을
+            진행중입니다💸<br></br>
+          </div>
+        </ComponentModal>
+      )}
     </Counterdiv>
   );
 };
 
 export default CounterButton2;
+//set안에 이프문
+//경고뭄ㄴ

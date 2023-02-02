@@ -1,34 +1,53 @@
 import styled from 'styled-components';
 import Select from './Select';
 import { useState } from 'react';
-
+import { banktype } from 'Types/common/product';
 const Container = styled.div`
   width: 100%;
+  z-index: 10;
+  position: relative;
   height: 450px;
   background-color: #f4f4f4;
   border: 1px solid #e7e7e7;
-  padding: 27px 180px 150px 180px;
+  padding: 27px 0 150px 0;
   margin: 75px auto 0 auto;
-  .select {
-    margin-top: 57px;
-  }
   .selectbottom {
     margin-top: 30px;
   }
   margin-top: 75px;
+  @media (max-width: 1260px) {
+    min-width: 320px;
+  }
+  @media (max-width: 700px) {
+    height: 800px;
+  }
 `;
 const Main = styled.div`
   background-color: #ebebeb;
   height: 340px;
   display: flex;
-  width: 1240px;
+  width: 1220px;
   padding: 25px 50px 50px 50px;
   margin: 0px auto;
+
+  @media (max-width: 1260px) {
+    min-width: 700px;
+    width: 80%;
+  }
+  @media (max-width: 700px) {
+    flex-direction: column;
+    align-items: center;
+    height: 700px;
+    width: auto;
+    min-width: 320px;
+    max-width: 470px;
+  }
 `;
 const Client = styled.div`
-  width: 520px;
-  border-right: 1px solid #e1e1e1;
+  min-width: 310px;
+  border-right: 1px solid #040404;
   padding-right: 47px;
+
   .client__title {
     border-bottom: 1px solid black;
   }
@@ -41,19 +60,49 @@ const Client = styled.div`
     margin-top: 30px;
     font-size: 13px;
   }
+  @media (max-width: 700px) {
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: 50%;
+    min-width: 300px;
+    width: auto;
+    border-right: 0;
+  }
 `;
 const Banking = styled.div`
   border-right: 1px solid #e1e1e1;
   padding-left: 40px;
   padding-right: 40px;
-  width: 790px;
-
+  min-width: 460px;
+  margin: 0 auto;
   .banking__title {
     margin-top: 30px;
     border-bottom: 1px solid black;
   }
+
+  @media (max-width: 1260px) {
+    margin: 0 auto;
+    border: 0;
+    padding-right: 0px;
+    width: 50%;
+    min-width: 300px;
+  }
+  @media (max-width: 900px) {
+  }
+  @media (max-width: 700px) {
+    border-top: 1px solid #ccc;
+    margin: 50px; 0 0 0;
+    padding-top:20px;
+    padding-left: 0;
+    padding-right: 0;
+    width: 50%;
+    min-width: 300px;
+    width: auto;
+  }
 `;
 const Change = styled.div`
+  min-width: 360px;
   padding-left: 40px;
   .change__title {
     border-bottom: 1px solid black;
@@ -66,15 +115,10 @@ const Change = styled.div`
     margin-top: 50px;
     font-size: 13px;
   }
+  @media (max-width: 1260px) {
+    display: none;
+  }
 `;
-
-export interface banktype {
-  id: number;
-  name: string;
-  avatar: string;
-  Bankaccount: string;
-  Bankname: string;
-}
 
 const Footer = () => {
   const people = {
@@ -124,8 +168,11 @@ const Footer = () => {
               </div>
             </div>
             <div className="text-2xl">{Bankdata.Bankaccount}</div>
-            <div className="select">
-              <Select setBankdata={setBankdata} />
+            <div className="flex-auto mt-3">
+              <div className="mt-14 text-sm pb-1">입금은행</div>
+              <div className="select">
+                <Select setBankdata={setBankdata} />
+              </div>
             </div>
           </Banking>
           <Change>

@@ -15,10 +15,18 @@ export interface TYPE_PageInfo {
   totalPages: number;
 }
 
+interface TYPE_Member {
+  memberId: number;
+  name: string;
+  birth: string | null;
+  email: string | null;
+  gender: string | null;
+  phoneNumber: string | null;
+}
 export interface TYPE_Review {
   productId: number;
   reviewId: number;
-  memberId: number;
+  member: TYPE_Member;
   reviewTitle: string;
   reviewContent: string;
   reviewCreatedAt: string;
@@ -114,4 +122,12 @@ export interface TYPE_UrlProp {
 export interface TYPE_Total {
   productOptionPrice: number;
   quantity: number;
+}
+
+export interface banktype {
+  id: number;
+  name: string;
+  avatar: string;
+  Bankaccount: string;
+  Bankname: string;
 }

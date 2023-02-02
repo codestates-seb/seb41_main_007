@@ -9,6 +9,7 @@ import { useAppSelector, useAppDispatch } from 'Redux/app/hook';
 import { TYPE_LocalOption, TYPE_CartData } from 'Types/common/product';
 import useBooleanInput from 'CustomHook/useBooleaninput';
 import { useQueryClient } from 'react-query';
+import ComponentModal from 'Components/Common/ComponentModal';
 
 const Logined = () => {
   const logoutHandler = (
@@ -32,6 +33,7 @@ const Logined = () => {
 };
 
 const LoginRequired = () => {
+  const [isControl, onisControl, setisControl] = useBooleanInput(true);
   return (
     <ul className={styles.Nav_Container1}>
       <Link to="/login">
@@ -40,9 +42,18 @@ const LoginRequired = () => {
       <li className={styles.Nav_Menu1}> |</li>
 
       <li className={styles.Nav_Menu1}>
-        <a href="#!" rel="noreferrer">
-          회사소개
-        </a>
+        <button onClick={() => onisControl()}>회사소개</button>
+        {isControl ? (
+          <></>
+        ) : (
+          <ComponentModal isButton={false} setValue={setisControl}>
+            <div>
+              회사소개는 준비중입니다.<br></br>
+              필요하시면 아래 링크를 참고해주세요<br></br>
+              https://github.com/codestates-seb/seb41_main_007
+            </div>
+          </ComponentModal>
+        )}
       </li>
     </ul>
   );
@@ -112,7 +123,7 @@ const TopColRight: FC = () => {
                 Authorization: `Bearer ${session}`,
               },
               method: 'POST',
-            }).then((response) => console.log(response));
+            }).then((response) => {});
           });
         } else if (res.length > basketsCounter.length) {
           const optionIdData = basketsCounter.map((getdata: any) => {

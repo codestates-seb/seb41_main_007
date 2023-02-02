@@ -1,4 +1,7 @@
-@media (max-width: 540px) {
+@media (max-width: 531px) {
+  .Story_BigContainer {
+    padding: 0px 20px 0px 20px;
+  }
   .Story_Container {
     margin-left: 10px;
     @apply border-4 border-green-700 py-0 flex justify-between;
@@ -28,6 +31,11 @@
     margin-right: auto;
   }
 }
+.Story_BigContainer {
+  margin: 40px auto 0 auto;
+  width: 1220px;
+  display: flex;
+}
 /*
 @media (min-width: 850px) and (max-width: 1260px) {
   .Story_Container {
@@ -56,7 +64,7 @@
     justify-content: center;
   }
 } */
-@media (min-width: 540px) {
+@media (min-width: 532px) {
   .Story_Container {
     @apply border-4 border-green-700 py-6 flex justify-between  w-full;
   }

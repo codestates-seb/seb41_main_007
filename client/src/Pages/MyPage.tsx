@@ -7,8 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import TabPanel from 'Components/Mypage/TabPanel';
 import AccordionGroup from 'Components/Mypage/AccordionGroup';
 import MainImage from 'Components/PaymentPage/MainImage';
-import DeliveryResult from 'Components/Mypage/DeliveryResult';
+import ComponentModal from 'Components/Common/ComponentModal';
 import MembershipWithdrawal from 'Components/Mypage/MembershipWithdrawal';
+import CustomTitle from 'Components/Header/CustomTitle';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -25,14 +26,15 @@ const MyPage: React.FC<{ session: any }> = ({ session }) => {
       navigate('/login');
     }
   }, []);
+
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   return (
     <div>
+      <CustomTitle title={'회원정보 | FarmPi'} />
       <MainImage></MainImage>
-
       <ShortContainer>
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -50,7 +52,11 @@ const MyPage: React.FC<{ session: any }> = ({ session }) => {
             <AccordionGroup />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <DeliveryResult />
+            <ComponentModal isButton={true}>
+              <div>
+                장바구니를 이용하여<br></br>상품을 주문해주세요.
+              </div>
+            </ComponentModal>
           </TabPanel>
           <TabPanel value={value} index={2}>
             <MembershipWithdrawal session={session} />

@@ -18,6 +18,7 @@ import { useAppSelector } from 'Redux/app/hook';
 import { madalState } from 'Redux/reducer/modalSlice';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import Payment from 'Components/PaymentPage/Payment';
+import CustomTitle from 'Components/Header/CustomTitle';
 const Container = styled.div`
   width: 830px;
 `;
@@ -80,6 +81,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
     <div>
       {isModal && <NewModal />}
       <BGcontainer>
+        <CustomTitle title={'결제 | FarmPi'} />
         <div className="flex">
           <Container>
             <div className="font-semibold py-4 text-2xl mb-3"> 주문서</div>
@@ -117,11 +119,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
                 )}
               </button>
             </Title>
-            <Title>
-              {address && (
-                <Deliveryaddress setcontrol={setAddress} session={session} />
-              )}
-            </Title>
+            <Title>{address && <Deliveryaddress session={session} />}</Title>
             <Title>
               <div className=" font-semibold py-4 text-xl">결제수단</div>
               <button onClick={() => setPayment(!payment)}>
@@ -145,3 +143,4 @@ export default PaymentPage;
 //패치오류 났음 세션 문제
 //비로그인시 오류화면 뜨는거 안보이게 삭제
 //데이터오류남
+//리패치및 쿼리클라이언트추가

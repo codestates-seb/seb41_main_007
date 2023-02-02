@@ -24,19 +24,23 @@ const INITIAL_ERROR = {
   emptyTitle: false,
   emptyText: false,
   tooLongDesc: false,
+  isDesc: false,
   imageLimit: false,
   failToSend: false,
   categorySelector: false,
   optionCreate: false,
+  existImage: false,
 };
 interface ERROR {
   emptyTitle: boolean;
   emptyText: boolean;
   tooLongDesc: boolean;
+  isDesc: boolean;
   imageLimit: boolean;
   failToSend: boolean;
   categorySelector: boolean;
   optionCreate: boolean;
+  existImage: boolean;
 }
 
 const cx = classNames.bind(styles);
@@ -52,7 +56,7 @@ export default function Page() {
   const [optionPrice, setOptionPrice] = useState<any>(0);
   const [optionName, setOptionName] = useState<any>('');
   const [categoryNum, setCategoryNum] = useState<number>(9999);
-  const [imageFile, setImageFile] = useState<any>();
+  const [imageFile, setImageFile] = useState<any>('');
 
   const { mutate } = useCustomMutation('/products', ['post', title], 'POST');
 
@@ -65,7 +69,9 @@ export default function Page() {
         | 'imageLimit'
         | 'failToSend'
         | 'categorySelector'
-        | 'optionCreate',
+        | 'isDesc'
+        | 'optionCreate'
+        | 'existImage',
       boolean: boolean,
     ) => {
       setError(
@@ -114,10 +120,16 @@ export default function Page() {
       /[\u0020\u00A0\u1680\u180E\u2000-\u200B\u202F\u205F\u3000\u3164\uFEFF]/g,
       '',
     );
-
+    const emptyDesc = description.replace(
+      /[\u0020\u00A0\u1680\u180E\u2000-\u200B\u202F\u205F\u3000\u3164\uFEFF]/g,
+      '',
+    );
+    handlerError('isDesc', !emptyDesc);
+    handlerError('existImage', imageFile.length === 0);
+    handlerError('optionCreate', option.length === 0);
     handlerError('categorySelector', categoryNum === 9999);
     handlerError('emptyTitle', !emptyTitle);
-    handlerError('tooLongDesc', description.length > 30);
+    handlerError('tooLongDesc', description.length > 20);
     const emptyText =
       !!value
         .map((n: any) => Node.string(n))
@@ -137,6 +149,8 @@ export default function Page() {
     categoryNum,
     price,
     optionPrice,
+    option,
+    imageFile,
   ]);
 
   useEffect(() => {
@@ -280,6 +294,7 @@ export default function Page() {
             className={styles.title_input}
             value={title}
             placeholder="상품명"
+            maxLength={10}
             onChange={(e) => handlerTilteChange(e.target.value)}
           />
         </div>
@@ -291,13 +306,13 @@ export default function Page() {
             placeholder="상품 간단한 설명을 적어주세요"
             onChange={(e) => setDescription(e.target.value)}
           />
-          {description.length > 30 && (
+          {description.length > 20 && (
             <div
               className={cx('title_length', {
-                title_length_error: description.length > 100,
+                title_length_error: description.length > 20,
               })}
             >
-              {description.length} / 30
+              {description.length} / 20
             </div>
           )}
         </div>
@@ -308,6 +323,8 @@ export default function Page() {
           error.emptyTitle ||
           error.imageLimit ||
           error.tooLongDesc ||
+          error.optionCreate ||
+          error.existImage ||
           error.categorySelector) && <ErrorMessage error={error} />}
         <div className={styles.submit_wrapper}>
           <button
@@ -316,6 +333,8 @@ export default function Page() {
               error.emptyTitle ||
               error.imageLimit ||
               error.tooLongDesc ||
+              error.optionCreate ||
+              error.existImage ||
               error.categorySelector
             }
             className={cx('submit', {
@@ -324,6 +343,8 @@ export default function Page() {
                 error.emptyTitle ||
                 error.imageLimit ||
                 error.tooLongDesc ||
+                error.optionCreate ||
+                error.existImage ||
                 error.categorySelector,
             })}
             onClick={handlerSubmit}
@@ -351,11 +372,24 @@ const ErrorMessage = ({ error }: { error: ERROR }) => {
         )}
         {error.tooLongDesc && (
           <div className={styles.error_text}>
-            간단한 설명은 30자를 넘지 말아주세요.
+            간단한 설명은 20자를 넘지 말아주세요.
           </div>
+        )}
+        {error.optionCreate && (
+          <div className={styles.error_text}>옵션 상품을 만들어주세요</div>
         )}
         {error.failToSend && (
           <div className={styles.error_text}>글 작성 실패</div>
+        )}
+        {error.existImage && (
+          <div className={styles.error_text}>
+            등록 상품에 이미지가 존재하지않습니다.
+          </div>
+        )}
+        {error.isDesc && (
+          <div className={styles.error_text}>
+            간단한 설명이 등록되어있지않습니다.
+          </div>
         )}
         {error.categorySelector && (
           <div className={styles.error_text}>카테고리를 선택하여 주세요 </div>

@@ -11,9 +11,7 @@ const LoadingList: FC<Props> = ({ num }) => {
   return (
     <div className={styles.Loading_Container}>
       <SkeletonTheme highlightColor="white">
-        <ul className={styles.Loading_List_Container}>
-          {SkeletonContent(num)}
-        </ul>
+        <ul>{SkeletonContent(num)}</ul>
       </SkeletonTheme>
     </div>
   );
@@ -27,8 +25,12 @@ export const SkeletonContent = (num: number) => {
         <div className={styles.Loading_Img_Contanier}>
           <Skeleton className={styles.Loading_Content_Img} />
         </div>
-        <Skeleton width={'100px'} style={{ marginTop: '10px' }} />
-        <Skeleton width={'130px'} />
+        <Skeleton
+          className={styles.Loading_Content}
+          width={'100px'}
+          style={{ marginTop: '10px' }}
+        />
+        <Skeleton className={styles.Loading_Content} width={'130px'} />
       </li>,
     );
   }

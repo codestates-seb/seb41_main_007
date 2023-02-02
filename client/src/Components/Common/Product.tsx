@@ -6,17 +6,6 @@ import { TYPE_Product } from '../../Types/common/product';
 import styled from 'styled-components';
 import { useNumberComma } from 'Utils/commonFunction';
 
-const Content = styled.div`
-  img {
-    width: 280px;
-    height: 250px;
-    margin-bottom: 5px;
-  }
-  span {
-    display: block;
-  }
-`;
-
 interface Props {
   product: TYPE_Product;
 }
@@ -50,7 +39,7 @@ const Product: FC<Props> = ({ product }) => {
     <div ref={REF}>
       {isLoad ? (
         <Link key={product.productId} to={`/product/${product.productId}`}>
-          <Content className={styles.Product_Img_Container}>
+          <Content className={styles.Product_Container}>
             <img
               className={styles.Product_Img_Content}
               src={product.photo}
@@ -93,3 +82,14 @@ function onIntersection(
 }
 
 export default Product;
+
+const Content = styled.div`
+  img {
+    width: 280px;
+    height: 250px;
+    margin-bottom: 5px;
+  }
+  span {
+    display: block;
+  }
+`;

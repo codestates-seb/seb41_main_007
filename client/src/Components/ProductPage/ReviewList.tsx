@@ -135,7 +135,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
                         src={
                           el.reviewImage
                             ? el.reviewImage
-                            : 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/First_Tractor_Company_-_old_working_model_-_01.jpg/220px-First_Tractor_Company_-_old_working_model_-_01.jpg'
+                            : 'https://cdn-icons-png.flaticon.com/128/7078/7078329.png'
                         }
                         alt={'reviewImage'}
                         className={styles.Review_Image_Content}
@@ -152,7 +152,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
                       </div>
                       <div className={styles.Review_Second_Row_Container}>
                         <div className={styles.Review_User}>
-                          {el.memberId} 님
+                          {el.member.name} 님
                         </div>
                         <div className={styles.Review_Rating}>
                           평점: <RatingView num={el.rating} />
@@ -167,7 +167,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
                       setEditmode={() => setEditmode(true)}
                       session={session}
                       reviewId={el.reviewId}
-                      memberId={el.memberId}
+                      memberId={el.member.memberId}
                       productId={el.productId}
                     />
                   </div>

@@ -214,7 +214,7 @@ const BasketList: FC = () => {
             },
           ).then((response) => {
             queryClient.invalidateQueries('/carts');
-            console.log(response);
+            // console.log(response);
           });
         }
         return false;
@@ -288,7 +288,7 @@ const BasketList: FC = () => {
                   method: 'PATCH',
                 }).then((response) => {
                   queryClient.invalidateQueries('/carts');
-                  console.log(response);
+                  // console.log(response);
                 });
               }
             }

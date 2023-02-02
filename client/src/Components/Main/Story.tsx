@@ -4,16 +4,15 @@ import { faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import styles from './Styles/Story.module.css';
-const Container = styled.div`
-  margin: 40px auto 0 auto;
-  width: 1220px;
-  display: flex;
-`;
+import ComponentModal from 'Components/Common/ComponentModal';
+import useBooleanInput from 'CustomHook/useBooleaninput';
+
 const Story: FC = () => {
+  const [isControl, onisControl, setisControl] = useBooleanInput(true);
   const navigate = useNavigate();
   return (
     <div className="flex">
-      <Container>
+      <div className={styles.Story_BigContainer}>
         <div className={styles.Story_Container}>
           <div className={styles.Story_Main_Container}>
             <div className={styles.Story_Title}>이야기</div>
@@ -25,16 +24,26 @@ const Story: FC = () => {
             </div>
           </div>
         </div>
-        <div className={styles.Story_Button}>
-          <button
-            onClick={() => {
-              navigate('/basket');
-            }}
-          >
-            <FontAwesomeIcon icon={faArrowRight} />
-          </button>
-        </div>
-      </Container>
+
+        <button
+          className={styles.Story_Button}
+          onClick={() => {
+            onisControl();
+          }}
+        >
+          {isControl ? (
+            <></>
+          ) : (
+            <ComponentModal isButton={true} setValue={setisControl}>
+              <div>
+                방문해주셔서 감사합니다! <br></br>전 상품 10% 할인을
+                진행중입니다💸<br></br>
+              </div>
+            </ComponentModal>
+          )}
+          <FontAwesomeIcon icon={faArrowRight} />
+        </button>
+      </div>
     </div>
   );
 };
