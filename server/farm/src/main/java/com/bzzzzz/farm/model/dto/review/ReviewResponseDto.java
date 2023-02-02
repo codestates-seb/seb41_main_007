@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.model.dto.review;
 
 
+import com.bzzzzz.farm.model.dto.member.MemberDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,7 +17,7 @@ public class ReviewResponseDto {
 
     private Long productId;
     private Long reviewId;
-    private Long memberId;
+    private MemberDto.Response member;
     private String reviewTitle;
     private String reviewContent;
 
@@ -26,10 +27,10 @@ public class ReviewResponseDto {
 
     private String reviewImage;
 
-    public ReviewResponseDto(Long productId, Long reviewId, Long memberId, String reviewTitle, String reviewContent, float rating, String reviewImage, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
+    public ReviewResponseDto(Long productId, Long reviewId, MemberDto.Response member, String reviewTitle, String reviewContent, float rating, String reviewImage, LocalDateTime createdAt, LocalDateTime lastModifiedAt) {
         this.productId = productId;
         this.reviewId = reviewId;
-        this.memberId = memberId;
+        this.member = member;
         this.reviewTitle = reviewTitle;
         this.reviewContent = reviewContent;
         this.rating = rating;
