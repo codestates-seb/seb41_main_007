@@ -101,5 +101,8 @@ public class ReviewController {
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }
 
-
+    @GetMapping("/reviews/all")
+    public ResponseEntity getReviews() {
+        return new ResponseEntity(reviewService.findReviewsOrderByReviewId(), HttpStatus.OK);
+    }
 }

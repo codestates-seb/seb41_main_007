@@ -62,31 +62,4 @@ public interface ReviewMapper {
                 review.getModifiedAt()
         )).collect(Collectors.toList());
     }
-
-    default List<ReviewSimpleResponseDto> reviewsToReviewSimpleResponseDtos(List<Review> reviews) {
-        if (reviews == null) {
-            return null;
-        }
-
-        return reviews.stream()
-                .map(review -> reviewToReviewSimpleResponseDto(review))
-                .collect(Collectors.toList());
-    }
-
-    private ReviewSimpleResponseDto reviewToReviewSimpleResponseDto(Review review) {
-        if (review == null) {
-            return null;
-        }
-
-        return ReviewSimpleResponseDto.builder()
-                .reviewId(review.getReviewId())
-                .reviewTitle(review.getReviewTitle())
-                .reviewContent(review.getReviewContent())
-                .rating(review.getRating())
-                .createdAt(review.getCreatedAt())
-                .modifiedAt(review.getModifiedAt())
-                .memberName(review.getMember().getName())
-                .photo(review.getProduct().getPhoto())
-                .build();
-    }
 }

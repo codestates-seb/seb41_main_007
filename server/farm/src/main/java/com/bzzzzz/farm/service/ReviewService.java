@@ -1,6 +1,7 @@
 package com.bzzzzz.farm.service;
 
 
+import com.bzzzzz.farm.model.dto.review.ReviewSimpleResponseDto;
 import com.bzzzzz.farm.repository.MemberRepository;
 import com.bzzzzz.farm.repository.ReviewRepository;
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
@@ -90,7 +91,7 @@ public class ReviewService {
 
     @Cacheable(value = "findReviewsOrderByReviewId")
     @Transactional(readOnly = true)
-    public List<Review> findReviewsOrderByReviewId() { // 메인페이지에 하단부에 사용
-        return reviewRepository.findAll(PageRequest.of(0, 4, Sort.by("reviewId").descending())).getContent();
+    public List<ReviewSimpleResponseDto> findReviewsOrderByReviewId() {
+        return reviewRepository.findSixRecentlyReviews();
     }
 }
