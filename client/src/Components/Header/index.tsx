@@ -13,7 +13,8 @@ const Header: FC = () => {
     const localAccessToken = localStorage.getItem('access_token');
     if (localAccessToken) {
       const { exp } = tokenDecode(localAccessToken) as TYPE_Token;
-      const tokenExpiration = Number(exp) - Math.floor(Date.now() / 1000) > 0;
+      const tokenExpiration =
+        Number(exp) - Math.floor(Date.now() / 1000) > 4000;
       if (!tokenExpiration) {
         const localRefreshToken = localStorage.getItem('refresh_token');
         fetch(`${process.env.REACT_APP_BACKEND_URL}/reissue`, {

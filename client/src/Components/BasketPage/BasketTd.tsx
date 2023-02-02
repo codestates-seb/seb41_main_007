@@ -205,7 +205,8 @@ const BasketTd: FC<checkBoxtype> = ({
           },
           method: 'DELETE',
         },
-      ).then((response) => console.log(response));
+      );
+      // .then((response) => console.log(response));
     }
 
     dispatch(countDelete({ id: el.productOptionResponseDtos.productOptionId }));

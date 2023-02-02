@@ -17,7 +17,7 @@ const Radio: React.FC<props> = ({
 }) => {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    console.log(value);
+    // console.log(value);
     onSave(e);
   };
 
