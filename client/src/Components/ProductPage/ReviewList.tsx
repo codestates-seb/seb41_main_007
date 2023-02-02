@@ -135,7 +135,7 @@ const ReviewList: FC<Props> = ({ productId, session }) => {
                         src={
                           el.reviewImage
                             ? el.reviewImage
-                            : 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/First_Tractor_Company_-_old_working_model_-_01.jpg/220px-First_Tractor_Company_-_old_working_model_-_01.jpg'
+                            : 'https://cdn-icons-png.flaticon.com/128/7078/7078329.png'
                         }
                         alt={'reviewImage'}
                         className={styles.Review_Image_Content}
