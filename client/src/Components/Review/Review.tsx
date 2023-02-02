@@ -31,7 +31,6 @@ const CommentItem = ({ reviewContent }: { reviewContent: string }) => {
 };
 
 const ReviewItem: React.FC<Props> = ({ review }) => {
-  console.log(review.reviewImage);
   return (
     <a
       href={`/product/${review.productId}`}
@@ -52,17 +51,17 @@ const ReviewItem: React.FC<Props> = ({ review }) => {
         <h3 className={styles.Review_Product_Container}>
           {review.reviewTitle}
         </h3>
-        <div className="">
+        <div>
           <Product>
-            <p className={styles.Review_Product_Title}>
+            <div className={styles.Review_Product_Title}>
               <CommentItem reviewContent={review.reviewContent} />
-            </p>
+            </div>
           </Product>
           <User>
             <p className={styles.Review_User}>{review.memberName}</p>
-            <p className={styles.Review_Rating}>
+            <div className={styles.Review_Rating}>
               <RatingView num={review.rating} />
-            </p>
+            </div>
             <p className={styles.Review_Date}>{customTime(review.createdAt)}</p>
           </User>
         </div>
