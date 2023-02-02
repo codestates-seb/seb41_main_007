@@ -4,11 +4,9 @@ import {
   TYPE_CartData,
   TYPE_KakaoApi,
   TYPE_UrlProp,
-  TYPE_Total,
 } from 'Types/common/product';
 import { useEffect, useState } from 'react';
 import { useNumberComma } from 'Utils/commonFunction';
-type ProductData = { productOptionId: number; quantity: number };
 const Agree = styled.div``;
 const TotalContainer = styled.div`
   margin-top: 220px;
@@ -37,7 +35,6 @@ const INITIALVALUE = {
 const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
   const [orderId, setOrderId] = useState<number>(0);
   const [urlData, setUrlData] = useState<TYPE_UrlProp>(INITIALVALUE);
-  const [totalPrice, setTotalPrice] = useState<number>(0);
   const token = localStorage.getItem('access_token');
   console.log(data, '받아온 데이터 장바구니');
   const productHandler = data.map((el: TYPE_KakaoApi) => {

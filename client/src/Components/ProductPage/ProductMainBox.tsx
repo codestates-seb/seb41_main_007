@@ -43,18 +43,29 @@ const ProductPrice = styled.div<{ Mgtop: string }>`
   height: 27px;
   font-size: var(--large);
   font-weight: bold;
+
   margin-top: ${(props) => props.Mgtop};
   margin-bottom: 20px;
 `;
 
 const ProductTitle = styled.h1`
-  margin-top: 100px;
-  margin-bottom: 15px;
+  margin-top: 75px;
+  margin-bottom: 8px;
   width: 350px;
   height: 38px;
   font-size: var(--xxlarge);
   font-weight: bold;
 `;
+
+const Brandname = styled.div`
+  font-size: var(--large);
+  font-weight: bold;
+  margin-bottom: 15px;
+  width: 350px;
+  height: 20px;
+  color: #9b9ea1;
+`;
+
 const ProductContent = styled.p`
   max-width: 350px;
   overflow: hidden;
@@ -259,6 +270,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
         <ImageBox src={data.photo}></ImageBox>
         <ProductBox>
           <ProductTitle>{data.name}</ProductTitle>
+          <Brandname>브랜드 {data.brand}</Brandname>
           <ProductContent>{data.description}</ProductContent>
           <Ratingstar num={data.rating}></Ratingstar>
           <ProductPrice Mgtop="2px">

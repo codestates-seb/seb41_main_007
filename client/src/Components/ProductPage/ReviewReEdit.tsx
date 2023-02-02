@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useState } from 'react';
 import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 
 import { useQueryClient } from 'react-query';
@@ -7,7 +7,6 @@ import { Descendant } from 'Types/slate';
 import styles from './Styles/ReviewReEdit.module.css';
 import Rating from './Rating';
 import { TYPE_Review } from 'Types/common/product';
-import { pictureCreate } from 'Utils/api';
 import ImageForm from 'Components/Common/ImageForm';
 
 interface Props {
@@ -49,19 +48,6 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
     setStarClicked(clickStates);
   };
 
-  const handleChangeFile = async (e: any) => {
-    if (e.target.files[0]) {
-      const res = await pictureCreate('/file/upload', e.target.files[0]);
-      if (res) {
-        setUserImage(res.imageUrls);
-        e.target.value = '';
-      } else {
-        setUserImage('');
-        e.target.value = '';
-      }
-    }
-  };
-
   const handlerSubmit = () => {
     let score = starClicked.filter(Boolean).length;
     const submitValue = {
@@ -81,7 +67,7 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
             cache.pages[i].result[j] = {
               productId: cache.pages[i].result[j]['productId'],
               reviewId: cache.pages[i].result[j]['reviewId'],
-              memberId: cache.pages[i].result[j]['memberId'],
+              member: cache.pages[i].result[j]['member'],
               reviewLastModifiedAt: `${new Date()}`,
               reviewCreatedAt: cache.pages[i].result[j]['reviewCreatedAt'],
               reviewContent: JSON.stringify(reviewContentData),

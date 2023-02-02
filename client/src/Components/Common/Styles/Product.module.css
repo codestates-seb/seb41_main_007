@@ -37,7 +37,7 @@
 }
 
 .Product_Price_Content {
-  @apply text-red-700 font-semibold text-sm mt-2;
+  @apply text-red-700 font-semibold w-28 text-sm mt-2;
 }
 
 .Product_Sale_Content {

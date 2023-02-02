@@ -2,11 +2,12 @@ import { FC } from 'react';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import Product from 'Components/Common/Product';
 import { TYPE_Product } from 'Types/common/product';
+import Best_Product from 'Components/Common/Best_product';
 
 const BestProduct: FC = () => {
   const size = 8;
   const page = 1;
-  const sort = 'likeCount';
+  const sort = 'rating';
   const order = 'descending';
   const { data, isLoading, error } = useCustomQuery(
     `/products?sort=${sort}&order=${order}&page=${page}&size=${size}`,
@@ -26,7 +27,7 @@ const BestProduct: FC = () => {
           {data.data &&
             data.data.map((product: TYPE_Product) => {
               product['isBest'] = true;
-              return <Product key={product.productId} product={product} />;
+              return <Best_Product key={product.productId} product={product} />;
             })}
         </div>
       </div>

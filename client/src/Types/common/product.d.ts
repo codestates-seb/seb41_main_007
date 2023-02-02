@@ -5,6 +5,7 @@ export interface TYPE_Product {
   photo: string;
   alt?: string;
   isNew: boolean;
+  rating: number;
   isBest: boolean;
 }
 
@@ -130,4 +131,15 @@ export interface banktype {
   avatar: string;
   Bankaccount: string;
   Bankname: string;
+}
+
+export interface TYPE_ReviewAll {
+  createdAt: string;
+  memberName: string;
+  productId: number;
+  rating: number;
+  reviewContent: string;
+  reviewId: number;
+  reviewImage: string;
+  reviewTitle: string;
 }

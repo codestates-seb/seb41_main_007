@@ -2,11 +2,6 @@ import Carousel from 'react-material-ui-carousel';
 import { Paper } from '@mui/material';
 import styled from 'styled-components';
 
-interface useCarousel {
-  timer: number;
-  animation: string;
-  timeout: number;
-}
 interface useItemProps {
   url: string;
   title: string;

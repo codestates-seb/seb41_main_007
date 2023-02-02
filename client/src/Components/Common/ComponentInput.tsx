@@ -105,7 +105,6 @@ const ComponentsInput: React.FC<Props> = ({
   }, []);
 
   const onChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const numberCheck = /[^0-9]/g;
     if (e.target.value.length < 11 || e.target.value.length > 12) {
       setNameMessage('-를 제외한 11자리를 입력해주세요');
@@ -188,3 +187,4 @@ export default ComponentsInput;
 //모든 오류를 막는데에 계싼적으로 행동하지 못함
 //컴포넌트화 실패
 //이름 입력하니 사라지는버그
+// const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
