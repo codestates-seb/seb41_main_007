@@ -21,12 +21,12 @@ public class ReviewRepositoryCustomImpl implements ReviewRepositoryCustom {
                 .select(new QReviewSimpleResponseDto(
                         review.reviewId,
                         review.reviewTitle,
+                        review.reviewContent,
                         review.rating,
                         review.member.name,
                         review.reviewImage,
-                        review.product.name,
-                        review.createdAt,
-                        review.modifiedAt
+                        review.product.productId,
+                        review.createdAt
                 ))
                 .from(review)
                 .orderBy(new OrderSpecifier(Order.DESC, review.reviewId))
