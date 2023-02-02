@@ -67,10 +67,6 @@ public class Product extends Auditable {
     @OneToMany(mappedBy = "product", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     private List<Review> reviews = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "MEMBER_ID")
-    private Member member; // 관리자만 올 수 있음
-
     // 연관 관계 매핑 관련 메서드 및 이넘
     public void addProductOption(ProductOption productOption) {
         this.productOptions.add(productOption);

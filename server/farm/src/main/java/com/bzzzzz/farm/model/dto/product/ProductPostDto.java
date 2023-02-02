@@ -2,7 +2,6 @@ package com.bzzzzz.farm.model.dto.product;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
@@ -12,9 +11,6 @@ import java.util.List;
 @Getter
 @Builder
 public class ProductPostDto {
-    @Setter
-    private Long memberId;
-
     @NotBlank
     private String name;
     @Min(value = 0)
