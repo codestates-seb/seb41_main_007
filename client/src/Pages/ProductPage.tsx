@@ -11,6 +11,7 @@ import ProductDetailBox from 'Components/ProductPage/productDetailBox';
 import CategoryList from 'Components/Common/CategoryList';
 import TabPanel from 'Components/Mypage/TabPanel';
 import Review from 'Components/ProductPage/Review';
+import RouteChangeTracker from 'Utils/GoogleTracker';
 
 const ProductContainer = styled.div`
   margin: 120px auto 120px 280px;
@@ -57,6 +58,7 @@ export interface counterProps {
 //3번 읽고 돌아와야함
 
 const ProductPage: React.FC = () => {
+  RouteChangeTracker();
   const [value, setValue] = useState<number>(0);
 
   useScrollTop();

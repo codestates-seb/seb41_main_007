@@ -15,8 +15,6 @@ import NotFoundPage from 'Pages/NotFoundPage';
 import { MyPageSession, PaymentPageSession } from 'Utils/SessionMaster';
 import Footer from 'Components/Common/Footer';
 
-import OrderTest from 'Pages/OrderTest';
-
 import AllProductsPage from 'Pages/AllProductsPage';
 import Auth from 'Pages/Auth';
 import Post from 'Pages/Post/Post';
@@ -94,7 +92,6 @@ const router = createBrowserRouter([
     element: <Test />,
   },
   { path: '/auth', element: <Auth /> },
-  { path: '/ordertest', element: <OrderTest /> },
 ]);
 
 const App: React.FC = () => {

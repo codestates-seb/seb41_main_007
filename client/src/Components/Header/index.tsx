@@ -37,6 +37,8 @@ const Header: FC = () => {
             }
           })
           .catch((e) => {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
             console.error('token error' + e);
           });
       }
