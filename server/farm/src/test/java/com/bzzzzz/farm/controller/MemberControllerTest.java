@@ -14,26 +14,26 @@
 //import org.springframework.boot.test.mock.mockito.MockBean;
 //import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 //import org.springframework.http.MediaType;
+//import org.springframework.restdocs.payload.JsonFieldType;
 //import org.springframework.security.test.context.support.WithMockUser;
 //import org.springframework.test.web.servlet.MockMvc;
 //import org.springframework.test.web.servlet.ResultActions;
 //
-//import java.util.ArrayList;
+//import java.text.SimpleDateFormat;
 //import java.util.List;
 //
-//import static org.mockito.ArgumentMatchers.anyLong;
 //import static org.mockito.BDDMockito.given;
+//import static org.mockito.Mockito.doNothing;
 //import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 //import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 //import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 //import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-//import static org.springframework.restdocs.request.RequestDocumentation.*;
 //import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 //import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 //import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 //
 //@AutoConfigureRestDocs
-//@WebMvcTest(MemberControllerTest.class)
+//@WebMvcTest(MemberController.class)
 //@MockBean(JpaMetamodelMappingContext.class)
 //@WithMockUser(roles = {"USER", "ADMIN"})
 //public class MemberControllerTest {
@@ -52,28 +52,23 @@
 //    @Test
 //    @DisplayName("회원정보 수정")
 //    void patchMember() throws Exception{
-//
 //        //given
-//        long memberId = 1L;
 //        MemberDto.Patch request = MemberDto.Patch.builder()
-//                .memberId(memberId)
+//                .memberId(Mockito.anyLong())
 //                .name("김병수")
-//                .age(26)
-//                .address("대구 북구")
-//                .email("qudtn7383@gmail.com")
+//                .birth("19980518")
 //                .gender("male")
-//                .phone("010-0000-0000")
+//                .email("qudtn7383@gmail.com")
+//                .phoneNumber("01000000000")
 //                .build();
 //        String content = gson.toJson(request);
-//        Member member = new Member();
-//        member.setMemberId(memberId);
-//
-//        given(mapper.memberPatchToMember(Mockito.any(MemberDto.Patch.class))).willReturn(new Member());
-//        given(memberService.updateMember(Mockito.any(Member.class))).willReturn(member);
+//        Member member = mapper.memberPatchToMember(request);
+//        MemberDto.Response response = mapper.memberToMemberResponse(member);
+//        given(memberService.updateMember(Mockito.any(MemberDto.Patch.class))).willReturn(response);
 //
 //        // when
 //        ResultActions actions = mockMvc.perform(
-//                patch("/members/{member-id}", memberId)
+//                patch("/members")
 //                        .accept(MediaType.APPLICATION_JSON)
 //                        .contentType(MediaType.APPLICATION_JSON)
 //                        .with(csrf())
@@ -82,54 +77,64 @@
 //
 //        //then
 //        actions
-//                .andExpect(status().isOk());
-////                .andDo(document(
-////                        "patchMember",
-////                        preprocessRequest(prettyPrint()),
-////                        preprocessResponse(prettyPrint()),
-////                        requestFields(
-////                                List.of(
-////                                        fieldWithPath("productId").type(JsonFieldType.NUMBER).description("회원 식별자"),
-////                                        fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
-////                                        fieldWithPath("age").type(JsonFieldType.NUMBER).description("나이"),
-////                                        fieldWithPath("address").type(JsonFieldType.STRING).description("주소"),
-////                                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
-////                                        fieldWithPath("gender").type(JsonFieldType.STRING).description("성별"),
-////                                        fieldWithPath("phone").type(JsonFieldType.STRING).description("전화번호")
-////                                )
-////                        ),
-////                        responseFields(fieldWithPath("data").description("제품 식별자"))
-////                ))
+//                .andExpect(status().isOk())
+//                .andDo(document(
+//                        "patchMember",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        requestFields(
+//                                List.of(
+//                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+//                                        fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+//                                        fieldWithPath("birth").type(JsonFieldType.STRING).description("생년월일"),
+//                                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+//                                        fieldWithPath("gender").type(JsonFieldType.STRING).description("성별"),
+//                                        fieldWithPath("phoneNumber").type(JsonFieldType.STRING).description("전화번호")
+//                                )
+//                        )
+//                ));
 //
 //    }
 //
 //    @Test
 //    @DisplayName("회원정보 조회")
 //    void getMember() throws Exception{
-//
-//        long memberId = 1L;
+//        //given
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 //        Member member = Member.builder()
-//                .memberId(1L)
+//                .memberId(Mockito.anyLong())
 //                .name("김병수")
-//                .age(26)
-//                .address("대구 북구")
+//                .birth(formatter.parse("19980518"))
 //                .email("qudtn7383@gmail.com")
 //                .gender("male")
-//                .phone("010-0000-0000")
+//                .phoneNumber("01000000000")
 //                .build();
-//
-//        given(memberService.findMember(Mockito.anyLong())).willReturn(member);
+//        MemberDto.Response response = mapper.memberToMemberResponse(member);
+//        given(memberService.findMember(Mockito.anyLong())).willReturn(response);
 //        String content = gson.toJson(member);
 //
-//
 //        ResultActions actions = mockMvc.perform(
-//                get("/members/{member-id}", memberId)
+//                get("/members")
 //                        .accept(MediaType.APPLICATION_JSON)
 //                        .contentType(MediaType.APPLICATION_JSON)
 //                        .with(csrf())
 //                        .content(content));
 //
 //        actions.andExpect(status().isOk())
+//                .andDo(document(
+//                        "getMember",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        requestFields(
+//                                List.of(
+//                                        fieldWithPath("memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+//                                        fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+//                                        fieldWithPath("birth").type(JsonFieldType.STRING).description("생년월일"),
+//                                        fieldWithPath("email").type(JsonFieldType.STRING).description("이메일"),
+//                                        fieldWithPath("gender").type(JsonFieldType.STRING).description("성별"),
+//                                        fieldWithPath("phoneNumber").type(JsonFieldType.STRING).description("전화번호")
+//                                )
+//                        )))
 //                .andReturn();
 //    }
 //
@@ -137,48 +142,82 @@
 //    @DisplayName("전체 회원정보 조회(관리자 전용)")
 //    void getMembers() throws Exception{
 //        // given
-//        List<Member> members = new ArrayList<>();
+//        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 //        Member member1 = Member.builder()
 //                .memberId(1L)
 //                .name("김병수")
-//                .age(26)
-//                .address("대구 북구")
+//                .birth(formatter.parse("19980518"))
 //                .email("qudtn7383@gmail.com")
 //                .gender("male")
-//                .phone("010-0000-0000")
+//                .phoneNumber("01000000000")
 //                .build();
 //
 //        Member member2 = Member.builder()
 //                .memberId(2L)
 //                .name("김병수")
-//                .age(26)
-//                .address("대구 북구")
+//                .birth(formatter.parse("19980518"))
 //                .email("qudtn7383@gmail.com")
 //                .gender("male")
-//                .phone("010-0000-0001")
+//                .phoneNumber("01000000001")
 //                .build();
+//        List<MemberDto.Response> responses = mapper.membersToMemberResponses(List.of(member1, member2));
 //
-//        given(memberService.findMembers()).willReturn(members);
-//
-//        String content = gson.toJson(members);
+//        given(memberService.findMembers()).willReturn(responses);
 //
 //        //when
 //        ResultActions actions =
 //                mockMvc.perform(
-//                        get("/members")
-//                                .accept(MediaType.APPLICATION_JSON)
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                                .content(content));
+//                        get("/members/all")
+//                                .accept(MediaType.APPLICATION_JSON));
+//
 //
 //        //then
 //        actions
 //                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.data").isArray())
+////                .andExpect(jsonPath("$.[0].memberId").value(member1.getMemberId()))
+////                .andExpect(jsonPath("$.[0].name").value(member1.getName()))
+////                .andExpect(jsonPath("$.[0].birth").value(member1.getBirth()))
+////                .andExpect(jsonPath("$.[0].email").value(member1.getEmail()))
+////                .andExpect(jsonPath("$.[0].gender").value(member1.getGender()))
+////                .andExpect(jsonPath("$.[0].phoneNumber").value(member1.getPhoneNumber()))
+////                .andExpect(jsonPath("$.[1].memberId").value(member2.getMemberId()))
+////                .andExpect(jsonPath("$.[1].name").value(member2.getName()))
+////                .andExpect(jsonPath("$.[1].birth").value(member2.getBirth()))
+////                .andExpect(jsonPath("$.[1].email").value(member2.getEmail()))
+////                .andExpect(jsonPath("$.[1].gender").value(member2.getGender()))
+////                .andExpect(jsonPath("$.[1].phoneNumber").value(member2.getPhoneNumber()))
+//                .andDo(document(
+//                        "getMembers",
+//                        preprocessResponse(prettyPrint()),
+//                        responseFields(List.of(
+//                                fieldWithPath("[].memberId").type(JsonFieldType.NUMBER).description("회원 식별자"),
+//                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("이름"),
+//                                fieldWithPath("[].birth").type(JsonFieldType.STRING).description("생년월일"),
+//                                fieldWithPath("[].email").type(JsonFieldType.STRING).description("이메일"),
+//                                fieldWithPath("[].gender").type(JsonFieldType.STRING).description("성별"),
+//                                fieldWithPath("[].phoneNumber").type(JsonFieldType.STRING).description("전화번호")
+//                        ))))
 //                .andReturn();
 //    }
 //
 //    @Test
 //    @DisplayName("회원탈퇴")
 //    void deleteMember() throws Exception{
+//        // given
+//        doNothing().when(memberService).deleteMember(Mockito.anyLong());
 //
+//        // when
+//        ResultActions actions = mockMvc.perform(
+//                delete("/members")
+//                        .with(csrf())
+//        );
+//
+//        // then
+//        actions
+//                .andExpect(status().isOk())
+//                .andDo(document(
+//                        "deleteMember"
+//                ));
 //    }
 //}

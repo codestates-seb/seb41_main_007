@@ -1,13 +1,11 @@
 package com.bzzzzz.farm.mapper;
 
+import com.bzzzzz.farm.model.dto.product.*;
+import com.bzzzzz.farm.model.entity.Product;
 import com.bzzzzz.farm.model.entity.ProductCategory;
 import com.bzzzzz.farm.model.entity.ProductOption;
-import com.bzzzzz.farm.model.entity.Product;
-import com.bzzzzz.farm.model.dto.product.*;
-import com.bzzzzz.farm.model.entity.Review;
 import org.mapstruct.Mapper;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -28,16 +26,6 @@ public interface ProductMapper {
         product.setShippingCountry(Product.ShippingCountry.valueOf(productPostDto.getShippingCountry()));
         product.setShippingMethod(Product.ShippingMethod.valueOf(productPostDto.getShippingMethod()));
         product.setShippingPrice(productPostDto.getShippingPrice());
-
-        // ProductCategory 추가
-//        productPostDto.getProductCategoryPostDtos().stream()
-//                .forEach(productCategoryPostDto ->
-//                        product.addProductCategory(productCategoryPostDtoToProductCategory(productCategoryPostDto)));
-
-        // 옵션값들 추가
-//        productPostDto.getProductOptionPostDtos().stream()
-//                .forEach(productOptionPostDto ->
-//                        product.addProductOption(productOptionPostDtoToProductOption(productOptionPostDto)));
 
         return product;
     }
