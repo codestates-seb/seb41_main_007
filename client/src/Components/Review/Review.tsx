@@ -33,45 +33,41 @@ const CommentItem = ({ reviewContent }: { reviewContent: string }) => {
 const ReviewItem: React.FC<Props> = ({ review }) => {
   console.log(review.reviewImage);
   return (
-    <div className={styles.Review_Data}>
-      <a
-        href={`/product/${review.productId}`}
-        className={styles.Review_Detail_Content}
-      >
-        <div className={styles.Review_Image_Container}>
-          <img
-            src={
-              review.reviewImage
-                ? review.reviewImage
-                : 'https://cdn-icons-png.flaticon.com/128/7078/7078329.png'
-            }
-            alt={'reviewImage'}
-            className={styles.Review_Image_Content}
-          />
+    <a
+      href={`/product/${review.productId}`}
+      className={styles.Review_Detail_Content}
+    >
+      <div className={styles.Review_Image_Container}>
+        <img
+          src={
+            review.reviewImage
+              ? review.reviewImage
+              : 'https://cdn-icons-png.flaticon.com/128/7078/7078329.png'
+          }
+          alt={'reviewImage'}
+          className={styles.Review_Image_Content}
+        />
+      </div>
+      <div>
+        <h3 className={styles.Review_Product_Container}>
+          {review.reviewTitle}
+        </h3>
+        <div className="">
+          <Product>
+            <p className={styles.Review_Product_Title}>
+              <CommentItem reviewContent={review.reviewContent} />
+            </p>
+          </Product>
+          <User>
+            <p className={styles.Review_User}>{review.memberName}</p>
+            <p className={styles.Review_Rating}>
+              <RatingView num={review.rating} />
+            </p>
+            <p className={styles.Review_Date}>{customTime(review.createdAt)}</p>
+          </User>
         </div>
-        <div>
-          <h3 className={styles.Review_Product_Container}>
-            {review.reviewTitle}
-          </h3>
-          <div className="">
-            <Product>
-              <p className={styles.Review_Product_Title}>
-                <CommentItem reviewContent={review.reviewContent} />
-              </p>
-            </Product>
-            <User>
-              <p className={styles.Review_User}>{review.memberName}</p>
-              <p className={styles.Review_Rating}>
-                <RatingView num={review.rating} />
-              </p>
-              <p className={styles.Review_Date}>
-                {customTime(review.createdAt)}
-              </p>
-            </User>
-          </div>
-        </div>
-      </a>
-    </div>
+      </div>
+    </a>
   );
 };
 
@@ -85,9 +81,11 @@ const Review: React.FC = () => {
     <div className={styles.Review_Container}>
       <div className={styles.Review_Content}>
         <h2 className={styles.Review_Title}>고객만족후기</h2>
-        {data.map((el: TYPE_ReviewAll) => {
-          return <ReviewItem key={el.reviewId} review={el} />;
-        })}
+        <div className={styles.Review_Data}>
+          {data.map((el: TYPE_ReviewAll) => {
+            return <ReviewItem key={el.reviewId} review={el} />;
+          })}
+        </div>
       </div>
     </div>
   );
