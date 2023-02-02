@@ -123,7 +123,7 @@ const TopColRight: FC = () => {
                 Authorization: `Bearer ${session}`,
               },
               method: 'POST',
-            }).then((response) => console.log(response));
+            }).then((response) => {});
           });
         } else if (res.length > basketsCounter.length) {
           const optionIdData = basketsCounter.map((getdata: any) => {
