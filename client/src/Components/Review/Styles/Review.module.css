@@ -1,3 +1,15 @@
+.Comment {
+  padding: 4px 0;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.Comment_List_Wrapper {
+  display: flex;
+  margin-top: 18px;
+}
+
 @media screen and (max-width: 689px) {
   .Review_Image_Content {
     @apply h-32 w-32;

@@ -15,7 +15,6 @@ import Search from 'Pages/Search';
 import NotFoundPage from 'Pages/NotFoundPage';
 import { MyPageSession, PaymentPageSession } from 'Utils/SessionMaster';
 import Footer from 'Components/Common/Footer';
-import ReviewRead from 'Components/Review/ReviewRead';
 
 import OrderTest from 'Pages/OrderTest';
 
@@ -98,7 +97,6 @@ const router = createBrowserRouter([
   },
   { path: '/auth', element: <Auth /> },
   { path: '/ordertest', element: <OrderTest /> },
-  { path: '/reviewread', element: <ReviewRead /> },
 ]);
 
 const App: React.FC = () => {

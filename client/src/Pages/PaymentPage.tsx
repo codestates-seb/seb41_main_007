@@ -15,6 +15,7 @@ import { useAppSelector } from 'Redux/app/hook';
 import { madalState } from 'Redux/reducer/modalSlice';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import Payment from 'Components/PaymentPage/Payment';
+import CustomTitle from 'Components/Header/CustomTitle';
 const Container = styled.div`
   width: 830px;
 `;
@@ -58,6 +59,7 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
     <div>
       {isModal && <NewModal />}
       <BGcontainer>
+        <CustomTitle title={'결제 | FarmPi'} />
         <div className="flex">
           <Container>
             <div className="font-semibold py-4 text-2xl mb-3"> 주문서</div>
