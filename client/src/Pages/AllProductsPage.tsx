@@ -10,10 +10,8 @@ import ProductList from 'Components/Common/ProductList';
 import Navigation from 'Components/Pagination/Navigation';
 import CategoryList from 'Components/Common/CategoryList';
 import SortBar from 'Components/Common/SortBar';
-import RouteChangeTracker from 'Utils/GoogleTracker';
 
 const AllProductsPage: FC = () => {
-  RouteChangeTracker();
   const navigate = useNavigate();
   const sch = location.search;
   const params = new URLSearchParams(sch);

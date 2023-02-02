@@ -6,10 +6,8 @@ import { BGcontainer } from 'Components/Common/BGcontainer';
 import CategoryList from 'Components/Common/CategoryList';
 import ProductList from 'Components/Common/ProductList';
 import Navigation from 'Components/Pagination/Navigation';
-import RouteChangeTracker from 'Utils/GoogleTracker';
 
 const ProductListPage: FC = () => {
-  RouteChangeTracker();
   let { categoryId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();

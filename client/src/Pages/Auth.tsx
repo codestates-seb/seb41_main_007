@@ -1,8 +1,7 @@
 import { useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import RouteChangeTracker from 'Utils/GoogleTracker';
+
 const Auth = () => {
-  RouteChangeTracker();
   const nav = useNavigate();
   const location = useLocation();
   const sch = location.search;
