@@ -72,6 +72,7 @@ const DeliverySave: React.FC<Props> = ({ data, session }) => {
     `/addresses/${data.addressId}`,
     `/addresses`,
     'DELETE',
+    session,
   );
 
   return (

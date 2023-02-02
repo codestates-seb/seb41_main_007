@@ -7,9 +7,14 @@ const Test: FC = () => {
   const [title, setTitle] = useState('');
   const [num, setNumber] = useState(0);
   const [category, setCategory] = useState(0);
+  const token = localStorage.getItem('access_token');
   const titleHandler = () => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/categories`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify({ name: title }),
     })
       .then((res) => {
@@ -25,6 +30,10 @@ const Test: FC = () => {
   const postDelHandler = () => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/products/${num}`, {
       method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => {
         console.info(res);
@@ -38,6 +47,10 @@ const Test: FC = () => {
   const categoryDelHandler = () => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/categories/${num}`, {
       method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => {
         console.info(res);
@@ -51,6 +64,10 @@ const Test: FC = () => {
   const cacheDelHandler = () => {
     fetch(`${process.env.REACT_APP_BACKEND_URL}/caches/initialization`, {
       method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then((res) => {
         alert('캐시지우기완료');
