@@ -43,7 +43,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     }
 
     private String makeRedirectUrl(String accessToken, String refreshToken) {
-        return UriComponentsBuilder.fromUriString("http://localhost:3000/auth")
+        return UriComponentsBuilder.fromUriString("https://www.farmpi.link/")
                 .queryParam("access_token", accessToken)
                 .queryParam("refresh_token", refreshToken)
                 .build().toUriString();

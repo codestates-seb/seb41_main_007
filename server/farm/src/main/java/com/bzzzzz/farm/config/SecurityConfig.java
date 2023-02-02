@@ -10,6 +10,7 @@ import com.bzzzzz.farm.service.CustomOAuth2MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -50,20 +51,24 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-//                        .antMatchers(HttpMethod.GET,"/members").hasRole("ADMIN")
-//                        .antMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
-//                        .antMatchers(HttpMethod.PATCH, "/products").hasRole("ADMIN")
-//                        .antMatchers(HttpMethod.DELETE, "/products").hasRole("ADMIN")
-//                        .antMatchers(HttpMethod.POST, "**/answers").hasRole("ADMIN")
-//                        .antMatchers(HttpMethod.PATCH, "**/answers").hasRole("ADMIN")
-//                        .antMatchers(HttpMethod.DELETE, "**/answers").hasRole("ADMIN")
-//                        .antMatchers(HttpMethod.POST, "/categories").hasRole("ADMIN")
-//                        .antMatchers(HttpMethod.PATCH, "/categories").hasRole("ADMIN")
-//                        .antMatchers(HttpMethod.DELETE, "/categories").hasRole("ADMIN")
-//                        .antMatchers(HttpMethod.GET,"/orders/**").hasRole("ADMIN")
-//                        .antMatchers(HttpMethod.POST, "/signup").permitAll()
-//                        .antMatchers(HttpMethod.POST, "/login").permitAll() //추후 적용
-                        .anyRequest().permitAll()) //.authenticated() 변경예정
+                        //member
+                        .antMatchers(HttpMethod.GET,"/members").hasRole("ADMIN")
+                        //address
+                        .antMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.PATCH, "/products").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "/products").hasRole("ADMIN")
+                        //answer
+                        .antMatchers(HttpMethod.POST, "**/answers").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.PATCH, "**/answers").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.DELETE, "**/answers").hasRole("ADMIN")
+                        //order
+                        .antMatchers(HttpMethod.PATCH,"/orders").hasRole("ADMIN")
+                        //carts
+                        .antMatchers(HttpMethod.GET,"/carts").authenticated()
+                        //address
+                        .antMatchers(HttpMethod.POST,"/addresses").authenticated()
+                        .antMatchers(HttpMethod.GET,"/addresses").authenticated()
+                        .anyRequest().permitAll())
                 .apply(new JwtSecurityConfig(jwtTokenizer))
                 // OAuth2.0 로그인 설정
                 .and()
