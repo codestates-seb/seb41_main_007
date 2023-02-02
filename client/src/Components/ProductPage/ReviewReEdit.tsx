@@ -98,6 +98,7 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
               type="text"
               placeholder="리뷰제목을 입력해주세요"
               value={reviewTitle}
+              maxLength={100}
               className={styles.Input_Contents}
               style={{ width: '100%' }}
               onChange={(e) => setReviewTitle(e.target.value)}
