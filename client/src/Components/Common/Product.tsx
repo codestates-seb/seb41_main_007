@@ -6,17 +6,6 @@ import { TYPE_Product } from '../../Types/common/product';
 import styled from 'styled-components';
 import { useNumberComma } from 'Utils/commonFunction';
 
-const Content = styled.div`
-  img {
-    width: 280px;
-    height: 250px;
-    margin-bottom: 5px;
-  }
-  span {
-    display: block;
-  }
-`;
-
 interface Props {
   product: TYPE_Product;
 }
@@ -93,3 +82,14 @@ function onIntersection(
 }
 
 export default Product;
+
+const Content = styled.div`
+  img {
+    width: 280px;
+    height: 250px;
+    margin-bottom: 5px;
+  }
+  span {
+    display: block;
+  }
+`;
