@@ -10,7 +10,6 @@ import ObjectSaver from 'Redux/ex/objectSave';
 import ProductPage from 'Pages/ProductPage';
 import BasketsPage from 'Pages/BasketPage';
 import ProductListPage from 'Pages/CategoryListPage';
-import Mypage from 'Pages/MyPage';
 import Search from 'Pages/Search';
 import NotFoundPage from 'Pages/NotFoundPage';
 import { MyPageSession, PaymentPageSession } from 'Utils/SessionMaster';
@@ -18,13 +17,11 @@ import Footer from 'Components/Common/Footer';
 
 import OrderTest from 'Pages/OrderTest';
 
-import PaymentPage from 'Pages/PaymentPage';
 import AllProductsPage from 'Pages/AllProductsPage';
 import Auth from 'Pages/Auth';
 import Post from 'Pages/Post/Post';
-import { useSession } from 'CustomHook/useSession';
-import Empty from 'Components/Common/Empty';
 import Test from 'Pages/Test';
+import { ToastContainer } from 'react-toastify';
 
 const withLayout = (Component: React.FC): JSX.Element => {
   return (
@@ -32,6 +29,7 @@ const withLayout = (Component: React.FC): JSX.Element => {
       <Header />
       <Component />
       <Footer />
+      <ToastContainer />
     </>
   );
 };

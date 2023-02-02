@@ -1,5 +1,6 @@
 import { FC, useRef } from 'react';
 import styles from './Styles/ImageForm.module.css';
+import { toast } from 'react-toastify';
 import { pictureCreate } from 'Utils/api';
 
 interface Props {
@@ -19,6 +20,7 @@ const ImageForm: FC<Props> = ({ userImage, setUserImage }) => {
         setUserImage(res.imageUrls);
         e.target.value = '';
       } else {
+        toast.error('이미지 크기가 너무 크거나, 이미지 업로드에 실패했습니다.');
         setUserImage('');
         e.target.value = '';
       }
