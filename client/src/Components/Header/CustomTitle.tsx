@@ -8,7 +8,7 @@ interface Props {
   noIndex?: boolean;
 }
 const defaultImage =
-  'https://sebmain007.s3.ap-northeast-1.amazonaws.com/1675302670299_FarmPiImage.png';
+  'https://sebmain007.s3.ap-northeast-1.amazonaws.com/1675317821157_FarmPiImage.png';
 const defaultDescription = '팜피 세상에 모든 농기구가 있는곳!';
 
 const CustomTitle: FC<Props> = ({
