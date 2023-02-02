@@ -129,7 +129,7 @@ export default function Page() {
     handlerError('optionCreate', option.length === 0);
     handlerError('categorySelector', categoryNum === 9999);
     handlerError('emptyTitle', !emptyTitle);
-    handlerError('tooLongDesc', description.length > 30);
+    handlerError('tooLongDesc', description.length > 20);
     const emptyText =
       !!value
         .map((n: any) => Node.string(n))
@@ -294,6 +294,7 @@ export default function Page() {
             className={styles.title_input}
             value={title}
             placeholder="상품명"
+            maxLength={10}
             onChange={(e) => handlerTilteChange(e.target.value)}
           />
         </div>
@@ -305,13 +306,13 @@ export default function Page() {
             placeholder="상품 간단한 설명을 적어주세요"
             onChange={(e) => setDescription(e.target.value)}
           />
-          {description.length > 30 && (
+          {description.length > 20 && (
             <div
               className={cx('title_length', {
-                title_length_error: description.length > 30,
+                title_length_error: description.length > 20,
               })}
             >
-              {description.length} / 30
+              {description.length} / 20
             </div>
           )}
         </div>
@@ -371,7 +372,7 @@ const ErrorMessage = ({ error }: { error: ERROR }) => {
         )}
         {error.tooLongDesc && (
           <div className={styles.error_text}>
-            간단한 설명은 30자를 넘지 말아주세요.
+            간단한 설명은 20자를 넘지 말아주세요.
           </div>
         )}
         {error.optionCreate && (

@@ -67,7 +67,7 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
     const submitValue = {
       reviewId: item.reviewId,
       productId: item.productId,
-      memberId: item.memberId,
+      memberId: item.member.memberId,
       reviewContent: JSON.stringify(reviewContentData),
       reviewTitle: reviewTitle,
       rating: score,

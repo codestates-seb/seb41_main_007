@@ -4,7 +4,8 @@ import { useState } from 'react';
 import { banktype } from 'Types/common/product';
 const Container = styled.div`
   width: 100%;
-
+  z-index: 10;
+  position: relative;
   height: 450px;
   background-color: #f4f4f4;
   border: 1px solid #e7e7e7;

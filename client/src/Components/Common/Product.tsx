@@ -39,7 +39,7 @@ const Product: FC<Props> = ({ product }) => {
     <div ref={REF}>
       {isLoad ? (
         <Link key={product.productId} to={`/product/${product.productId}`}>
-          <Content className={styles.Product_Img_Container}>
+          <Content className={styles.Product_Container}>
             <img
               className={styles.Product_Img_Content}
               src={product.photo}

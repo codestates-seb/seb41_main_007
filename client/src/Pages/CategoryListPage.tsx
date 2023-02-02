@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import CustomTitle from 'Components/Header/CustomTitle';
 import NotFoundPage from './NotFoundPage';
 import { BGcontainer } from 'Components/Common/BGcontainer';
 import CategoryList from 'Components/Common/CategoryList';
@@ -25,15 +24,10 @@ const ProductListPage: FC = () => {
   if (isLoading)
     return (
       <BGcontainer>
-        <CustomTitle
-          title={`${categoryId} 상품 리스트 | FarmPi`}
-          description={`카테고리${categoryId}번 상품입니다`}
-        />
         <CategoryList />
       </BGcontainer>
     );
-  if (error || data.data.length === 0) return <NotFoundPage />;
-
+  if (error) return <NotFoundPage />;
   const { page, totalPages } = data.pageInfo;
   const handlerSetOffset = (page: number) => {
     window.scrollTo(0, 0);

@@ -15,9 +15,11 @@ const Test: FC = () => {
       .then((res) => {
         console.info(res);
         setTitle('');
+        alert('카테고리 추가완료');
       })
       .catch((e) => {
         console.error(e);
+        alert('실패');
       });
   };
   const postDelHandler = () => {
@@ -26,9 +28,11 @@ const Test: FC = () => {
     })
       .then((res) => {
         console.info(res);
+        alert('삭제완료');
       })
       .catch((e) => {
         console.error(e);
+        alert('실패');
       });
   };
   const categoryDelHandler = () => {
@@ -37,9 +41,11 @@ const Test: FC = () => {
     })
       .then((res) => {
         console.info(res);
+        alert('삭제완료');
       })
       .catch((e) => {
         console.error(e);
+        alert('실패');
       });
   };
   const cacheDelHandler = () => {
@@ -47,16 +53,19 @@ const Test: FC = () => {
       method: 'DELETE',
     })
       .then((res) => {
+        alert('캐시지우기완료');
         console.info(res);
       })
       .catch((e) => {
         console.error(e);
+        alert('실패');
       });
   };
 
   const basket = () => {
     localStorage.removeItem('baskets');
     localStorage.removeItem('basketsCounter');
+    alert('장바구니 초기화완료');
   };
 
   return (
