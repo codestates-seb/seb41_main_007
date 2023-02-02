@@ -1,11 +1,11 @@
 package com.bzzzzz.farm.config;
 
 
-import com.bzzzzz.farm.repository.RefreshTokenRepository;
 import com.bzzzzz.farm.common.security.handler.MemberAccessDeniedHandler;
 import com.bzzzzz.farm.common.security.handler.MemberAuthenticationEntryPoint;
 import com.bzzzzz.farm.common.security.handler.OAuth2MemberSuccessHandler;
 import com.bzzzzz.farm.common.security.jwt.JwtTokenizer;
+import com.bzzzzz.farm.repository.RefreshTokenRepository;
 import com.bzzzzz.farm.service.CustomOAuth2MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -51,24 +51,24 @@ public class SecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        //member
-                        //.antMatchers(HttpMethod.GET,"/members").hasRole("ADMIN")
-                        //address
-                        //.antMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
-                        //.antMatchers(HttpMethod.PATCH, "/products").hasRole("ADMIN")
-                        //.antMatchers(HttpMethod.DELETE, "/products").hasRole("ADMIN")
-                        //answer
-                        //.antMatchers(HttpMethod.POST, "**/answers").hasRole("ADMIN")
-                        //.antMatchers(HttpMethod.PATCH, "**/answers").hasRole("ADMIN")
-                        //.antMatchers(HttpMethod.DELETE, "**/answers").hasRole("ADMIN")
-                        //order
-                        //.antMatchers(HttpMethod.PATCH,"/orders").hasRole("ADMIN")
-                        //carts
-                        //.antMatchers(HttpMethod.GET,"/carts").authenticated()
-                        //address
-                        //.antMatchers(HttpMethod.POST,"/addresses").authenticated()
-                        //.antMatchers(HttpMethod.GET,"/addresses").authenticated()
-                        .anyRequest().permitAll())
+                        //비로그인도 접근 가능 (누구나)
+                        .antMatchers(HttpMethod.GET, "/categories").permitAll()
+                        .antMatchers(HttpMethod.GET, "/").permitAll()
+                        .antMatchers(HttpMethod.GET, "/caches/initialization").permitAll()
+                        .antMatchers(HttpMethod.GET, "/orders/parcels/**").permitAll()
+                        .antMatchers(HttpMethod.GET, "/products/**").permitAll()
+                        .antMatchers(HttpMethod.GET, "/questions/**").permitAll()
+                        .antMatchers(HttpMethod.GET, "/reviews/**").permitAll()
+                        //어드민 전용
+                        .antMatchers("/categories/**").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.GET, "/members/all").hasRole("ADMIN")
+                        .antMatchers(HttpMethod.PATCH, "/orders").hasRole("ADMIN")
+                        .antMatchers("/products/**").hasRole("ADMIN")
+                        .antMatchers("/questions/answers/**").hasRole("ADMIN")
+                        .antMatchers("/reviews/answers/**").hasRole("ADMIN")
+                        //이외에는 로그인한 사람만 접근 가능
+                        .anyRequest().hasAnyRole("ADMIN", "USER"))
+
                 .apply(new JwtSecurityConfig(jwtTokenizer))
                 // OAuth2.0 로그인 설정
                 .and()
