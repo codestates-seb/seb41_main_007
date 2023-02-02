@@ -47,11 +47,6 @@ const ModalContent: React.FC = () => {
       <div className="text-center mt-16 font-semibold text-xl">
         <div className="">결제하기 전</div>
         <div className="">필수사항에 동의해야 합니다.</div>
-
-        {/* <img
-          url="https://media4.giphy.com/media/I8nG2ewVChKp1P5xdn/giphy.gif?cid=ecf05e47no11no72yrpux3l5vb7n9zdde0vivyzu5b7fs1nr&rid=giphy.gif&ct=g"
-          alt="alert"
-        /> */}
       </div>
       <button
         className="border w-16 h-8 mt-16 bg-gray-100"

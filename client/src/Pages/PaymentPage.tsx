@@ -1,14 +1,11 @@
 import styled from 'styled-components';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Totalpay from 'Components/PaymentPage/Totalpay';
 import { useNavigate } from 'react-router';
 import { BGcontainer } from 'Components/Common/BGcontainer';
-import Modal from 'Components/Common/Modal';
-import { useSelector } from 'react-redux';
 import SaveAddress from 'Components/PaymentPage/SaveAddress';
-import { TYPE_CartData } from 'Types/common/product';
 import BasketfourList from 'Components/PaymentPage/BasketfourList';
 import NewModal from 'Components/Common/NewModal';
 import Empty from 'Components/Common/Empty';
@@ -33,13 +30,11 @@ const Title = styled.div`
 const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   const [order, setOrder] = useState<boolean>(true);
   const [isDelivery, setisDelivery] = useState<boolean>(true);
-  const [address, setAddress] = useState<boolean>(false); //배송지
+  const [address, setAddress] = useState<boolean>(false);
 
-  const [payment, setPayment] = useState<boolean>(true); //결제수단
+  const [payment, setPayment] = useState<boolean>(true);
   const isModal = useAppSelector(madalState);
-  // const [data, setdata] = useState<TYPE_CartData[]>([]);
-  // const [isloading, setisLoading] = useState<boolean>(true);
-  // const { loading, session } = useSession();
+
   const navigate = useNavigate();
 
   const { data, isLoading, error, refetch } = useCustomQuery(
@@ -50,21 +45,6 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
 
   useEffect(() => {
     refetch();
-    // fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-    //   method: 'GET',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     Authorization: `Bearer ${session}`,
-    //   },
-    // })
-    //   .then((res: Response) => {
-    //     return res.json();
-    //   })
-    //   .then((res: TYPE_CartData[]) => {
-    //     setdata(res);
-    //     setisLoading(false);
-    //   });
-
     if (!session) {
       navigate('/login');
     }
@@ -73,8 +53,6 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   useScrollTop();
   if (isLoading) return <Empty></Empty>;
   if (error) return <div></div>;
-
-  // if (isloading) return <Empty />;
 
   return (
     <div>
@@ -137,8 +115,3 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   );
 };
 export default PaymentPage;
-
-//패치오류 났음 세션 문제
-//비로그인시 오류화면 뜨는거 안보이게 삭제
-//데이터오류남
-//리패치및 쿼리클라이언트추가

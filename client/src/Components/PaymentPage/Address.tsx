@@ -74,19 +74,8 @@ const Address: React.FC<Props> = ({
     if (e.target.value.length < 12) {
       const { name, value } = e.target;
       setDataPut({ ...dataPut, [name]: value });
-
-      // changeAddress(name, value);
-      // onSaveData(name, value);
     }
   };
-  // if (dataPut?.detailAddress.includes('(')) {
-  //   const saveaddress: string[] | undefined = dataPut?.detailAddress.split('(');
-
-  //   const first = saveaddress?.[1].substring(0, 5);
-  //   const second = saveaddress?.[1].substring(7);
-  //   const third = saveaddress?.[2].slice(0, -1);
-  //   setAddressValue([...first, ...second, ...third]);
-  // }
 
   return (
     <>
@@ -202,12 +191,3 @@ const Address: React.FC<Props> = ({
   );
 };
 export default Address;
-
-//유효성검사 안햇음
-//input number 문제
-//change 컨트롤
-//is loading 문제 해결
-//반응협 웹 css 디자인 만지기
-//온 세이브 오류나서 파괴하고 리덕스로 대체
-//최적화할때 안쓰는것 지울것
-//address 정보 입력받을때 입력할때를 한번에 다루려다보니 오류가 생김

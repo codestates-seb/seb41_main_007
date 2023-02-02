@@ -123,3 +123,14 @@ export interface banktype {
   Bankaccount: string;
   Bankname: string;
 }
+
+export interface TYPE_ReviewAll {
+  reviewId: number;
+  reviewTitle: string;
+  rating: number;
+  memberName: string;
+  reviewImage: string;
+  productName: string;
+  createdAt: string;
+  modifiedAt: string;
+}

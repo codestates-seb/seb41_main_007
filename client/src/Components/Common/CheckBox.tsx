@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { openModal } from 'Redux/reducer/modalSlice';
@@ -89,8 +89,3 @@ const CheckBox: React.FC<{
   );
 };
 export default CheckBox;
-// <a href={seturl} target="_blank" rel="noreferrer">
-//   <button className="bg-green-700 w-full h-14 text-white text-justify-center font-semibold">
-//     결제하기
-//   </button>
-// </a>

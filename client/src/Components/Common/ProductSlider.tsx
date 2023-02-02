@@ -55,16 +55,6 @@ const ProductSlider: FC<Props> = ({
   isNew = false,
   isBest = false,
 }) => {
-  const isDesktop: boolean = useMediaQuery({
-    query: '(min-width:1024px)',
-  });
-  const isTablet: boolean = useMediaQuery({
-    query: '(min-width:768px) and (max-width:1023px)',
-  });
-  const isMobile: boolean = useMediaQuery({
-    query: '(max-width:767px)',
-  });
-
   const settings = {
     infinite: true,
     speed: 200,
