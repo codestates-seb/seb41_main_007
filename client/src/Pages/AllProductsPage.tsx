@@ -9,6 +9,7 @@ import ProductList from 'Components/Common/ProductList';
 
 import Navigation from 'Components/Pagination/Navigation';
 import CategoryList from 'Components/Common/CategoryList';
+import SortBar from 'Components/Common/SortBar';
 
 const AllProductsPage: FC = () => {
   const navigate = useNavigate();
@@ -51,6 +52,7 @@ const AllProductsPage: FC = () => {
           flexDirection: 'column',
         }}
       >
+        <SortBar />
         <ProductList products={data.data} />
         <Navigation
           totalPage={data.pageInfo.totalPages}
