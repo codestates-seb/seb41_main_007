@@ -7,9 +7,11 @@ const Auth = () => {
   const sch = location.search;
   const params = new URLSearchParams(sch);
   const accessToken = params.get('access_token');
+  const refreshToken = params.get('refresh_token');
   useEffect(() => {
-    if (accessToken) {
+    if (accessToken && refreshToken) {
       localStorage.setItem('access_token', accessToken);
+      localStorage.setItem('refresh_token', refreshToken);
       nav('/');
     }
   });
