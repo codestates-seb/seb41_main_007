@@ -9,9 +9,92 @@ Kim siyeong, Kim byeongsoo, Lee hyunsoo
 
 If you have any questions, please contact me via email below
 
-<philip2767@gmail.com, 추가하셔요!, 추가하셔요!>
+<philip2767@gmail.com, qudtn7383@gmail.com, 추가하셔요!>
 
 v1.0.0, 2023.01.18
+
+***
+== MemberController
+=== 회원정보 수정
+patchMember()
+
+.curl-request
+include::{snippets}/patchMember/curl-request.adoc[]
+
+.http-request
+include::{snippets}/patchMember/http-request.adoc[]
+
+.request-fields
+include::{snippets}/patchMember/request-fields.adoc[]
+
+.http-response
+include::{snippets}/patchMember/http-response.adoc[]
+
+.response-fields
+include::{snippets}/patchMember/request-fields.adoc[]
+
+=== 회원탈퇴
+deleteMember()
+
+.curl-request
+include::{snippets}/deleteMember/curl-request.adoc[]
+
+.http-request
+include::{snippets}/deleteMember/http-request.adoc[]
+
+.http-response
+include::{snippets}/deleteMember/http-response.adoc[]
+
+=== 회원정보 조회
+getMember()
+
+.curl-request
+include::{snippets}/getMember/curl-request.adoc[]
+
+.http-request
+include::{snippets}/getMember/http-request.adoc[]
+
+.http-response
+include::{snippets}/getMember/http-response.adoc[]
+
+.response-fields
+include::{snippets}/getMember/request-fields.adoc[]
+
+=== 전체회원정보 조회
+getMembers()
+
+.curl-request
+include::{snippets}/getMembers/curl-request.adoc[]
+
+.http-request
+include::{snippets}/getMembers/http-request.adoc[]
+
+.http-response
+include::{snippets}/getMembers/http-response.adoc[]
+
+.response-fields
+include::{snippets}/getMembers/response-fields.adoc[]
+
+***
+
+***
+== MainController
+
+=== 메인 페이지 가져오기
+
+getMain()
+
+.curl-request
+include::{snippets}/getMain/curl-request.adoc[]
+
+.http-request
+include::{snippets}/getMain/http-request.adoc[]
+
+.http-response
+include::{snippets}/getMain/http-response.adoc[]
+
+.response-fields
+include::{snippets}/getMain/response-fields.adoc[]
 
 ***
 == ProductController
