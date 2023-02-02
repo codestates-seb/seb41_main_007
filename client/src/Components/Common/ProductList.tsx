@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import styles from './Styles/ProductList.module.css';
 import Product from './Product';
 import { TYPE_Product } from '../../Types/common/product';
 import useScrollTop from 'CustomHook/useScrollTop';
@@ -10,7 +9,6 @@ interface Props {
 
 const ProductList: FC<Props> = ({ products }) => {
   useScrollTop();
-  console.log(products);
   return (
     <div className="bg-white">
       <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">

@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import CustomTitle from 'Components/Header/CustomTitle';
 import NotFoundPage from './NotFoundPage';
 import { BGcontainer } from 'Components/Common/BGcontainer';
 import CategoryList from 'Components/Common/CategoryList';
