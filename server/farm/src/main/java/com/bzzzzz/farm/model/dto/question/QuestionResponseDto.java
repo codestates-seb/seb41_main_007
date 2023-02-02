@@ -1,5 +1,6 @@
 package com.bzzzzz.farm.model.dto.question;
 
+import com.bzzzzz.farm.model.dto.member.MemberDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,15 +14,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class QuestionResponseDto {
     private Long questionId;
-    private Long memberId;
+    private MemberDto.Response member;
     private String questionTitle;
     private String questionContent;
     private String createdAt;
     private String lastModifiedAt;
 
-    public QuestionResponseDto(Long questionId, Long memberId, String questionTitle, String questionContent, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    public QuestionResponseDto(Long questionId, MemberDto.Response member, String questionTitle, String questionContent, LocalDateTime createdAt, LocalDateTime modifiedAt) {
         this.questionId = questionId;
-        this.memberId = memberId;
+        this.member = member;
         this.questionTitle = questionTitle;
         this.questionContent = questionContent;
         this.createdAt = createdAt.toString();

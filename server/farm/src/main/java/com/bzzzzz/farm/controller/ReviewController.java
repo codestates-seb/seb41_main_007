@@ -54,7 +54,8 @@ public class ReviewController {
         Product product = productService.findVerifiedProduct(reviewPostDto.getProductId());
         review.setProduct(product);
         Review insertReview = reviewService.insertReview(review, toLong(userDetails.getUsername()));
-        ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(insertReview);
+
+        ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(insertReview, memberService.findVerifiedMember(insertReview.getMember().getMemberId()));
         return new ResponseEntity(reviewResponseDto, HttpStatus.CREATED);
     }
 
@@ -76,7 +77,7 @@ public class ReviewController {
     @GetMapping({"/reviews/{reviewId}"})
     public ResponseEntity getProductReview(@PathVariable Long reviewId) {
         Review review = reviewService.getProductReview(reviewId);
-        ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(review);
+        ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(review, memberService.findVerifiedMember(review.getMember().getMemberId()));
         return new ResponseEntity(reviewResponseDto, HttpStatus.OK);
     }
 
@@ -89,7 +90,7 @@ public class ReviewController {
 
         Review updatedReview = reviewService.updateReview(reviewId, review, toLong(userDetails.getUsername()));
 
-        ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(updatedReview);
+        ReviewResponseDto reviewResponseDto = reviewMapper.reviewToReviewResponseDto(updatedReview, memberService.findVerifiedMember(updatedReview.getMember().getMemberId()));
 
         return new ResponseEntity(reviewResponseDto, HttpStatus.OK);
     }

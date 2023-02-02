@@ -53,7 +53,7 @@ public class QuestionController {
         Question question = questionMapper.questionPostDtoToQuestion(questionPostDto);
         Question insertQuestion = questionService.insertQuestion(question, toLong(userDetails.getUsername()));
 
-        QuestionResponseDto questionResponseDto = questionMapper.questionToQuestionResponseDto(insertQuestion);
+        QuestionResponseDto questionResponseDto = questionMapper.questionToQuestionResponseDto(insertQuestion, memberService.findMember(toLong(userDetails.getUsername())));
 
 
         return new ResponseEntity(questionResponseDto, HttpStatus.OK);
@@ -63,7 +63,7 @@ public class QuestionController {
     @GetMapping({"/questions/{questionId}"})
     public ResponseEntity getQuestion(@PathVariable("questionId") Long questionId) {
         Question question = questionService.getQuestion(questionId);
-        QuestionResponseDto questionResponseDto = questionMapper.questionToQuestionResponseDto(question);
+        QuestionResponseDto questionResponseDto = questionMapper.questionToQuestionResponseDto(question, memberService.findMember(question.getMember().getMemberId()));
 
         return new ResponseEntity(questionResponseDto, HttpStatus.OK);
     }
@@ -88,7 +88,7 @@ public class QuestionController {
 
         Question updatedQuestion = questionService.updateQuestion(question);
 
-        QuestionResponseDto questionResponseDto = questionMapper.questionToQuestionResponseDto(updatedQuestion);
+        QuestionResponseDto questionResponseDto = questionMapper.questionToQuestionResponseDto(updatedQuestion, memberService.findMember(toLong(userDetails.getUsername())));
         return new ResponseEntity(questionResponseDto, HttpStatus.OK);
     }
 
@@ -97,7 +97,7 @@ public class QuestionController {
     @DeleteMapping("/questions/{questionId}")
     public ResponseEntity deleteQuestion(@PathVariable String questionId) {
 
-        questionService.deleteQuestion(Long.parseLong(questionId));
+        questionService.deleteQuestion(toLong(questionId));
 
         return new ResponseEntity(HttpStatus.NO_CONTENT);
     }

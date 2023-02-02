@@ -29,14 +29,15 @@ public class ReviewService {
     private MemberService memberService;
     private MemberRepository memberRepository;
 
-    public ReviewService(ReviewRepository reviewRepository) {
+    public ReviewService(ReviewRepository reviewRepository, MemberService memberService, MemberRepository memberRepository) {
         this.reviewRepository = reviewRepository;
+        this.memberService = memberService;
+        this.memberRepository = memberRepository;
     }
 
     @CacheEvict(value = "findReviewsOrderByReviewId", allEntries = true)
-    public Review insertReview(Review review, Long userId) {
-        Member member = new Member();
-        member.setMemberId(userId);
+    public Review insertReview(Review review, long userId) {
+        Member member = memberService.findVerifiedMember(userId);
         review.setMember(member);
         Review saveReview = reviewRepository.save(review);
         return saveReview;

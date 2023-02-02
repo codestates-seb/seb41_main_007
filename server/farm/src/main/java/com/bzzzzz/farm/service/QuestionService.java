@@ -4,6 +4,7 @@ import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
 import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.model.entity.Question;
+import com.bzzzzz.farm.repository.MemberRepository;
 import com.bzzzzz.farm.repository.QuestionRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -20,15 +21,18 @@ import java.util.Optional;
 public class QuestionService {
 
     private QuestionRepository questionRepository;
+    private MemberService memberService;
+    private MemberRepository memberRepository;
 
-    public QuestionService(QuestionRepository questionRepository) {
+    public QuestionService(QuestionRepository questionRepository, MemberService memberService, MemberRepository memberRepository) {
         this.questionRepository = questionRepository;
+        this.memberService = memberService;
+        this.memberRepository = memberRepository;
     }
 
     //질문 글 작성
     public Question insertQuestion(Question question, Long userId) {
-        Member member = new Member();
-        member.setMemberId(userId);
+        Member member = memberService.findVerifiedMember(userId);
         question.setMember(member);
         return questionRepository.save(question);
     }
