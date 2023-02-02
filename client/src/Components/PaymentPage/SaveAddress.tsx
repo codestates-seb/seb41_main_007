@@ -115,7 +115,7 @@ const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
         onControl();
       })
       .catch((e) => {
-        console.log(e);
+        // console.log(e);
       });
   };
 

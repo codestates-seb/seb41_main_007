@@ -14,6 +14,8 @@ import SelectBox from 'Components/BasketPage/SelectBox';
 import { TYPE_ProductOption, counttype } from 'Types/common/product';
 import { useSession } from 'CustomHook/useSession';
 import { useQueryClient } from 'react-query';
+import ComponentModal from 'Components/Common/ComponentModal';
+import useBooleanInput from 'CustomHook/useBooleaninput';
 
 const ProductMain = styled.div`
   margin: 0 auto 50px auto;
@@ -111,16 +113,9 @@ interface props {
   data: any;
 }
 
-// interface counttype {
-//   id: number;
-//   price: number;
-//   count: number;
-//   optionprice: number;
-//   optionname: string;
-//   productOptionId: number;
-// }
 const ProductMainBox: React.FC<props> = ({ data }) => {
   const [count, setCount] = useState<number>(1);
+  const [isControl, onisControl, setisControl] = useBooleanInput(true);
   const [option, setOption] = useState<TYPE_ProductOption>(
     data.productOptionResponseDtos[0],
   );
@@ -130,7 +125,14 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const onIncrease = () => {
-    setCount((prevCount) => prevCount + 1);
+    setCount((prevCount) => {
+      if (prevCount === 5) {
+        onisControl();
+        return prevCount;
+      }
+
+      return prevCount + 1;
+    });
   };
 
   const onDecrease = () => {
@@ -197,11 +199,6 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
       }
     });
 
-    // baskets.forEach((el: any) => {
-    //   console.log(el.productOptionResponseDtos);
-    //   if (data.productId === el.productId) IsSame = true;
-    // });
-
     if (IsSame) {
       fullBasketAlram();
 
@@ -250,7 +247,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
         method: 'POST',
       }).then((response) => {
         queryClient.invalidateQueries('/carts');
-        console.log(response);
+        // console.log(response);
       });
     }
   };
@@ -315,6 +312,16 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
             장바구니 확인하기
           </BuyButton>
         </ProductBox>
+        {isControl ? (
+          <></>
+        ) : (
+          <ComponentModal isButton={true} setValue={setisControl}>
+            <div>
+              현재 수량은 5개로 제한되어 있습니다 <br></br>전 상품 10% 할인을
+              진행중입니다💸<br></br>
+            </div>
+          </ComponentModal>
+        )}
       </ProductMain>
     </div>
   );
@@ -333,3 +340,4 @@ export default ProductMainBox;
 //옵션아이디로 수정함녀서 괴랄해짐
 //유지보수 고려한 코딩
 //결제하기 버그
+//개수 추가

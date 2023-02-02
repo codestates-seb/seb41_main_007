@@ -57,7 +57,6 @@ const MembershipWithdrawal: React.FC<{ session: any }> = ({ session }) => {
   };
 
   const handleNo = () => {
-    console.log(session);
     setOpen(!open);
     if (!isSucess) {
       window.location.href = '/';
