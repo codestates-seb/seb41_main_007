@@ -16,7 +16,6 @@ const ImageForm: FC<Props> = ({ userImage, setUserImage }) => {
     if (e.target.files[0]) {
       const res = await pictureCreate('/file/upload', e.target.files[0]);
       if (res) {
-        console.log(res.imageUrls);
         setUserImage(res.imageUrls);
         e.target.value = '';
       } else {
