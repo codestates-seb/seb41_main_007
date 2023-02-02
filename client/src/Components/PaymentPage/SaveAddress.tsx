@@ -199,9 +199,10 @@ const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
           <RadiusButton
             onClick={() => {
               const numberCheck = /[^0-9]/g;
-
+              console.log(dataPut?.phoneNumber.substr(0, 3));
               if (
                 dataPut?.addressName &&
+                dataPut?.phoneNumber.substr(0, 3) === '010' &&
                 dataPut?.name &&
                 dataPut?.phoneNumber &&
                 dataPut?.phoneNumber.length > 10 &&
@@ -225,6 +226,8 @@ const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
                 setNameMessage('-없이 11자리 핸드폰 번호를 입력해주세요');
               } else if (dataPut?.phoneNumber.length < 11) {
                 setNameMessage('-없이 11자리 핸드폰 번호를 입력해주세요');
+              } else if (dataPut?.phoneNumber.substr(0, 3) !== '010') {
+                setNameMessage('010을 붙여서 11자리를 입력해주세요');
               } else if (!dataPut?.detailAddress) {
                 setNameMessage('주소를 입력해주세요');
               }

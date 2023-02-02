@@ -29,7 +29,6 @@ const ImageBox = styled.img`
   height: 500px;
   margin-left: 30px;
   margin-top: 83px;
-  background: red;
 `;
 const ProductBox = styled.div`
   width: 400px;
