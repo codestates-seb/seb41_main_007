@@ -10,23 +10,30 @@ import { TYPE_Token } from 'Types/common/token';
 
 const Header: FC = () => {
   useEffect(() => {
-    const accessToken = localStorage.getItem('access_token');
-    if (accessToken) {
-      const { exp } = tokenDecode(accessToken) as TYPE_Token;
+    const localAccessToken = localStorage.getItem('access_token');
+    if (localAccessToken) {
+      const { exp } = tokenDecode(localAccessToken) as TYPE_Token;
       const tokenExpiration = Number(exp) - Math.floor(Date.now() / 1000) > 0;
       if (!tokenExpiration) {
-        const refreshToken = localStorage.getItem('refresh_token');
-        fetch('/reissue', {
-          body: JSON.stringify({ refreshToken: refreshToken }),
+        const localRefreshToken = localStorage.getItem('refresh_token');
+        fetch(`${process.env.REACT_APP_BACKEND_URL}/reissue`, {
+          body: JSON.stringify({ refreshToken: localRefreshToken }),
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${localAccessToken}`,
           },
           method: 'POST',
         })
-          .then((res) => res.json())
-          .then((data) => {
-            console.info(data);
+          .then((res) => {
+            return res.json();
+          })
+          .then(({ accessToken, refreshToken }) => {
+            if (accessToken && refreshToken) {
+              localStorage.removeItem('access_token');
+              localStorage.removeItem('refresh_token');
+              localStorage.setItem('access_token', accessToken);
+              localStorage.setItem('refresh_token', refreshToken);
+            }
           })
           .catch((e) => {
             console.error('token error' + e);
