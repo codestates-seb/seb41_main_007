@@ -65,6 +65,9 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.PATCH,"/orders").hasRole("ADMIN")
                         //carts
                         .antMatchers(HttpMethod.GET,"/carts").authenticated()
+                        //address
+                        .antMatchers(HttpMethod.POST,"/addresses").authenticated()
+                        .antMatchers(HttpMethod.GET,"/addresses").authenticated()
                         .anyRequest().permitAll())
                 .apply(new JwtSecurityConfig(jwtTokenizer))
                 // OAuth2.0 로그인 설정
