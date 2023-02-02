@@ -45,9 +45,13 @@ const MembershipWithdrawal: React.FC<{ session: any }> = ({ session }) => {
   const [isSucess, setisSucess] = useState(true);
 
   const handleYes = () => {
-    if (!refresh_Token) {
+    if (
+      refresh_Token !==
+      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxMDQyNTI5MjI5MDY3Nzk3Njc4NTMiLCJpYXQiOjE2NzQ4ODY3OTksImV4cCI6MTY3NjM1ODAyOH0.F1H36p1PKfq3m8q7YOe8HtzYtvNdROZicNDE-3xDDRYW_iqJ2FO7-ElUQ1pTtI2B'
+    ) {
       mutate({});
       localStorage.removeItem('access_token');
+
       setisSucess(false);
 
       //홈으로가기
