@@ -9,6 +9,7 @@ import AccordionGroup from 'Components/Mypage/AccordionGroup';
 import MainImage from 'Components/PaymentPage/MainImage';
 import ComponentModal from 'Components/Common/ComponentModal';
 import MembershipWithdrawal from 'Components/Mypage/MembershipWithdrawal';
+import CustomTitle from 'Components/Header/CustomTitle';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -32,8 +33,8 @@ const MyPage: React.FC<{ session: any }> = ({ session }) => {
 
   return (
     <div>
+      <CustomTitle title={'회원정보 | FarmPi'} />
       <MainImage></MainImage>
-
       <ShortContainer>
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
