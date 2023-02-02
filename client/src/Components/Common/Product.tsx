@@ -51,10 +51,18 @@ const Product: FC<Props> = ({ product }) => {
             {product.isBest && (
               <span className={styles.Product_Event_Title}>#인기제품</span>
             )}
-            <span className={styles.Product_Name_Content}>{product.name}</span>
+            <div className="flex justify-between">
+              <span className={styles.Product_Name_Content}>
+                {product.name}
+              </span>
+              <div className="mt-2 text-xs w-18 font-mono pt-1 font-bold">
+                평점 {Math.round(product.rating * 100) / 100}
+              </div>
+            </div>
             <span className={styles.Product_Sale_Content}>
               주문시 10% 추가 할인쿠폰 사용 가능
             </span>
+
             <span className={styles.Product_Price_Content}>
               {useNumberComma(product.price)}원
             </span>

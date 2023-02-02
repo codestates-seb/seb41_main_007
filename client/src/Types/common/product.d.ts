@@ -5,6 +5,7 @@ export interface TYPE_Product {
   photo: string;
   alt?: string;
   isNew: boolean;
+  rating: number;
   isBest: boolean;
 }
 
