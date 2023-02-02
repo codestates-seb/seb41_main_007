@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useState } from 'react';
 import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 
 import { useQueryClient } from 'react-query';
@@ -7,7 +7,6 @@ import { Descendant } from 'Types/slate';
 import styles from './Styles/ReviewReEdit.module.css';
 import Rating from './Rating';
 import { TYPE_Review } from 'Types/common/product';
-import { pictureCreate } from 'Utils/api';
 import ImageForm from 'Components/Common/ImageForm';
 
 interface Props {
