@@ -7,7 +7,7 @@ import Best_Product from 'Components/Common/Best_product';
 const BestProduct: FC = () => {
   const size = 8;
   const page = 1;
-  const sort = 'likeCount';
+  const sort = 'rating';
   const order = 'descending';
   const { data, isLoading, error } = useCustomQuery(
     `/products?sort=${sort}&order=${order}&page=${page}&size=${size}`,

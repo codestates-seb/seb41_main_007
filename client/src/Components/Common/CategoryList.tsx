@@ -40,6 +40,7 @@ const CategoryList: FC<Props> = ({ categoryList }) => {
 };
 
 const CategoryItem: FC<Category> = ({ categoryId, name }) => {
+  console.log(categoryId);
   return (
     <>
       <CustomTitle
