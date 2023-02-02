@@ -145,7 +145,7 @@ const BasketList: FC = () => {
   const baskets = JSON.parse(jsondata || '[]');
   const jsondataCounter: string | null = localStorage.getItem('basketsCounter');
   const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
-  const { session, loading } = useSession(); // 로딩시간만큼 내리는데 시간이 들어서 생략
+  const { session, loading } = useSession();
   useScrollTop();
   if (loading) return <></>;
 
@@ -378,7 +378,7 @@ export default BasketList;
 //새로고침시 리덕스 초기화 되는 문제
 // 코드를 너무 복잡하게짬.. sementic 아이디 통일 못함
 //비로그인시 메인으로 보내는게 편함
-
+// 로딩시간만큼 내리는데 시간이 들어서 생략
 //백엔드와 db관리하는데에 있어서 오류가 있었따.
 //id기반으로 ㅁ나들었기에
 //로컬스토리지 클리어시 토큰 삭제
