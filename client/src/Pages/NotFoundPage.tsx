@@ -2,10 +2,8 @@ import CustomTitle from 'Components/Header/CustomTitle';
 import { FC } from 'react';
 import styles from './Styles/NotFound.module.css';
 import { Link } from 'react-router-dom';
-import RouteChangeTracker from 'Utils/GoogleTracker';
 
 const NotFoundPage: FC = () => {
-  RouteChangeTracker();
   return (
     <>
       <CustomTitle

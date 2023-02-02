@@ -2,11 +2,9 @@ import { FC } from 'react';
 import styled from 'styled-components';
 import BasketList from 'Components/BasketPage/BasketList';
 import { BGcontainer } from 'Components/Common/BGcontainer';
-import CustomTitle from 'Components/Header/CustomTitle';
 
 import useScrollTop from 'CustomHook/useScrollTop';
-import RouteChangeTracker from 'Utils/GoogleTracker';
-
+import CustomTitle from 'Components/Header/CustomTitle';
 const Cart = styled.div`
   margin-top: 120px;
 `;
@@ -23,7 +21,6 @@ const BasketTitle = styled.h2`
 `;
 
 const basketsPage: FC = () => {
-  RouteChangeTracker();
   useScrollTop();
   return (
     <BGcontainer>

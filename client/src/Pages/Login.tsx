@@ -7,7 +7,6 @@ import useScrollTop from 'CustomHook/useScrollTop';
 import { useSession } from 'CustomHook/useSession';
 import { useNavigate } from 'react-router-dom';
 import CustomTitle from 'Components/Header/CustomTitle';
-import RouteChangeTracker from 'Utils/GoogleTracker';
 
 const BigContainer = styled.div`
   display: flex;
@@ -38,7 +37,6 @@ const Back = styled.div`
 `;
 
 const Login: React.FC = () => {
-  RouteChangeTracker();
   useScrollTop();
   const { session, loading } = useSession(); //의논하기
   const navigate = useNavigate();

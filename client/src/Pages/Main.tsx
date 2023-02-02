@@ -7,10 +7,8 @@ import Story from 'Components/Main/Story';
 import NewProduct from 'Components/NewProduct/NewProduct';
 import BestProduct from 'Components/BestProduct/BestProduct';
 import useScrollTop from 'CustomHook/useScrollTop';
-import RouteChangeTracker from 'Utils/GoogleTracker';
 
 const Main: FC = (): JSX.Element => {
-  RouteChangeTracker();
   useScrollTop();
   return (
     <main>
