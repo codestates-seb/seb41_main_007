@@ -31,7 +31,7 @@ const ReviewToolBar: FC<Props> = ({
     `/reviews/${reviewId}`,
     ['ReviewsDelete', productId],
     'DELETE',
-    null,
+    session,
     true,
   );
   const queryKey = ['reviews', `${productId}`];
