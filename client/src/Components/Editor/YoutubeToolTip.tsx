@@ -127,7 +127,7 @@ function ToolTip({ close }: { close: () => void }) {
         <div className={styles.label}>Youtubeリンク</div>
       </div>
       <div className={cx('error', { error_true: error })}>
-        Youtubeリンクではありません
+        Youtube링크가 아닙니다.
       </div>
       <button
         className={styles.input_button}
@@ -136,7 +136,7 @@ function ToolTip({ close }: { close: () => void }) {
           handlerSubmit();
         }}
       >
-        適用
+        적용하기
       </button>
     </div>
   );
