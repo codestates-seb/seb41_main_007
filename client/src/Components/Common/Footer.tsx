@@ -17,6 +17,9 @@ const Container = styled.div`
   @media (max-width: 1260px) {
     min-width: 320px;
   }
+  @media (max-width: 700px) {
+    height: 800px;
+  }
 `;
 const Main = styled.div`
   background-color: #ebebeb;
@@ -25,14 +28,15 @@ const Main = styled.div`
   width: 1220px;
   padding: 25px 50px 50px 50px;
   margin: 0px auto;
+
   @media (max-width: 1260px) {
-    width: 870px;
+    min-width: 700px;
+    width: 80%;
   }
-  @media (max-width: 870px) {
-    width: 570px;
-  }
-  @media (max-width: 600px) {
-    padding: 25px 0 50px 0;
+  @media (max-width: 700px) {
+    flex-direction: column;
+    align-items: center;
+    height: 700px;
     width: auto;
     min-width: 320px;
     max-width: 470px;
@@ -55,7 +59,14 @@ const Client = styled.div`
     margin-top: 30px;
     font-size: 13px;
   }
-  @media (max-width: 870px) {
+  @media (max-width: 700px) {
+    margin: 0;
+    padding-left: 0;
+    padding-right: 0;
+    width: 50%;
+    min-width: 300px;
+    width: auto;
+    border-right: 0;
   }
 `;
 const Banking = styled.div`
@@ -73,12 +84,17 @@ const Banking = styled.div`
     margin: 0 auto;
     border: 0;
     padding-right: 0px;
+    width: 50%;
+    min-width: 300px;
   }
-  @media (max-width: 870px) {
-    padding-left: 0px;
-    padding-right: 0px;
+  @media (max-width: 900px) {
   }
-  @media (max-width: 600px) {
+  @media (max-width: 700px) {
+    border-top: 1px solid #ccc;
+    margin: 50px; 0 0 0;
+    padding-top:20px;
+    padding-left: 0;
+    padding-right: 0;
     width: 50%;
     min-width: 300px;
     width: auto;
