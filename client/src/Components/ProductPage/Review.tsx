@@ -19,6 +19,7 @@ import { tokenDecode } from 'Utils/commonFunction';
 import { TYPE_Token } from 'Types/common/token';
 import ImageForm from 'Components/Common/ImageForm';
 import classNames from 'classnames/bind';
+import { toast } from 'react-toastify';
 
 const cx = classNames.bind(styles);
 interface Props {
@@ -125,6 +126,7 @@ const ReviewEdit: FC<Props> = ({ productId, session }) => {
       setUserImage('');
       childRef.current?.reset();
     } else {
+      toast.error('리뷰 등록 실패');
       handlerError('failToSend', true);
     }
   };

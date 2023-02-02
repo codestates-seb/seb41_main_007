@@ -47,7 +47,7 @@ const ImageForm: FC<Props> = ({ userImage, setUserImage }) => {
         <input
           ref={ref}
           type="file"
-          accept="image/svg, image/jpeg, image/png"
+          accept="image/svg, image/jpeg, image/png, image/gif"
           onChange={handleChangeFile}
           className={styles.ReviewImage}
         />
