@@ -63,15 +63,6 @@ public class MemberService {
 
         memberRepository.delete(findMember);
     }
-    //로그인한 회원정보 가져오기
-    public Member getLoginMember(){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();  //SecurityContextHolder에서 회원정보 가져오기
-        UserDetails userDetails = (UserDetails)principal;
-        Optional<Member> optionalMember = memberRepository.findByEmail(userDetails.getUsername());
-
-        if (optionalMember.isPresent()) return optionalMember.get();
-        else throw new BusinessLogicException(ExceptionCode.NOT_LOGIN);
-    }
 
     @Transactional(readOnly = true)
     public Member findVerifiedMember(long memberId) {

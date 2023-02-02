@@ -2,6 +2,7 @@ package com.bzzzzz.farm.common.security.jwt;
 
 import com.bzzzzz.farm.common.exception.BusinessLogicException;
 import com.bzzzzz.farm.common.exception.ExceptionCode;
+import com.bzzzzz.farm.model.entity.Member;
 import com.bzzzzz.farm.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -15,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -24,6 +26,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.bzzzzz.farm.common.Safety.toLong;
 
 @Slf4j
 @Getter
@@ -51,6 +55,7 @@ public class JwtTokenizer {
         claims.put("auth", authorities);
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         claims.put("name",(String) oAuth2User.getAttributes().get("name"));
+        claims.put("email",(String) oAuth2User.getAttributes().get("email"));
         long now = (new Date()).getTime();
         Long memberId = memberRepository.findByEmail((String) oAuth2User.getAttributes().get("email")).get().getMemberId();
 
@@ -58,6 +63,29 @@ public class JwtTokenizer {
         return Jwts.builder()
                 .setClaims(claims)  // JWT에 담는 body
                 .setSubject(String.valueOf(memberId))// JWT 제목 payload "sub": "memberId"
+                .setIssuedAt(Calendar.getInstance().getTime())  // JWT 발행일자 payload "iat": "발행일자"
+                .setExpiration(accessTokenExpiresIn)  // 만료일자 payload "exp": "발행시간 + 1시간"
+                .signWith(getKey(base64EncodedSecretKey))
+                .compact();
+    }
+    public String reissueAccessToken(Authentication authentication,String base64EncodedSecretKey) {
+        // claim 생성
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
+
+        Map<String, String> claims = new HashMap<>();
+        claims.put("auth", authorities);
+        Member member = memberRepository.findById(toLong(authentication.getName())).get();
+        claims.put("name", member.getName());
+        claims.put("email",member.getEmail());
+
+        long now = (new Date()).getTime();
+
+        Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
+        return Jwts.builder()
+                .setClaims(claims)  // JWT에 담는 body
+                .setSubject(String.valueOf(member.getMemberId()))// JWT 제목 payload "sub": "memberId"
                 .setIssuedAt(Calendar.getInstance().getTime())  // JWT 발행일자 payload "iat": "발행일자"
                 .setExpiration(accessTokenExpiresIn)  // 만료일자 payload "exp": "발행시간 + 1시간"
                 .signWith(getKey(base64EncodedSecretKey))
@@ -113,7 +141,7 @@ public class JwtTokenizer {
     }
 
     // 만료된 토큰이어도 정보를 꺼내는 로직
-    private Claims parseClaims(String accessToken, String base64EncodedSecretKey) {
+    public Claims parseClaims(String accessToken, String base64EncodedSecretKey) {
         try {
             return Jwts.parserBuilder().setSigningKey(getKey(base64EncodedSecretKey))
                     .build().parseClaimsJws(accessToken).getBody();
