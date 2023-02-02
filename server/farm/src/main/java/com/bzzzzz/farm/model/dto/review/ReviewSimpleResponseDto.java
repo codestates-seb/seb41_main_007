@@ -1,7 +1,6 @@
 package com.bzzzzz.farm.model.dto.review;
 
 import com.querydsl.core.annotations.QueryProjection;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,29 +11,29 @@ import java.time.LocalDateTime;
 public class ReviewSimpleResponseDto {
     private Long reviewId;
     private String reviewTitle;
+    private String reviewContent;
     private float rating;
     private String memberName;
     private String reviewImage;
-    private String productName;
+    private Long productId;
     private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
 
     @QueryProjection
     public ReviewSimpleResponseDto(Long reviewId,
                                    String reviewTitle,
+                                   String reviewContent,
                                    float rating,
                                    String memberName,
                                    String reviewImage,
-                                   String productName,
-                                   LocalDateTime createdAt,
-                                   LocalDateTime modifiedAt) {
+                                   Long productId,
+                                   LocalDateTime createdAt) {
         this.reviewId = reviewId;
         this.reviewTitle = reviewTitle;
+        this.reviewContent = reviewContent;
         this.rating = rating;
         this.memberName = memberName;
         this.reviewImage = reviewImage;
-        this.productName = productName;
+        this.productId = productId;
         this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
     }
 }
