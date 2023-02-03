@@ -1,5 +1,5 @@
 @media screen and (max-width: 640px) {
-  .Product_Img_Container {
+  .Product_Container {
     padding: 0px 12%;
   }
   .Product_Img_Content {
@@ -20,7 +20,7 @@
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1280px) {
-  .Product_Img_Container {
+  .Product_Container {
     padding: 0px 4%;
   }
   .Product_Img_Content {
@@ -37,11 +37,14 @@
 }
 
 .Product_Price_Content {
-  @apply text-red-700 font-semibold text-sm mt-2;
+  @apply text-red-700 font-semibold w-28 text-sm mt-2;
 }
 
 .Product_Sale_Content {
   @apply text-gray-400 text-xs mt-1;
+}
+.Product_Container {
+  @apply w-full overflow-hidden rounded-md  group-hover:opacity-75 lg:aspect-none;
 }
 
 .Product_Name_Content {

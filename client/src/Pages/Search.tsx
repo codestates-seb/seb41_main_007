@@ -74,13 +74,11 @@ const Search: FC = () => {
 
   return (
     <BGcontainer>
-      <>
-        <SearchResult
-          sch={sch}
-          searchList={data.data}
-          searchPageInfo={data.pageInfo}
-        />
-      </>
+      <SearchResult
+        sch={sch}
+        searchList={data.data}
+        searchPageInfo={data.pageInfo}
+      />
     </BGcontainer>
   );
 };

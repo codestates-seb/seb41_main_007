@@ -9,7 +9,7 @@ export const useCustomMutation = (
 ) => {
   const queryClient = useQueryClient();
   if (token) {
-    const { mutate } = useMutation(
+    const { data, isLoading, mutate, mutateAsync } = useMutation(
       (suggest: any) => {
         return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
           body: JSON.stringify(suggest),
@@ -18,7 +18,9 @@ export const useCustomMutation = (
             Authorization: `Bearer ${token}`,
           },
           method: method,
-        });
+        })
+          .then((res) => res.json())
+          .catch((e) => false);
       },
       {
         onSuccess: () => {
@@ -26,15 +28,17 @@ export const useCustomMutation = (
         },
       },
     );
-    return { mutate };
+    return { data, isLoading, mutate, mutateAsync };
   } else {
-    const { mutate } = useMutation(
+    const { data, isLoading, mutate, mutateAsync } = useMutation(
       (suggest: any) => {
         return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
           body: JSON.stringify(suggest),
           headers: { 'Content-Type': 'application/json' },
           method: method,
-        });
+        })
+          .then((res) => res.json())
+          .catch((e) => false);
       },
       {
         onSuccess: () => {
@@ -42,6 +46,6 @@ export const useCustomMutation = (
         },
       },
     );
-    return { mutate };
+    return { data, isLoading, mutate, mutateAsync };
   }
 };

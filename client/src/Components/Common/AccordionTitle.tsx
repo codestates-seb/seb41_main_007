@@ -1,7 +1,9 @@
-import React, { Component, useState, ElementType } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { faArrowUp, faArrowDown } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useSession } from 'CustomHook/useSession';
+import useBooleanInput from 'CustomHook/useBooleaninput';
 
 const Title = styled.div`
   border-top: 1px solid black;
@@ -18,20 +20,23 @@ interface props {
 }
 
 const AccordionTitle: React.FC<props> = ({ ATvalue, Component, Open }) => {
-  const [control, setcontrol] = useState<boolean>(Open || false);
+  const [isControl, onisControl] = useBooleanInput(Open || false);
+
+  const { session, loading } = useSession();
+  if (loading) return <></>;
   return (
     <>
       <Title>
         <div className="text-base font-semibold py-4">{ATvalue}</div>
-        <button onClick={() => setcontrol(!control)}>
-          {control ? (
+        <button onClick={() => onisControl()}>
+          {isControl ? (
             <FontAwesomeIcon icon={faArrowUp} />
           ) : (
             <FontAwesomeIcon icon={faArrowDown} />
           )}
         </button>
       </Title>
-      {control && <Component />}
+      {isControl && <Component session={session} />}
     </>
   );
 };

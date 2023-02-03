@@ -6,6 +6,7 @@ import LoginForm from 'Components/login/LoginForm';
 import useScrollTop from 'CustomHook/useScrollTop';
 import { useSession } from 'CustomHook/useSession';
 import { useNavigate } from 'react-router-dom';
+import CustomTitle from 'Components/Header/CustomTitle';
 
 const BigContainer = styled.div`
   display: flex;
@@ -40,13 +41,23 @@ const Login: React.FC = () => {
   const { session, loading } = useSession(); //의논하기
   const navigate = useNavigate();
 
-  if (loading) return <></>;
+  if (loading)
+    return (
+      <CustomTitle
+        title={'로그인 | FarmPi'}
+        description={'FarmPi 로그인페이지'}
+      />
+    );
   if (session) {
     navigate(-1);
   }
   return (
     <BGcontainer>
       <BigContainer>
+        <CustomTitle
+          title={'로그인 | FarmPi'}
+          description={'FarmPi 로그인페이지'}
+        />
         <Back></Back>
         <div className="absolute left-0">
           <LazyImage />

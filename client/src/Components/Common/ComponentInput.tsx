@@ -47,15 +47,14 @@ const ComponentsInput: React.FC<Props> = ({
   const [isName, setIsName] = useState<boolean>(false);
   const [iserror, setIserror] = useState<boolean>(false);
 
-  console.log('안녕');
-
   const onClickForm = () => {
-    if (dataname === 'name' || dataname === 'phonenumber') {
+    if (dataname === 'name' || dataname === 'phoneNumber') {
+      //유효성검사 허락
       if (isName || control) {
         setcontrol(!control);
         setIserror(false);
       } else {
-        setNameMessage('양식에 맞춰 입력해주세요.');
+        setNameMessage('-를 제외한 11자리 숫자를 입력해주세요');
         setIserror(true);
       }
     } else {
@@ -82,7 +81,7 @@ const ComponentsInput: React.FC<Props> = ({
 
   const onChangeSave = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log(name, value);
+
     onSave(name, value);
     setdataname(name);
     setdata(value);
@@ -90,21 +89,22 @@ const ComponentsInput: React.FC<Props> = ({
 
   const onChangeName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value.length < 2 || e.target.value.length > 5) {
-      setNameMessage('2글자 이상 10글자 미만으로 입력해주세요.');
+      setNameMessage('2글자 이상 5글자 미만으로 입력해주세요.');
       setIsName(false);
       onSave(e.target.name, '');
+      setdataname(e.target.name); //버그해결해줌
       setdata('');
       setIserror(true);
     } else {
       setNameMessage('올바른 형식입니다 :)');
       setIsName(true);
       onChangeSave(e);
+      setdataname(e.target.name);
       setIserror(false);
     }
   }, []);
 
   const onChangeNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
     const numberCheck = /[^0-9]/g;
     if (e.target.value.length < 11 || e.target.value.length > 12) {
       setNameMessage('-를 제외한 11자리를 입력해주세요');
@@ -158,7 +158,6 @@ const ComponentsInput: React.FC<Props> = ({
                 data-type="text"
                 name={'name'}
                 maxLength={10}
-                // onChange={onChangeSave}
                 onChange={onChangeName}
                 type="text"
                 isTrue={iserror}
@@ -187,3 +186,5 @@ export default ComponentsInput;
 //간단하게 정리해서 풀어내는 방식이 중요한데 너무 흐름대로갔음
 //모든 오류를 막는데에 계싼적으로 행동하지 못함
 //컴포넌트화 실패
+//이름 입력하니 사라지는버그
+// const korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;

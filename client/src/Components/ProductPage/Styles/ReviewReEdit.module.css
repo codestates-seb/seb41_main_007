@@ -1,0 +1,53 @@
+.MainReview_Container {
+  margin-top: 20px;
+  display: flex;
+}
+.Review_Container {
+  flex: 1;
+  padding: 0 15px 0 15px;
+}
+
+.Comment_Input {
+  margin-top: 30px;
+  padding: 4px 0px 0px 0px;
+  border-bottom: 1px solid var(--gray-12);
+}
+.Comment_Input:focus-within {
+  border-color: var(--gray-45);
+}
+
+.Comment_Input_Button {
+  background-color: var(--greenlogo);
+  margin-top: 4px;
+  justify-content: center;
+  align-items: center;
+  width: 82px;
+  height: 36px;
+  font-size: 12px;
+  line-height: 12px;
+  border-radius: 6px;
+  color: white;
+  margin-left: 100%;
+  transform: translateX(-100%);
+}
+.Comment_Input_Button:hover {
+  background-color: var(--green-70);
+}
+
+.line {
+  width: 100%;
+  border-bottom: 1px solid var(--gray-12);
+  margin: 30px 0;
+}
+
+.Content {
+  margin-bottom: 5px;
+}
+
+.Input_Contents {
+  margin-top: 20px;
+  height: 40px;
+  color: var(--black-10);
+  border: 1px solid var(--gray-12);
+  border-radius: 4px;
+}

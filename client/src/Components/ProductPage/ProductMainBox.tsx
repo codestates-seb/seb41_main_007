@@ -13,6 +13,10 @@ import { useNavigate } from 'react-router-dom';
 import SelectBox from 'Components/BasketPage/SelectBox';
 import { TYPE_ProductOption, counttype } from 'Types/common/product';
 import { useSession } from 'CustomHook/useSession';
+import { useQueryClient } from 'react-query';
+import ComponentModal from 'Components/Common/ComponentModal';
+import useBooleanInput from 'CustomHook/useBooleaninput';
+
 const ProductMain = styled.div`
   margin: 0 auto 50px auto;
   width: 920px;
@@ -25,7 +29,6 @@ const ImageBox = styled.img`
   height: 500px;
   margin-left: 30px;
   margin-top: 83px;
-  background: red;
 `;
 const ProductBox = styled.div`
   width: 400px;
@@ -39,18 +42,29 @@ const ProductPrice = styled.div<{ Mgtop: string }>`
   height: 27px;
   font-size: var(--large);
   font-weight: bold;
+
   margin-top: ${(props) => props.Mgtop};
   margin-bottom: 20px;
 `;
 
 const ProductTitle = styled.h1`
-  margin-top: 100px;
-  margin-bottom: 15px;
+  margin-top: 75px;
+  margin-bottom: 8px;
   width: 350px;
   height: 38px;
   font-size: var(--xxlarge);
   font-weight: bold;
 `;
+
+const Brandname = styled.div`
+  font-size: var(--large);
+  font-weight: bold;
+  margin-bottom: 15px;
+  width: 350px;
+  height: 20px;
+  color: #9b9ea1;
+`;
+
 const ProductContent = styled.p`
   max-width: 350px;
   overflow: hidden;
@@ -109,16 +123,9 @@ interface props {
   data: any;
 }
 
-// interface counttype {
-//   id: number;
-//   price: number;
-//   count: number;
-//   optionprice: number;
-//   optionname: string;
-//   productOptionId: number;
-// }
 const ProductMainBox: React.FC<props> = ({ data }) => {
   const [count, setCount] = useState<number>(1);
+  const [isControl, onisControl, setisControl] = useBooleanInput(true);
   const [option, setOption] = useState<TYPE_ProductOption>(
     data.productOptionResponseDtos[0],
   );
@@ -126,9 +133,16 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
   if (loading) return <></>;
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-
+  const queryClient = useQueryClient();
   const onIncrease = () => {
-    setCount((prevCount) => prevCount + 1);
+    setCount((prevCount) => {
+      if (prevCount === 5) {
+        onisControl();
+        return prevCount;
+      }
+
+      return prevCount + 1;
+    });
   };
 
   const onDecrease = () => {
@@ -140,22 +154,22 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
     });
   };
 
-  if (session) {
-    //확인용
-    fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session}`,
-      },
-    })
-      .then((res: Response) => {
-        return res.json();
-      })
-      .then((res: Response) => {
-        console.log(res);
-      });
-  }
+  // if (session) {
+  //   //확인용
+  //   fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+  //     method: 'GET',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Bearer ${session}`,
+  //     },
+  //   })
+  //     .then((res: Response) => {
+  //       return res.json();
+  //     })
+  //     .then((res: Response) => {
+  //       console.log(res);
+  //     });
+  // }
 
   const emptyBasketAlram = () =>
     toast.success('장바구니에 담는 중입니다.', {
@@ -194,11 +208,6 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
         IsSame = true;
       }
     });
-
-    // baskets.forEach((el: any) => {
-    //   console.log(el.productOptionResponseDtos);
-    //   if (data.productId === el.productId) IsSame = true;
-    // });
 
     if (IsSame) {
       fullBasketAlram();
@@ -246,7 +255,10 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
           Authorization: `Bearer ${session}`,
         },
         method: 'POST',
-      }).then((response) => console.log(response));
+      }).then((response) => {
+        queryClient.invalidateQueries('/carts');
+        // console.log(response);
+      });
     }
   };
 
@@ -256,9 +268,10 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
         <CustomTitle title={`${data.name} 상품 - FARMPI`} />
         <ImageBox src={data.photo}></ImageBox>
         <ProductBox>
-          <ProductTitle className="font-serif">{data.name}</ProductTitle>
+          <ProductTitle>{data.name}</ProductTitle>
+          <Brandname>브랜드 {data.brand}</Brandname>
           <ProductContent>{data.description}</ProductContent>
-          <Ratingstar num={4}></Ratingstar>
+          <Ratingstar num={data.rating}></Ratingstar>
           <ProductPrice Mgtop="2px">
             {useNumberComma(data.price)}
             <span>원</span>
@@ -286,7 +299,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
             background={'var( --white-02)'}
             onClick={() => onClickBasket(data)}
           >
-            장바구니담기
+            장바구니 담기
           </BuyButton>
           <ToastContainer
             position="top-right"
@@ -307,9 +320,19 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
             color="var(--bg-white-05)"
             onClick={() => navigate('/basket')}
           >
-            결제하기
+            장바구니 확인하기
           </BuyButton>
         </ProductBox>
+        {isControl ? (
+          <></>
+        ) : (
+          <ComponentModal isButton={true} setValue={setisControl}>
+            <div>
+              현재 수량은 5개로 제한되어 있습니다 <br></br>전 상품 10% 할인을
+              진행중입니다💸<br></br>
+            </div>
+          </ComponentModal>
+        )}
       </ProductMain>
     </div>
   );
@@ -328,3 +351,4 @@ export default ProductMainBox;
 //옵션아이디로 수정함녀서 괴랄해짐
 //유지보수 고려한 코딩
 //결제하기 버그
+//개수 추가

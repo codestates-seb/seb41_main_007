@@ -3,16 +3,13 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import styled from 'styled-components';
-import useScrollTop from 'CustomHook/useScrollTop';
-import { useSession } from 'CustomHook/useSession';
+import { useNavigate } from 'react-router-dom';
 import TabPanel from 'Components/Mypage/TabPanel';
 import AccordionGroup from 'Components/Mypage/AccordionGroup';
 import MainImage from 'Components/PaymentPage/MainImage';
-import DeliveryResult from 'Components/Mypage/DeliveryResult';
-import Empty from 'Components/Common/Empty';
-import { TYPE_People } from 'Types/common/product';
-import { useAppDispatch } from 'Redux/app/hook';
-import { saveDataP } from 'Redux/reducer/personDataSlice';
+import ComponentModal from 'Components/Common/ComponentModal';
+import MembershipWithdrawal from 'Components/Mypage/MembershipWithdrawal';
+import CustomTitle from 'Components/Header/CustomTitle';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -22,69 +19,22 @@ const ShortContainer = styled.div`
 
 const MyPage: React.FC<{ session: any }> = ({ session }) => {
   const [value, setValue] = useState<number>(0);
-  const dispatch = useAppDispatch();
-  const [isloading, setisLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
 
-  // const [people, Setpeople] = useState<TYPE_People>({
-  //   address: '',
-  //   age: 0,
-  //   email: '',
-  //   gender: '',
-  //   memberId: 0,
-  //   name: '',
-  //   phone: '',
-  // });
-  useScrollTop();
   useEffect(() => {
-    if (session) {
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/members`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session}`,
-        },
-      })
-        .then((res: Response) => {
-          return res.json();
-        })
-        .then((res) => {
-          dispatch(saveDataP(res));
-          console.log(res);
-          // Setpeople(res);
-          setisLoading(false); //무한렌더링 막기용
-        })
-        .catch((e) => {
-          console.log(e);
-          setisLoading(false);
-        });
-      // const suggest = {
-      //   name: '김병수',
-      //   age: 26,
-      //   email: 'qudtn7383@gmail.com',
-      //   address: '대구',
-      //   gender: 'male',
-      //   phone: '010-0111-0000',
-      // };
-      // fetch(`${process.env.REACT_APP_BACKEND_URL}/members`, {
-      //   body: JSON.stringify(suggest),
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     Authorization: `Bearer ${session}`,
-      //   },
-      //   method: 'PATCH',
-      // }).then((response) => console.log(response));
+    if (!session) {
+      navigate('/login');
     }
   }, []);
 
-  // if (isloading) return <Empty />;
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
   return (
     <div>
+      <CustomTitle title={'회원정보 | FarmPi'} />
       <MainImage></MainImage>
-
       <ShortContainer>
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -102,9 +52,15 @@ const MyPage: React.FC<{ session: any }> = ({ session }) => {
             <AccordionGroup />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <DeliveryResult></DeliveryResult>
+            <ComponentModal isButton={true}>
+              <div>
+                장바구니를 이용하여<br></br>상품을 주문해주세요.
+              </div>
+            </ComponentModal>
           </TabPanel>
-          <TabPanel value={value} index={2}></TabPanel>
+          <TabPanel value={value} index={2}>
+            <MembershipWithdrawal session={session} />
+          </TabPanel>
         </Box>
       </ShortContainer>
     </div>

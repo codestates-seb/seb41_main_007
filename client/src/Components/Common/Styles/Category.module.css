@@ -3,7 +3,6 @@
   float: left;
   padding: 50px 20px 50px 0;
   height: 500px;
-  /* overflow-y: scroll; */
 }
 
 .Category_Title {
@@ -21,7 +20,47 @@
   color: #757575;
   padding: 12px 0;
 }
+.Category_Name {
+  width: 30px;
+}
 
 .Category_Content:hover {
   color: var(--black-10);
+}
+
+.Nav_Contents_Container {
+  width: 800px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.Nav_Content {
+  display: inline-block;
+  padding: 10px 30px 10px 30px;
+  justify-content: center;
+  align-items: center;
+  font-size: var(--medium);
+  transition: all 0.3s;
+  color: white;
+}
+
+.Nav_Content:hover {
+  color: var(--gray-10);
+}
+
+.Nav_Container {
+  border: 1px solid var(--green-10);
+  background-color: var(--green-30);
+  display: none;
+}
+
+@media (max-width: 1300px) {
+  .Category_Container {
+    display: none;
+  }
+  .Nav_Container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

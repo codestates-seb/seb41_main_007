@@ -8,12 +8,15 @@ import { selectprice, Pricestate, countset } from 'Redux/reducer/priceSlice';
 import { useAppSelector, useAppDispatch } from 'Redux/app/hook';
 import { TYPE_LocalOption, TYPE_CartData } from 'Types/common/product';
 import useBooleanInput from 'CustomHook/useBooleaninput';
+import { useQueryClient } from 'react-query';
+import ComponentModal from 'Components/Common/ComponentModal';
 
 const Logined = () => {
   const logoutHandler = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
     window.location.href = '/';
   };
   return (
@@ -30,6 +33,7 @@ const Logined = () => {
 };
 
 const LoginRequired = () => {
+  const [isControl, onisControl, setisControl] = useBooleanInput(true);
   return (
     <ul className={styles.Nav_Container1}>
       <Link to="/login">
@@ -38,9 +42,18 @@ const LoginRequired = () => {
       <li className={styles.Nav_Menu1}> |</li>
 
       <li className={styles.Nav_Menu1}>
-        <a href="#!" rel="noreferrer">
-          회사소개
-        </a>
+        <button onClick={() => onisControl()}>회사소개</button>
+        {isControl ? (
+          <></>
+        ) : (
+          <ComponentModal isButton={false} setValue={setisControl}>
+            <div>
+              회사소개는 준비중입니다.<br></br>
+              필요하시면 아래 링크를 참고해주세요<br></br>
+              https://github.com/codestates-seb/seb41_main_007
+            </div>
+          </ComponentModal>
+        )}
       </li>
     </ul>
   );
@@ -51,7 +64,14 @@ const TopColRight: FC = () => {
   const { session, loading } = useSession();
   const [isOk, onisOk] = useBooleanInput(true);
   const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   useEffect(() => {
+    const clearOk: string | null = localStorage.getItem('clear');
+    if (!clearOk) {
+      localStorage.clear();
+      localStorage.setItem('clear', 'true');
+    }
+
     const jsondataCounter: string | null =
       localStorage.getItem('basketsCounter');
     const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
@@ -67,7 +87,6 @@ const TopColRight: FC = () => {
   }, []);
   if (loading) return <></>;
   if (isOk && session) {
-    //유즈이펙트 때문이었습니다.
     const jsondataCounter: string | null =
       localStorage.getItem('basketsCounter');
     const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
@@ -83,33 +102,59 @@ const TopColRight: FC = () => {
         return res.json();
       })
       .then((res: TYPE_CartData[]) => {
-        const optionIdData = res.map((getdata) => {
-          return getdata.productOptionId;
-        });
-
-        const Filtered = basketsCounter.filter(
-          (localData: TYPE_LocalOption) => {
-            return !optionIdData.includes(localData.productOptionId);
-          },
-        );
-        Filtered.forEach((element: TYPE_LocalOption) => {
-          const suggest = {
-            productOptionId: element.productOptionId,
-            quantity: element.count,
-          };
-          fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-            body: JSON.stringify(suggest),
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${session}`,
+        if (res.length < basketsCounter.length) {
+          const optionIdData = res.map((getdata) => {
+            return getdata.productOptionId;
+          });
+          const Filtered = basketsCounter.filter(
+            (localData: TYPE_LocalOption) => {
+              return !optionIdData.includes(localData.productOptionId);
             },
-            method: 'POST',
-          }).then((response) => console.log(response));
-        });
+          );
+          Filtered.forEach((element: TYPE_LocalOption) => {
+            const suggest = {
+              productOptionId: element.productOptionId,
+              quantity: element.count,
+            };
+            fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+              body: JSON.stringify(suggest),
+              headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${session}`,
+              },
+              method: 'POST',
+            }).then((response) => {});
+          });
+        } else if (res.length > basketsCounter.length) {
+          const optionIdData = basketsCounter.map((getdata: any) => {
+            return getdata.productOptionId;
+          });
+          const Filtered = res.filter((Data: TYPE_CartData) => {
+            return !optionIdData.includes(Data.productOptionId);
+          });
+
+          Filtered.forEach((el: TYPE_CartData) => {
+            fetch(
+              `${process.env.REACT_APP_BACKEND_URL}/carts/${el.productOptionId}`,
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                  Authorization: `Bearer ${session}`,
+                },
+                method: 'DELETE',
+              },
+            ).then((response) => {
+              queryClient.invalidateQueries('/carts');
+            });
+          });
+        }
       });
 
     //한번만 돌게하는 로직
-    console.log('두번뿐이야!!');
+    const optionIdData = basketsCounter.map((getdata: any) => {
+      return getdata.productOptionId;
+    });
+
     onisOk();
   }
 
@@ -146,3 +191,5 @@ export default TopColRight;
 //로그인시 오류
 //배열객체 헷갈림 타입 잘확인할것
 //타입을 정해야 더 편하게짬
+//로컬스토리 비우는 로직 추가했고
+//api 버그 수정

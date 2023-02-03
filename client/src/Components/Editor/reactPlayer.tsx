@@ -10,7 +10,7 @@ export function YoutubePlayer({ url }: PlayerProps) {
   return (
     <div className={styles.wrapper}>
       <ReactPlayer
-        url={`https://www.youtube.com/watch?v=${url}`}
+        url={`https://www.youtube.com/watch?v=${url}&origin=https://www.farmpi.link/`}
         controls
         width="100%"
         height="100%"

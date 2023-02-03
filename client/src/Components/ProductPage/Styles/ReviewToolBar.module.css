@@ -1,0 +1,16 @@
+.ToolBarButton {
+  display: flex;
+  width: 80px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  color: white;
+  padding: 7px;
+  background-color: var(--green-40);
+}
+
+.ToolBarButton:hover {
+  background-color: var(--green-50);
+}

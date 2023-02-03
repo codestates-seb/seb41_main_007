@@ -1,6 +1,96 @@
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
+import { TYPE_ReviewAll } from 'Types/common/product';
 import styled from 'styled-components';
-import Ratingstar from 'Components/Common/Ratingstar';
 import styles from './Styles/Review.module.css';
+import { useRef } from 'react';
+import { SimpleReadOnlyComment } from 'Components/Editor/EditComment';
+import ReadOnlyComment from '../Editor/ReadOnlyComment';
+import { RatingView } from '../ProductPage/Rating';
+import { customTime } from 'Utils/commonFunction';
+
+interface Props {
+  review: TYPE_ReviewAll;
+}
+
+const CommentItem = ({ reviewContent }: { reviewContent: string }) => {
+  const review = JSON.parse(reviewContent);
+
+  const node = useRef<HTMLDivElement>(null);
+
+  return (
+    <div className={styles.Comment_List_Wrapper}>
+      <div className={styles.Comment} ref={node}>
+        {review.length > 4 ? (
+          <SimpleReadOnlyComment data={review} />
+        ) : (
+          <ReadOnlyComment data={review} />
+        )}
+      </div>
+    </div>
+  );
+};
+
+const ReviewItem: React.FC<Props> = ({ review }) => {
+  return (
+    <a
+      href={`/product/${review.productId}`}
+      className={styles.Review_Detail_Content}
+    >
+      <div className={styles.Review_Image_Container}>
+        <img
+          src={
+            review.reviewImage
+              ? review.reviewImage
+              : 'https://cdn-icons-png.flaticon.com/128/7078/7078329.png'
+          }
+          alt={'reviewImage'}
+          className={styles.Review_Image_Content}
+        />
+      </div>
+      <div>
+        <h3 className={styles.Review_Product_Container}>
+          {review.reviewTitle}
+        </h3>
+        <div>
+          <Product>
+            <div className={styles.Review_Product_Title}>
+              <CommentItem reviewContent={review.reviewContent} />
+            </div>
+          </Product>
+          <User>
+            <p className={styles.Review_User}>{review.memberName}</p>
+            <div className={styles.Review_Rating}>
+              <RatingView num={review.rating} />
+            </div>
+            <p className={styles.Review_Date}>{customTime(review.createdAt)}</p>
+          </User>
+        </div>
+      </div>
+    </a>
+  );
+};
+
+const Review: React.FC = () => {
+  const { isLoading, data, error } = useCustomQuery('/reviews/all', [
+    'reviewsAll',
+  ]);
+  if (isLoading || error) return <></>;
+
+  return (
+    <div className={styles.Review_Container}>
+      <div className={styles.Review_Content}>
+        <h2 className={styles.Review_Title}>고객만족후기</h2>
+        <div className={styles.Review_Data}>
+          {data.map((el: TYPE_ReviewAll) => {
+            return <ReviewItem key={el.reviewId} review={el} />;
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Review;
 
 const User = styled.div`
   display: flex;
@@ -13,129 +103,3 @@ const User = styled.div`
 const Product = styled.div`
   margin-top: 8px;
 `;
-const products = [
-  {
-    id: 1,
-    title: '이거 좋아요',
-    href: '#',
-    product: 'a물품이름',
-    user: '이유정',
-    rating: '⭐⭐⭐⭐',
-    date: '2023.01.11',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-01.jpg',
-    imageAlt:
-      'Tall slender porcelain bottle with natural clay textured body and cork stopper.',
-  },
-  {
-    id: 2,
-    title: '이거 좋아요',
-    href: '#',
-    product: 'a물품이름',
-    user: '황낙준',
-    rating: '⭐⭐⭐⭐',
-    date: '2023.01.11',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-02.jpg',
-    imageAlt:
-      'Olive drab green insulated bottle with flared screw lid and flat top.',
-  },
-  {
-    id: 3,
-    title: '이거 좋아요',
-    href: '#',
-    product: 'a물품이름',
-    user: '서형민',
-    rating: '⭐⭐⭐⭐',
-    date: '2023.01.11',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-03.jpg',
-    imageAlt:
-      'Person using a pen to cross a task off a productivity paper card.',
-  },
-  {
-    id: 4,
-    title: '이거 좋아요',
-    href: '#',
-    product: 'a물품이름',
-    user: '이유정',
-    rating: '⭐⭐⭐⭐',
-    date: '2023.01.11',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-    imageAlt:
-      'Hand holding black machined steel mechanical pencil with brass tip and top.',
-  },
-  {
-    id: 5,
-    title: '이거 좋아요',
-    href: '#',
-    product: 'a물품이름',
-    user: '황낙준',
-    rating: '⭐⭐⭐⭐',
-    date: '2023.01.11',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-    imageAlt:
-      'Hand holding black machined steel mechanical pencil with brass tip and top.',
-  },
-  {
-    id: 6,
-    title: '이거 좋아요',
-    href: '#',
-    product: 'a물품이름',
-    user: '서형민',
-    rating: '⭐⭐⭐⭐',
-    date: '2023.01.11',
-    imageSrc:
-      'https://tailwindui.com/img/ecommerce-images/category-page-04-image-card-04.jpg',
-    imageAlt:
-      'Hand holding black machined steel mechanical pencil with brass tip and top.',
-  },
-  // More products...
-];
-
-const Review: React.FC = () => {
-  return (
-    <div className={styles.Review_Container}>
-      <div className={styles.Review_Content}>
-        <h2 className={styles.Review_Title}>고객만족후기</h2>
-        <div className={styles.Review_Data}>
-          {products.map((product) => (
-            <a
-              key={product.id}
-              href={product.href}
-              className={styles.Review_Detail_Content}
-            >
-              <div className={styles.Review_Image_Container}>
-                <img
-                  src={product.imageSrc}
-                  alt={product.imageAlt}
-                  className={styles.Review_Image_Content}
-                />
-              </div>
-              <div>
-                <h3 className={styles.Review_Product_Container}>
-                  {product.title}
-                </h3>
-                <div className="">
-                  <Product>
-                    <p className={styles.Review_Product_Title}>
-                      {product.product}
-                    </p>
-                  </Product>
-                  <User>
-                    <p className={styles.Review_User}>{product.user}</p>
-                    <p className={styles.Review_Rating}>{product.rating}</p>
-                    <p className={styles.Review_Date}>{product.date}</p>
-                  </User>
-                </div>
-              </div>
-            </a>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
-export default Review;

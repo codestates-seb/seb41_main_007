@@ -10,7 +10,7 @@ import BestProductSlider from 'Components/BestProductSlider';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from 'CustomHook/useSession';
 import { TYPE_CartData, TYPE_LocalOption } from 'Types/common/product';
-
+import { useQueryClient } from 'react-query';
 const BasketForm = styled.div`
   width: 1180px;
 
@@ -138,30 +138,16 @@ const ControlContainer = styled.div`
 const BasketList: FC = () => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
-
+  const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const jsondata: string | null = localStorage.getItem('baskets');
   const baskets = JSON.parse(jsondata || '[]');
   const jsondataCounter: string | null = localStorage.getItem('basketsCounter');
   const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
-  const { session, loading } = useSession(); // 로딩시간만큼 내리는데 시간이 들어서 생략
+  const { session, loading } = useSession();
   useScrollTop();
   if (loading) return <></>;
-
-  // fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-  //   method: 'GET',
-  //   headers: {
-  //     'Content-Type': 'application/json',
-  //     Authorization: `Bearer ${session}`,
-  //   },
-  // })
-  //   .then((res: Response) => {
-  //     return res.json();
-  //   })
-  //   .then((res: Response) => {
-  //     console.log(res);
-  //   });
 
   let result: number = resultarr.reduce((acc, cur) => {
     if (cur?.price && cur?.count) {
@@ -226,7 +212,10 @@ const BasketList: FC = () => {
               },
               method: 'DELETE',
             },
-          ).then((response) => console.log(response));
+          ).then((response) => {
+            queryClient.invalidateQueries('/carts');
+            // console.log(response);
+          });
         }
         return false;
       }
@@ -248,6 +237,7 @@ const BasketList: FC = () => {
       const basketOptionId = basketsCounter.map((basket: TYPE_LocalOption) => {
         return basket.productOptionId;
       });
+
       fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
         method: 'GET',
         headers: {
@@ -256,42 +246,56 @@ const BasketList: FC = () => {
         },
       })
         .then((res: Response) => {
-          console.log('렌더링2');
           return res.json();
         })
         .then((Carts: TYPE_CartData[]) => {
+          queryClient.invalidateQueries('/carts');
+
           Carts.forEach((cartsData) => {
             const indexOption = basketOptionId.indexOf(
               cartsData.productOptionId,
             );
-            const quantityValue =
-              basketsCounter[indexOption].count - cartsData.quantity;
-            if (quantityValue !== 0) {
-              console.log(quantityValue);
-              const suggest = {
-                productOptionId: cartsData.productOptionId,
-                quantity: quantityValue,
-              };
 
-              fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-                body: JSON.stringify(suggest),
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${session}`,
+            if (indexOption === -1) {
+              fetch(
+                `${process.env.REACT_APP_BACKEND_URL}/carts/${cartsData.productOptionId}`,
+                {
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session}`,
+                  },
+                  method: 'DELETE',
                 },
-                method: 'PATCH',
-              }).then((response) => {
-                console.log(response);
-                navigate('/payment');
+              ).then((response) => {
+                queryClient.invalidateQueries('/carts');
               });
             } else {
-              navigate('/payment');
+              const quantityValue =
+                basketsCounter[indexOption].count - cartsData.quantity;
+
+              if (quantityValue !== 0) {
+                const suggest = {
+                  productOptionId: cartsData.productOptionId,
+                  quantity: quantityValue,
+                };
+
+                fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+                  body: JSON.stringify(suggest),
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${session}`,
+                  },
+                  method: 'PATCH',
+                }).then((response) => {
+                  queryClient.invalidateQueries('/carts');
+                  // console.log(response);
+                });
+              }
             }
-            // console.log(cartsData.productOptionId);
-            // console.log(basketsCounter[indexOption].count - cartsData.quantity);
           });
+
+          navigate('/payment');
         });
-      console.log(basketOptionId);
     } else {
       navigate('/login');
     }
@@ -374,9 +378,11 @@ export default BasketList;
 //새로고침시 리덕스 초기화 되는 문제
 // 코드를 너무 복잡하게짬.. sementic 아이디 통일 못함
 //비로그인시 메인으로 보내는게 편함
-
+// 로딩시간만큼 내리는데 시간이 들어서 생략
 //백엔드와 db관리하는데에 있어서 오류가 있었따.
 //id기반으로 ㅁ나들었기에
 //로컬스토리지 클리어시 토큰 삭제
 //넘어가는 화면이 빨라서 데이터 못받아와서 느려짐
 // 로딩화면 추가할예정
+//foreach 안돌아가는 상황이있었음
+//API밀릴경우 버그 잡음

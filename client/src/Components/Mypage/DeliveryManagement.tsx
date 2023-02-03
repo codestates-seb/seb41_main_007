@@ -1,28 +1,42 @@
 import DeliverySave from './DeliverySave';
-import { TYPE_UserAddress } from 'Types/common/product';
+import { TYPE_getAddress } from 'Types/common/product';
+import ComponentModal from 'Components/Common/ComponentModal';
+import Empty from 'Components/Common/Empty';
+import { useCustomQuery } from 'CustomHook/useCustomQuery';
 
-const Deliveryaddress = () => {
-  const Delivery: TYPE_UserAddress[] = [
-    {
-      name: '받는 사람',
-      addressName: '보내는 곳',
-      detailAddress: '눌러서 입력해주세요',
-      phoneNumber: '-를 제외한 11자리 번호를 입력해주세요',
-    },
-  ];
+interface Props {
+  session: any;
+}
 
-  if (!(Delivery.length > 0)) {
-    return <div>주소를 추가해주세요</div>;
+const Deliveryaddress: React.FC<Props> = ({ session }) => {
+  const { data, isLoading, error } = useCustomQuery(
+    `/addresses`,
+    `/addresses`,
+    session,
+  );
+
+  if (isLoading) return <Empty />;
+  if (error) return <></>;
+
+  if (!(data.length > 0)) {
+    return (
+      <div>
+        <ComponentModal isButton={true}>
+          <div>
+            배송지추가를 이용하여<br></br>배송지를 등록해주세요.
+          </div>
+        </ComponentModal>
+      </div>
+    );
   }
 
   return (
-    <div className="h-full bg-amber-500">
-      {Delivery &&
-        Delivery.map((data: any, index) => (
-          <div key={index}>
-            <DeliverySave data={data}></DeliverySave>
-          </div>
-        ))}
+    <div className="h-auto ">
+      {data.map((dataEl: TYPE_getAddress) => (
+        <div key={dataEl.addressId}>
+          <DeliverySave data={dataEl} session={session}></DeliverySave>
+        </div>
+      ))}
     </div>
   );
 };

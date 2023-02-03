@@ -28,6 +28,7 @@ import {
   Wall,
   YoutubeButton,
 } from './Button/EditorButton';
+import { compressImage } from 'Utils/commpressImage';
 
 type BLOCK = 'paragraph' | 'heading' | 'block-quote';
 
@@ -54,17 +55,20 @@ export default function RichText({ value, setValue }: IProps) {
   );
   const editorRef = useRef<HTMLDivElement>(null);
   const [isOpenYoutube, setIsOpenYoutube] = useState<boolean>(false);
+
   const openYotubeToolTip = () => {
     Editor.addMark(editor, 'select', true);
     setIsOpenYoutube(true);
   };
   const closeYotubeToolTip = () => setIsOpenYoutube(false);
-  function editorPosition() {
+
+  const editorPosition = () => {
     const el = editorRef.current;
     if (!el) return null;
     const rect = el!.getBoundingClientRect();
     return { top: rect.top, left: rect.left };
-  }
+  };
+
   return (
     <div
       className={styles.editor}
@@ -209,14 +213,15 @@ export default function RichText({ value, setValue }: IProps) {
 
 export async function handlerCompresstion(editor: Editor, file: File) {
   if (file) {
+    const res = await compressImage(file);
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', res);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
       method: 'POST',
       body: formData,
     })
-      .then((response) => response.json())
-      .then(({ imageUrls }) => {
+      .then(async (data: any) => {
+        const { imageUrls } = await data.json();
         const reader = new FileReader();
         reader.onload = function (e: any) {
           const url = e.target.result;
@@ -240,7 +245,7 @@ export async function handlerCompresstion(editor: Editor, file: File) {
         reader.readAsDataURL(file);
       })
       .catch((e) => {
-        console.log(e);
+        console.info(e);
       });
   }
 }

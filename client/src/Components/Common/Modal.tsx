@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
-import { modalActions } from 'Redux/reducer/modalSlice';
+import { closeModal } from 'Redux/reducer/modalSlice';
 
 const ModalContainer = styled.div`
   width: 100%;
@@ -32,7 +32,7 @@ const Backdrop = styled.div`
   height: 100vh;
   position: fixed;
   top: 0;
-  z-index: 9999;
+  z-index: 500;
   background-color: rgba(0, 0, 0, 0.2);
 `;
 
@@ -40,18 +40,13 @@ const ModalContent: React.FC = () => {
   const dispatch = useDispatch();
   const modalCloseHandler = (event: React.MouseEvent) => {
     event.preventDefault();
-    dispatch(modalActions.closeModal());
+    dispatch(closeModal());
   };
   return (
     <>
       <div className="text-center mt-16 font-semibold text-xl">
         <div className="">결제하기 전</div>
         <div className="">필수사항에 동의해야 합니다.</div>
-
-        {/* <img
-          url="https://media4.giphy.com/media/I8nG2ewVChKp1P5xdn/giphy.gif?cid=ecf05e47no11no72yrpux3l5vb7n9zdde0vivyzu5b7fs1nr&rid=giphy.gif&ct=g"
-          alt="alert"
-        /> */}
       </div>
       <button
         className="border w-16 h-8 mt-16 bg-gray-100"

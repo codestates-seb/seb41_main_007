@@ -1,0 +1,27 @@
+.SortBar_Container {
+  display: flex;
+  padding-top: 20px;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.SortBar_Select {
+  width: 200px;
+  border: 1px solid #c4c4c4;
+  box-sizing: border-box;
+  border-radius: 10px;
+  padding: 12px 13px;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.SortBar_Select:focus {
+  border: 1px solid #9b51e0;
+  box-sizing: border-box;
+  border-radius: 10px;
+  outline: 3px solid #f8e4ff;
+  border-radius: 10px;
+}

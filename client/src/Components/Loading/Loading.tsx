@@ -8,7 +8,10 @@ export default function Loading({
   height?: number;
 }) {
   return (
-    <div className={styles.loader}>
+    <div
+      className={styles.loader}
+      style={{ width: `${width}px`, height: `${height}px` }}
+    >
       <svg className={styles.circular} viewBox="25 25 50 50">
         <circle
           className={styles.path}

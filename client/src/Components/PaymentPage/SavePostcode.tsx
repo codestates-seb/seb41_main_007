@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import useBooleanInput from 'CustomHook/useBooleaninput';
 
@@ -25,16 +25,22 @@ const PostcodeContainer = styled.div`
 interface Props {
   onSaveData: (name: string, value: string) => void;
   children?: string;
+  onControl: () => void;
+  isControl: boolean;
   dataPut?: TYPE_UserAddress;
   addressValue: string[];
   oncontrolCilck?: () => void;
 }
 
-const SavePostcode: React.FC<Props> = ({ onSaveData, addressValue }) => {
+const SavePostcode: React.FC<Props> = ({
+  onSaveData,
+  addressValue,
+  onControl,
+  isControl,
+}) => {
   const [addressNumber, setaddressNumber] = useState(addressValue[0]);
   const [address, setaddress] = useState<string>(addressValue[1]);
   const [Detail, setDetail] = useState<string>(addressValue[2]);
-  const [isControl, onControl] = useBooleanInput(true);
 
   const open = useDaumPostcodePopup();
 
@@ -42,7 +48,7 @@ const SavePostcode: React.FC<Props> = ({ onSaveData, addressValue }) => {
     const { value } = e.target;
     setDetail(value);
     const addressdata = `(${String(addressNumber)}) ${address} (${value})`;
-    console.log(addressdata);
+
     onSaveData('detailAddress', addressdata);
   };
 
@@ -52,9 +58,10 @@ const SavePostcode: React.FC<Props> = ({ onSaveData, addressValue }) => {
 
     setaddress(fullAddress);
     setaddressNumber(extraAddress);
+    setDetail('');
     onControl();
   };
-  console.log(address);
+
   const handleClick = () => {
     open({ onComplete: handleComplete });
   };
@@ -64,10 +71,10 @@ const SavePostcode: React.FC<Props> = ({ onSaveData, addressValue }) => {
       <PostcodeContainer>
         <div></div>
         <input
-          value={addressNumber ? addressNumber : '우편 번호를 눌러주세요'}
+          value={isControl ? '' : addressNumber}
           onClick={handleClick}
           className="w-9/12"
-          placeholder="우편번호 버튼을 눌러주세요"
+          placeholder="우편번호 버튼을 입력하세요"
           readOnly
         ></input>
         <button type="button" onClick={handleClick} className="w-26 ml-6">
@@ -75,7 +82,7 @@ const SavePostcode: React.FC<Props> = ({ onSaveData, addressValue }) => {
         </button>
         <div>
           <input
-            value={address ? address : ''}
+            value={isControl ? '' : address}
             onClick={handleClick}
             className="w-full"
             readOnly
@@ -84,7 +91,11 @@ const SavePostcode: React.FC<Props> = ({ onSaveData, addressValue }) => {
         <div>
           {isControl ? (
             <input
-              value={Detail}
+              value={
+                isControl
+                  ? '우편 번호를 입력하시고 상세주소를 입력하세요'
+                  : Detail
+              }
               readOnly
               className="w-full"
               placeholder="우편 번호를 입력하시고 상세주소를 입력하세요"

@@ -1,0 +1,121 @@
+.Comment_List_Wrapper {
+  display: flex;
+  margin-top: 18px;
+}
+
+.line {
+  width: 100%;
+  border-bottom: 1px solid var(--gray-12);
+  margin: 30px 0;
+}
+
+.Comment {
+  padding: 4px 0;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.Loading_Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.ReviewList_Container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.Review_Container {
+  width: 100%;
+  display: flex;
+  border-bottom: 1px solid var(--gray-12);
+}
+
+.FetchMore_Button {
+  background-color: var(--greenlogo);
+  margin-top: 30px;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  height: 40px;
+  line-height: 12px;
+  border-radius: 5px;
+  color: white;
+}
+
+.FetchMore_Button:hover {
+  background-color: var(--green-70);
+}
+
+.Review_Image_Content {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  padding: 5px;
+}
+
+.Review_Contents_Container {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+.Review_Product_Title {
+  @apply mt-4 text-base text-gray-700;
+}
+.Review_Product_Content {
+  @apply text-sm font-medium text-gray-900;
+}
+.Review_User {
+  @apply text-sm w-12;
+  flex: 1;
+}
+.Review_Rating {
+  display: flex;
+  flex: 1;
+  color: #787878;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.Review_Date {
+  display: flex;
+  flex: 1;
+  justify-content: flex-end;
+  @apply text-sm text-gray-400 w-20;
+}
+
+.Review_Second_Row_Container {
+  display: flex;
+}
+
+@media screen and (max-width: 689px) {
+  .Review_Image_Content {
+    @apply h-32 w-32;
+  }
+  .Review_Rating {
+    @apply text-sm w-20 mr-32;
+  }
+}
+
+@media screen and (max-width: 1025px) {
+  .Review_Image_Content {
+    @apply h-32 w-32;
+  }
+  .Review_Rating {
+    @apply text-sm w-20 mr-44;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .Review_Rating {
+    @apply text-sm w-20 mr-32;
+  }
+}

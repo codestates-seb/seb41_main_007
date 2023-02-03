@@ -1,54 +1,24 @@
-// import { Cookies } from 'react-cookie';
-// const cookies = new Cookies();
-// const accessToken = cookies.get('Authorization');
-interface useCreateProps {
-  url: string;
-  id: any;
-  data: string;
-}
-export const reviewCreate = ({ url, id, data }: useCreateProps) => {
-  fetch(url, {
+import { compressImage } from './commpressImage';
+
+export const pictureCreate = async (url: string, data: any) => {
+  const res = await compressImage(data);
+  const formData = new FormData();
+  formData.append('file', res);
+  const token = localStorage.getItem('access_token');
+  if (!token) return false;
+  return fetch(`${process.env.REACT_APP_BACKEND_URL}${url}`, {
+    cache: 'no-cache',
+    body: formData,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(data),
   })
-    .then(() => {
-      window.location.href = `/api/questions/${id}`;
+    .then((res: Response) => {
+      return res.json();
     })
-    .catch((error) => {
-      console.error('Error', error);
-    });
-};
-
-export const reviewDelete = ({ url, id }: useCreateProps) => {
-  fetch(url, {
-    method: 'DELETE',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then(() => {
-      window.location.href = `/api/questions/${id}`;
-    })
-    .catch((error) => {
-      console.error('Error', error);
-    });
-};
-
-export const reviewPatch = ({ url, data }: useCreateProps) => {
-  fetch(url, {
-    method: 'PATCH',
-    headers: {
-      'Content-Type': 'Application/json',
-    },
-    body: JSON.stringify(data),
-  })
-    .then(() => {
-      window.location.href = `/`;
-    })
-    .catch((error) => {
-      console.error('Error', error);
+    .catch((e) => {
+      console.error(e);
+      return false;
     });
 };

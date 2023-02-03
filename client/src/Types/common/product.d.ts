@@ -5,6 +5,7 @@ export interface TYPE_Product {
   photo: string;
   alt?: string;
   isNew: boolean;
+  rating: number;
   isBest: boolean;
 }
 
@@ -15,14 +16,23 @@ export interface TYPE_PageInfo {
   totalPages: number;
 }
 
-export interface TYPE_COMMENT {
+interface TYPE_Member {
+  memberId: number;
+  name: string;
+  birth: string | null;
+  email: string | null;
+  gender: string | null;
+  phoneNumber: string | null;
+}
+export interface TYPE_Review {
   productId: number;
   reviewId: number;
-  memberId: number;
+  member: TYPE_Member;
   reviewTitle: string;
   reviewContent: string;
   reviewCreatedAt: string;
   rating: number;
+  reviewImage: string;
   eviewLastModifiedAt: string;
 }
 
@@ -75,13 +85,13 @@ export interface TYPE_CartData {
 }
 
 export interface TYPE_People {
-  address: string;
-  age: number;
+  address: TYPE_getAddress[];
+  birth: string;
   email: string;
   gender: string;
   memberId: number;
   name: string;
-  phone: string;
+  phoneNumber: string;
 }
 
 export interface TYPE_UserAddress {
@@ -89,4 +99,47 @@ export interface TYPE_UserAddress {
   name: string;
   detailAddress: string;
   phoneNumber: string;
+}
+
+export interface TYPE_KakaoApi {
+  productOptionId: number;
+  quantity: number;
+}
+export interface TYPE_getAddress {
+  addressId: number;
+  addressName: string;
+  name: string;
+  detailAddress: string;
+  phoneNumber: string;
+}
+
+export interface TYPE_UrlProp {
+  next_redirect_pc_url: string;
+  created_at: string;
+  next_redirect_mobile_url: string;
+  tid: string;
+}
+
+export interface TYPE_Total {
+  productOptionPrice: number;
+  quantity: number;
+}
+
+export interface banktype {
+  id: number;
+  name: string;
+  avatar: string;
+  Bankaccount: string;
+  Bankname: string;
+}
+
+export interface TYPE_ReviewAll {
+  createdAt: string;
+  memberName: string;
+  productId: number;
+  rating: number;
+  reviewContent: string;
+  reviewId: number;
+  reviewImage: string;
+  reviewTitle: string;
 }
