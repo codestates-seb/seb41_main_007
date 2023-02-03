@@ -21,7 +21,7 @@ public class MainController {
                 "<body>\n" +
                 "<h1>농장과사람들 백엔드 서버입니다</h1>\n" +
                 "<ul>\n" +
-                "    <li><a href=\"https://www.farmpi.link/\" target=\"_blank\">배포링크로 이동하기</a></li>\n" +
+                "    <li><a href=\"https://d37w3g5qmrrpnl.cloudfront.net/\" target=\"_blank\">배포링크로 이동하기</a></li>\n" +
                 "    <li><a href=\"https://github.com/codestates-seb/seb41_main_007\" target=\"_blank\">깃허브로 이동하기</a></li>\n" +
                 "    <li><a href=\"https://documenter.getpostman.com/view/23681373/2s8Z76v8iT\" target=\"_blank\">API 문서 보기 (PostMan)</a></li>\n" +
                 "    <li><a href=\"https://farmandpeople.p-e.kr:8080/docs/index.html\" target=\"_blank\">API 문서 보기 (RestDocs)</a></li>\n" +

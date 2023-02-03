@@ -12,7 +12,7 @@
 
 # **✨FarmAndPeople**
 
-- 배포 링크 : https://www.farmpi.link/
+- 배포 링크 : https://d37w3g5qmrrpnl.cloudfront.net/
 - 서버 배포 링크 : https://farmandpeople.p-e.kr:8080/
 - 프로젝트 기간 : 2023.01.03 ~ 2023.02.02
 
