@@ -17,6 +17,8 @@ public class WebMvcConfig {
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedOrigin("https://farmpi.link/");
         config.addAllowedOrigin("https://www.farmpi.link/");
+        config.addAllowedOrigin("https://www.farmpi.link/");
+        config.addAllowedOrigin("https://main.d1b6oavx6u3nu8.amplifyapp.com/");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
