@@ -60,6 +60,7 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.GET, "/questions/**").permitAll()
                         .antMatchers(HttpMethod.GET, "/reviews/**").permitAll()
                         .antMatchers(HttpMethod.POST, "/file/upload").permitAll()
+                        .antMatchers(HttpMethod.GET, "/docs/index.html").permitAll()
                         //어드민 전용
                         .antMatchers("/categories/**").hasRole("ADMIN")
                         .antMatchers(HttpMethod.GET, "/members/all").hasRole("ADMIN")
