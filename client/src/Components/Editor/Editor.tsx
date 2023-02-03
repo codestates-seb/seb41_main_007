@@ -28,6 +28,7 @@ import {
   Wall,
   YoutubeButton,
 } from './Button/EditorButton';
+import { compressImage } from 'Utils/commpressImage';
 
 type BLOCK = 'paragraph' | 'heading' | 'block-quote';
 
@@ -212,8 +213,9 @@ export default function RichText({ value, setValue }: IProps) {
 
 export async function handlerCompresstion(editor: Editor, file: File) {
   if (file) {
+    const res = await compressImage(file);
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', res);
     fetch(`${process.env.REACT_APP_BACKEND_URL}/file/upload`, {
       method: 'POST',
       body: formData,

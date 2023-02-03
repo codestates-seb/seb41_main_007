@@ -8,6 +8,7 @@ import styles from './Styles/ReviewReEdit.module.css';
 import Rating from './Rating';
 import { TYPE_Review } from 'Types/common/product';
 import ImageForm from 'Components/Common/ImageForm';
+import { toast } from 'react-toastify';
 
 interface Props {
   item: TYPE_Review;
@@ -81,7 +82,7 @@ const ReviewReEdit: FC<Props> = ({ session, item, setEditmode }) => {
       mutate(submitValue);
       setEditmode(false);
     } else {
-      console.info('리뷰 변경실패');
+      toast.error('리뷰 변경실패');
     }
   };
 

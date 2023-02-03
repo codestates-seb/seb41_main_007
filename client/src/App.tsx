@@ -1,37 +1,33 @@
-import React from 'react';
-
+import { FC } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { MyPageSession, PaymentPageSession } from 'Utils/SessionMaster';
+import { ToastContainer } from 'react-toastify';
+
 import Header from './Components/Header/index';
-import Main from './Pages/Main';
 import Loading from './Components/Loading/Loading';
-import Login from './Pages/Login';
+import Footer from 'Components/Common/Footer';
 import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
-import ProductPage from 'Pages/ProductPage';
-import BasketsPage from 'Pages/BasketPage';
+
 import ProductListPage from 'Pages/CategoryListPage';
-import Mypage from 'Pages/MyPage';
+import BasketsPage from 'Pages/BasketPage';
+import ProductPage from 'Pages/ProductPage';
+import AllProductsPage from 'Pages/AllProductsPage';
 import Search from 'Pages/Search';
 import NotFoundPage from 'Pages/NotFoundPage';
-import { MyPageSession, PaymentPageSession } from 'Utils/SessionMaster';
-import Footer from 'Components/Common/Footer';
-
-import OrderTest from 'Pages/OrderTest';
-
-import PaymentPage from 'Pages/PaymentPage';
-import AllProductsPage from 'Pages/AllProductsPage';
+import Main from './Pages/Main';
 import Auth from 'Pages/Auth';
 import Post from 'Pages/Post/Post';
-import { useSession } from 'CustomHook/useSession';
-import Empty from 'Components/Common/Empty';
+import Login from './Pages/Login';
 import Test from 'Pages/Test';
 
-const withLayout = (Component: React.FC): JSX.Element => {
+const withLayout = (Component: FC): JSX.Element => {
   return (
     <>
       <Header />
       <Component />
       <Footer />
+      <ToastContainer />
     </>
   );
 };
@@ -96,7 +92,6 @@ const router = createBrowserRouter([
     element: <Test />,
   },
   { path: '/auth', element: <Auth /> },
-  { path: '/ordertest', element: <OrderTest /> },
 ]);
 
 const App: React.FC = () => {
