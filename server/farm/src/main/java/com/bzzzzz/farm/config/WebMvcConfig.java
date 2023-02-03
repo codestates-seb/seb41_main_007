@@ -18,6 +18,7 @@ public class WebMvcConfig {
         config.addAllowedOrigin("https://farmpi.link/");
         config.addAllowedOrigin("https://www.farmpi.link/");
         config.addAllowedOrigin("https://main.d1b6oavx6u3nu8.amplifyapp.com/");
+        config.addAllowedOrigin("https://d37w3g5qmrrpnl.cloudfront.net/");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
 
