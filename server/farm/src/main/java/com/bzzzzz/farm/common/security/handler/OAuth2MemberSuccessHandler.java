@@ -43,7 +43,7 @@ public class OAuth2MemberSuccessHandler extends SimpleUrlAuthenticationSuccessHa
     }
 
     private String makeRedirectUrl(String accessToken, String refreshToken) {
-        return UriComponentsBuilder.fromUriString("https://main.d1b6oavx6u3nu8.amplifyapp.com/auth")
+        return UriComponentsBuilder.fromUriString("https://d37w3g5qmrrpnl.cloudfront.net/auth")
                 .queryParam("access_token", accessToken)
                 .queryParam("refresh_token", refreshToken)
                 .build().toUriString();
