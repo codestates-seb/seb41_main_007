@@ -52,6 +52,10 @@ const AllProductsPage: FC = () => {
           flexDirection: 'column',
         }}
       >
+        <CustomTitle
+          title={`전체상품 | FarmPi`}
+          description={` 전체 상품입니다`}
+        />
         <SortBar />
         <ProductList products={data.data} />
         <Navigation

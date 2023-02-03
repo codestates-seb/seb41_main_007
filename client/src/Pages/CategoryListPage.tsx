@@ -6,6 +6,7 @@ import { BGcontainer } from 'Components/Common/BGcontainer';
 import CategoryList from 'Components/Common/CategoryList';
 import ProductList from 'Components/Common/ProductList';
 import Navigation from 'Components/Pagination/Navigation';
+import CustomTitle from 'Components/Header/CustomTitle';
 
 const ProductListPage: FC = () => {
   let { categoryId } = useParams();
@@ -35,6 +36,10 @@ const ProductListPage: FC = () => {
   };
   return (
     <BGcontainer>
+      <CustomTitle
+        title={` 카테고리 | FarmPi`}
+        description={`카테고리상품입니다`}
+      />
       <CategoryList />
       <ProductList products={data.data} />
       <Navigation

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import styles from './Styles/Category.module.css';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import { Link } from 'react-router-dom';
-import CustomTitle from 'Components/Header/CustomTitle';
+
 interface Category {
   categoryId: number;
   name: string;
@@ -42,10 +42,6 @@ const CategoryList: FC<Props> = ({ categoryList }) => {
 const CategoryItem: FC<Category> = ({ categoryId, name }) => {
   return (
     <>
-      <CustomTitle
-        title={`${name} | FarmPi`}
-        description={`카테고리${name} 상품입니다`}
-      />
       <Link className={styles.Category_Name} to={`/products/${categoryId}`}>
         {name}
       </Link>
