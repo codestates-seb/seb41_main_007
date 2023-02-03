@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import BasketTd from './BasketTd';
-
+import { useSession } from 'CustomHook/useSession';
 interface checkBoxtype {
   el: any;
   handleSingleCheck: (checked: boolean, id: number) => void;
@@ -12,8 +12,11 @@ const PathCounter: FC<checkBoxtype> = ({
   checkItems,
   el,
 }) => {
+  const { session, loading } = useSession();
+
   const jsondata: string | null = localStorage.getItem('basketsCounter');
   const resultarr = JSON.parse(jsondata || '[]') || [];
+  if (loading) return <></>;
   if (resultarr === undefined) {
     return <></>;
   }
@@ -31,6 +34,7 @@ const PathCounter: FC<checkBoxtype> = ({
   return (
     <>
       <BasketTd
+        session={session}
         el={el}
         handleSingleCheck={handleSingleCheck}
         checkItems={checkItems}

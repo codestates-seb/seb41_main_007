@@ -11,6 +11,7 @@ import ProductDetailBox from 'Components/ProductPage/productDetailBox';
 import CategoryList from 'Components/Common/CategoryList';
 import TabPanel from 'Components/Mypage/TabPanel';
 import Review from 'Components/ProductPage/Review';
+import { useSession } from 'CustomHook/useSession';
 
 const ProductContainer = styled.div`
   margin: 120px auto 120px 280px;
@@ -58,14 +59,14 @@ export interface counterProps {
 
 const ProductPage: React.FC = () => {
   const [value, setValue] = useState<number>(0);
-
+  const { session, loading } = useSession();
   useScrollTop();
   let param = useParams(); //공부
   const { data, isLoading, error } = useCustomQuery(
     `/products/${param.productid}`,
     `products${param.productid}`,
   );
-
+  if (loading) return <></>;
   if (isLoading) return <Empty />;
   if (error) return <></>;
   if (data.length === 0) return <Empty />;
@@ -76,7 +77,7 @@ const ProductPage: React.FC = () => {
       <CategoryList />
       <ProductContainer>
         <ProductMenuTitle />
-        <ProductMainBox data={data}></ProductMainBox>
+        <ProductMainBox session={session} data={data}></ProductMainBox>
         <div className="mt-44">
           <div className="relative select border-solid border-b-2">
             <div className="absolute left-0 top-0">

@@ -16,15 +16,10 @@ const CheckBox: React.FC<{
   onClickhandler: () => void;
   kakaoUrl: TYPE_UrlProp;
 }> = ({ data, onClickhandler, kakaoUrl }) => {
-  console.log(kakaoUrl, '한번 확인해봐');
-  console.log(data);
-  console.log(kakaoUrl.next_redirect_pc_url, '지금 보는것것');
   const [checkList, setCheckList] = useState<string[]>([]);
   const dispatch = useDispatch();
 
   const modalOpenHandler = (event: any) => {
-    console.log('안녕');
-
     dispatch(openModal());
   };
 

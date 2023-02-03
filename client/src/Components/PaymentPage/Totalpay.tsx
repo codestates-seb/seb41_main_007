@@ -36,7 +36,7 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
   const [orderId, setOrderId] = useState<number>(0);
   const [urlData, setUrlData] = useState<TYPE_UrlProp>(INITIALVALUE);
   const token = localStorage.getItem('access_token');
-  console.log(data, '받아온 데이터 장바구니');
+
   const productHandler = data.map((el: TYPE_KakaoApi) => {
     const productDatas = {
       productOptionId: el.productOptionId,
@@ -50,8 +50,6 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
   });
 
   const TotalForPills = PriceForPills.reduce((a, b) => a + b, 0);
-  console.log('꼬꼬링', PriceForPills);
-  console.log('합친결과', TotalForPills);
 
   const DiscountForPills = TotalForPills * 0.1;
 
@@ -59,8 +57,7 @@ const Totalpay: React.FC<{ data: TYPE_CartData[] }> = ({ data }) => {
     return el.quantity;
   });
   const CountsForPills = CountForPills.reduce((a, b) => a + b, 0);
-  console.log(CountForPills, 'CountForPills');
-  console.log(CountsForPills, 'CountsForPills');
+
   useEffect(() => {}, []);
 
   const onClickhandler = () => {

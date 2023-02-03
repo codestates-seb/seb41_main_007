@@ -16,6 +16,7 @@ import { useSession } from 'CustomHook/useSession';
 import { useQueryClient } from 'react-query';
 import ComponentModal from 'Components/Common/ComponentModal';
 import useBooleanInput from 'CustomHook/useBooleaninput';
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 
 const ProductMain = styled.div`
   margin: 0 auto 50px auto;
@@ -121,16 +122,16 @@ const Price = styled.p`
 
 interface props {
   data: any;
+  session: any;
 }
 
-const ProductMainBox: React.FC<props> = ({ data }) => {
+const ProductMainBox: React.FC<props> = ({ data, session }) => {
   const [count, setCount] = useState<number>(1);
   const [isControl, onisControl, setisControl] = useBooleanInput(true);
   const [option, setOption] = useState<TYPE_ProductOption>(
     data.productOptionResponseDtos[0],
   );
-  const { session, loading } = useSession();
-  if (loading) return <></>;
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -153,6 +154,14 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
       return prevCount - 1;
     });
   };
+
+  const { mutate } = useCustomMutation(
+    `/carts`,
+    `/carts`,
+    'POST',
+    session,
+    false,
+  );
 
   // if (session) {
   //   //확인용
@@ -247,18 +256,18 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
         productOptionId: option.productOptionId,
         quantity: count,
       };
-
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-        body: JSON.stringify(suggest),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session}`,
-        },
-        method: 'POST',
-      }).then((response) => {
-        queryClient.invalidateQueries('/carts');
-        // console.log(response);
-      });
+      mutate(suggest);
+      // fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+      //   body: JSON.stringify(suggest),
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: `Bearer ${session}`,
+      //   },
+      //   method: 'POST',
+      // }).then((response) => {
+      //   queryClient.invalidateQueries('/carts');
+      //   // console.log(response);
+      // });
     }
   };
 

@@ -2,7 +2,7 @@ import { FC } from 'react';
 import styled from 'styled-components';
 import BasketList from 'Components/BasketPage/BasketList';
 import { BGcontainer } from 'Components/Common/BGcontainer';
-
+import { useSession } from 'CustomHook/useSession';
 import useScrollTop from 'CustomHook/useScrollTop';
 import CustomTitle from 'Components/Header/CustomTitle';
 const Cart = styled.div`
@@ -21,14 +21,17 @@ const BasketTitle = styled.h2`
 `;
 
 const basketsPage: FC = () => {
+  const { session, loading } = useSession();
   useScrollTop();
+  if (loading) return <></>;
+
   return (
     <BGcontainer>
       <CustomTitle title={'장바구니 | FarmPi'} />
       <Cart>
         <BasketForm>
           <BasketTitle>장바구니</BasketTitle>
-          <BasketList />
+          <BasketList session={session} />
         </BasketForm>
       </Cart>
     </BGcontainer>
