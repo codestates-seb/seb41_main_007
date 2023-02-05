@@ -1,25 +1,12 @@
 import styled from 'styled-components';
-import { faCircleExclamation } from '@fortawesome/free-solid-svg-icons';
 import BuyButton from 'Components/Common/BuyButton';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import React, { useState } from 'react';
-import { ToastContainer, toast, Zoom } from 'react-toastify';
 import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const MWcontainer = styled.div``;
 
-const StyleToastContainer = styled(ToastContainer)`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-`;
 //삭제기능 토큰 확인 기능추가
 const MembershipWithdrawal: React.FC<{ session: any }> = ({ session }) => {
   const { mutate } = useCustomMutation(
@@ -29,16 +16,7 @@ const MembershipWithdrawal: React.FC<{ session: any }> = ({ session }) => {
     session,
     false,
   );
-  const sucessAlram = () =>
-    toast.success('회원탈퇴가 완료 되었습니다..', {
-      position: 'top-right',
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: 'light',
-    });
+
   const refresh_Token = localStorage.getItem('refresh_token');
   const [open, setOpen] = useState(false);
   const [guest, setguest] = useState(false);
@@ -151,12 +129,6 @@ const MembershipWithdrawal: React.FC<{ session: any }> = ({ session }) => {
             )}
           </Box>
         </Modal>
-        <StyleToastContainer
-          limit={4}
-          transition={Zoom}
-          hideProgressBar
-          autoClose={1000}
-        />
       </MWcontainer>
     </div>
   );

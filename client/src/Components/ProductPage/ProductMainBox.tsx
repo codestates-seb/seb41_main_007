@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Ratingstar from 'Components/Common/Ratingstar';
 import { useNumberComma } from 'Utils/commonFunction';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import CounterButton from './Counterbutton';
 import CustomTitle from 'Components/Header/CustomTitle';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,7 +12,6 @@ import { countset } from 'Redux/reducer/priceSlice';
 import { useNavigate } from 'react-router-dom';
 import SelectBox from 'Components/BasketPage/SelectBox';
 import { TYPE_ProductOption, counttype } from 'Types/common/product';
-import { useSession } from 'CustomHook/useSession';
 import { useQueryClient } from 'react-query';
 import ComponentModal from 'Components/Common/ComponentModal';
 import useBooleanInput from 'CustomHook/useBooleaninput';
@@ -310,20 +309,7 @@ const ProductMainBox: React.FC<props> = ({ data, session }) => {
           >
             장바구니 담기
           </BuyButton>
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-          {/* Same as */}
-          <ToastContainer />
+
           <BuyButton
             background="var(--greenlogo);"
             color="var(--bg-white-05)"

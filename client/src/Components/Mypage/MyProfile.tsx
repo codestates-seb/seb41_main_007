@@ -9,19 +9,8 @@ import RadiusButton from 'Components/Common/RadiusButton';
 import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 import { TYPE_People } from 'Types/common/product';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
-import { ToastContainer, toast, Zoom } from 'react-toastify';
+import { toast, Zoom } from 'react-toastify';
 import isEmptyObj from 'Utils/commonFunction';
-
-const StyleToastContainer = styled(ToastContainer)`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-`;
 
 const User = styled.div`
   input {
@@ -120,12 +109,6 @@ const MyProfile: React.FC<{ session: any }> = ({ session }) => {
             onSave={onSave}
           ></ComponentsInput>
         </User>
-        <StyleToastContainer
-          limit={4}
-          transition={Zoom}
-          hideProgressBar
-          autoClose={1000}
-        />
       </div>
       <div className="my-5 relative h-6">
         <div className="absolute top-0 left-0">
