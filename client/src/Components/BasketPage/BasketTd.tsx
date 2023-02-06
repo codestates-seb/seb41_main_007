@@ -6,8 +6,8 @@ import { useAppDispatch } from 'Redux/app/hook';
 import { countset, countput, countDelete } from 'Redux/reducer/priceSlice';
 import { Link } from 'react-router-dom';
 import { TYPE_LocalOption } from 'Types/common/product';
-import { useSession } from 'CustomHook/useSession';
-
+import { useQueryClient } from 'react-query';
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 const Tablebody1 = styled.th`
   background: white;
   width: 67px;
@@ -130,6 +130,7 @@ const Xbutton = styled.button`
 //변화량을 더하거나 뺴줌 유즈이펙트로 처음에만 렌더링되ㅏㄹ때 값넣어줌
 
 interface checkBoxtype {
+  session: any;
   el: any;
   handleSingleCheck: (checked: boolean, id: number) => void;
   checkItems: number[];
@@ -141,7 +142,7 @@ const BasketTd: FC<checkBoxtype> = ({
   el,
   handleSingleCheck,
   checkItems,
-  // countNumber,
+  session,
   optionData,
 }): JSX.Element => {
   const jsondata: string | null = localStorage.getItem('baskets');
@@ -149,8 +150,14 @@ const BasketTd: FC<checkBoxtype> = ({
   const jsondataCounter: string | null = localStorage.getItem('basketsCounter');
   const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
   const [number, setnumber] = useState<number>(optionData.count);
-  const { session, loading } = useSession();
-  if (loading) return <></>;
+
+  const { mutate } = useCustomMutation(
+    `/carts/${el.productOptionResponseDtos.productOptionId}`,
+    `/carts`,
+    'DELETE',
+    session,
+    false,
+  );
 
   // const [deleteb, setdeleteb] = useState<any[] | []>([]);
   const dispatch = useAppDispatch();
@@ -164,6 +171,7 @@ const BasketTd: FC<checkBoxtype> = ({
       }),
     );
   }, []);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     basketsCounter.forEach((data: any) => {
@@ -196,17 +204,23 @@ const BasketTd: FC<checkBoxtype> = ({
     });
 
     if (session) {
-      fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/carts/${optionData.productOptionId}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${session}`,
-          },
-          method: 'DELETE',
-        },
-      );
-      // .then((response) => console.log(response));
+      mutate({});
+      console.log('안녕');
+      // fetch(
+      //   `${process.env.REACT_APP_BACKEND_URL}/carts/${optionData.productOptionId}`,
+      //   {
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //       Authorization: `Bearer ${session}`,
+      //     },
+      //     method: 'DELETE',
+      //   },
+      // ).then((response) => {
+      //   queryClient.invalidateQueries('/carts');
+      //   console.log('이이이이이이이이이이11111111111');
+      //   console.log(response);
+      // });
+      // // .then((response) => console.log(response));
     }
 
     dispatch(countDelete({ id: el.productOptionResponseDtos.productOptionId }));

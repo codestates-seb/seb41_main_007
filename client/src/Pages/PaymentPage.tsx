@@ -43,7 +43,8 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
     '/carts',
     session,
   );
-
+  console.log('이이이이이이이이이이');
+  console.log(data);
   useEffect(() => {
     refetch();
     if (!session) {
@@ -117,3 +118,5 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   );
 };
 export default PaymentPage;
+//딜리트와 패치의 차이
+//패치를 할경우에 자동으로 겟이 다시됨 그렇지만 딜리트는 아니다

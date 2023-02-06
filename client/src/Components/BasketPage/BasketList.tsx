@@ -8,9 +8,11 @@ import { useNumberComma } from 'Utils/commonFunction';
 import BuyButton from 'Components/Common/BuyButton';
 import BestProductSlider from 'Components/BestProductSlider';
 import { useNavigate } from 'react-router-dom';
-import { useSession } from 'CustomHook/useSession';
+
 import { TYPE_CartData, TYPE_LocalOption } from 'Types/common/product';
 import { useQueryClient } from 'react-query';
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
+
 const BasketForm = styled.div`
   width: 1180px;
 
@@ -135,7 +137,11 @@ const ControlContainer = styled.div`
   margin: 0 -200px 0 -170px;
 `;
 
-const BasketList: FC = () => {
+interface Props {
+  session: any;
+}
+
+const BasketList: FC<Props> = ({ session }) => {
   const [checkItems, setCheckItems] = useState<number[]>([]);
   const resultarr: Pricestate[] = useAppSelector(selectprice);
   const queryClient = useQueryClient();
@@ -145,9 +151,16 @@ const BasketList: FC = () => {
   const baskets = JSON.parse(jsondata || '[]');
   const jsondataCounter: string | null = localStorage.getItem('basketsCounter');
   const basketsCounter = JSON.parse(jsondataCounter || '[]') || [];
-  const { session, loading } = useSession();
+
   useScrollTop();
-  if (loading) return <></>;
+
+  const { mutate } = useCustomMutation(
+    `/carts`,
+    `/carts`,
+    'PATCH',
+    session,
+    false,
+  );
 
   let result: number = resultarr.reduce((acc, cur) => {
     if (cur?.price && cur?.count) {
@@ -201,8 +214,17 @@ const BasketList: FC = () => {
       return !checkItems.includes(el.productOptionResponseDtos.productOptionId);
     });
     const deleteSaveCounter = basketsCounter.filter((el: any) => {
+      console.log(el);
       if (checkItems.includes(el.productOptionId)) {
         if (session) {
+          // const { mutate } = useCustomMutation(
+          //   `/carts/${el.productOptionId}`,
+          //   `/carts`,
+          //   'DELETE',
+          //   session,
+          //   false,
+          // );
+          // mutate({});
           fetch(
             `${process.env.REACT_APP_BACKEND_URL}/carts/${el.productOptionId}`,
             {
@@ -214,7 +236,6 @@ const BasketList: FC = () => {
             },
           ).then((response) => {
             queryClient.invalidateQueries('/carts');
-            // console.log(response);
           });
         }
         return false;
@@ -267,6 +288,7 @@ const BasketList: FC = () => {
                   method: 'DELETE',
                 },
               ).then((response) => {
+                console.log('이히');
                 queryClient.invalidateQueries('/carts');
               });
             } else {
@@ -278,18 +300,8 @@ const BasketList: FC = () => {
                   productOptionId: cartsData.productOptionId,
                   quantity: quantityValue,
                 };
-
-                fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-                  body: JSON.stringify(suggest),
-                  headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${session}`,
-                  },
-                  method: 'PATCH',
-                }).then((response) => {
-                  queryClient.invalidateQueries('/carts');
-                  // console.log(response);
-                });
+                console.log(suggest);
+                mutate(suggest);
               }
             }
           });
@@ -386,3 +398,6 @@ export default BasketList;
 // 로딩화면 추가할예정
 //foreach 안돌아가는 상황이있었음
 //API밀릴경우 버그 잡음
+// refetch?
+// refetch를 쓰면
+// delete를 반영을 잘하고

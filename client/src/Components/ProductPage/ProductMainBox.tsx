@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Ratingstar from 'Components/Common/Ratingstar';
 import { useNumberComma } from 'Utils/commonFunction';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import CounterButton from './Counterbutton';
 import CustomTitle from 'Components/Header/CustomTitle';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,10 +12,10 @@ import { countset } from 'Redux/reducer/priceSlice';
 import { useNavigate } from 'react-router-dom';
 import SelectBox from 'Components/BasketPage/SelectBox';
 import { TYPE_ProductOption, counttype } from 'Types/common/product';
-import { useSession } from 'CustomHook/useSession';
 import { useQueryClient } from 'react-query';
 import ComponentModal from 'Components/Common/ComponentModal';
 import useBooleanInput from 'CustomHook/useBooleaninput';
+import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
 
 const ProductMain = styled.div`
   margin: 0 auto 50px auto;
@@ -121,16 +121,16 @@ const Price = styled.p`
 
 interface props {
   data: any;
+  session: any;
 }
 
-const ProductMainBox: React.FC<props> = ({ data }) => {
+const ProductMainBox: React.FC<props> = ({ data, session }) => {
   const [count, setCount] = useState<number>(1);
   const [isControl, onisControl, setisControl] = useBooleanInput(true);
   const [option, setOption] = useState<TYPE_ProductOption>(
     data.productOptionResponseDtos[0],
   );
-  const { session, loading } = useSession();
-  if (loading) return <></>;
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -153,6 +153,14 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
       return prevCount - 1;
     });
   };
+
+  const { mutate } = useCustomMutation(
+    `/carts`,
+    `/carts`,
+    'POST',
+    session,
+    false,
+  );
 
   // if (session) {
   //   //확인용
@@ -247,18 +255,18 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
         productOptionId: option.productOptionId,
         quantity: count,
       };
-
-      fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
-        body: JSON.stringify(suggest),
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${session}`,
-        },
-        method: 'POST',
-      }).then((response) => {
-        queryClient.invalidateQueries('/carts');
-        // console.log(response);
-      });
+      mutate(suggest);
+      // fetch(`${process.env.REACT_APP_BACKEND_URL}/carts`, {
+      //   body: JSON.stringify(suggest),
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     Authorization: `Bearer ${session}`,
+      //   },
+      //   method: 'POST',
+      // }).then((response) => {
+      //   queryClient.invalidateQueries('/carts');
+      //   // console.log(response);
+      // });
     }
   };
 
@@ -301,20 +309,7 @@ const ProductMainBox: React.FC<props> = ({ data }) => {
           >
             장바구니 담기
           </BuyButton>
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-          {/* Same as */}
-          <ToastContainer />
+
           <BuyButton
             background="var(--greenlogo);"
             color="var(--bg-white-05)"

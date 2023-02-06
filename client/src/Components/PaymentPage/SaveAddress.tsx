@@ -5,24 +5,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RadiusButton from 'Components/Common/RadiusButton';
 import { TYPE_UserAddress, TYPE_getAddress } from 'Types/common/product';
 import TinyTitle from 'Components/Common/TinyTitle';
-import { ToastContainer, toast, Zoom } from 'react-toastify';
-import { useState, Dispatch, SetStateAction } from 'react';
+import { toast } from 'react-toastify';
+import { useState } from 'react';
 import 'react-toastify/dist/ReactToastify.css';
 import { useQueryClient } from 'react-query';
 import { useAppDispatch } from 'Redux/app/hook';
 import { get_DataSave } from 'Redux/reducer/getDataSlice';
 import useBooleanInput from 'CustomHook/useBooleaninput';
-
-const StyleToastContainer = styled(ToastContainer)`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-  -moz-transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
-  -o-transform: translate(-50%, -50%);
-  transform: translate(-50%, -50%);
-`;
 
 const Title = styled.div`
   border-top: 1px solid black;
@@ -175,25 +164,7 @@ const SaveAddress: React.FC<{ session: any }> = ({ session }) => {
           addressValue={addressValue.length > 1 ? addressValue : ['', '', '']}
         />
       </div>
-      <StyleToastContainer
-        limit={4}
-        transition={Zoom}
-        hideProgressBar
-        autoClose={1000}
-      />
-      {/* <Container
-        role="alert"
-        autoClose={4000}
-        transition={Zoom}
-        draggable={false}
-        closeOnClick={false}
-        pauseOnHover={false}
-        pauseOnFocusLoss={false}
-        hideProgressBar
-        position="bottom-center"
-        theme="colored"
-        style={{ fontSize: 13 }}
-      /> */}
+
       <div className="my-5 relative h-6">
         <div className="absolute top-0 left-0">
           <RadiusButton

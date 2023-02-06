@@ -1,14 +1,8 @@
-import { FC } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { MyPageSession, PaymentPageSession } from 'Utils/SessionMaster';
-import { ToastContainer } from 'react-toastify';
-
-import Header from './Components/Header/index';
 import Loading from './Components/Loading/Loading';
-import Footer from 'Components/Common/Footer';
 import Counter from 'Redux/ex/counter';
 import ObjectSaver from 'Redux/ex/objectSave';
-
 import ProductListPage from 'Pages/CategoryListPage';
 import BasketsPage from 'Pages/BasketPage';
 import ProductPage from 'Pages/ProductPage';
@@ -20,17 +14,18 @@ import Auth from 'Pages/Auth';
 import Post from 'Pages/Post/Post';
 import Login from './Pages/Login';
 import Test from 'Pages/Test';
+import withLayout from 'Components/WithLayout';
 
-const withLayout = (Component: FC): JSX.Element => {
-  return (
-    <>
-      <Header />
-      <Component />
-      <Footer />
-      <ToastContainer />
-    </>
-  );
-};
+// const withLayout = (Component: FC): JSX.Element => {
+//   return (
+//     <>
+//       <Header />
+//       <Component />
+//       <Footer />
+//       {/* <ToastContainer /> */}
+//     </>
+//   );
+// };
 
 const router = createBrowserRouter([
   {
