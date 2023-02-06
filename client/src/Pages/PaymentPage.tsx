@@ -16,6 +16,7 @@ import { madalState } from 'Redux/reducer/modalSlice';
 import { useCustomQuery } from 'CustomHook/useCustomQuery';
 import Payment from 'Components/PaymentPage/Payment';
 import CustomTitle from 'Components/Header/CustomTitle';
+import { session } from 'Utils/SessionMaster';
 const Container = styled.div`
   width: 830px;
 `;
@@ -28,7 +29,7 @@ const Title = styled.div`
   padding-right: 30px;
 `;
 
-const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
+const PaymentPage: React.FC<{}> = ({}) => {
   const [order, setOrder] = useState<boolean>(true);
   const [isDelivery, setisDelivery] = useState<boolean>(true);
   const [address, setAddress] = useState<boolean>(false);

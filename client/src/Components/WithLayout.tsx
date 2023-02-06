@@ -1,9 +1,11 @@
-import { FC } from 'react';
+import { Suspense } from 'react';
 import Header from './Header';
 import Footer from './Common/Footer';
 import { ToastContainer, Zoom } from 'react-toastify';
 import styled from 'styled-components';
-
+import { Outlet } from 'react-router-dom';
+import Loading from './Loading/Loading';
+import { BGcontainer } from './Common/BGcontainer';
 const StyleToastContainer = styled(ToastContainer)`
   position: fixed;
   top: 50%;
@@ -15,19 +17,22 @@ const StyleToastContainer = styled(ToastContainer)`
   transform: translate(-50%, -50%);
 `;
 
-const withLayout = (Component: FC): JSX.Element => {
+const WithLayout = (): JSX.Element => {
   return (
     <>
       <Header />
-      <Component />
-      <Footer />
-      <StyleToastContainer
-        limit={4}
-        transition={Zoom}
-        hideProgressBar
-        autoClose={1000}
-      />
+      <Suspense fallback={<BGcontainer />}>
+        <Outlet />
+
+        <Footer />
+        <StyleToastContainer
+          limit={4}
+          transition={Zoom}
+          hideProgressBar
+          autoClose={1000}
+        />
+      </Suspense>
     </>
   );
 };
-export default withLayout;
+export default WithLayout;

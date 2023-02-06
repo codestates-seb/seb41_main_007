@@ -288,7 +288,6 @@ const BasketList: FC<Props> = ({ session }) => {
                   method: 'DELETE',
                 },
               ).then((response) => {
-                console.log('이히');
                 queryClient.invalidateQueries('/carts');
               });
             } else {
@@ -401,3 +400,4 @@ export default BasketList;
 // refetch?
 // refetch를 쓰면
 // delete를 반영을 잘하고
+//navigate

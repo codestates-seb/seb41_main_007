@@ -10,6 +10,7 @@ import MainImage from 'Components/PaymentPage/MainImage';
 import ComponentModal from 'Components/Common/ComponentModal';
 import MembershipWithdrawal from 'Components/Mypage/MembershipWithdrawal';
 import CustomTitle from 'Components/Header/CustomTitle';
+import { session } from 'Utils/SessionMaster';
 
 const ShortContainer = styled.div`
   width: 750px;
@@ -17,7 +18,7 @@ const ShortContainer = styled.div`
   margin-top: 80px;
 `;
 
-const MyPage: React.FC<{ session: any }> = ({ session }) => {
+const MyPage: React.FC<{}> = ({}) => {
   const [value, setValue] = useState<number>(0);
   const navigate = useNavigate();
 
