@@ -102,6 +102,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.20",
     "prettier": "^2.8.1",
-    "tailwindcss": "^3.2.4"
+    "tailwindcss": "^3.2.4",
+    "webpack-bundle-analyzer": "^4.7.0"
   }
 }
