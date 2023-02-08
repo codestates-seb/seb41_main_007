@@ -1,10 +1,10 @@
 import jwt_decode from 'jwt-decode';
 
-export const tokenDecode = (token: string) => {
+export const tokenDecode = <T,>(token: string): T => {
   return jwt_decode(token);
 };
 
-export const useNumberComma = (num: number) => {
+export const useNumberComma = <T,>(num: number): string => {
   return [num].toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
