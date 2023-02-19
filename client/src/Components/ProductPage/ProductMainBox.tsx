@@ -12,7 +12,7 @@ import { countset } from 'Redux/reducer/priceSlice';
 import { useNavigate } from 'react-router-dom';
 import SelectBox from 'Components/BasketPage/SelectBox';
 import { TYPE_ProductOption, counttype } from 'Types/common/product';
-import { useQueryClient } from 'react-query';
+
 import ComponentModal from 'Components/Common/ComponentModal';
 import useBooleanInput from 'CustomHook/useBooleaninput';
 import { useCustomMutation } from 'CustomHook/useCustomMutaiton';
@@ -121,7 +121,7 @@ const Price = styled.p`
 
 interface props {
   data: any;
-  session: any;
+  session: string | null;
 }
 
 const ProductMainBox: React.FC<props> = ({ data, session }) => {
@@ -133,7 +133,7 @@ const ProductMainBox: React.FC<props> = ({ data, session }) => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
+
   const onIncrease = () => {
     setCount((prevCount) => {
       if (prevCount === 5) {
@@ -343,7 +343,7 @@ export default ProductMainBox;
 // // const getStorage = (object, ID) => {
 // // window.location.href
 // // 비로그인시 return url
-//옵션아이디로 수정함녀서 괴랄해짐
+//옵션아이디로 수정하면서 괴랄해짐
 //유지보수 고려한 코딩
 //결제하기 버그
 //개수 추가

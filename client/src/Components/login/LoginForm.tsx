@@ -62,11 +62,11 @@ const LoginForm = () => {
   const GuestHandler = () => {
     localStorage.setItem(
       'access_token',
-      'eyJhbGciOiJIUzM4NCJ9.eyJhdXRoIjoiUk9MRV9BRE1JTiIsIm5hbWUiOiLqtJHtmJzsm5AiLCJzdWIiOiIzIiwiaWF0IjoxNjc0ODg2Nzk5LCJleHAiOjE2NzYzNTgwMjd9.JiVdg9rc-HNg9inEw8KAfF7meDtl8X-XgQODcHBQHUBwX4lw-DQ7i1v8M5b_rc36',
+      'eyJhbGciOiJIUzM4NCJ9.eyJhdXRoIjoiUk9MRV9VU0VSIiwibmFtZSI6Iuq0ke2YnOybkCIsImVtYWlsIjoicGhpbGlwMjc2N0BnbWFpbC5jb20iLCJzdWIiOiIzIiwiaWF0IjoxNjc2ODE1NzY3LCJleHAiOjE2NzgyODY5OTZ9.g4JfvQ_c6rZaROOAhd3VInma6vA0So32IYwl4nJIbSzXxVQXgUOTJqh5VFreN33u',
     );
     localStorage.setItem(
       'refresh_token',
-      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxMDQyNTI5MjI5MDY3Nzk3Njc4NTMiLCJpYXQiOjE2NzQ4ODY3OTksImV4cCI6MTY3NjM1ODAyOH0.F1H36p1PKfq3m8q7YOe8HtzYtvNdROZicNDE-3xDDRYW_iqJ2FO7-ElUQ1pTtI2B',
+      'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiIxMDQyNTI5MjI5MDY3Nzk3Njc4NTMiLCJpYXQiOjE2NzY4MTU3NjcsImV4cCI6MTY3ODI4Njk5Nn0.7Wrbst7G4q-bH7WajSSqooInCwdJ5b31v5mGmxMvbYQJAxvBx82R12aAdky2y6cD',
     );
 
     window.location.href = '/';
