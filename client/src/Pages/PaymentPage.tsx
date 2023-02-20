@@ -46,7 +46,8 @@ const PaymentPage: React.FC<{ session: any }> = ({ session }) => {
   console.log('이이이이이이이이이이');
   console.log(data);
   useEffect(() => {
-    refetch();
+    // refetch();
+    console.info('인정?');
     if (!session) {
       navigate('/login');
     }
